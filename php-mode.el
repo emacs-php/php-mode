@@ -462,7 +462,7 @@ This is was done due to the problem reported here:
           (("_" . "w"))                    ; SYNTAX-ALIST
           nil))                             ; SYNTAX-BEGIN
   (modify-syntax-entry ?# "< b" php-mode-syntax-table)
-  ;;(modify-syntax-entry ?_ "w" php-mode-syntax-table)
+  (modify-syntax-entry ?_ "_" php-mode-syntax-table)
 
   ;; Electric behaviour must be turned off, they do not work since
   ;; they can not find the correct syntax in embedded PHP.
