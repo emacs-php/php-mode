@@ -170,6 +170,8 @@ Turning this on will open it whenever `php-mode' is loaded."
     "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?public\\s-+\\(?:static\\s-+\\)?function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1)
    ("Classes"
     "^\\s-*class\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*" 1)
+   ("Traits"
+    "^\\s-*trait\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*" 1)
    ("All Functions"
     "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1)
    )
