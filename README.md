@@ -21,3 +21,7 @@ Now `php-mode` supports syntax highlighting for new keywords which were added as
 ## Treatment of Underscores
 
 Underscores are treated as ‘symbol constituents’ (in Emacs terminology) so that you can use keys like M-f and M-b to move through the individual parts of a variable name like `$foo_bar_baz`.
+
+# License
+
+The code for `php-mode` is covered by the GNU General Public License 3.
