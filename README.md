@@ -16,7 +16,7 @@ Please email any bugs or feature requests to `Ren at lifesnotsimple dot com`.
 
 ## New 5.4 Keywords
 
-Now `php-mode` supports syntax highlighting for new keywords which were added as part of PHP 5.4, e.g. those related to traits, such as `insteadof`.  Traits now also appear in Imenu listings.
+Now `php-mode` supports syntax highlighting for new keywords which were added as part of PHP 5.4, e.g. those related to traits, such as `insteadof`.  Traits now also appear in Imenu listings, as well as namespaces.
 
 ## Treatment of Underscores
 

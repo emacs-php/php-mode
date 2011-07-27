@@ -162,6 +162,8 @@ Turning this on will open it whenever `php-mode' is loaded."
 
 (defvar php-imenu-generic-expression
  '(
+   ("Namespaces"
+    "^\\s-*namespace\\s-\\([\\sw\\]+\\)" 1)
    ("Private Methods"
     "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?private\\s-+\\(?:static\\s-+\\)?function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1)
    ("Protected Methods"
@@ -376,7 +378,7 @@ example `html-mode'.  Known such libraries are:\n\t"
 (defconst php-block-stmt-2-key
   (regexp-opt php-block-stmt-2-kwds))
 
-(defconst php-class-decl-kwds '("class" "interface" "trait"))
+(defconst php-class-decl-kwds '("class" "interface" "trait" "namespace"))
 
 (defconst php-class-key
   (concat
@@ -1141,7 +1143,7 @@ current `tags-file-name'."
    (list
 
     ;; class declaration
-    '("\\<\\(namespace\\|class\\|interface\\|trait\\)\\s-+\\(\\sw+\\)?"
+    '("\\<\\(namespace\\|class\\|interface\\|trait\\)\\s-+\\([\\sw\\]+\\)?"
       (1 font-lock-keyword-face) (2 font-lock-type-face nil t))
     ;; handle several words specially, to include following word,
     ;; thereby excluding it from unknown-symbol checks later
