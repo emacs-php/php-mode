@@ -819,7 +819,11 @@ current `tags-file-name'."
     ;; FIX to handle implementing multiple
     ;; currently breaks on "class Foo implements Bar, Baz"
     '("\\<\\(new\\|extends\\|implements\\)\\s-+\\$?\\(\\sw+\\)"
-      (1 font-lock-keyword-face) (2 font-lock-type-face))
+      (1 font-lock-keyword-face) (2 font-lock-type-face nil t))
+
+    ;; namespace imports
+    '("^\\s-*use\\(\\(?:\\sw\\|\\\\\\)+\\)\\s-+as\\s-+(\\(?:\\sw\\|\\\\\\)+\\"
+      (1 font-lock-keyword-face) (2-font-lock-type-face))
 
     ;; function declaration
     '("\\<\\(function\\)\\s-+&?\\(\\sw+\\)\\s-*("
