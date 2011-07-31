@@ -2,13 +2,14 @@
 
 ;; Copyright (C) 1999, 2000, 2001, 2003, 2004 Turadg Aleahmad
 ;;               2008 Aaron S. Hawley
+;;               2011 Eric James Michael Ritz
 
-;; Maintainer: Aaron S. Hawley <ashawley at users.sourceforge.net>
+;; Maintainer: Eric James Michael Ritz <Ren at lifesnotsimple dot com>
 ;; Author: Turadg Aleahmad, 1999-2004
 ;; Keywords: php languages oop
 ;; Created: 1999-05-17
-;; Modified: 2011-07-25
-;; X-URL:   http://php-mode.sourceforge.net/
+;; Modified: 2011-07-31
+;; X-URL:   https://github.com/ejmr/php-mode
 
 (defconst php-mode-version-number "1.5.1"
   "PHP Mode version number.")
@@ -51,12 +52,12 @@
 
 ;;; Commentary:
 
-;; PHP mode is a major mode for editing PHP 3 and 4 source code.  It's
-;; an extension of C mode; thus it inherits all C mode's navigation
-;; functionality.  But it colors according to the PHP grammar and indents
-;; according to the PEAR coding guidelines.  It also includes a couple
-;; handy IDE-type features such as documentation search and a source
-;; and class browser.
+;; PHP mode is a major mode for editing PHP source code.  It's an
+;; extension of C mode; thus it inherits all C mode's navigation
+;; functionality.  But it colors according to the PHP grammar and
+;; indents according to the PEAR coding guidelines.  It also includes
+;; a couple handy IDE-type features such as documentation search and a
+;; source and class browser.
 
 ;;; Contributors: (in chronological order)
 
@@ -72,7 +73,7 @@
 ;;; Changelog:
 
 ;; 1.5.1 (Eric JM Ritz)
-;;   Added support for new PHP 5.4 keywords.
+;;   Added support for new PHP 5.4 keywords and namespaces.
 ;; 1.5.0-nxhtml-1.88 (Lennart Borgman)
 ;;   Don't indent heredoc end mark
 ;; 1.5.0-nxhtml-1.61 (Lennart Borgman)
@@ -111,9 +112,6 @@
 ;;   Changed the definition of # using a tip from Stefan
 ;;   Monnier to correct highlighting and indentation. (Lennart Borgman)
 ;;   Changed the highlighting of the HTML part. (Lennart Borgman)
-;;
-;; See the ChangeLog file included with the source package.
-
 
 ;;; Code:
 
@@ -163,7 +161,7 @@ Turning this on will open it whenever `php-mode' is loaded."
 (defvar php-imenu-generic-expression
  '(
    ("Namespaces"
-    "^\\s-*namespace\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*" 1)
+    "^\\s-*namespace\\s-+\\(\\(?:\\sw\\|\\\\\\|\\s_\\)+\\)\\s-*" 1)
    ("Private Methods"
     "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?private\\s-+\\(?:static\\s-+\\)?function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1)
    ("Protected Methods"
@@ -230,7 +228,7 @@ Turning this on will force PEAR rules on all PHP files."
   :type 'boolean
   :group 'php)
 
-(defconst php-mode-modified "2009-08-12"
+(defconst php-mode-modified "2011-07-31"
   "PHP Mode build date.")
 
 (defun php-mode-version ()
@@ -695,6 +693,7 @@ current `tags-file-name'."
      '(;; core constants
        "__LINE__" "__FILE__"
        "__FUNCTION__" "__CLASS__" "__METHOD__"
+       "__NAMESPACE__"
        "PHP_OS" "PHP_VERSION"
        "TRUE" "FALSE" "NULL"
        "E_ERROR" "E_NOTICE" "E_PARSE" "E_WARNING" "E_ALL" "E_STRICT"
@@ -815,14 +814,18 @@ current `tags-file-name'."
    (list
 
     ;; class declaration
-    '("\\<\\(namespace\\|class\\|interface\\|trait\\)\\s-+\\([\\sw\\]+\\)?"
+    '("\\<\\(namespace\\|class\\|interface\\|trait\\)\\s-+\\(\\(?:\\sw\\|\\\\\\)+\\)?"
       (1 font-lock-keyword-face) (2 font-lock-type-face nil t))
     ;; handle several words specially, to include following word,
     ;; thereby excluding it from unknown-symbol checks later
     ;; FIX to handle implementing multiple
     ;; currently breaks on "class Foo implements Bar, Baz"
     '("\\<\\(new\\|extends\\|implements\\)\\s-+\\$?\\(\\sw+\\)"
-      (1 font-lock-keyword-face) (2 font-lock-type-face))
+      (1 font-lock-keyword-face) (2 font-lock-type-face nil t))
+
+    ;; namespace imports
+    '("^\\s-*use\\(\\(?:\\sw\\|\\\\\\)+\\)\\s-+as\\s-+(\\(?:\\sw\\|\\\\\\)+\\"
+      (1 font-lock-keyword-face) (2-font-lock-type-face))
 
     ;; function declaration
     '("\\<\\(function\\)\\s-+&?\\(\\sw+\\)\\s-*("
