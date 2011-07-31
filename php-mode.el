@@ -163,7 +163,7 @@ Turning this on will open it whenever `php-mode' is loaded."
 (defvar php-imenu-generic-expression
  '(
    ("Namespaces"
-    "^\\s-*namespace\\s-\\([\\sw\\]+\\)" 1)
+    "^\\s-*namespace\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*" 1)
    ("Private Methods"
     "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?private\\s-+\\(?:static\\s-+\\)?function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1)
    ("Protected Methods"
