@@ -141,13 +141,13 @@
 
 (defcustom php-speedbar-config t
   "When set to true automatically configures Speedbar to observe PHP files.
-Ignores php-file patterns option; fixed to expression \"\\.\\(inc\\|php[s34]?\\)\""
+Ignores php-file patterns option; fixed to expression \"\\.\\(inc\\|php[s345]?\\)\""
   :type 'boolean
   :set (lambda (sym val)
          (set-default sym val)
          (if (and val (boundp 'speedbar))
              (speedbar-add-supported-extension
-              "\\.\\(inc\\|php[s34]?\\|phtml\\)")))
+              "\\.\\(inc\\|php[s345]?\\|phtml\\)")))
   :group 'php)
 
 (defcustom php-mode-speedbar-open nil
@@ -202,7 +202,7 @@ You can replace \"en\" with your ISO language code."
   :group 'php)
 
 ;;;###autoload
-(defcustom php-file-patterns '("\\.php[s34]?\\'" "\\.phtml\\'" "\\.inc\\'")
+(defcustom php-file-patterns '("\\.php[s345]?\\'" "\\.phtml\\'" "\\.inc\\'")
   "List of file patterns for which to automatically invoke `php-mode'."
   :type '(repeat (regexp :tag "Pattern"))
   :set (lambda (sym val)
