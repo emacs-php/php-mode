@@ -111,9 +111,6 @@
 ;;   Changed the definition of # using a tip from Stefan
 ;;   Monnier to correct highlighting and indentation. (Lennart Borgman)
 ;;   Changed the highlighting of the HTML part. (Lennart Borgman)
-;;
-;; See the ChangeLog file included with the source package.
-
 
 ;;; Code:
 
