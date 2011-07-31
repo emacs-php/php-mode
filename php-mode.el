@@ -2,13 +2,14 @@
 
 ;; Copyright (C) 1999, 2000, 2001, 2003, 2004 Turadg Aleahmad
 ;;               2008 Aaron S. Hawley
+;;               2011 Eric James Michael Ritz
 
-;; Maintainer: Aaron S. Hawley <ashawley at users.sourceforge.net>
+;; Maintainer: Eric James Michael Ritz <Ren at lifesnotsimple dot com>
 ;; Author: Turadg Aleahmad, 1999-2004
 ;; Keywords: php languages oop
 ;; Created: 1999-05-17
 ;; Modified: 2011-07-31
-;; X-URL:   http://php-mode.sourceforge.net/
+;; X-URL:   https://github.com/ejmr/php-mode
 
 (defconst php-mode-version-number "1.5.1"
   "PHP Mode version number.")
@@ -72,7 +73,7 @@
 ;;; Changelog:
 
 ;; 1.5.1 (Eric JM Ritz)
-;;   Added support for new PHP 5.4 keywords.
+;;   Added support for new PHP 5.4 keywords and namespaces.
 ;; 1.5.0-nxhtml-1.88 (Lennart Borgman)
 ;;   Don't indent heredoc end mark
 ;; 1.5.0-nxhtml-1.61 (Lennart Borgman)
