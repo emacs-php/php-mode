@@ -106,7 +106,7 @@ Turning this on will open it whenever `php-mode' is loaded."
              (speedbar 1)))
   :group 'php)
 
-(defun php-create-regexp-for-function (type)
+(defun php-create-regexp-for-method (type)
   "Accepts a `type' of function as a string, e.g. 'public' or 'private',
 and returns a regexp that will match that type of function."
   (concat
@@ -117,7 +117,10 @@ and returns a regexp that will match that type of function."
    ;; Is it static?
    "\\s-+\\(?:static\\s-+\\)?"
    ;; Make sure 'function' comes next with some space after
-   "function\\s-+"))
+   "function\\s-+"
+   ;; Capture the name as the first group and the regexp and make sure
+   ;; by the end we see the opening parenthesis for the parameters.
+   "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("))
 
 (defun php-create-regexp-for-classlike (type)
   "Accepts a `type' of a 'classlike' object as a string, such as
@@ -136,7 +139,7 @@ can be used to match against definitions for that classlike."
    "\\s-+\\(\\(?:\\sw\\|\\\\\\|\\s_\\)+\\)"))
 
 (defvar php-imenu-generic-expression
- `(("Namespaces"
+  `(("Namespaces"
     ,(php-create-regexp-for-classlike "namespace") 1)
    ("Classes"
     ,(php-create-regexp-for-classlike "class") 1)
@@ -145,11 +148,11 @@ can be used to match against definitions for that classlike."
    ("Traits"
     ,(php-create-regexp-for-classlike "trait") 1)
    ("Private Methods"
-    ,(concat (php-create-regexp-for-function "private") "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(") 1)
+    ,(php-create-regexp-for-method "private") 1)
    ("Protected Methods"
-    ,(concat (php-create-regexp-for-function "protected") "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(") 1)
+    ,(php-create-regexp-for-method "protected")  1)
    ("Public Methods"
-    ,(concat (php-create-regexp-for-function "public") "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(") 1)
+    ,(php-create-regexp-for-method "public") 1)
    ("Anonymous Functions"
     "\\<\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*=\\s-*function\\s-*(" 1)
    ("Named Functions"
