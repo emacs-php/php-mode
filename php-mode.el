@@ -364,12 +364,12 @@ This is was done due to the problem reported here:
   )
 
 ;;;###autoload
-(define-derived-mode php-mode c-mode "PHP"
+define-derived-mode php-mode c-mode "PHP"
   "Major mode for editing PHP code.\n\n\\{php-mode-map}"
   (c-add-language 'php-mode 'c-mode)
 
-;; PHP doesn't have C-style macros.
-;; HACK: Overwrite this syntax with rules to match <?php and others.
+  ;; PHP doesn't have C-style macros.
+  ;; HACK: Overwrite this syntax with rules to match <?php and others.
   (set (make-local-variable 'c-opt-cpp-start) php-tags-key)
   (set (make-local-variable 'c-opt-cpp-prefix) php-tags-key)
 
@@ -388,20 +388,22 @@ This is was done due to the problem reported here:
   (setq font-lock-defaults
         '((php-font-lock-keywords-1
            php-font-lock-keywords-2
-               ;; Comment-out the next line if the font-coloring is too
-               ;; extreme/ugly for you.
+           ;; Comment-out the next line if the font-coloring is too
+           ;; extreme/ugly for you.
            php-font-lock-keywords-3)
-          nil                               ; KEYWORDS-ONLY
-          t                                 ; CASE-FOLD
-          (("_" . "w"))                    ; SYNTAX-ALIST
-          nil))                             ; SYNTAX-BEGIN
+          nil                ; KEYWORDS-ONLY
+          t                  ; CASE-FOLD
+          (("_" . "w"))      ; SYNTAX-ALIST
+          nil))              ; SYNTAX-BEGIN
 
   (modify-syntax-entry ?# "< b" php-mode-syntax-table)
   (modify-syntax-entry ?_ "_" php-mode-syntax-table)
 
   (setq font-lock-maximum-decoration t
-        case-fold-search t              ; PHP vars are case-sensitive
         imenu-generic-expression php-imenu-generic-expression)
+
+  ;; PHP vars are case-sensitive
+  (setq case-fold-search t)
 
   ;; Do not force newline at end of file.  Such newlines can cause
   ;; trouble if the PHP file is included in another file before calls
