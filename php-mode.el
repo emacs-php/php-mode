@@ -800,7 +800,6 @@ current `tags-file-name'."
   (append
    php-font-lock-keywords-2
    (list
-
     '("</?[a-z!:]+" . font-lock-constant-face)
 
     ;; HTML >
@@ -832,20 +831,35 @@ current `tags-file-name'."
 
     ;; Fontify variables and function calls
     '("\\$\\(this\\|that\\)\\W" (1 font-lock-constant-face nil nil))
+
+    ;; $_GET & co
     `(,(concat "\\$\\(" php-superglobals "\\)\\W")
-      (1 font-lock-constant-face nil nil)) ;; $_GET & co
-    '("\\$\\(\\sw+\\)" (1 font-lock-variable-name-face)) ;; $variable
-    '("->\\(\\sw+\\)" (1 font-lock-variable-name-face t t)) ;; ->variable
-    '("->\\(\\sw+\\)\\s-*(" . (1 php-default-face t t)) ;; ->function_call
-    '("\\(\\sw+\\)::\\sw+\\s-*(?" . (1 font-lock-type-face)) ;; class::member
-    '("::\\(\\sw+\\>[^(]\\)" . (1 php-default-face)) ;; class::constant
-    '("\\<\\sw+\\s-*[[(]" . php-default-face) ;; word( or word[
-    '("\\<[0-9]+" . php-default-face) ;; number (also matches word)
+      (1 font-lock-constant-face nil nil))
+
+    ;; $variable
+    '("\\$\\(\\sw+\\)" (1 font-lock-variable-name-face))
+
+    ;; ->variable
+    '("->\\(\\sw+\\)" (1 font-lock-variable-name-face t t))
+
+    ;; ->function_call
+    '("->\\(\\sw+\\)\\s-*(" . (1 php-default-face t t))
+
+    ;; class::member
+    '("\\(\\sw+\\)::\\sw+\\s-*(?" . (1 font-lock-type-face))
+
+    ;; class::constant
+    '("::\\(\\sw+\\>[^(]\\)" . (1 php-default-face))
+
+    ;; word( or word[
+    '("\\<\\sw+\\s-*[[(]" . php-default-face)
+
+    ;; number (also matches word)
+    '("\\<[0-9]+" . php-default-face)
 
     ;; Warn on any words not already fontified
-    '("\\<\\sw+\\>" . font-lock-warning-face)
+    '("\\<\\sw+\\>" . font-lock-warning-face)))
 
-    ))
   "Gauchy level highlighting for PHP mode.")
 
 (provide 'php-mode)
