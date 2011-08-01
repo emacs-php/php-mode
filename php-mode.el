@@ -374,7 +374,7 @@ This is was done due to the problem reported here:
   )
 
 ;;;###autoload
-define-derived-mode php-mode c-mode "PHP"
+(define-derived-mode php-mode c-mode "PHP"
   "Major mode for editing PHP code.\n\n\\{php-mode-map}"
   (c-add-language 'php-mode 'c-mode)
 
