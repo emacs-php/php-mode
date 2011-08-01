@@ -59,17 +59,6 @@
 ;; a couple handy IDE-type features such as documentation search and a
 ;; source and class browser.
 
-;;; Contributors: (in chronological order)
-
-;; Juanjo, Torsten Martinsen, Vinai Kopp, Sean Champ, Doug Marcey,
-;; Kevin Blake, Rex McMaster, Mathias Meyer, Boris Folgmann, Roland
-;; Rosenfeld, Fred Yankowski, Craig Andrews, John Keller, Ryan
-;; Sammartino, ppercot, Valentin Funk, Stig Bakken, Gregory Stark,
-;; Chris Morris, Nils Rennebarth, Gerrit Riessen, Eric Mc Sween,
-;; Ville Skytta, Giacomo Tesio, Lennart Borgman, Stefan Monnier,
-;; Aaron S. Hawley, Ian Eure, Bill Lovett, Dias Badekas, David House
-;; Eric James Michael Ritz
-
 ;;; Changelog:
 
 ;; 1.5.1 (Eric JM Ritz)

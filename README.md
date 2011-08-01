@@ -8,7 +8,7 @@ This updates `php-mode` with features to make it more friendly to use with PHP 5
 
 3. Lennart Borgman
 
-And all those mentioned in the ‘Contributors’ section of the code.
+And all those mentioned in the ‘Contributors’ section below.
 
 Please email any bugs or feature requests to `Ren at lifesnotsimple dot com`.
 
@@ -25,3 +25,42 @@ Underscores are treated as ‘symbol constituents’ (in Emacs terminology) so t
 # License
 
 The code for `php-mode` is covered by the GNU General Public License 3.
+
+# Contributors
+
+In chronological order:
+
+1. Juanjo
+2. Torsten Martinsen
+3. Vinai Kopp
+4. Sean Champ
+5. Doug Marcey
+6. Kevin Blake
+7. Rex McMaster
+8. Mathias Meyer
+9. Boris Folgmann
+10. Roland
+11. Rosenfeld
+12. Fred Yankowski
+13. Craig Andrews
+14. John Keller
+15. Ryan
+16. Sammartino
+17. ppercot
+18. Valentin Funk
+19. Stig Bakken
+20. Gregory Stark
+21. Chris Morris
+22. Nils Rennebarth
+23. Gerrit Riessen
+24. Eric Mc Sween
+25. Ville Skytta
+26. Giacomo Tesio
+27. Lennart Borgman
+28. Stefan Monnier
+29. Aaron S. Hawley
+30. Ian Eure
+31. Bill Lovett
+32. Dias Badekas
+33. David House
+
