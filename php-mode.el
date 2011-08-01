@@ -867,9 +867,10 @@ current `tags-file-name'."
    php-font-lock-keywords-1
    (list
 
-    ;; class declaration
+    ;; namespace, class, interface, and trait declarations
     '("\\<\\(namespace\\|class\\|interface\\|trait\\)\\s-+\\(\\(?:\\sw\\|\\\\\\)+\\)?"
       (1 font-lock-keyword-face) (2 font-lock-type-face nil t))
+
     ;; handle several words specially, to include following word,
     ;; thereby excluding it from unknown-symbol checks later
     ;; FIX to handle implementing multiple
