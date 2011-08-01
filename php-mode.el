@@ -8,7 +8,6 @@
 ;; Original Author: Turadg Aleahmad, 1999-2004
 ;; Keywords: php languages oop
 ;; Created: 1999-05-17
-;; Modified: 2011-07-31
 ;; X-URL:   https://github.com/ejmr/php-mode
 
 (defconst php-mode-version-number "1.6.0"
