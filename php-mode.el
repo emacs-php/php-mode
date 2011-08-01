@@ -158,25 +158,35 @@ Turning this on will open it whenever `php-mode' is loaded."
              (speedbar 1)))
   :group 'php)
 
+(defun php-create-regexp-for-function (type)
+  "Accepts a `type' of function as a string, e.g. 'public' or 'private',
+and returns a regexp that will match that type of function."
+  (concat
+   ;; Initial space with possible 'abstract' or 'final' keywords
+   "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)"
+   ;; The function type
+   type
+   ;; Is it static?
+   "\\s-+\\(?:static\\s-+\\)?"
+   ;; Make sure 'function' comes next with some space after
+   "function\\s-+"))
+
 (defvar php-imenu-generic-expression
- '(
-   ("Namespaces"
+ `(("Namespaces"
     "^\\s-*namespace\\s-+\\(\\(?:\\sw\\|\\\\\\|\\s_\\)+\\)\\s-*" 1)
    ("Private Methods"
-    "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?private\\s-+\\(?:static\\s-+\\)?function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1)
+    ,(concat (php-create-regexp-for-function "private") "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(") 1)
    ("Protected Methods"
-    "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?protected\\s-+\\(?:static\\s-+\\)?function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1)
+     ,(concat (php-create-regexp-for-function "protected") "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(") 1)
    ("Public Methods"
-    "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?public\\s-+\\(?:static\\s-+\\)?function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1)
+    ,(concat (php-create-regexp-for-function "public") "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(") 1)
    ("Classes"
     "^\\s-*class\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*" 1)
    ("Traits"
     "^\\s-*trait\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*" 1)
    ("All Functions"
-    "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1)
-   )
- "Imenu generic expression for PHP Mode. See `imenu-generic-expression'."
- )
+    "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
+ "Imenu generic expression for PHP Mode. See `imenu-generic-expression'.")
 
 (defcustom php-manual-url "http://www.php.net/manual/en/"
   "URL at which to find PHP manual.
