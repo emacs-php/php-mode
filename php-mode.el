@@ -5,7 +5,7 @@
 ;;               2011 Eric James Michael Ritz
 
 ;; Maintainer: Eric James Michael Ritz <Ren at lifesnotsimple dot com>
-;; Author: Turadg Aleahmad, 1999-2004
+;; Original Author: Turadg Aleahmad, 1999-2004
 ;; Keywords: php languages oop
 ;; Created: 1999-05-17
 ;; Modified: 2011-07-31
