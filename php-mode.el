@@ -804,7 +804,8 @@ current `tags-file-name'."
        "extends" "for" "foreach" "global" "if" "include" "include_once"
        "next" "or" "require" "require_once" "return" "static" "switch"
        "then" "var" "while" "xor" "throw" "catch" "try"
-       "instanceof" "catch all" "finally" "insteadof" "use" "as")))
+       "instanceof" "catch all" "finally" "insteadof" "use" "as"
+       "clone")))
   "PHP keywords.")
 
 (defconst php-identifier
