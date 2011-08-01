@@ -834,7 +834,7 @@ current `tags-file-name'."
       (1 font-lock-keyword-face) (2 font-lock-type-face nil t))
 
     ;; namespace imports
-    '("^\\s-*use\\(\\(?:\\sw\\|\\\\\\)+\\)\\s-+as\\s-+(\\(?:\\sw\\|\\\\\\)+\\"
+    '("^\\s-*use\\(\\(?:\\sw\\|\\\\\)+\\)\\s-+as\\s-+\\(?:\\sw\\|\\\\\\)+"
       (1 font-lock-keyword-face) (2-font-lock-type-face))
 
     ;; function declaration
