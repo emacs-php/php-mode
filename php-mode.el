@@ -383,6 +383,7 @@ This is was done due to the problem reported here:
   (set (make-local-variable 'c-opt-cpp-prefix) php-tags-key)
 
   (c-set-offset 'cpp-macro 0)
+  (c-set-offset 'topmost-intro-cont 'c-lineup-cascaded-calls)
 
   (set (make-local-variable 'c-block-stmt-1-key) php-block-stmt-1-key)
   (set (make-local-variable 'c-block-stmt-2-key) php-block-stmt-2-key)
