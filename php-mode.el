@@ -111,7 +111,7 @@ Turning this on will open it whenever `php-mode' is loaded."
 and returns a regexp that will match that type of function."
   (concat
    ;; Initial space with possible 'abstract' or 'final' keywords
-   "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)"
+   "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?"
    ;; The function type
    type
    ;; Is it static?
