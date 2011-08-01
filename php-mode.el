@@ -14,6 +14,9 @@
 (defconst php-mode-version-number "1.5.1"
   "PHP Mode version number.")
 
+(defconst php-mode-modified "2011-07-31"
+  "PHP Mode build date.")
+
 ;;; License
 
 ;; This file is free software; you can redistribute it and/or
@@ -174,9 +177,6 @@ Turning this on will force PEAR rules on all PHP files."
   :type 'boolean
   :group 'php)
 
-(defconst php-mode-modified "2011-07-31"
-  "PHP Mode build date.")
-
 (defun php-mode-version ()
   "Display string describing the version of PHP mode."
   (interactive)
