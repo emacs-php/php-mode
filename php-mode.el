@@ -798,8 +798,8 @@ current `tags-file-name'."
   (eval-when-compile
     (regexp-opt
      ;; "class", "new" and "extends" get special treatment
-     ;; "case" and  "default" get special treatment elsewhere
-     '("and" "break" "continue" "declare" "do" "echo" "else" "elseif"
+     ;; "case" gets special treatment elsewhere
+     '("and" "break" "continue" "declare" "default" "do" "echo" "else" "elseif"
        "endfor" "endforeach" "endif" "endswitch" "endwhile" "exit"
        "extends" "for" "foreach" "global" "if" "include" "include_once"
        "next" "or" "require" "require_once" "return" "static" "switch"
