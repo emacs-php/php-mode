@@ -140,6 +140,8 @@ can be used to match against definitions for that classlike."
     ,(php-create-regexp-for-classlike "namespace") 1)
    ("Classes"
     ,(php-create-regexp-for-classlike "class") 1)
+   ("Interfaces"
+    ,(php-create-regexp-for-classlike "interface") 1)
    ("Traits"
     ,(php-create-regexp-for-classlike "trait") 1)
    ("Private Methods"
