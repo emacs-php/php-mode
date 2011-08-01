@@ -119,13 +119,29 @@ and returns a regexp that will match that type of function."
    ;; Make sure 'function' comes next with some space after
    "function\\s-+"))
 
+(defun php-create-regexp-for-classlike (type)
+  "Accepts a `type' of a 'classlike' object as a string, such as
+'class' or 'interface', and returns a regexp as a string which
+can be used to match against definitions for that classlike."
+  (concat
+   ;; First see if 'abstract' or 'final' appear, although really these
+   ;; are not valid for all values of `type' that the function
+   ;; accepts.
+   "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?"
+   ;; The classlike type
+   type
+   ;; Its name, which is the first captured group in the regexp.  We
+   ;; allow backslashes in the name to handle namespaces, but again
+   ;; this is not necessarily correct for all values of `type'.
+   "\\s-+\\(\\(?:\\sw\\|\\\\\\|\\s_\\)+\\)"))
+
 (defvar php-imenu-generic-expression
  `(("Namespaces"
-    "^\\s-*namespace\\s-+\\(\\(?:\\sw\\|\\\\\\|\\s_\\)+\\)\\s-*" 1)
+    ,(php-create-regexp-for-classlike "namespace") 1)
    ("Classes"
-    "^\\s-*class\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*" 1)
+    ,(php-create-regexp-for-classlike "class") 1)
    ("Traits"
-    "^\\s-*trait\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*" 1)
+    ,(php-create-regexp-for-classlike "trait") 1)
    ("Private Methods"
     ,(concat (php-create-regexp-for-function "private") "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(") 1)
    ("Protected Methods"
