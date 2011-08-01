@@ -757,12 +757,12 @@ current `tags-file-name'."
     (regexp-opt
      ;; "class", "new" and "extends" get special treatment
      ;; "case" and  "default" get special treatment elsewhere
-     '("and" "as" "break" "continue" "declare" "do" "echo" "else" "elseif"
+     '("and" "break" "continue" "declare" "do" "echo" "else" "elseif"
        "endfor" "endforeach" "endif" "endswitch" "endwhile" "exit"
        "extends" "for" "foreach" "global" "if" "include" "include_once"
        "next" "or" "require" "require_once" "return" "static" "switch"
        "then" "var" "while" "xor" "throw" "catch" "try"
-       "instanceof" "catch all" "finally" "use" "insteadof")))
+       "instanceof" "catch all" "finally" "insteadof")))
   "PHP keywords.")
 
 (defconst php-identifier
@@ -834,8 +834,11 @@ current `tags-file-name'."
       (1 font-lock-keyword-face) (2 font-lock-type-face nil t))
 
     ;; namespace imports
-    '("^\\s-*use\\(\\(?:\\sw\\|\\\\\)+\\)\\s-+as\\s-+\\(?:\\sw\\|\\\\\\)+"
-      (1 font-lock-keyword-face) (2-font-lock-type-face))
+    '("\\(use\\)\\s-+\\(\\(?:\\sw\\|\\\\\\)+\\)\\s-+\\(as\\)\\s-+\\(\\(?:\\sw\\|\\\\\\)+\\)"
+      (1 font-lock-keyword-face)
+      (2 font-lock-type-face)
+      (3 font-lock-keyword-face)
+      (4 font-lock-type-face))
 
     ;; function declaration
     '("\\<\\(function\\)\\s-+&?\\(\\sw+\\)\\s-*("
