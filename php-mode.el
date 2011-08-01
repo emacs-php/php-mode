@@ -10,10 +10,10 @@
 ;; Created: 1999-05-17
 ;; X-URL:   https://github.com/ejmr/php-mode
 
-(defconst php-mode-version-number "1.6.0"
+(defconst php-mode-version-number "1.6.1"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2011-07-31"
+(defconst php-mode-modified "2011-08-01"
   "PHP Mode build date.")
 
 ;;; License
