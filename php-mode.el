@@ -132,8 +132,10 @@ and returns a regexp that will match that type of function."
     ,(concat (php-create-regexp-for-function "protected") "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(") 1)
    ("Public Methods"
     ,(concat (php-create-regexp-for-function "public") "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(") 1)
-   ("All Functions"
-    "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
+   ("Anonymous Functions"
+    "\\<\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*=\\s-*function\\s-*(" 1)
+   ("Named Functions"
+    "function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
  "Imenu generic expression for PHP Mode. See `imenu-generic-expression'.")
 
 (defcustom php-manual-url "http://www.php.net/manual/en/"
