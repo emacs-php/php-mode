@@ -217,7 +217,6 @@ See `php-beginning-of-defun'."
 
 
 (defvar php-warned-bad-indent nil)
-;;(make-variable-buffer-local 'php-warned-bad-indent)
 
 ;; Do it but tell it is not good if html tags in buffer.
 (defun php-check-html-for-indentation ()
