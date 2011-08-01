@@ -14,17 +14,37 @@ Please email any bugs or feature requests to `Ren at lifesnotsimple dot com`.
 
 # Features
 
-## New 5.4 Keywords
+## New Keywords
 
-Now `php-mode` supports syntax highlighting for new keywords which were added as part of PHP 5.4, e.g. those related to traits, such as `insteadof`.
+Now `php-mode` supports syntax highlighting for new keywords which were added as part of PHP 5.4, e.g. those related to traits, such as `insteadof`.  Also supported are the older keywords `clone` and `default`.
 
-## Traits and Namespaces
+## Constants
 
-Traits and namespaces now appear under Imenu listings.  Fontification works properly for namespaces as well, so that code like `namespace Foo\Bar\Baz` no longer looks like a warning.  This is also true for namespace aliases, e.g. `use <namespace> as <alias>`; currently the aliased name is not listed in Imenu, but that will be addressed in the future.
+Every magic constant and predefined constant listed on the official PHP site is included.
+
+## Traits, Interfaces, and Namespaces
+
+Traits, interfaces, and namespaces now appear under Imenu listings.  Fontification works properly for namespaces as well, so that code like `namespace Foo\Bar\Baz` no longer looks like a warning.  This is also true for namespace aliases, e.g. `use <namespace> as <alias>`; currently the aliased name is not listed in Imenu, but that will be addressed in the future.
 
 ## Treatment of Underscores
 
 Underscores are treated as ‘symbol constituents’ (in Emacs terminology) so that you can use keys like M-f and M-b to move through the individual parts of a variable name like `$foo_bar_baz`.
+
+## Chained Method Calls
+
+A series of method calls over multiple lines will now be aligned with the `->` operator, e.g.:
+
+    $object->foo()
+           ->bar()
+           ->baz();
+
+## Anonymous Functions
+
+Anonymous functions such as
+
+    $greet = function($name) { … };
+
+will now appear on Imenu; in this case the name will be `$greet`.
 
 # License
 
