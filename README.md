@@ -16,7 +16,11 @@ Please email any bugs or feature requests to `Ren at lifesnotsimple dot com`.
 
 ## New 5.4 Keywords
 
-Now `php-mode` supports syntax highlighting for new keywords which were added as part of PHP 5.4, e.g. those related to traits, such as `insteadof`.  Traits now also appear in Imenu listings, as well as namespaces.
+Now `php-mode` supports syntax highlighting for new keywords which were added as part of PHP 5.4, e.g. those related to traits, such as `insteadof`.
+
+## Traits and Namespaces
+
+Traits and namespaces now appear under Imenu listings.  Fontification works properly for namespaces as well, so that code like `namespace Foo\Bar\Baz` no longer looks like a warning.  This is also true for namespace aliases, e.g. `use <namespace> as <alias>`; currently the aliased name is not listed in Imenu, but that will be addressed in the future.
 
 ## Treatment of Underscores
 
