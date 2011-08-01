@@ -5,7 +5,7 @@
 ;;               2011 Eric James Michael Ritz
 
 ;; Maintainer: Eric James Michael Ritz <Ren at lifesnotsimple dot com>
-;; Author: Turadg Aleahmad, 1999-2004
+;; Original Author: Turadg Aleahmad, 1999-2004
 ;; Keywords: php languages oop
 ;; Created: 1999-05-17
 ;; Modified: 2011-07-31
@@ -13,6 +13,9 @@
 
 (defconst php-mode-version-number "1.5.1"
   "PHP Mode version number.")
+
+(defconst php-mode-modified "2011-07-31"
+  "PHP Mode build date.")
 
 ;;; License
 
@@ -58,60 +61,6 @@
 ;; indents according to the PEAR coding guidelines.  It also includes
 ;; a couple handy IDE-type features such as documentation search and a
 ;; source and class browser.
-
-;;; Contributors: (in chronological order)
-
-;; Juanjo, Torsten Martinsen, Vinai Kopp, Sean Champ, Doug Marcey,
-;; Kevin Blake, Rex McMaster, Mathias Meyer, Boris Folgmann, Roland
-;; Rosenfeld, Fred Yankowski, Craig Andrews, John Keller, Ryan
-;; Sammartino, ppercot, Valentin Funk, Stig Bakken, Gregory Stark,
-;; Chris Morris, Nils Rennebarth, Gerrit Riessen, Eric Mc Sween,
-;; Ville Skytta, Giacomo Tesio, Lennart Borgman, Stefan Monnier,
-;; Aaron S. Hawley, Ian Eure, Bill Lovett, Dias Badekas, David House
-;; Eric James Michael Ritz
-
-;;; Changelog:
-
-;; 1.5.1 (Eric JM Ritz)
-;;   Added support for new PHP 5.4 keywords and namespaces.
-;; 1.5.0-nxhtml-1.88 (Lennart Borgman)
-;;   Don't indent heredoc end mark
-;; 1.5.0-nxhtml-1.61 (Lennart Borgman)
-;;   Added php-mode-to-use.
-;;   Made underscore be part of identifiers.
-;;   Remove php-mode-to.
-;;   Make the indentation check only on current line.
-;;   Warn only once per session about indentation.
-;;   Tell if can't complete in `php-complete-function'.
-;;   Move back point after checking indentation in
-;;   `php-check-html-for-indentation'.
-;;   Add `c-at-vsemi-p-fn' etc after advice from Alan Mackenzie.
-;;
-;; 1.5
-;;   Support function keywords like public, private and the ampersand
-;;   character for function-based commands.  Support abstract, final,
-;;   static, public, private and protected keywords in Imenu.  Fix
-;;   reversed order of Imenu entries.  Use font-lock-preprocessor-face
-;;   for PHP and ASP tags.  Make php-mode-modified a literal value
-;;   rather than a computed string.  Add date and time constants of
-;;   PHP. (Dias Badekas) Fix false syntax highlighting of keywords
-;;   because of underscore character.  Change HTML indentation warning
-;;   to match only HTML at the beginning of the line.  Fix
-;;   byte-compiler warnings.  Clean-up whitespace and audited style
-;;   consistency of code.  Remove conditional bindings and XEmacs code
-;;   that likely does nothing.
-;;
-;; 1.4
-;;   Updated GNU GPL to version 3.  Ported to Emacs 22 (CC mode
-;;   5.31). M-x php-mode-version shows version.  Provide end-of-defun
-;;   beginning-of-defun functionality. Support add-log library.
-;;   Fix __CLASS__ constant (Ian Eure).  Allow imenu to see visibility
-;;   declarations -- "private", "public", "protected". (Bill Lovett)
-;;
-;; 1.3
-;;   Changed the definition of # using a tip from Stefan
-;;   Monnier to correct highlighting and indentation. (Lennart Borgman)
-;;   Changed the highlighting of the HTML part. (Lennart Borgman)
 
 ;;; Code:
 
@@ -238,9 +187,6 @@ Turning this on will force PEAR rules on all PHP files."
   :type 'boolean
   :group 'php)
 
-(defconst php-mode-modified "2011-07-31"
-  "PHP Mode build date.")
-
 (defun php-mode-version ()
   "Display string describing the version of PHP mode."
   (interactive)
@@ -281,7 +227,6 @@ See `php-beginning-of-defun'."
 
 
 (defvar php-warned-bad-indent nil)
-;;(make-variable-buffer-local 'php-warned-bad-indent)
 
 ;; Do it but tell it is not good if html tags in buffer.
 (defun php-check-html-for-indentation ()
@@ -429,12 +374,12 @@ This is was done due to the problem reported here:
   )
 
 ;;;###autoload
-(define-derived-mode php-mode c-mode "PHP"
+define-derived-mode php-mode c-mode "PHP"
   "Major mode for editing PHP code.\n\n\\{php-mode-map}"
   (c-add-language 'php-mode 'c-mode)
 
-;; PHP doesn't have C-style macros.
-;; HACK: Overwrite this syntax with rules to match <?php and others.
+  ;; PHP doesn't have C-style macros.
+  ;; HACK: Overwrite this syntax with rules to match <?php and others.
   (set (make-local-variable 'c-opt-cpp-start) php-tags-key)
   (set (make-local-variable 'c-opt-cpp-prefix) php-tags-key)
 
@@ -453,20 +398,22 @@ This is was done due to the problem reported here:
   (setq font-lock-defaults
         '((php-font-lock-keywords-1
            php-font-lock-keywords-2
-               ;; Comment-out the next line if the font-coloring is too
-               ;; extreme/ugly for you.
+           ;; Comment-out the next line if the font-coloring is too
+           ;; extreme/ugly for you.
            php-font-lock-keywords-3)
-          nil                               ; KEYWORDS-ONLY
-          t                                 ; CASE-FOLD
-          (("_" . "w"))                    ; SYNTAX-ALIST
-          nil))                             ; SYNTAX-BEGIN
+          nil                ; KEYWORDS-ONLY
+          t                  ; CASE-FOLD
+          (("_" . "w"))      ; SYNTAX-ALIST
+          nil))              ; SYNTAX-BEGIN
 
   (modify-syntax-entry ?# "< b" php-mode-syntax-table)
   (modify-syntax-entry ?_ "_" php-mode-syntax-table)
 
   (setq font-lock-maximum-decoration t
-        case-fold-search t              ; PHP vars are case-sensitive
         imenu-generic-expression php-imenu-generic-expression)
+
+  ;; PHP vars are case-sensitive
+  (setq case-fold-search t)
 
   ;; Do not force newline at end of file.  Such newlines can cause
   ;; trouble if the PHP file is included in another file before calls
@@ -866,7 +813,6 @@ current `tags-file-name'."
   (append
    php-font-lock-keywords-2
    (list
-
     '("</?[a-z!:]+" . font-lock-constant-face)
 
     ;; HTML >
@@ -898,20 +844,35 @@ current `tags-file-name'."
 
     ;; Fontify variables and function calls
     '("\\$\\(this\\|that\\)\\W" (1 font-lock-constant-face nil nil))
+
+    ;; $_GET & co
     `(,(concat "\\$\\(" php-superglobals "\\)\\W")
-      (1 font-lock-constant-face nil nil)) ;; $_GET & co
-    '("\\$\\(\\sw+\\)" (1 font-lock-variable-name-face)) ;; $variable
-    '("->\\(\\sw+\\)" (1 font-lock-variable-name-face t t)) ;; ->variable
-    '("->\\(\\sw+\\)\\s-*(" . (1 php-default-face t t)) ;; ->function_call
-    '("\\(\\sw+\\)::\\sw+\\s-*(?" . (1 font-lock-type-face)) ;; class::member
-    '("::\\(\\sw+\\>[^(]\\)" . (1 php-default-face)) ;; class::constant
-    '("\\<\\sw+\\s-*[[(]" . php-default-face) ;; word( or word[
-    '("\\<[0-9]+" . php-default-face) ;; number (also matches word)
+      (1 font-lock-constant-face nil nil))
+
+    ;; $variable
+    '("\\$\\(\\sw+\\)" (1 font-lock-variable-name-face))
+
+    ;; ->variable
+    '("->\\(\\sw+\\)" (1 font-lock-variable-name-face t t))
+
+    ;; ->function_call
+    '("->\\(\\sw+\\)\\s-*(" . (1 php-default-face t t))
+
+    ;; class::member
+    '("\\(\\sw+\\)::\\sw+\\s-*(?" . (1 font-lock-type-face))
+
+    ;; class::constant
+    '("::\\(\\sw+\\>[^(]\\)" . (1 php-default-face))
+
+    ;; word( or word[
+    '("\\<\\sw+\\s-*[[(]" . php-default-face)
+
+    ;; number (also matches word)
+    '("\\<[0-9]+" . php-default-face)
 
     ;; Warn on any words not already fontified
-    '("\\<\\sw+\\>" . font-lock-warning-face)
+    '("\\<\\sw+\\>" . font-lock-warning-face)))
 
-    ))
   "Gauchy level highlighting for PHP mode.")
 
 (provide 'php-mode)
