@@ -122,16 +122,16 @@ and returns a regexp that will match that type of function."
 (defvar php-imenu-generic-expression
  `(("Namespaces"
     "^\\s-*namespace\\s-+\\(\\(?:\\sw\\|\\\\\\|\\s_\\)+\\)\\s-*" 1)
-   ("Private Methods"
-    ,(concat (php-create-regexp-for-function "private") "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(") 1)
-   ("Protected Methods"
-     ,(concat (php-create-regexp-for-function "protected") "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(") 1)
-   ("Public Methods"
-    ,(concat (php-create-regexp-for-function "public") "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(") 1)
    ("Classes"
     "^\\s-*class\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*" 1)
    ("Traits"
     "^\\s-*trait\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*" 1)
+   ("Private Methods"
+    ,(concat (php-create-regexp-for-function "private") "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(") 1)
+   ("Protected Methods"
+    ,(concat (php-create-regexp-for-function "protected") "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(") 1)
+   ("Public Methods"
+    ,(concat (php-create-regexp-for-function "public") "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(") 1)
    ("All Functions"
     "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
  "Imenu generic expression for PHP Mode. See `imenu-generic-expression'.")
