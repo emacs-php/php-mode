@@ -762,7 +762,7 @@ current `tags-file-name'."
        "extends" "for" "foreach" "global" "if" "include" "include_once"
        "next" "or" "require" "require_once" "return" "static" "switch"
        "then" "var" "while" "xor" "throw" "catch" "try"
-       "instanceof" "catch all" "finally" "insteadof")))
+       "instanceof" "catch all" "finally" "insteadof" "use" "as")))
   "PHP keywords.")
 
 (defconst php-identifier
