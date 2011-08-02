@@ -985,6 +985,9 @@ current `tags-file-name'."
     ;; class::constant
     '("::\\(\\sw+\\>[^(]\\)" . (1 php-default-face))
 
+    ;; using a trait in a class
+    '("\\<use\\s-+\\(\\sw+\\)\\s-*;" . (1 font-lock-type-face))
+
     ;; word( or word[
     '("\\<\\sw+\\s-*[[(]" . php-default-face)
 
