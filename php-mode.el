@@ -80,6 +80,11 @@
   :prefix "php-"
   :group 'languages)
 
+(defcustom php-executable "/usr/bin/php"
+  "The location of the PHP executable."
+  :type 'string
+  :group 'php)
+
 (defcustom php-default-face 'default
   "Default face in `php-mode' buffers."
   :type 'face
