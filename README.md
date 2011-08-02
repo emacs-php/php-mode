@@ -46,6 +46,10 @@ Anonymous functions such as
 
 will now appear on Imenu; in this case the name will be `$greet`.
 
+## Flymake Support
+
+By customizing the variable `php-executable` you can enable Flymake mode in order to see warnings and errors in real-time as you write code.
+
 # License
 
 The code for `php-mode` is covered by the GNU General Public License 3.
