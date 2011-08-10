@@ -995,7 +995,7 @@ current `tags-file-name'."
     '("\\<use\\s-+\\(\\sw+\\)\\s-*;" . (1 font-lock-type-face))
 
     ;; word( or word[
-    '("\\<\\sw+\\s-*[[(]" . php-default-face)
+    '("\\<\\(\\sw+\\s-*\\)[[(]" . (1 php-default-face))
 
     ;; number (also matches word)
     '("\\<[0-9]+" . php-default-face)
