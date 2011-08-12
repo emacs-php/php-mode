@@ -214,6 +214,15 @@ You can replace \"en\" with your ISO language code."
 Turning this on will force PEAR rules on all PHP files."
   :type 'boolean
   :group 'php)
+
+(defcustom php-mode-warn-if-mumamo-off t
+  "Warn once per buffer if you try to indent a buffer without
+mumamo-mode turned on. Detects if there are any HTML tags in the
+buffer before warning, but this is is not very smart; e.g. if you
+have any tags inside a PHP string, it will be fooled."
+  :type '(choice (const :tag "Warg" t) (const "Don't warn" nil))
+  :group 'php)
+
 
 (defun php-mode-version ()
   "Display string describing the version of PHP mode."
@@ -328,12 +337,14 @@ example `html-mode'.  Known such libraries are:\n\t"
         nil))))
 
 (defun php-cautious-indent-region (start end &optional quiet)
-  (if (or php-warned-bad-indent
+  (if (or (not php-mode-warn-if-mumamo-off)
+          php-warned-bad-indent
           (php-check-html-for-indentation))
       (funcall 'c-indent-region start end quiet)))
 
 (defun php-cautious-indent-line ()
-  (if (or php-warned-bad-indent
+  (if (or (not php-mode-warn-if-mumamo-off)
+          php-warned-bad-indent
           (php-check-html-for-indentation))
       (let ((here (point))
             doit)
@@ -821,7 +832,58 @@ current `tags-file-name'."
        "LOG_LOCAL7"
        "LOG_CONS"
        "LOG_NDELAY"
-       "LOG_PERROR")))
+       "LOG_PERROR"
+
+       ; Filter constants
+       "INPUT_POST"
+       "INPUT_GET"
+       "INPUT_COOKIE"
+       "INPUT_ENV"
+       "INPUT_SERVER"
+       "INPUT_SESSION"
+       "INPUT_REQUEST"
+       "FILTER_FLAG_NONE"
+       "FILTER_REQUIRE_SCALAR"
+       "FILTER_REQUIRE_ARRAY"
+       "FILTER_FORCE_ARRAY"
+       "FILTER_NULL_ON_FAILURE"
+       "FILTER_VALIDATE_INT"
+       "FILTER_VALIDATE_BOOLEAN"
+       "FILTER_VALIDATE_FLOAT"
+       "FILTER_VALIDATE_REGEXP"
+       "FILTER_VALIDATE_URL"
+       "FILTER_VALIDATE_EMAIL"
+       "FILTER_VALIDATE_IP"
+       "FILTER_DEFAULT"
+       "FILTER_UNSAFE_RAW"
+       "FILTER_SANITIZE_STRING"
+       "FILTER_SANITIZE_STRIPPED"
+       "FILTER_SANITIZE_ENCODED"
+       "FILTER_SANITIZE_SPECIAL_CHARS"
+       "FILTER_SANITIZE_EMAIL"
+       "FILTER_SANITIZE_URL"
+       "FILTER_SANITIZE_NUMBER_INT"
+       "FILTER_SANITIZE_NUMBER_FLOAT"
+       "FILTER_SANITIZE_MAGIC_QUOTES"
+       "FILTER_CALLBACK"
+       "FILTER_FLAG_ALLOW_OCTAL"
+       "FILTER_FLAG_ALLOW_HEX"
+       "FILTER_FLAG_STRIP_LOW"
+       "FILTER_FLAG_STRIP_HIGH"
+       "FILTER_FLAG_ENCODE_LOW"
+       "FILTER_FLAG_ENCODE_HIGH"
+       "FILTER_FLAG_ENCODE_AMP"
+       "FILTER_FLAG_NO_ENCODE_QUOTES"
+       "FILTER_FLAG_EMPTY_STRING_NULL"
+       "FILTER_FLAG_ALLOW_FRACTION"
+       "FILTER_FLAG_ALLOW_THOUSAND"
+       "FILTER_FLAG_ALLOW_SCIENTIFIC"
+       "FILTER_FLAG_PATH_REQUIRED"
+       "FILTER_FLAG_QUERY_REQUIRED"
+       "FILTER_FLAG_IPV4"
+       "FILTER_FLAG_IPV6"
+       "FILTER_FLAG_NO_RES_RANGE"
+       "FILTER_FLAG_NO_PRIV_RANGE")))
   "PHP constants.")
 
 (defconst php-keywords
