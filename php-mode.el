@@ -214,6 +214,15 @@ You can replace \"en\" with your ISO language code."
 Turning this on will force PEAR rules on all PHP files."
   :type 'boolean
   :group 'php)
+
+(defcustom php-mode-warn-if-mumamo-off t
+  "Warn once per buffer if you try to indent a buffer without
+mumamo-mode turned on. Detects if there are any HTML tags in the
+buffer before warning, but this is is not very smart; e.g. if you
+have any tags inside a PHP string, it will be fooled."
+  :type '(choice (const :tag "Warg" t) (const "Don't warn" nil))
+  :group 'php)
+
 
 (defun php-mode-version ()
   "Display string describing the version of PHP mode."
@@ -328,12 +337,14 @@ example `html-mode'.  Known such libraries are:\n\t"
         nil))))
 
 (defun php-cautious-indent-region (start end &optional quiet)
-  (if (or php-warned-bad-indent
+  (if (or (not php-mode-warn-if-mumamo-off)
+          php-warned-bad-indent
           (php-check-html-for-indentation))
       (funcall 'c-indent-region start end quiet)))
 
 (defun php-cautious-indent-line ()
-  (if (or php-warned-bad-indent
+  (if (or (not php-mode-warn-if-mumamo-off)
+          php-warned-bad-indent
           (php-check-html-for-indentation))
       (let ((here (point))
             doit)
