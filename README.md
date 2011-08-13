@@ -1,6 +1,6 @@
 # About #
 
-Support alignment (e.g. `align', `align-current') for PHP.
+Support alignment (e.g. align, align-current) for PHP.
 CAUTION!! this is still experimental.
 
 Put this file into your load-path.and the following code into your ~/.emacs
