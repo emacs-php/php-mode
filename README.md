@@ -5,9 +5,10 @@ CAUTION!! this is still experimental.
 
 Put this file into your load-path.and the following code into your ~/.emacs
 
-  (add-hook 'php-mode-hook
-           (require 'php-align)
-           (lambda () (php-align-setup)))
+(add-hook 'php-mode-hook
+          (lambda ()
+            (require 'php-align)
+            (php-align-setup)))
 
 # Examples #
 

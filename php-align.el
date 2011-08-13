@@ -1,4 +1,4 @@
-;;; php-align.el --- Setup alignment configuration for PHP.
+;;; php-align.el --- Alignment configuration for PHP.
 
 ;; Copyright (C) 2011  tetsujin (Yusuke Segawa)
 
@@ -31,8 +31,9 @@
 ;;
 ;; Put this file into your load-path.and the following code into your ~/.emacs
 ;; (add-hook 'php-mode-hook
-;;           (require 'php-align)
-;;           (lambda () (php-align-setup)))
+;;           (lambda ()
+;;             (require 'php-align)
+;;             (php-align-setup)))
 
 ;;; TODO:
 ;; - Add test codes using el-expectations.
