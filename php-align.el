@@ -41,13 +41,14 @@
 ;;; Code:
 (require 'php-mode)
 (require 'align)
+(require 'regexp-opt)
 
 (defvar php-align-rules-list
   `((php-comma-delimiter
-     (regexp   . ",\\(\\s-*\\)[^\\(//\\) \t\n]")
+     (regexp   . ",\\(\\s-*\\)[^/ \t\n]")
      (repeat   . t)
-     (valid    . (lambda() (not (php-align-point-is-string-p))))
-     (modes    . '(php-mode)))
+     (modes    . '(php-mode))
+     (run-if   . ,(function (lambda () current-prefix-arg))))
     (php-assignment
      (regexp   . ,(concat "[^=!^&*-+<>/.| \t\n]\\(\\s-*[=!^&%*-+<>/.|]*\\)=>?"
                           "\\(\\s-*\\)\\([^= \t\n]\\|$\\)"))
@@ -55,54 +56,63 @@
      (modes    . '(php-mode))
      (justify  . t)
      (tab-stop . nil))
-    (php-single-line-comment
-     (regexp  . "\\(\\s-*\\)//")
-     (modes   . '(php-mode)))
-  )
-  "Definition of `align-rules-list' for PHP")
+    (php-comment
+     (regexp   . "\\(\\s-*\\)\\(//.*\\|/\\*.*\\*/\\s-*\\)$")
+     (modes    . (php-mode))
+     (column   . comment-column)
+     (valid    . ,(function
+                   (lambda ()
+                     (save-excursion
+                       (goto-char (match-beginning 1))
+                       (not (bolp)))))))
+    (php-chain-logic
+     (regexp   . "\\(\\s-*\\)\\(&&\\|||\\|\\<and\\>\\|\\<or\\>\\)")
+     (modes    . (php-mode))
+     (valid    . ,(function
+                   (lambda ()
+                     (save-excursion
+                       (goto-char (match-end 2))
+                       (looking-at "\\s-*\\(/[*/]\\|$\\)"))))))
+  ))
 
 (defvar php-align-region-separate
   (eval-when-compile
     (concat
-     "\\("                              ; * blank line
-       "^\\s-*$"
-     "\\)\\|\\("                        ; * comment start or end line
-       "^\\s-*\\(/[/*]\\|\\*/\\)"
-     "\\)\\|\\("                        ; * end of line are '[', '(', '{', '}', '/*'
-       "\\([[({}]\\|/\\*+\\)\\s-*$"
-     "\\)\\|\\("                        ; * beginning of line are ')', '}', ']'
-       "^\\s-*[)}]][ \t,;]?\\s-*$"      ;   and trailing character are ',', ';'
-     "\\)\\|\\("                        ; * beginning of line are some PHP keywrods
-       "^\\s-*"
-       "\\("
-         "for\\|"
-         "foreach\\|"
-         "while\\|"
-         "if\\|"
-         "else\\|"
-         "switch\\|"
-         "case\\|"
-         "break\\|"
-         "continue\\|"
-         "declare\\|"
-         "do"
-       "\\)"
-       "[ ;]"
-     "\\)\\|\\("                        ; * function or method call
-       "^\\s-*"
-       "\\("
-         "\\w\\|[->\\: \t]"
-       "\\)+"
-       "("
+     ;; blank line
+     "\\(?:" "^\\s-*$" "\\)"
+     "\\|"
+     ;; comment start or end line
+     "\\(?:" "^\\s-*\\(?:/[/*]\\|\\*/\\)" "\\)"
+     "\\|"
+     ;; end of line are '[', '(', '{', '}', '/*'
+     "\\(?:" "\\(?:[[({}]\\|/\\*+\\)\\s-*$" "\\)"
+     "\\|"
+     ;; beginning of line are ')', '}', ']' and trailing character are ',', ';'
+     "\\(?:" "^\\s-*[)}]][ \t,;]?\\s-*$" "\\)"
+     "\\|"
+     ;;  beginning of line are some PHP keywrods
+     "\\(?:"
+     "^\\s-*"
+     (regexp-opt
+      '("for" "foreach" "while" "if" "else" "switch" "case" "break" "continue"
+        "try" "catch" "declare" "do" "return" "namespace" "use"))
+     "[ ;]"
      "\\)"
+     "\\|"
+     ;; function or method call
+     "\\(?:" "^\\s-*" "\\(?:" "\\w\\|[->\\: \t]" "\\)+" "(" "\\)"
      ))
   "Regexp of a section of PHP for alignment.")
 
 (defun php-align-setup ()
   "Setup alignment configuration for PHP code."
   (set (make-local-variable 'align-mode-rules-list) php-align-rules-list)
-  (set (make-local-variable 'align-region-separate) php-align-region-separate))
+  (set (make-local-variable 'align-region-separate) php-align-region-separate)
+  (add-to-list 'align-open-comment-modes 'php-mode)
+  (add-to-list 'align-dq-string-modes 'php-mode)
+  (add-to-list 'align-sq-string-modes 'php-mode))
 
+;; Unused functions.
 (defsubst php-align-face-at-point-in-p (point face-list)
   "Return t if the face of the current POINT is an element of FACE-LIST.
  otherwise nil."

@@ -1,7 +1,7 @@
 # About #
+CAUTION!! this is still experimental.
 
 Support alignment (e.g. align, align-current) for PHP.
-CAUTION!! this is still experimental.
 
 Put this file into your load-path.and the following code into your ~/.emacs
 
@@ -30,6 +30,7 @@ Put this file into your load-path.and the following code into your ~/.emacs
 
 ### before ###
 
+    "$foo = 1";
     $foo = "string"; // M-x arign-current
     $looooooooong = 1; //
 
@@ -37,6 +38,7 @@ Put this file into your load-path.and the following code into your ~/.emacs
 
 ### after ###
 
+    "$foo = 1";
     $foo          = "string"; // M-x arign-current
     $looooooooong = 1;        //
 
@@ -62,16 +64,16 @@ Put this file into your load-path.and the following code into your ~/.emacs
 
 ### before ###
     $vars = array(
-        1, 2, 3, // one
-        4, 5, 6,   // two
-        7, 8, 9,// three
-        10, 11, 12,        // M-x align-current
+        1, 2, 3,
+        4, 5, 6,
+        7, 8, 9,
+        10, 11, 12, // C-u M-x align-current
     );
 
 ### after ###
     $vars = array(
-        1,  2,  3,  // one
-        4,  5,  6,  // two
-        7,  8,  9,  // three
-        10, 11, 12, // M-x align-current
+        1,  2,  3,
+        4,  5,  6,
+        7,  8,  9,
+        10, 11, 12, // C-u M-x align-current
     );
