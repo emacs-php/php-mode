@@ -1016,10 +1016,6 @@ current `tags-file-name'."
     '("\\(<[a-z]+\\)[[:space:]]+\\([a-z:]+=\\)[^>]*?" (1 font-lock-constant-face) (2 font-lock-constant-face) )
     '("\"[[:space:]]+\\([a-z:]+=\\)" (1 font-lock-constant-face))
 
-    ;; warn about '$' immediately after ->
-    '("\\$\\sw+->\\s-*\\(\\$\\)\\(\\sw+\\)"
-      (1 font-lock-warning-face) (2 php-default-face))
-
     ;; warn about $word.word -- it could be a valid concatenation,
     ;; but without any spaces we'll assume $word->word was meant.
     '("\\$\\sw+\\(\\.\\)\\sw"
