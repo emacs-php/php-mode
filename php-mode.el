@@ -13,7 +13,7 @@
 (defconst php-mode-version-number "1.6.2"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2011-08-02"
+(defconst php-mode-modified "2011-08-22"
   "PHP Mode build date.")
 
 ;;; License
@@ -970,7 +970,12 @@ current `tags-file-name'."
       (1 font-lock-keyword-face) (2 font-lock-type-face nil t))
 
     ;; namespace imports
-    '("\\(use\\)\\s-+\\(\\(?:\\sw\\|\\\\\\)+\\)\\s-+\\(as\\)\\s-+\\(\\(?:\\sw\\|\\\\\\)+\\)"
+    '("\\<\\(use\\)\\s-+\\(\\(?:\\sw\\|\\\\\\)+\\)"
+      (1 font-lock-keyword-face)
+      (2 font-lock-type-face))
+
+    ;; namespace imports with aliases
+    '("\\<\\(use\\)\\s-+\\(\\(?:\\sw\\|\\\\\\)+\\)\\s-+\\(as\\)\\s-+\\(\\(?:\\sw\\|\\\\\\)+\\)"
       (1 font-lock-keyword-face)
       (2 font-lock-type-face)
       (3 font-lock-keyword-face)
