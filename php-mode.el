@@ -894,7 +894,7 @@ current `tags-file-name'."
      '("and" "break" "continue" "declare" "default" "do" "echo" "else" "elseif"
        "endfor" "endforeach" "endif" "endswitch" "endwhile" "exit"
        "extends" "for" "foreach" "global" "if" "include" "include_once"
-       "next" "or" "require" "require_once" "return" "static" "switch"
+       "next" "or" "require" "require_once" "return" "return new" "static" "switch"
        "then" "var" "while" "xor" "throw" "catch" "try"
        "instanceof" "catch all" "finally" "insteadof" "use" "as"
        "clone")))
