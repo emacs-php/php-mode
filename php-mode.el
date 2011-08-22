@@ -981,6 +981,11 @@ current `tags-file-name'."
       (3 font-lock-keyword-face)
       (4 font-lock-type-face))
 
+    ;; constants
+    '("\\<\\(const\\)\\s-+\\(\\sw+\\)"
+      (1 font-lock-keyword-face)
+      (2 font-lock-type-face))
+
     ;; function declaration
     '("\\<\\(function\\)\\s-+&?\\(\\sw+\\)\\s-*("
       (1 font-lock-keyword-face)
