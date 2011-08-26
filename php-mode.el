@@ -966,7 +966,7 @@ current `tags-file-name'."
     ;; thereby excluding it from unknown-symbol checks later
     ;; FIX to handle implementing multiple
     ;; currently breaks on "class Foo implements Bar, Baz"
-    '("\\<\\(new\\|extends\\|implements\\)\\s-+\\$?\\(\\sw+\\)"
+    '("\\<\\(new\\|extends\\|implements\\)\\s-+\\$?\\(\\(:?\\sw\\|\\\\\\)+\\)"
       (1 font-lock-keyword-face) (2 font-lock-type-face nil t))
 
     ;; namespace imports
@@ -1034,7 +1034,7 @@ current `tags-file-name'."
       1 font-lock-type-face)
 
     ;; PHP5: function declarations may contain classes as parameters type
-    `(,(concat "[(,]\\s-*\\(\\sw+\\)\\s-+&?\\$\\sw+\\>")
+    `(,(concat "[(,]\\s-*\\(\\(?:\\sw\\|\\\\\\)+\\)\\s-+&?\\$\\sw+\\>")
       1 font-lock-type-face)
 
     ;; Fontify variables and function calls
@@ -1054,7 +1054,7 @@ current `tags-file-name'."
     '("->\\(\\sw+\\)\\s-*(" . (1 php-default-face t t))
 
     ;; class::member
-    '("\\(\\sw+\\)::\\sw+\\s-*(?" . (1 font-lock-type-face))
+    '("\\(\\(\\sw\\|\\\\\\)+\\)::\\sw+\\s-*(?" . (1 font-lock-type-face))
 
     ;; class::constant
     '("::\\(\\sw+\\>[^(]\\)" . (1 php-default-face))
