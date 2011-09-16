@@ -582,8 +582,7 @@ current `tags-file-name'."
 (defun php-build-table-from-file (filename)
   (let ((table (make-vector 1022 0))
         (buf (find-file-noselect filename)))
-    (save-excursion
-      (set-buffer buf)
+    (with-current-buffer buf
       (goto-char (point-min))
       (while (re-search-forward
               "^\\([-a-zA-Z0-9_.]+\\)\n"
@@ -634,8 +633,7 @@ current `tags-file-name'."
   (let* ((tagname (php-get-pattern))
          (buf (find-tag-noselect tagname nil nil))
          arglist)
-    (save-excursion
-      (set-buffer buf)
+    (with-current-buffer buf
       (goto-char (point-min))
       (when (re-search-forward
              (format "function\\s-+%s\\s-*(\\([^{]*\\))" tagname)
@@ -968,6 +966,10 @@ current `tags-file-name'."
     ;; currently breaks on "class Foo implements Bar, Baz"
     '("\\<\\(new\\|extends\\|implements\\)\\s-+\\$?\\(\\(:?\\sw\\|\\\\\\)+\\)"
       (1 font-lock-keyword-face) (2 font-lock-type-face nil t))
+
+    ;; instanceof operator
+    '("\\<instanceof\\s-+\\([^$]\\(:?\\sw\\|\\\\\\)+\\)"
+      (1 font-lock-type-face nil t))
 
     ;; namespace imports
     '("\\<\\(use\\)\\s-+\\(\\(?:\\sw\\|\\\\\\)+\\)"
