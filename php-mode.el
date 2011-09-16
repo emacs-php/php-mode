@@ -967,6 +967,10 @@ current `tags-file-name'."
     '("\\<\\(new\\|extends\\|implements\\)\\s-+\\$?\\(\\(:?\\sw\\|\\\\\\)+\\)"
       (1 font-lock-keyword-face) (2 font-lock-type-face nil t))
 
+    ;; instanceof operator
+    '("\\<instanceof\\s-+\\([^$]\\(:?\\sw\\|\\\\\\)+\\)"
+      (1 font-lock-type-face nil t))
+
     ;; namespace imports
     '("\\<\\(use\\)\\s-+\\(\\(?:\\sw\\|\\\\\\)+\\)"
       (1 font-lock-keyword-face)
