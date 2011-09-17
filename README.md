@@ -50,6 +50,10 @@ will now appear on Imenu; in this case the name will be `$greet`.
 
 By customizing the variable `php-executable` you can enable Flymake mode in order to see warnings and errors in real-time as you write code.
 
+## Search Local Documentation
+
+The key command `C-c C-f` will search the PHP website for documentation on the word under the cursor.  However, if you have a [local copy of the PHP documentation](http://us2.php.net/download-docs.php) then `php-mode` will try searching that documentation first.  All you need to do is customize the variable `php-manual-path` and give it the path to your copy of the documentation.  If `php-mode` cannot find something locally then it will still fallback on searching the PHP website.
+
 # License
 
 The code for `php-mode` is covered by the GNU General Public License 3.
