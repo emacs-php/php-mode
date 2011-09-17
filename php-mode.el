@@ -644,6 +644,20 @@ current `tags-file-name'."
         (message "Arglist for %s: %s" tagname arglist)
         (message "Unknown function: %s" tagname))))
 
+(defun php-search-local-documentation ()
+  "Search the local PHP documentation (i.e. in `php-manual-path')
+for the word at point.  The function returns t if the requested
+documentation exists, and nil otherwise."
+  (interactive)
+  (flet ((php-function-file-for (name)
+                                (expand-file-name
+                                 (format "function.%s.html"
+                                         (replace-regexp-in-string "_" "-" name))
+                                 php-manual-path)))
+    (let ((doc-file (php-function-file-for (current-word))))
+      (and (file-exists-p doc-file)
+           (browse-url doc-file)))))
+
 ;; Define function documentation function
 (defun php-search-documentation ()
   "Search PHP documentation for the word at point."
