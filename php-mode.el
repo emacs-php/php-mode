@@ -660,9 +660,19 @@ documentation exists, and nil otherwise."
 
 ;; Define function documentation function
 (defun php-search-documentation ()
-  "Search PHP documentation for the word at point."
+  "Search PHP documentation for the word at point.  If
+`php-manual-path' has a non-empty string value then the command
+will first try searching the local documentation.  If the
+requested documentation does not exist it will fallback to
+searching the PHP website."
   (interactive)
-  (browse-url (concat php-search-url (current-word t))))
+  (flet ((php-search-web-documentation ()
+                                       (browse-url (concat php-search-url (current-word)))))
+    (if (and (stringp php-manual-path)
+             (not (string= php-manual-path "")))
+        (or (php-search-local-documentation)
+            (php-search-web-documentation))
+      (php-search-web-documentation))))
 
 ;; Define function for browsing manual
 (defun php-browse-manual ()
