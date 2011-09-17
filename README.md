@@ -20,7 +20,7 @@ Now `php-mode` supports syntax highlighting for new keywords which were added as
 
 ## Constants
 
-Every magic constant and predefined constant listed on the official PHP site is included.
+Every magic constant and predefined constant listed on the official PHP site is included in syntax highlighted.
 
 ## Traits, Interfaces, and Namespaces
 
