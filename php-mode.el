@@ -13,7 +13,7 @@
 (defconst php-mode-version-number "1.6.3"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2011-08-22"
+(defconst php-mode-modified "2011-09-16"
   "PHP Mode build date.")
 
 ;;; License
@@ -644,11 +644,35 @@ current `tags-file-name'."
         (message "Arglist for %s: %s" tagname arglist)
         (message "Unknown function: %s" tagname))))
 
+(defun php-search-local-documentation ()
+  "Search the local PHP documentation (i.e. in `php-manual-path')
+for the word at point.  The function returns t if the requested
+documentation exists, and nil otherwise."
+  (interactive)
+  (flet ((php-function-file-for (name)
+                                (expand-file-name
+                                 (format "function.%s.html"
+                                         (replace-regexp-in-string "_" "-" name))
+                                 php-manual-path)))
+    (let ((doc-file (php-function-file-for (current-word))))
+      (and (file-exists-p doc-file)
+           (browse-url doc-file)))))
+
 ;; Define function documentation function
 (defun php-search-documentation ()
-  "Search PHP documentation for the word at point."
+  "Search PHP documentation for the word at point.  If
+`php-manual-path' has a non-empty string value then the command
+will first try searching the local documentation.  If the
+requested documentation does not exist it will fallback to
+searching the PHP website."
   (interactive)
-  (browse-url (concat php-search-url (current-word t))))
+  (flet ((php-search-web-documentation ()
+                                       (browse-url (concat php-search-url (current-word)))))
+    (if (and (stringp php-manual-path)
+             (not (string= php-manual-path "")))
+        (or (php-search-local-documentation)
+            (php-search-web-documentation))
+      (php-search-web-documentation))))
 
 ;; Define function for browsing manual
 (defun php-browse-manual ()
