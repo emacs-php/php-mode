@@ -13,7 +13,7 @@
 (defconst php-mode-version-number "1.6.3"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2011-09-16"
+(defconst php-mode-modified "2011-09-25"
   "PHP Mode build date.")
 
 ;;; License
@@ -498,6 +498,15 @@ This is was done due to the problem reported here:
        "^\\s-*function\\s-+&?\\s-*\\(\\(\\sw\\|\\s_\\)+\\)\\s-*")
   (set (make-local-variable 'add-log-current-defun-header-regexp)
        php-beginning-of-defun-regexp)
+
+  ;; Configure indentation so that nested arrays do not extend so far
+  ;; across the screen.
+  (add-hook 'php-mode-hook
+            (lambda ()
+              (c-set-offset 'case-label '+)
+              (c-set-offset 'arglist-close 'c-lineup-arglist-operators)
+              (c-set-offset 'arglist-intro '+)
+              (c-set-offset 'arglist-cont-nonempty 'c-lineup-math)))
 
   (run-hooks 'php-mode-hook))
 
