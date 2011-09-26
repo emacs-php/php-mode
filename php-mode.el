@@ -190,7 +190,7 @@ You can replace \"en\" with your ISO language code."
 (add-to-list 'interpreter-mode-alist (cons "php" 'php-mode))
 
 ;;;###autoload
-(defcustom php-file-patterns '("\\.php[s345]?\\'" "\\.phtml\\'" "\\.inc\\'")
+(defcustom php-file-patterns '("\\.php[s345t]?\\'" "\\.phtml\\'" "\\.inc\\'")
   "List of file patterns for which to automatically invoke `php-mode'."
   :type '(repeat (regexp :tag "Pattern"))
   :set (lambda (sym val)
