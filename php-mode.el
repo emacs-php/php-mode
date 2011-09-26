@@ -425,9 +425,6 @@ This is was done due to the problem reported here:
   (set (make-local-variable 'c-opt-cpp-start) php-tags-key)
   (set (make-local-variable 'c-opt-cpp-prefix) php-tags-key)
 
-  (c-set-offset 'cpp-macro 0)
-  (c-set-offset 'topmost-intro-cont 'c-lineup-cascaded-calls)
-
   (set (make-local-variable 'c-block-stmt-1-key) php-block-stmt-1-key)
   (set (make-local-variable 'c-block-stmt-2-key) php-block-stmt-2-key)
 
@@ -498,15 +495,6 @@ This is was done due to the problem reported here:
        "^\\s-*function\\s-+&?\\s-*\\(\\(\\sw\\|\\s_\\)+\\)\\s-*")
   (set (make-local-variable 'add-log-current-defun-header-regexp)
        php-beginning-of-defun-regexp)
-
-  ;; Configure indentation so that nested arrays do not extend so far
-  ;; across the screen.
-  (add-hook 'php-mode-hook
-            (lambda ()
-              (c-set-offset 'case-label '+)
-              (c-set-offset 'arglist-close 'c-lineup-arglist-operators)
-              (c-set-offset 'arglist-intro '+)
-              (c-set-offset 'arglist-cont-nonempty 'c-lineup-math)))
 
   (run-hooks 'php-mode-hook))
 
