@@ -448,6 +448,7 @@ This is was done due to the problem reported here:
 
   (modify-syntax-entry ?# "< b" php-mode-syntax-table)
   (modify-syntax-entry ?_ "_" php-mode-syntax-table)
+  (modify-syntax-entry ?` "\"" php-mode-syntax-table)
 
   (setq font-lock-maximum-decoration t
         imenu-generic-expression php-imenu-generic-expression)
