@@ -110,3 +110,4 @@ In chronological order:
 32. Dias Badekas
 33. David House
 34. Tom Willemsen
+35. Olaf the Viking
