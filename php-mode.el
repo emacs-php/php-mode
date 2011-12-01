@@ -91,6 +91,11 @@
   :type 'face
   :group 'php)
 
+(defcustom php-function-call-face 'default
+  "Default face for function calls in `php-mode' buffers."
+  :type 'face
+  :group 'php)
+
 (defcustom php-speedbar-config t
   "When set to true automatically configures Speedbar to observe PHP files.
 Ignores php-file patterns option; fixed to expression \"\\.\\(inc\\|php[s345]?\\)\""
@@ -963,7 +968,7 @@ searching the PHP website."
           (1 font-lock-constant-face)))
 
    ;; treat 'print' as keyword only when not used like a function name
-   '("\\<print\\s-*(" . php-default-face)
+   '("\\<print\\s-*(" . php-function-call-face)
    '("\\<print\\>" . font-lock-keyword-face)
 
    ;; Fontify PHP tag
@@ -1078,7 +1083,7 @@ searching the PHP website."
     '("->\\(\\sw+\\)" (1 font-lock-variable-name-face t t))
 
     ;; ->function_call
-    '("->\\(\\sw+\\)\\s-*(" . (1 php-default-face t t))
+    '("->\\(\\sw+\\)\\s-*(" . (1 php-function-call-face t t))
 
     ;; class::member
     '("\\(\\(\\sw\\|\\\\\\)+\\)::\\sw+\\s-*(?" . (1 font-lock-type-face))
@@ -1089,8 +1094,11 @@ searching the PHP website."
     ;; using a trait in a class
     '("\\<use\\s-+\\(\\sw+\\)\\s-*;" . (1 font-lock-type-face))
 
-    ;; word( or word[
-    '("\\<\\(\\sw+\\s-*\\)[[(]" . (1 php-default-face))
+    ;; word(
+    '("\\<\\(\\sw+\\s-*\\)(" . (1 php-function-call-face))
+
+    ;; word[
+    '("\\<\\(\\sw+\\s-*\\)\\[" . (1 php-default-face))
 
     ;; number (also matches word)
     '("\\<[0-9]+" . php-default-face)
