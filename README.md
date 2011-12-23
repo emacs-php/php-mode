@@ -12,6 +12,10 @@ And all those mentioned in the ‘Contributors’ section below.
 
 Please email any bugs or feature requests to `Ren at lifesnotsimple dot com` or submit them as Issues here on the Github page.  Also please include the output of `php-mode-version` in bug reports.
 
+# Status
+
+**23 December 2011:** These days I am doing less and less PHP programming, and thus work on `php-mode` has slowed down.  However I am still accepting bug reports and feature requests, so please do not consider the project dead.  I have a list of features I would like to add, but right now I am unsure when I will get around to them.  My apologies for the slow updates.
+
 # Features
 
 ## New Keywords
