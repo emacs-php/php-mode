@@ -91,6 +91,11 @@
   :type 'face
   :group 'php)
 
+(defcustom php-function-call-face 'default
+  "Default face for function calls in `php-mode' buffers."
+  :type 'face
+  :group 'php)
+
 (defcustom php-speedbar-config t
   "When set to true automatically configures Speedbar to observe PHP files.
 Ignores php-file patterns option; fixed to expression \"\\.\\(inc\\|php[s345]?\\)\""
@@ -906,7 +911,77 @@ searching the PHP website."
        "FILTER_FLAG_IPV4"
        "FILTER_FLAG_IPV6"
        "FILTER_FLAG_NO_RES_RANGE"
-       "FILTER_FLAG_NO_PRIV_RANGE")))
+       "FILTER_FLAG_NO_PRIV_RANGE"
+
+       ;; IMAP constants
+       "NIL"
+       "OP_DEBUG"
+       "OP_READONLY"
+       "OP_ANONYMOUS"
+       "OP_SHORTCACHE"
+       "OP_SILENT"
+       "OP_PROTOTYPE"
+       "OP_HALFOPEN"
+       "OP_EXPUNGE"
+       "OP_SECURE"
+       "CL_EXPUNGE"
+       "FT_UID"
+       "FT_PEEK"
+       "FT_NOT"
+       "FT_INTERNAL"
+       "FT_PREFETCHTEXT"
+       "ST_UID"
+       "ST_SILENT"
+       "ST_SET"
+       "CP_UID"
+       "CP_MOVE"
+       "SE_UID"
+       "SE_FREE"
+       "SE_NOPREFETCH"
+       "SO_FREE"
+       "SO_NOSERVER"
+       "SA_MESSAGES"
+       "SA_RECENT"
+       "SA_UNSEEN"
+       "SA_UIDNEXT"
+       "SA_UIDVALIDITY"
+       "SA_ALL"
+       "LATT_NOINFERIORS"
+       "LATT_NOSELECT"
+       "LATT_MARKED"
+       "LATT_UNMARKED"
+       "SORTDATE"
+       "SORTARRIVAL"
+       "SORTFROM"
+       "SORTSUBJECT"
+       "SORTTO"
+       "SORTCC"
+       "SORTSIZE"
+       "TYPETEXT"
+       "TYPEMULTIPART"
+       "TYPEMESSAGE"
+       "TYPEAPPLCATION"
+       "TYPEAUDIO"
+       "TYPEIMAGE"
+       "TYPEVIDEO"
+       "TYPEOTHER"
+       "ENC7BIT"
+       "ENC8BIT"
+       "ENCBINARY"
+       "ENCBASE64"
+       "ENCQUOTEDPRINTABLE"
+       "ENCOTHER"
+       "IMAP_OPENTIMEOUT"
+       "IMAP_READTIMEOUT"
+       "IMAP_WRITETIMEOUT"
+       "IMAP_CLOSETIMEOUT"
+       "LATT_REFERRAL"
+       "LATT_HASCHILDREN"
+       "LATT_HASNOCHILDREN"
+       "TYPEMODEL"
+       "IMAP_GC_ELT"
+       "IMAP_GC_ENV"
+       "IMAP_GC_TEXTS")))
   "PHP constants.")
 
 (defconst php-keywords
@@ -963,7 +1038,7 @@ searching the PHP website."
           (1 font-lock-constant-face)))
 
    ;; treat 'print' as keyword only when not used like a function name
-   '("\\<print\\s-*(" . php-default-face)
+   '("\\<print\\s-*(" . php-function-call-face)
    '("\\<print\\>" . font-lock-keyword-face)
 
    ;; Fontify PHP tag
@@ -1061,7 +1136,7 @@ searching the PHP website."
       1 font-lock-type-face)
 
     ;; PHP5: function declarations may contain classes as parameters type
-    `(,(concat "[(,]\\s-*\\(\\(?:\\sw\\|\\\\\\)+\\)\\s-+&?\\$\\sw+\\>")
+    `("[(,]\\(?:\\s-\\|\n\\)*\\(\\(?:\\sw\\|\\\\\\)+\\)\\s-+&?\\$\\sw+\\>"
       1 font-lock-type-face)
 
     ;; Fontify variables and function calls
@@ -1078,19 +1153,22 @@ searching the PHP website."
     '("->\\(\\sw+\\)" (1 font-lock-variable-name-face t t))
 
     ;; ->function_call
-    '("->\\(\\sw+\\)\\s-*(" . (1 php-default-face t t))
+    '("->\\(\\sw+\\)\\s-*(" . (1 php-function-call-face t t))
 
     ;; class::member
     '("\\(\\(\\sw\\|\\\\\\)+\\)::\\sw+\\s-*(?" . (1 font-lock-type-face))
 
     ;; class::constant
-    '("::\\(\\sw+\\>[^(]\\)" . (1 php-default-face))
+    '("::\\(\\(?:\\sw\\|\\s_\\)+\\>\\)[^(]" . (1 font-lock-constant-face))
 
     ;; using a trait in a class
     '("\\<use\\s-+\\(\\sw+\\)\\s-*;" . (1 font-lock-type-face))
 
-    ;; word( or word[
-    '("\\<\\(\\sw+\\s-*\\)[[(]" . (1 php-default-face))
+    ;; word(
+    '("\\<\\(\\sw+\\s-*\\)(" . (1 php-function-call-face))
+
+    ;; word[
+    '("\\<\\(\\sw+\\s-*\\)\\[" . (1 php-default-face))
 
     ;; number (also matches word)
     '("\\<[0-9]+" . php-default-face)
