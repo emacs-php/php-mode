@@ -1136,7 +1136,7 @@ searching the PHP website."
       1 font-lock-type-face)
 
     ;; PHP5: function declarations may contain classes as parameters type
-    `(,(concat "[(,]\\s-*\\(\\(?:\\sw\\|\\\\\\)+\\)\\s-+&?\\$\\sw+\\>")
+    `("[(,]\\(?:\\s-\\|\n\\)*\\(\\(?:\\sw\\|\\\\\\)+\\)\\s-+&?\\$\\sw+\\>"
       1 font-lock-type-face)
 
     ;; Fontify variables and function calls
