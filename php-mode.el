@@ -1159,7 +1159,7 @@ searching the PHP website."
     '("\\(\\(\\sw\\|\\\\\\)+\\)::\\sw+\\s-*(?" . (1 font-lock-type-face))
 
     ;; class::constant
-    '("::\\(\\sw+\\>[^(]\\)" . (1 php-default-face))
+    '("::\\(\\(?:\\sw\\|\\s_\\)+\\>\\)[^(]" . (1 font-lock-constant-face))
 
     ;; using a trait in a class
     '("\\<use\\s-+\\(\\sw+\\)\\s-*;" . (1 font-lock-type-face))
