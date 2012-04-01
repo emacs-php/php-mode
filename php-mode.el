@@ -301,7 +301,7 @@ See `php-beginning-of-defun'."
              (base-msg
               (concat
                "Indentation fails badly with mixed HTML/PHP in the HTML part in
-plaín `php-mode'.  To get indentation to work you must use an
+plaï¿½n `php-mode'.  To get indentation to work you must use an
 Emacs library that supports 'multiple major modes' in a buffer.
 Parts of the buffer will then be in `php-mode' and parts in for
 example `html-mode'.  Known such libraries are:\n\t"
@@ -992,7 +992,7 @@ searching the PHP website."
      '("and" "break" "continue" "declare" "default" "do" "echo" "else" "elseif"
        "endfor" "endforeach" "endif" "endswitch" "endwhile" "exit"
        "extends" "for" "foreach" "global" "if" "include" "include_once"
-       "next" "or" "require" "require_once" "return" "return new" "static" "switch"
+       "or" "require" "require_once" "return" "return new" "static" "switch"
        "then" "var" "while" "xor" "throw" "catch" "try"
        "instanceof" "catch all" "finally" "insteadof" "use" "as"
        "clone")))
