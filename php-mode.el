@@ -4,7 +4,7 @@
 ;;               2008 Aaron S. Hawley
 ;;               2011 Eric James Michael Ritz
 
-;; Maintainer: Eric James Michael Ritz <Ren at lifesnotsimple dot com>
+;; Maintainer: Eric James Michael Ritz <lobbyjones at gmail dot com>
 ;; Original Author: Turadg Aleahmad, 1999-2004
 ;; Keywords: php languages oop
 ;; Created: 1999-05-17

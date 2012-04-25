@@ -10,7 +10,7 @@ This updates `php-mode` with features to make it more friendly to use with PHP 5
 
 And all those mentioned in the ‘Contributors’ section below.
 
-Please email any bugs or feature requests to `Ren at lifesnotsimple dot com` or submit them as Issues here on the Github page.  Also please include the output of `php-mode-version` in bug reports.
+Please email any bugs or feature requests to `lobbyjones at gmail dot com` or submit them as Issues here on the Github page.  Also please include the output of `php-mode-version` in bug reports.
 
 # Status
 
