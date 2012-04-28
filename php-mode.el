@@ -662,7 +662,8 @@ documentation exists, and nil otherwise."
                                  php-manual-path)))
     (let ((doc-file (php-function-file-for (current-word))))
       (and (file-exists-p doc-file)
-           (browse-url doc-file)))))
+           (browse-url doc-file)
+           t))))
 
 ;; Define function documentation function
 (defun php-search-documentation ()
