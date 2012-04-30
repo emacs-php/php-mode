@@ -13,7 +13,7 @@
 (defconst php-mode-version-number "1.6.4"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2011-09-25"
+(defconst php-mode-modified "2012-04-30"
   "PHP Mode build date.")
 
 ;;; License
@@ -51,6 +51,33 @@
 ;;  Programming/Languages/Php
 ;; Since it inherits much functionality from c-mode, look there too
 ;;  Programming/Languages/C
+
+;; Use with PHP Interactive Shell
+
+;; In order to incorporate an interactive PHP Shell with this mode, you can put
+;; something like the following in your .emacs file which allows you to start an
+;; interactive shell by running the command: M-x run-php
+
+;; (defun run-php ()
+;;   "Run a PHP process, input and output via buffer *PHP*."
+;;   (interactive)
+;;   (require 'comint)
+;;   (let ((php-repl-path (if (not (eq system-type 'linux))
+;; 			   "~/.emacs.d/phpa-norl"
+;; 			 "/usr/bin/php --interactive")))
+;;     (pop-to-buffer
+;;      (make-comint "PHP"
+;; 		  "/bin/sh"
+;; 		  nil
+;; 		  "-c"
+;; 		  php-repl-path))
+;;     (make-local-variable 'comint-prompt-regexp)
+;;     (setq mode-name "PHP")))
+
+;; Note: If you are not using Linux you may need to also add the phpa-norl
+;; script to your .emacs.d folder to get the PHP shell functioning properly.
+;; phpa-norl (http://www.fischerlaender.net/php/phpa-norl) can also be cloned
+;; using git: git clone https://github.com/jmagnusson/phpa-norl.git
 
 ;;; Commentary:
 
@@ -1202,6 +1229,44 @@ searching the PHP website."
              '("\\(Parse\\|Fatal\\) error: \\(.*?\\) in \\(.*?\\) on line \\([0-9]+\\)" 3 4 nil 2))
 
 
+;; Commands and keybinding for interacting with a PHP Shell buffer.
+
+;; * Keybindings *
+
+(define-key php-mode-map "\C-c\C-b" 'php-send-buffer-and-go)
+(define-key php-mode-map "\C-c\C-r" 'php-send-region-and-go)
+
+;; * Commands *
+
+(defun goto-php ()
+  "Pop the interactive Javascript buffer in another window and go to it."
+  (interactive)
+  (switch-to-buffer-other-window "*PHP*"))
+
+(defun php-send-region (start end)
+  "Send region between start and end into *PHP*."
+  (interactive "r")
+  ;; Since the PHP Shell doesn't like linebreak we can't just say:
+  ;; (send-region "*PHP*" start end) insteadwe have to do a quick hack that
+  ;; replaces all linebreaks with spaces, if anyone has a way to fix this,
+  ;; please do.
+  (send-string "*PHP*"
+	       (replace-regexp-in-string
+		"\n" " " (buffer-substring-no-properties
+			  start end )))
+  (send-string "*PHP*" "\n"))
+
+(defun php-send-region-and-go (start end)
+  "Send region between start and end into *PHP*."
+  (interactive "r")
+  (php-send-region start end)
+  (goto-php))
+
+(defun php-send-buffer-and-go ()
+  "Send whole buffer and go to *PHP*."
+  (interactive)
+  (php-send-region-and-go (point-min) (point-max)))
+
 (provide 'php-mode)
 
-;;; php-mode.el ends here
+;; end-of-php-mode.el
