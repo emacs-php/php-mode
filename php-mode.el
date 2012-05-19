@@ -1202,6 +1202,24 @@ searching the PHP website."
              '("\\(Parse\\|Fatal\\) error: \\(.*?\\) in \\(.*?\\) on line \\([0-9]+\\)" 3 4 nil 2))
 
 
+(defun php-send-region (start end)
+  "Send the region between `start' and `end' to PHP for execution.
+The output will appear in the buffer *PHP*."
+  (interactive "r")
+  (let ((php-buffer (get-buffer-create "*PHP*"))
+        (code (buffer-substring start end)))
+    ;; Calling 'php -r' will fail if we send it code that starts with
+    ;; '<?php', which is likely.  So we run the code through this
+    ;; function to check for that prefix and remove it.
+    (flet ((clean-php-code (code)
+                           (if (string-prefix-p "<?php" code t)
+                               (substring code 5)
+                             code)))
+      (call-process "php" nil php-buffer nil "-r" (clean-php-code code)))))
+
+(define-key php-mode-map "\C-c\C-r" 'php-send-region)
+
+
 (provide 'php-mode)
 
 ;;; php-mode.el ends here
