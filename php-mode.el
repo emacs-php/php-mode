@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1999, 2000, 2001, 2003, 2004 Turadg Aleahmad
 ;;               2008 Aaron S. Hawley
-;;               2011 Eric James Michael Ritz
+;;               2011, 2012 Eric James Michael Ritz
 
 ;; Maintainer: Eric James Michael Ritz <lobbyjones at gmail dot com>
 ;; Original Author: Turadg Aleahmad, 1999-2004
@@ -13,7 +13,7 @@
 (defconst php-mode-version-number "1.6.4"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2011-09-25"
+(defconst php-mode-modified "2012-05-19"
   "PHP Mode build date.")
 
 ;;; License
