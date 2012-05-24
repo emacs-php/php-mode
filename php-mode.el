@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 1999, 2000, 2001, 2003, 2004 Turadg Aleahmad
 ;;               2008 Aaron S. Hawley
-;;               2011 Eric James Michael Ritz
+;;               2011, 2012 Eric James Michael Ritz
 
 ;; Maintainer: Eric James Michael Ritz <lobbyjones at gmail dot com>
 ;; Original Author: Turadg Aleahmad, 1999-2004
@@ -13,7 +13,7 @@
 (defconst php-mode-version-number "1.6.4"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2011-09-25"
+(defconst php-mode-modified "2012-05-19"
   "PHP Mode build date.")
 
 ;;; License
@@ -1200,6 +1200,24 @@ searching the PHP website."
 
 (add-to-list 'flymake-err-line-patterns
              '("\\(Parse\\|Fatal\\) error: \\(.*?\\) in \\(.*?\\) on line \\([0-9]+\\)" 3 4 nil 2))
+
+
+(defun php-send-region (start end)
+  "Send the region between `start' and `end' to PHP for execution.
+The output will appear in the buffer *PHP*."
+  (interactive "r")
+  (let ((php-buffer (get-buffer-create "*PHP*"))
+        (code (buffer-substring start end)))
+    ;; Calling 'php -r' will fail if we send it code that starts with
+    ;; '<?php', which is likely.  So we run the code through this
+    ;; function to check for that prefix and remove it.
+    (flet ((clean-php-code (code)
+                           (if (string-prefix-p "<?php" code t)
+                               (substring code 5)
+                             code)))
+      (call-process "php" nil php-buffer nil "-r" (clean-php-code code)))))
+
+(define-key php-mode-map "\C-c\C-r" 'php-send-region)
 
 
 (provide 'php-mode)
