@@ -78,7 +78,7 @@ The command `php-send-region`, which is bound to `C-c C-r` by default, will exec
 
 # License
 
-The code for `php-mode` is covered by the GNU General Public License 3.
+The code for `php-mode` is covered by the [GNU General Public License 3](http://www.gnu.org/copyleft/gpl.html).
 
 # Contributors
 
