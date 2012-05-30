@@ -420,6 +420,19 @@ This is was done due to the problem reported here:
   "See `php-c-at-vsemi-p'."
   )
 
+(defun php-lineup-arglist-intro (langelem)
+  (save-excursion
+    (goto-char (cdr langelem))
+    (vector (+ (current-column) c-basic-offset))))
+
+(defun php-lineup-arglist-close (langelem)
+  (save-excursion
+    (goto-char (cdr langelem))
+    (vector (current-column))))
+
+(c-set-offset 'arglist-intro 'php-lineup-arglist-intro)
+(c-set-offset 'arglist-close 'php-lineup-arglist-close)
+
 ;;;###autoload
 (define-derived-mode php-mode c-mode "PHP"
   "Major mode for editing PHP code.\n\n\\{php-mode-map}"
