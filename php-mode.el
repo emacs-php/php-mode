@@ -729,8 +729,8 @@ searching the PHP website."
   (eval-when-compile
     (regexp-opt
      '(;; core constants
-       "__LINE__" "__FILE__"
-       "__FUNCTION__" "__CLASS__" "__METHOD__"
+       "__LINE__" "__FILE__" "__DIR__"
+       "__FUNCTION__" "__CLASS__" "__TRAIT__" "__METHOD__"
        "__NAMESPACE__"
        "__COMPILER_HALT_OFFSET__"
        "PHP_OS" "PHP_VERSION"
@@ -1003,7 +1003,7 @@ searching the PHP website."
     (regexp-opt
      ;; "class", "new" and "extends" get special treatment
      ;; "case" gets special treatment elsewhere
-     '("and" "break" "continue" "declare" "default" "do" "echo" "else" "elseif"
+     '("and" "break" "continue" "declare" "default" "die" "do" "echo" "else" "elseif"
        "endfor" "endforeach" "endif" "endswitch" "endwhile" "exit"
        "extends" "for" "foreach" "global" "if" "include" "include_once"
        "or" "require" "require_once" "return" "return new" "static" "switch"
