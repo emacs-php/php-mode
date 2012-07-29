@@ -76,6 +76,16 @@ The key command `C-c C-f` will search the PHP website for documentation on the w
 
 The command `php-send-region`, which is bound to `C-c C-r` by default, will execute the selected region of PHP code.  In conjunction with the Emacs command `C-x h` you can use this to execute an entire file.  Any output will appear in a buffer called `*PHP*`.
 
+# How to Contribute
+
+All contributions to `php-mode` are welcome.  But please try to do the following when sending improvements or bug fixes:
+
+1. Add your name to the list of Contributes in this `README.md` file if it is not there already.
+
+2. If your contribution addresses an issue on the Github project page then include a link to the relevant issue in your commit message.
+
+3. Make sure to update the constant `php-mode-modified`.
+
 # License
 
 The code for `php-mode` is covered by the [GNU General Public License 3](http://www.gnu.org/copyleft/gpl.html).
