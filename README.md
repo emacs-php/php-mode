@@ -86,6 +86,8 @@ All contributions to `php-mode` are welcome.  But please try to do the following
 
 3. Make sure to update the constant `php-mode-modified`.
 
+4. Send me a pull request here on Github.  Or if you do not have a Github account then email the patches to me at `lobbyjones at gmail dot com`.  Please try to make sure the patches are acceptable input to the comand `git am`.
+
 # License
 
 The code for `php-mode` is covered by the [GNU General Public License 3](http://www.gnu.org/copyleft/gpl.html).
