@@ -14,7 +14,7 @@ Please email any bugs or feature requests to `lobbyjones at gmail dot com` or su
 
 # Status
 
-**23 December 2011:** These days I am doing less and less PHP programming, and thus work on `php-mode` has slowed down.  However I am still accepting bug reports and feature requests, so please do not consider the project dead.  I have a list of features I would like to add, but right now I am unsure when I will get around to them.  My apologies for the slow updates.
+**28 July 2012:**  I will not be working on any PHP projects in the forseeable future.  Therefore I have not worked on adding any new features.  However, the project is not dead.  I am still accepting bug requests and will try to address them in a timely manner.  I also welcome any improvements in functionality from other developers.  Updates to `php-mode` may be infrequent, but I will continue to maintain it as best as possible.
 
 # Features
 
