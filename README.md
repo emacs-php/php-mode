@@ -14,7 +14,7 @@ Please email any bugs or feature requests to `lobbyjones at gmail dot com` or su
 
 # Status
 
-**23 December 2011:** These days I am doing less and less PHP programming, and thus work on `php-mode` has slowed down.  However I am still accepting bug reports and feature requests, so please do not consider the project dead.  I have a list of features I would like to add, but right now I am unsure when I will get around to them.  My apologies for the slow updates.
+**28 July 2012:**  I will not be working on any PHP projects in the forseeable future.  Therefore I have not worked on adding any new features.  However, the project is not dead.  I am still accepting bug requests and will try to address them in a timely manner.  I also welcome any improvements in functionality from other developers.  Updates to `php-mode` may be infrequent, but I will continue to maintain it as best as possible.
 
 # Features
 
@@ -76,6 +76,20 @@ The key command `C-c C-f` will search the PHP website for documentation on the w
 
 The command `php-send-region`, which is bound to `C-c C-r` by default, will execute the selected region of PHP code.  In conjunction with the Emacs command `C-x h` you can use this to execute an entire file.  Any output will appear in a buffer called `*PHP*`.
 
+# How to Contribute
+
+All contributions to `php-mode` are welcome.  But please try to do the following when sending improvements or bug fixes:
+
+1. Add your name to the list of ‘Contributors’ in this `README.md` file if it is not there already.
+
+2. If your contribution addresses an issue on the Github project page then include a link to the relevant issue in your commit message.
+
+3. Make sure to update the constant `php-mode-modified`.
+
+4. However, Please do not modify `php-mode-version-number`.  I will decide what constitutes a bump in the version number.
+
+5. Send me a pull request here on Github.  Or if you do not have a Github account then email the patches to me at `lobbyjones at gmail dot com`.  Please try to make sure the patches are acceptable input to the comand `git am`.
+
 # License
 
 The code for `php-mode` is covered by the [GNU General Public License 3](http://www.gnu.org/copyleft/gpl.html).
@@ -119,3 +133,4 @@ In chronological order:
 33. David House
 34. Tom Willemsen
 35. Olaf the Viking
+36. Maël Nison
