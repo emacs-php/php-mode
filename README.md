@@ -82,7 +82,7 @@ All contributions to `php-mode` are welcome.  But please try to do the following
 
 1. Add your name to the list of ‘Contributors’ in this `README.md` file if it is not there already.
 
-2. If your contribution addresses an issue on the Github project page then include a link to the relevant issue in your commit message.
+2. If your contribution addresses an issue on the Github project page then include a single line like `Github-issue: 16` with the appropriate issue number.
 
 3. Make sure to update the constant `php-mode-modified`.
 
