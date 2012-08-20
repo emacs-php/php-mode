@@ -13,7 +13,7 @@
 (defconst php-mode-version-number "1.6.5"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2012-05-19"
+(defconst php-mode-modified "2012-08-19"
   "PHP Mode build date.")
 
 ;;; License
@@ -1086,7 +1086,7 @@ searching the PHP website."
       (1 font-lock-type-face nil t))
 
     ;; namespace imports
-    '("\\<\\(use\\)\\s-+\\(\\(?:\\sw\\|\\\\\\)+\\)"
+    '("\\<\\(use\\)\\s-+\\(\\(?:\\sw\\|\\(?:,\s-?\\)\\|\\\\\\)+\\)"
       (1 font-lock-keyword-face)
       (2 font-lock-type-face))
 
