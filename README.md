@@ -131,8 +131,8 @@ In chronological order:
 31. Bill Lovett
 32. Dias Badekas
 33. David House
-34. Tom Willemsen
-35. Olaf the Viking
-36. Maël Nison
-37. flack
+34. [Tom Willemsen](https://github.com/ryuslash)
+35. [Olaf the Viking](https://github.com/olavTHEviking)
+36. [Maël Nison](https://github.com/arcanis)
+37. [flack](https://github.com/flack)
 38. [Michele Bini](https://github.com/rev22)
