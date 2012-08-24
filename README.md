@@ -80,15 +80,15 @@ The command `php-send-region`, which is bound to `C-c C-r` by default, will exec
 
 All contributions to `php-mode` are welcome.  But please try to do the following when sending improvements or bug fixes:
 
-1. Add your name to the list of ‘Contributors’ in this `README.md` file if it is not there already.  If you have a Github page then please link your name to it, so people can see your other work.  :)
+1. Add your name to the list of ‘Contributors’ in this `README.md` file if it is not there already.  If you have a Github page then please link your name to it, so people can see your other work.  `(=^･^=)`
 
 2. If your contribution addresses an issue on the Github project page then include a single line like `Github-issue: 16` with the appropriate issue number.
 
 3. Make sure to update the constant `php-mode-modified`.
 
-4. However, Please do not modify `php-mode-version-number`.  I will decide what constitutes a bump in the version number.
+4. However, please do not modify `php-mode-version-number`.  I will decide what constitutes a bump in the version number.
 
-5. Send me a pull request here on Github.  Or if you do not have a Github account then email the patches to me at `lobbyjones at gmail dot com`.  Please try to make sure the patches are acceptable input to the comand `git am`.
+5. Send me a pull request here on Github.  Or if you do not have a Github account then email the patches to me at `lobbyjones at gmail dot com`.  Please try to make sure the patches are acceptable input to the comand `git am`.  Please note that even if you send a pull request it is very likely that I will *not* simply merge your branch through Github; I prefer to go through commits and cherry-pick them so I can review the commit messages and sign-off on them.  You can see which commits I did or did not merge by using the [`git-cherry`](http://www.kernel.org/pub/software/scm/git/docs/git-cherry.html) command.
 
 # License
 
@@ -127,8 +127,8 @@ In chronological order:
 27. Lennart Borgman
 28. Stefan Monnier
 29. Aaron S. Hawley
-30. Ian Eure
-31. Bill Lovett
+30. [Ian Eure](https://github.com/ieure)
+31. [Bill Lovett](https://github.com/lovett)
 32. Dias Badekas
 33. David House
 34. [Tom Willemsen](https://github.com/ryuslash)
