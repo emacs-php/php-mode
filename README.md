@@ -135,3 +135,4 @@ In chronological order:
 35. Olaf the Viking
 36. Maël Nison
 37. flack
+38. [Michele Bini](https://github.com/rev22)
