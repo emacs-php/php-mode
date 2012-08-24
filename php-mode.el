@@ -13,7 +13,7 @@
 (defconst php-mode-version-number "1.6.5-git7096213"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2012-08-24"
+(defconst php-mode-modified "2012-08-23"
   "PHP Mode build date.")
 
 ;;; License
