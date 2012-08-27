@@ -469,7 +469,9 @@ This is was done due to the problem reported here:
   (modify-syntax-entry ?\"   "w" php-mode-syntax-table)
   (modify-syntax-entry ?`    "\"" php-mode-syntax-table)
 
-  (set (make-local-variable 'font-lock-syntactic-keywords) nil)
+  (set (make-local-variable 'font-lock-syntactic-keywords)
+       '(("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
+	 ("\\(\'\\)\\(\\\\.\\|[^\'\n\\]\\)*\\(\'\\)" (1 "\"") (3 "\""))))
 
   (setq font-lock-maximum-decoration t
         imenu-generic-expression php-imenu-generic-expression)
@@ -1036,8 +1038,6 @@ searching the PHP website."
 ;; Set up font locking
 (defconst php-font-lock-keywords-1
   (list
-   '("\\(\"\\(\\\\.\\|[^\"\\]\\)*\"\\|'\\(\\\\.\\|[^'\\]\\)*'\\)"
-     . font-lock-string-face)
    '("#.*" . font-lock-comment-face)
    ;; Fontify constants
    (cons
