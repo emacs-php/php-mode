@@ -13,7 +13,7 @@
 (defconst php-mode-version-number "1.6.6"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2012-08-27"
+(defconst php-mode-modified "2012-09-06"
   "PHP Mode build date.")
 
 ;;; License
@@ -442,6 +442,8 @@ This is was done due to the problem reported here:
   ;; HACK: Overwrite this syntax with rules to match <?php and others.
   (set (make-local-variable 'c-opt-cpp-start) php-tags-key)
   (set (make-local-variable 'c-opt-cpp-prefix) php-tags-key)
+
+  (c-set-offset 'topmost-intro-cont 'c-lineup-cascaded-calls)
 
   (set (make-local-variable 'c-block-stmt-1-key) php-block-stmt-1-key)
   (set (make-local-variable 'c-block-stmt-2-key) php-block-stmt-2-key)
