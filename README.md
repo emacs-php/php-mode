@@ -90,6 +90,8 @@ All contributions to `php-mode` are welcome.  But please try to do the following
 
 5. Send me a pull request here on Github.  Or if you do not have a Github account then email the patches to me at `lobbyjones at gmail dot com`.  Please try to make sure the patches are acceptable input to the comand `git am`.  Please note that even if you send a pull request it is very likely that I will *not* simply merge your branch through Github; I prefer to go through commits and cherry-pick them so I can review the commit messages and sign-off on them.  You can see which commits I did or did not merge by using the [`git-cherry`](http://www.kernel.org/pub/software/scm/git/docs/git-cherry.html) command.
 
+If you are fixing a bug related to a Github issue, then first of all, thank you for the help improving `php-mode`.  Second, there is a `tests/` directory which contains PHP scripts for each issue (although not all of them).  Please consider adding a test script to that directory that documents the expected behavior and provides code that allows others to see if said behavior works properly.  Please try to follow the format of the existing tests.
+
 # License
 
 The code for `php-mode` is covered by the [GNU General Public License 3](http://www.gnu.org/copyleft/gpl.html).
