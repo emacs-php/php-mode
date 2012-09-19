@@ -467,8 +467,6 @@ This is was done due to the problem reported here:
           nil))              ; SYNTAX-BEGIN
 
   (modify-syntax-entry ?_    "_" php-mode-syntax-table)
-  (modify-syntax-entry ?'    "w" php-mode-syntax-table)
-  (modify-syntax-entry ?\"   "w" php-mode-syntax-table)
   (modify-syntax-entry ?`    "\"" php-mode-syntax-table)
 
   (set (make-local-variable 'font-lock-syntactic-keywords)
