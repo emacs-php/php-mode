@@ -71,8 +71,7 @@
 (require 'custom)
 (require 'etags)
 (eval-when-compile
-  (require 'regexp-opt)
-  (defvar c-vsemi-status-unknown-p))
+  (require 'regexp-opt))
 (require 'flymake)
 
 ;; Local variables
@@ -475,7 +474,7 @@ This is was done due to the problem reported here:
   (modify-syntax-entry ?`    "\"" php-mode-syntax-table)
   (modify-syntax-entry ?\"   "\"" php-mode-syntax-table)
 
-  (set (make-local-variable 'syntax-propertize-function)
+  (set (make-local-variable 'font-lock-syntactic-keywords)
        '(("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
 	 ("\\(\'\\)\\(\\\\.\\|[^\'\n\\]\\)*\\(\'\\)" (1 "\"") (3 "\""))))
 
