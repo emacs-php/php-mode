@@ -443,7 +443,11 @@ This is was done due to the problem reported here:
   (set (make-local-variable 'c-opt-cpp-start) php-tags-key)
   (set (make-local-variable 'c-opt-cpp-prefix) php-tags-key)
 
+  ;; These settings ensure that chained method calls line up correctly
+  ;; over multiple lines.
   (c-set-offset 'topmost-intro-cont 'c-lineup-cascaded-calls)
+  (c-set-offset 'statement-cont 'c-lineup-cascaded-calls)
+  (c-set-offset 'brace-list-entry 'c-lineup-cascaded-calls)
 
   (set (make-local-variable 'c-block-stmt-1-key) php-block-stmt-1-key)
   (set (make-local-variable 'c-block-stmt-2-key) php-block-stmt-2-key)
