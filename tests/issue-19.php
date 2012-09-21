@@ -10,8 +10,40 @@
  * $object->method()
  *        ->another();
  *
+ * Alignment should occur on the '->' characters regardless of the
+ * scope in which the method calls appear.
  */
 
-$object = new SomeClass();
-$object->method()
-       ->another();
+$object = new StdClass();
+$object->call()
+       ->something();
+
+class Whatever
+{
+    public function __construct()
+    {
+        $object = new StdClass();
+        $object->call()
+            ->something();
+    }
+
+    public function something()
+    {
+        $object = new StdClass();
+        $object->call()
+            ->something();
+    }
+}
+
+$closure = function() {
+    $object = new StdClass();
+    $object->call()
+    ->something();
+};
+
+function something()
+{
+    $object = new StdClass();
+    $object->call()
+        ->something();
+}
