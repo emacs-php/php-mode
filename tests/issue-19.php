@@ -24,26 +24,26 @@ class Whatever
     {
         $object = new StdClass();
         $object->call()
-            ->something();
+               ->something();
     }
 
     public function something()
     {
         $object = new StdClass();
         $object->call()
-            ->something();
+               ->something();
     }
 }
 
 $closure = function() {
     $object = new StdClass();
     $object->call()
-    ->something();
+           ->something();
 };
 
 function something()
 {
     $object = new StdClass();
     $object->call()
-        ->something();
+           ->something();
 }
