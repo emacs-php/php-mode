@@ -138,3 +138,4 @@ In chronological order:
 36. [Maël Nison](https://github.com/arcanis)
 37. [flack](https://github.com/flack)
 38. [Michele Bini](https://github.com/rev22)
+39. Emanuele Tomasi
