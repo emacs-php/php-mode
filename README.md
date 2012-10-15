@@ -80,7 +80,7 @@ The command `php-send-region`, which is bound to `C-c C-r` by default, will exec
 
 All contributions to `php-mode` are welcome.  But please try to do the following when sending improvements or bug fixes:
 
-1. Add your name to the list of ‘Contributors’ in this `README.md` file if it is not there already.  If you have a Github page then please link your name to it, so people can see your other work.  `(=^･^=)`
+1. Add your name to the list of ‘Contributors’ in this `README.md` file if it is not there already.  If you have a Github page then please link your name to it, so people can see your other work.
 
 2. If your contribution addresses an issue on the Github project page then include a single line like `Github-issue: 16` with the appropriate issue number.
 
