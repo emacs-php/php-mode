@@ -1244,6 +1244,32 @@ The output will appear in the buffer *PHP*."
       (call-process "php" nil php-buffer nil "-r" (clean-php-code code)))))
 
 (define-key php-mode-map "\C-c\C-r" 'php-send-region)
+
+
+(defface php-annotations-annotation-face '((t . (:inherit 'font-lock-constant-face)))
+  "Face used to highlight annotations.")
+
+(defconst php-annotations-re "\\(\\s-\\|{\\)\\(@[[:alpha:]]+\\)")
+
+(defmacro php-annotations-inside-comment-p (pos)
+  "Return non-nil if POS is inside a comment."
+  `(eq (get-char-property ,pos 'face) 'font-lock-comment-face))
+
+(defun php-annotations-font-lock-find-annotation (limit)
+  (let ((match
+	 (catch 'match
+	   (save-match-data
+	     (while (re-search-forward php-annotations-re limit t)
+	       (when (php-annotations-inside-comment-p (match-beginning 0))
+		 (goto-char (match-end 0))
+		 (throw 'match (match-data))))))))
+    (when match
+      (set-match-data match)
+      t)))
+
+(eval-after-load 'php-mode
+  '(font-lock-add-keywords 'php-mode '((php-annotations-font-lock-find-annotation (2 'php-annotations-annotation-face t)))))
+
 
 
 (provide 'php-mode)
