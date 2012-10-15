@@ -76,6 +76,41 @@ The key command `C-c C-f` will search the PHP website for documentation on the w
 
 The command `php-send-region`, which is bound to `C-c C-r` by default, will execute the selected region of PHP code.  In conjunction with the Emacs command `C-x h` you can use this to execute an entire file.  Any output will appear in a buffer called `*PHP*`.
 
+## Annotation Highlighting
+
+Projects like [Symfony](http://symfony.com/) use annotations in comments.  For example, here is code from their website:
+
+    /**
+     * @ORM\Entity
+     * @ORM\Table(name="product")
+     */
+    class Product
+    {
+        /**
+         * @ORM\Id
+         * @ORM\Column(type="integer")
+         * @ORM\GeneratedValue(strategy="AUTO")
+         */
+        protected $id;
+
+        /**
+         * @ORM\Column(type="string", length=100)
+         */
+        protected $name;
+
+        /**
+         * @ORM\Column(type="decimal", scale=2)
+         */
+        protected $price;
+
+        /**
+         * @ORM\Column(type="text")
+         */
+        protected $description;
+    }
+
+The annotations are the lines that begin with the `@` character, and `php-mode` will give these special highlighting to help them stand out.
+
 # How to Contribute
 
 All contributions to `php-mode` are welcome.  But please try to do the following when sending improvements or bug fixes:
