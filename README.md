@@ -174,3 +174,4 @@ In chronological order:
 37. [flack](https://github.com/flack)
 38. [Michele Bini](https://github.com/rev22)
 39. Emanuele Tomasi
+40. [David Maus](https://github.com/dmj)
