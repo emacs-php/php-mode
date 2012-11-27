@@ -1047,7 +1047,7 @@ searching the PHP website."
 ;; Set up font locking
 (defconst php-font-lock-keywords-1
   (list
-   '("#.*" . font-lock-comment-face)
+
    ;; Fontify constants
    (cons
     (concat "[^_$]?\\<\\(" php-constants "\\)\\>[^_]?")
