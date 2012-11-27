@@ -13,7 +13,7 @@
 (defconst php-mode-version-number "1.7"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2012-10-15"
+(defconst php-mode-modified "2012-11-27"
   "PHP Mode build date.")
 
 ;;; License
@@ -475,6 +475,8 @@ This is was done due to the problem reported here:
   (modify-syntax-entry ?_    "_" php-mode-syntax-table)
   (modify-syntax-entry ?`    "\"" php-mode-syntax-table)
   (modify-syntax-entry ?\"   "\"" php-mode-syntax-table)
+  (modify-syntax-entry ?#    "< b" php-mode-syntax-table)
+  (modify-syntax-entry ?\n   "> b" php-mode-syntax-table)
 
   (set (make-local-variable 'syntax-propertize-via-font-lock)
        '(("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
@@ -1045,7 +1047,7 @@ searching the PHP website."
 ;; Set up font locking
 (defconst php-font-lock-keywords-1
   (list
-   '("#.*" . font-lock-comment-face)
+
    ;; Fontify constants
    (cons
     (concat "[^_$]?\\<\\(" php-constants "\\)\\>[^_]?")
