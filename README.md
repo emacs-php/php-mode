@@ -48,13 +48,11 @@ Nested function calls and `array()` structures now look better by default (or at
 
     $results = Post::model()->find(
         array(
-            'select'    => 'title',
+            'select' => 'title',
             'condition' => 'postID=:postID',
-            'params'    => array(':postID' => 10),
+            'params' => array(':postID' => 10),
         )
     );
-
-(Note: The alignment of the `=>` operators is not part of these changes.)
 
 ## Anonymous Functions
 
