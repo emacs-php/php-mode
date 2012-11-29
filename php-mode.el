@@ -1088,7 +1088,7 @@ searching the PHP website."
 
 (defconst php-types
   (eval-when-compile
-    (regexp-opt '("array" "bool" "boolean" "char" "const" "double" "float"
+    (regexp-opt '("array" "bool" "boolean" "callable" "char" "const" "double" "float"
                   "int" "integer" "long" "mixed" "object" "real"
                   "string")))
   "PHP types.")
