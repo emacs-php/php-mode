@@ -1033,7 +1033,8 @@ searching the PHP website."
        "or" "require" "require_once" "return" "return new" "static" "switch"
        "then" "var" "while" "xor" "throw" "catch" "try"
        "instanceof" "catch all" "finally" "insteadof" "use" "as"
-       "clone")))
+       "clone"
+       "yield")))
   "PHP keywords.")
 
 (defconst php-identifier
