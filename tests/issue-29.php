@@ -12,5 +12,5 @@
  */
 
 $app->get("/index", function() {
-        $app->redirect("foo");
-    });
+    $app->redirect("foo");
+});
