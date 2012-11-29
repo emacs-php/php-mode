@@ -951,6 +951,10 @@ searching the PHP website."
        "FILTER_FLAG_NO_RES_RANGE"
        "FILTER_FLAG_NO_PRIV_RANGE"
 
+       ;; Password constants
+       "PASSWORD_DEFAULT"
+       "PASSWORD_BCRYPT"
+
        ;; IMAP constants
        "NIL"
        "OP_DEBUG"
