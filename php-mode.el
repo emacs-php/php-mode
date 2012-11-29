@@ -71,6 +71,7 @@
 (require 'custom)
 (require 'etags)
 (eval-when-compile
+  (require 'cl)
   (require 'regexp-opt)
   (defvar c-vsemi-status-unknown-p)
   (defvar syntax-propertize-via-font-lock))
@@ -435,6 +436,19 @@ This is was done due to the problem reported here:
 (c-set-offset 'arglist-intro 'php-lineup-arglist-intro)
 (c-set-offset 'arglist-close 'php-lineup-arglist-close)
 
+(defun php-unindent-closure ()
+  (let ((syntax (mapcar 'car c-syntactic-context)))
+    (if (and (member 'arglist-cont-nonempty syntax)
+             (or
+              (member 'statement-block-intro syntax)
+              (member 'brace-list-intro syntax)
+              (member 'brace-list-close syntax)
+              (member 'block-close syntax)))
+        (save-excursion
+          (beginning-of-line)
+          (delete-char (* (cl-count 'arglist-cont-nonempty syntax)
+                          c-basic-offset))))))
+
 ;;;###autoload
 (define-derived-mode php-mode c-mode "PHP"
   "Major mode for editing PHP code.\n\n\\{php-mode-map}"
@@ -512,7 +526,7 @@ This is was done due to the problem reported here:
 
   (setq indent-line-function 'php-cautious-indent-line)
   (setq indent-region-function 'php-cautious-indent-region)
-  (setq c-special-indent-hook nil)
+  (add-hook 'c-special-indent-hook 'php-unindent-closure)
   (setq c-at-vsemi-p-fn 'php-c-at-vsemi-p)
   (setq c-vsemi-status-unknown-p 'php-c-vsemi-status-unknown-p)
 
