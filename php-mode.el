@@ -63,19 +63,15 @@
 
 ;;; Code:
 
-(require 'add-log)
-(require 'speedbar)
 (require 'font-lock)
 (require 'cc-mode)
 (require 'cc-langs)
 (require 'custom)
-(require 'etags)
 (eval-when-compile
   (require 'cl)
   (require 'regexp-opt)
   (defvar c-vsemi-status-unknown-p)
   (defvar syntax-propertize-via-font-lock))
-(require 'flymake)
 
 ;; Local variables
 ;;;###autoload
