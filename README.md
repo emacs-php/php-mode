@@ -173,3 +173,4 @@ In chronological order:
 38. [Michele Bini](https://github.com/rev22)
 39. Emanuele Tomasi
 40. [David Maus](https://github.com/dmj)
+41. [Jakub Jankiewicz](http://jcubic.pl/)
