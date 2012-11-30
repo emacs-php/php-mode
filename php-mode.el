@@ -67,6 +67,7 @@
 (require 'cc-mode)
 (require 'cc-langs)
 (require 'custom)
+(require 'flymake)
 (eval-when-compile
   (require 'cl)
   (require 'regexp-opt)
