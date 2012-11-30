@@ -442,9 +442,10 @@ This is was done due to the problem reported here:
               (member 'brace-list-close syntax)
               (member 'block-close syntax)))
         (save-excursion
-          (beginning-of-line)
-          (delete-char (* (cl-count 'arglist-cont-nonempty syntax)
-                          c-basic-offset))))))
+          (let ((count-func (if (fboundp 'cl-count) #'cl-count #'count)))
+            (beginning-of-line)
+            (delete-char (* (cl-count 'arglist-cont-nonempty syntax)
+                            c-basic-offset)))))))
 
 ;;;###autoload
 (define-derived-mode php-mode c-mode "PHP"
