@@ -240,6 +240,20 @@ code and modules."
   (set (make-local-variable 'indent-tabs-mode) nil)
   (c-set-offset 'block-open '-)
   (c-set-offset 'block-close 0))
+
+(defun php-enable-drupal-coding-style ()
+  "Makes php-mode use coding styles that are preferable for
+working with Drupal."
+  (setq tab-width 2)
+  (setq c-basic-offset 2)
+  (setq indent-tabs-mode nil)
+  (setq fill-column 78)
+  (setq show-trailing-whitespace t)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (c-set-offset 'case-label '+)
+  (c-set-offset 'arglist-close 0)
+  (c-set-offset 'arglist-intro '+)
+  (c-set-offset 'arglist-cont-nonempty 'c-lineup-math))
 
 (defun php-mode-version ()
   "Display string describing the version of PHP mode."
