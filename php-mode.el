@@ -540,9 +540,8 @@ This is was done due to the problem reported here:
        "^\\s-*function\\s-+&?\\s-*\\(\\(\\sw\\|\\s_\\)+\\)\\s-*")
   (set (make-local-variable 'add-log-current-defun-header-regexp)
        php-beginning-of-defun-regexp)
-
-  (run-hooks 'php-mode-hook)
-  (run-hooks 'prog-mode-hook))
+  (run-hooks 'prog-mode-hook)
+  (run-hooks 'php-mode-hook))
 
 ;; Make a menu keymap (with a prompt string)
 ;; and make it the menu bar item's definition.
