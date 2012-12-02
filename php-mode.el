@@ -541,7 +541,9 @@ This is was done due to the problem reported here:
   (set (make-local-variable 'add-log-current-defun-header-regexp)
        php-beginning-of-defun-regexp)
 
+  (run-hooks 'prog-mode-hook)
   (run-hooks 'php-mode-hook))
+
 
 ;; Make a menu keymap (with a prompt string)
 ;; and make it the menu bar item's definition.
