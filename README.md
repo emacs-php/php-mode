@@ -176,3 +176,4 @@ In chronological order:
 39. Emanuele Tomasi
 40. [David Maus](https://github.com/dmj)
 41. [Jakub Jankiewicz](https://github.com/jcubic)
+42. [Marcin Antczak](https://github.com/marcinant)
