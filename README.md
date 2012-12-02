@@ -12,6 +12,8 @@ And all those mentioned in the ‘Contributors’ section below.
 
 Please email any bugs or feature requests to `lobbyjones at gmail dot com` or submit them as Issues here on the Github page.  Also please include the output of `php-mode-version` in bug reports.
 
+**Note:** [You can see all of the previous changes for each version here.](https://github.com/ejmr/php-mode/blob/master/Changelog.md)
+
 # Status
 
 **24 October 2012:**  I like to update this section roughly every six months.  Lately I have returned to working on some PHP software after a hiatus working with other technologies.  So hopefully that will mean `php-mode` will see more improvements in the near future.  In the mean time I am still accepting any and all bug reports and improvements from other developers as usual.
