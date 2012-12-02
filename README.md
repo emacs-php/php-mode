@@ -16,7 +16,7 @@ Please email any bugs or feature requests to `lobbyjones at gmail dot com` or su
 
 # Status
 
-**24 October 2012:**  I like to update this section roughly every six months.  Lately I have returned to working on some PHP software after a hiatus working with other technologies.  So hopefully that will mean `php-mode` will see more improvements in the near future.  In the mean time I am still accepting any and all bug reports and improvements from other developers as usual.
+**2 December 2012:**  Currently I am not working on any major PHP projects.  However, I do keep up with the development of PHP (i.e. following the official mailing list).  With PHP 5.5 on the horizon I will be adding basic support for new 5.5 features in the near future.  That also goes for anything promising that appears in version 5.6.0-dev, which I use for testing.  And as always I welcome any feature additions and bug fixes from users.
 
 # Features
 
