@@ -546,7 +546,7 @@ This is was done due to the problem reported here:
   (set (make-local-variable 'next-line-add-newlines) nil)
 
   ;; PEAR coding standards
-  (add-hook 'php-mode-pear-hook php-pear-coding-style-hook
+  (add-hook 'php-mode-pear-hook 'php-enable-pear-coding-style
              nil t)
 
   (if (or php-mode-force-pear
