@@ -1224,6 +1224,10 @@ searching the PHP website."
     `("[(,]\\(?:\\s-\\|\n\\)*\\(\\(?:\\sw\\|\\\\\\)+\\)\\s-+&?\\$\\sw+\\>"
       1 font-lock-type-face)
 
+    ;; Function calls qualified by namespaces
+    '("\\(?:\\(\\sw+\\)\\\\\\)+\\sw+("
+      (1 font-lock-type-face))
+
     ;; Fontify variables and function calls
     '("\\$\\(this\\|that\\)\\W" (1 font-lock-constant-face nil nil))
 
