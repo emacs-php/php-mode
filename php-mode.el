@@ -254,6 +254,22 @@ working with Drupal."
   (c-set-offset 'arglist-close 0)
   (c-set-offset 'arglist-intro '+)
   (c-set-offset 'arglist-cont-nonempty 'c-lineup-math))
+
+(defun php-enable-wordpress-coding-style ()
+  "Makes php-mode use coding styles that are preferable for
+working with Wordpress."
+  (setq indent-tabs-mode t)
+  (setq fill-column 78)
+  (setq tab-width 4)
+  (setq c-basic-offset tab-width)
+  (setq c-indent-comments-syntactically-p t)
+  (c-set-offset 'arglist-cont 0)
+  (c-set-offset 'arglist-intro '+)
+  (c-set-offset 'case-label 2)
+  (c-set-offset 'arglist-close 0)
+  (c-set-offset 'defun-close 0)
+  (c-set-offset 'defun-block-intro tab-width))
+
 
 (defun php-mode-version ()
   "Display string describing the version of PHP mode."
