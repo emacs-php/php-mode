@@ -10,10 +10,10 @@
 ;; Created: 1999-05-17
 ;; X-URL:   https://github.com/ejmr/php-mode
 
-(defconst php-mode-version-number "1.8"
+(defconst php-mode-version-number "1.9"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2012-11-28"
+(defconst php-mode-modified "2012-12-11"
   "PHP Mode build date.")
 
 ;;; License
@@ -230,6 +230,45 @@ buffer before warning, but this is is not very smart; e.g. if you
 have any tags inside a PHP string, it will be fooled."
   :type '(choice (const :tag "Warg" t) (const "Don't warn" nil))
   :group 'php)
+
+
+(defun php-enable-pear-coding-style ()
+  "Sets up php-mode to use the coding styles preferred for PEAR
+code and modules."
+  (set (make-local-variable 'tab-width) 4)
+  (set (make-local-variable 'c-basic-offset) 4)
+  (set (make-local-variable 'indent-tabs-mode) nil)
+  (c-set-offset 'block-open '-)
+  (c-set-offset 'block-close 0))
+
+(defun php-enable-drupal-coding-style ()
+  "Makes php-mode use coding styles that are preferable for
+working with Drupal."
+  (setq tab-width 2)
+  (setq c-basic-offset 2)
+  (setq indent-tabs-mode nil)
+  (setq fill-column 78)
+  (setq show-trailing-whitespace t)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (c-set-offset 'case-label '+)
+  (c-set-offset 'arglist-close 0)
+  (c-set-offset 'arglist-intro '+)
+  (c-set-offset 'arglist-cont-nonempty 'c-lineup-math))
+
+(defun php-enable-wordpress-coding-style ()
+  "Makes php-mode use coding styles that are preferable for
+working with Wordpress."
+  (setq indent-tabs-mode t)
+  (setq fill-column 78)
+  (setq tab-width 4)
+  (setq c-basic-offset tab-width)
+  (setq c-indent-comments-syntactically-p t)
+  (c-set-offset 'arglist-cont 0)
+  (c-set-offset 'arglist-intro '+)
+  (c-set-offset 'case-label 2)
+  (c-set-offset 'arglist-close 0)
+  (c-set-offset 'defun-close 0)
+  (c-set-offset 'defun-block-intro tab-width))
 
 
 (defun php-mode-version ()
@@ -507,13 +546,8 @@ This is was done due to the problem reported here:
   (set (make-local-variable 'next-line-add-newlines) nil)
 
   ;; PEAR coding standards
-  (add-hook 'php-mode-pear-hook
-            (lambda ()
-              (set (make-local-variable 'tab-width) 4)
-              (set (make-local-variable 'c-basic-offset) 4)
-              (set (make-local-variable 'indent-tabs-mode) nil)
-              (c-set-offset 'block-open' - )
-              (c-set-offset 'block-close' 0 )) nil t)
+  (add-hook 'php-mode-pear-hook 'php-enable-pear-coding-style
+             nil t)
 
   (if (or php-mode-force-pear
           (and (stringp buffer-file-name)
@@ -539,9 +573,7 @@ This is was done due to the problem reported here:
   (set (make-local-variable 'defun-prompt-regexp)
        "^\\s-*function\\s-+&?\\s-*\\(\\(\\sw\\|\\s_\\)+\\)\\s-*")
   (set (make-local-variable 'add-log-current-defun-header-regexp)
-       php-beginning-of-defun-regexp)
-  (run-hooks 'prog-mode-hook)
-  (run-hooks 'php-mode-hook))
+       php-beginning-of-defun-regexp))
 
 ;; Make a menu keymap (with a prompt string)
 ;; and make it the menu bar item's definition.
@@ -953,6 +985,10 @@ searching the PHP website."
        "FILTER_FLAG_NO_RES_RANGE"
        "FILTER_FLAG_NO_PRIV_RANGE"
 
+       ;; Password constants
+       "PASSWORD_DEFAULT"
+       "PASSWORD_BCRYPT"
+
        ;; IMAP constants
        "NIL"
        "OP_DEBUG"
@@ -1029,13 +1065,55 @@ searching the PHP website."
     (regexp-opt
      ;; "class", "new" and "extends" get special treatment
      ;; "case" gets special treatment elsewhere
-     '("and" "break" "continue" "declare" "default" "die" "do" "echo" "else" "elseif"
-       "endfor" "endforeach" "endif" "endswitch" "endwhile" "exit"
-       "extends" "for" "foreach" "global" "if" "include" "include_once"
-       "or" "require" "require_once" "return" "return new" "static" "switch"
-       "then" "var" "while" "xor" "throw" "catch" "try"
-       "instanceof" "catch all" "finally" "insteadof" "use" "as"
-       "clone")))
+     '("and"
+       "array"
+       "as"
+       "break"
+       "catch all"
+       "catch"
+       "clone"
+       "continue"
+       "declare"
+       "default"
+       "die"
+       "do"
+       "echo"
+       "else"
+       "elseif"
+       "empty"
+       "endfor"
+       "endforeach"
+       "endif"
+       "endswitch"
+       "endwhile"
+       "exit"
+       "extends"
+       "finally"
+       "for"
+       "foreach"
+       "global"
+       "if"
+       "include"
+       "include_once"
+       "instanceof"
+       "insteadof"
+       "isset"
+       "list"
+       "or"
+       "require"
+       "require_once"
+       "return"
+       "static"
+       "switch"
+       "then"
+       "throw"
+       "try"
+       "unset"
+       "use"
+       "var"
+       "while"
+       "xor"
+       "yield")))
   "PHP keywords.")
 
 (defconst php-identifier
@@ -1045,7 +1123,7 @@ searching the PHP website."
 
 (defconst php-types
   (eval-when-compile
-    (regexp-opt '("array" "bool" "boolean" "char" "const" "double" "float"
+    (regexp-opt '("array" "bool" "boolean" "callable" "char" "const" "double" "float"
                   "int" "integer" "long" "mixed" "object" "real"
                   "string")))
   "PHP types.")
@@ -1179,6 +1257,10 @@ searching the PHP website."
     ;; PHP5: function declarations may contain classes as parameters type
     `("[(,]\\(?:\\s-\\|\n\\)*\\(\\(?:\\sw\\|\\\\\\)+\\)\\s-+&?\\$\\sw+\\>"
       1 font-lock-type-face)
+
+    ;; Function calls qualified by namespaces
+    '("\\(?:\\(\\sw+\\)\\\\\\)+\\sw+("
+      (1 font-lock-type-face))
 
     ;; Fontify variables and function calls
     '("\\$\\(this\\|that\\)\\W" (1 font-lock-constant-face nil nil))
