@@ -951,6 +951,10 @@ searching the PHP website."
        "FILTER_FLAG_NO_RES_RANGE"
        "FILTER_FLAG_NO_PRIV_RANGE"
 
+       ;; Password constants
+       "PASSWORD_DEFAULT"
+       "PASSWORD_BCRYPT"
+
        ;; IMAP constants
        "NIL"
        "OP_DEBUG"
@@ -1027,13 +1031,55 @@ searching the PHP website."
     (regexp-opt
      ;; "class", "new" and "extends" get special treatment
      ;; "case" gets special treatment elsewhere
-     '("and" "break" "continue" "declare" "default" "die" "do" "echo" "else" "elseif"
-       "endfor" "endforeach" "endif" "endswitch" "endwhile" "exit"
-       "extends" "for" "foreach" "global" "if" "include" "include_once"
-       "or" "require" "require_once" "return" "return new" "static" "switch"
-       "then" "var" "while" "xor" "throw" "catch" "try"
-       "instanceof" "catch all" "finally" "insteadof" "use" "as"
-       "clone")))
+     '("and"
+       "array"
+       "as"
+       "break"
+       "catch all"
+       "catch"
+       "clone"
+       "continue"
+       "declare"
+       "default"
+       "die"
+       "do"
+       "echo"
+       "else"
+       "elseif"
+       "empty"
+       "endfor"
+       "endforeach"
+       "endif"
+       "endswitch"
+       "endwhile"
+       "exit"
+       "extends"
+       "finally"
+       "for"
+       "foreach"
+       "global"
+       "if"
+       "include"
+       "include_once"
+       "instanceof"
+       "insteadof"
+       "isset"
+       "list"
+       "or"
+       "require"
+       "require_once"
+       "return"
+       "static"
+       "switch"
+       "then"
+       "throw"
+       "try"
+       "unset"
+       "use"
+       "var"
+       "while"
+       "xor"
+       "yield")))
   "PHP keywords.")
 
 (defconst php-identifier
@@ -1043,7 +1089,7 @@ searching the PHP website."
 
 (defconst php-types
   (eval-when-compile
-    (regexp-opt '("array" "bool" "boolean" "char" "const" "double" "float"
+    (regexp-opt '("array" "bool" "boolean" "callable" "char" "const" "double" "float"
                   "int" "integer" "long" "mixed" "object" "real"
                   "string")))
   "PHP types.")

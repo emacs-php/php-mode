@@ -1,6 +1,6 @@
 # php-mode
 
-This updates `php-mode` with features to make it more friendly to use with PHP 5.4.  It is based on the work of:
+This updates `php-mode` with features to make it more friendly to use with PHP 5.4 and 5.5.  It is based on the work of:
 
 1. Turadg Aleahmad
 
