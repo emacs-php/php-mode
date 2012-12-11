@@ -6,8 +6,25 @@ because when I (Eric James Michael Ritz) took over the project I did
 not have a record of all changes available.
 
 
-1.7
+1.9
 ---
+
+* Add all new PHP 5.5 keywords.
+* Add new test cases for indentation and highlighting.
+* Add new PHP 5.5 `PASSWORD_*` constants.
+* Do not treat function-like language constructs as functions,
+  e.g. `array()`.
+* Treat `callable` as a valid type hint.
+* Fix an error regarding the requirement of `flymake`.
+* Fix a syntax error in `php-unindent-closure`.
+* Add support Drupal and WordPress coding styles.
+* Document how to change the default coding style in the README.
+* Fix an issue with running hooks after loading `php-mode`.
+* Properly fontify function calls using one namespace qualifier.
+
+
+1.7 and 1.8
+-----------
 
 * Line up cascaded method calls.
 * Add test cases for indentation features.
