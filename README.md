@@ -111,6 +111,18 @@ Projects like [Symfony](http://symfony.com/) use annotations in comments.  For e
 
 The annotations are the lines that begin with the `@` character, and `php-mode` will give these special highlighting to help them stand out.
 
+## Coding Styles
+
+By default `php-mode` tries to provide a reasonable style for indentation and formatting.  However, it provides other options suited for particular projects which you may find useful.  These coding styles are available through three functions:
+
+1. `php-enable-pear-coding-style`
+2. `php-enable-drupal-coding-style`
+3. `php-enable-wordpress-coding-style`
+
+They will help format your code for PEAR projects, or work on the Drupal and WordPress software, respectively.  You may enable any of them by default by adding the following to your Emacs configuration file:
+
+    (add-hook 'php-mode-hook 'php-enable-wordpress-coding-style)
+
 # How to Contribute
 
 All contributions to `php-mode` are welcome.  But please try to do the following when sending improvements or bug fixes:

@@ -232,6 +232,45 @@ have any tags inside a PHP string, it will be fooled."
   :group 'php)
 
 
+(defun php-enable-pear-coding-style ()
+  "Sets up php-mode to use the coding styles preferred for PEAR
+code and modules."
+  (set (make-local-variable 'tab-width) 4)
+  (set (make-local-variable 'c-basic-offset) 4)
+  (set (make-local-variable 'indent-tabs-mode) nil)
+  (c-set-offset 'block-open '-)
+  (c-set-offset 'block-close 0))
+
+(defun php-enable-drupal-coding-style ()
+  "Makes php-mode use coding styles that are preferable for
+working with Drupal."
+  (setq tab-width 2)
+  (setq c-basic-offset 2)
+  (setq indent-tabs-mode nil)
+  (setq fill-column 78)
+  (setq show-trailing-whitespace t)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (c-set-offset 'case-label '+)
+  (c-set-offset 'arglist-close 0)
+  (c-set-offset 'arglist-intro '+)
+  (c-set-offset 'arglist-cont-nonempty 'c-lineup-math))
+
+(defun php-enable-wordpress-coding-style ()
+  "Makes php-mode use coding styles that are preferable for
+working with Wordpress."
+  (setq indent-tabs-mode t)
+  (setq fill-column 78)
+  (setq tab-width 4)
+  (setq c-basic-offset tab-width)
+  (setq c-indent-comments-syntactically-p t)
+  (c-set-offset 'arglist-cont 0)
+  (c-set-offset 'arglist-intro '+)
+  (c-set-offset 'case-label 2)
+  (c-set-offset 'arglist-close 0)
+  (c-set-offset 'defun-close 0)
+  (c-set-offset 'defun-block-intro tab-width))
+
+
 (defun php-mode-version ()
   "Display string describing the version of PHP mode."
   (interactive)
@@ -507,13 +546,8 @@ This is was done due to the problem reported here:
   (set (make-local-variable 'next-line-add-newlines) nil)
 
   ;; PEAR coding standards
-  (add-hook 'php-mode-pear-hook
-            (lambda ()
-              (set (make-local-variable 'tab-width) 4)
-              (set (make-local-variable 'c-basic-offset) 4)
-              (set (make-local-variable 'indent-tabs-mode) nil)
-              (c-set-offset 'block-open' - )
-              (c-set-offset 'block-close' 0 )) nil t)
+  (add-hook 'php-mode-pear-hook php-pear-coding-style-hook
+             nil t)
 
   (if (or php-mode-force-pear
           (and (stringp buffer-file-name)
