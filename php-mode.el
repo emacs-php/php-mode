@@ -217,6 +217,16 @@ You can replace \"en\" with your ISO language code."
   :type 'hook
   :group 'php)
 
+(defcustom php-mode-drupal-hook nil
+  "Hook called when a Drupal file is opened with `php-mode'."
+  :type 'hook
+  :group 'php)
+
+(defcustom php-mode-wordpress-hook nil
+  "Hook called when a WordPress file is opened with `php-mode'."
+  :type 'hook
+  :group 'php)
+
 (defcustom php-mode-force-pear nil
   "Normally PEAR coding rules are enforced only when the filename contains \"PEAR.\"
 Turning this on will force PEAR rules on all PHP files."
@@ -231,10 +241,36 @@ have any tags inside a PHP string, it will be fooled."
   :type '(choice (const :tag "Warg" t) (const "Don't warn" nil))
   :group 'php)
 
+(defcustom php-mode-coding-style 'pear
+  "Select default coding style to use with php-mode.
+This variable can take one of the following symbol values:
+
+`PEAR' - use coding styles preferred for PEAR code and modules.
+
+`Drupal' - use coding styles preferred for working with Drupal projects.
+
+`WordPress' - use coding styles preferred for working with WordPress projects."
+  :type '(choice (const :tag "PEAR" pear)
+				 (const :tag "Drupal" drupal)
+				 (const :tag "WordPress" wordpress))
+  :group 'php
+  :set 'php-mode-custom-coding-style-set
+  :initialize 'custom-initialize-default)
+
+(defun php-mode-custom-coding-style-set (sym value)
+  (set         sym value)
+  (set-default sym value)
+  (cond ((eq value 'pear)
+  		 (php-enable-pear-coding-style))
+		((eq value 'drupal)
+  		 (php-enable-drupal-coding-style))
+		((eq value 'wordpress)
+		 (php-enable-wordpress-coding-style))))
 
 (defun php-enable-pear-coding-style ()
   "Sets up php-mode to use the coding styles preferred for PEAR
 code and modules."
+  (interactive)
   (set (make-local-variable 'tab-width) 4)
   (set (make-local-variable 'c-basic-offset) 4)
   (set (make-local-variable 'indent-tabs-mode) nil)
@@ -244,6 +280,7 @@ code and modules."
 (defun php-enable-drupal-coding-style ()
   "Makes php-mode use coding styles that are preferable for
 working with Drupal."
+  (interactive)
   (setq tab-width 2)
   (setq c-basic-offset 2)
   (setq indent-tabs-mode nil)
@@ -258,6 +295,7 @@ working with Drupal."
 (defun php-enable-wordpress-coding-style ()
   "Makes php-mode use coding styles that are preferable for
 working with Wordpress."
+  (interactive)
   (setq indent-tabs-mode t)
   (setq fill-column 78)
   (setq tab-width 4)
@@ -548,6 +586,21 @@ This is was done due to the problem reported here:
   ;; PEAR coding standards
   (add-hook 'php-mode-pear-hook 'php-enable-pear-coding-style
              nil t)
+
+  ;; ;; Drupal coding standards
+  (add-hook 'php-mode-drupal-hook 'php-enable-drupal-coding-style
+             nil t)
+
+  ;; ;; WordPress coding standards
+  (add-hook 'php-mode-wordpress-hook 'php-enable-wordpress-coding-style
+             nil t)
+
+  (cond ((eq php-mode-coding-style 'pear)
+  		 (run-hooks 'php-mode-pear-hook))
+  		((eq php-mode-coding-style 'drupal)
+  		 (run-hooks 'php-mode-drupal-hook))
+  		((eq php-mode-coding-style 'wordpress)
+  		 (run-hooks 'php-mode-wordpress-hook)))
 
   (if (or php-mode-force-pear
           (and (stringp buffer-file-name)
