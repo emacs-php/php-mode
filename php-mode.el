@@ -235,6 +235,7 @@ have any tags inside a PHP string, it will be fooled."
 (defun php-enable-pear-coding-style ()
   "Sets up php-mode to use the coding styles preferred for PEAR
 code and modules."
+  (interactive)
   (set (make-local-variable 'tab-width) 4)
   (set (make-local-variable 'c-basic-offset) 4)
   (set (make-local-variable 'indent-tabs-mode) nil)
@@ -244,6 +245,7 @@ code and modules."
 (defun php-enable-drupal-coding-style ()
   "Makes php-mode use coding styles that are preferable for
 working with Drupal."
+  (interactive)
   (setq tab-width 2)
   (setq c-basic-offset 2)
   (setq indent-tabs-mode nil)
@@ -258,6 +260,7 @@ working with Drupal."
 (defun php-enable-wordpress-coding-style ()
   "Makes php-mode use coding styles that are preferable for
 working with Wordpress."
+  (interactive)
   (setq indent-tabs-mode t)
   (setq fill-column 78)
   (setq tab-width 4)
