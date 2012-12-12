@@ -217,6 +217,16 @@ You can replace \"en\" with your ISO language code."
   :type 'hook
   :group 'php)
 
+(defcustom php-mode-drupal-hook nil
+  "Hook called when a Drupal file is opened with `php-mode'."
+  :type 'hook
+  :group 'php)
+
+(defcustom php-mode-wordpress-hook nil
+  "Hook called when a WordPress file is opened with `php-mode'."
+  :type 'hook
+  :group 'php)
+
 (defcustom php-mode-force-pear nil
   "Normally PEAR coding rules are enforced only when the filename contains \"PEAR.\"
 Turning this on will force PEAR rules on all PHP files."
@@ -565,6 +575,13 @@ This is was done due to the problem reported here:
   ;; PEAR coding standards
   (add-hook 'php-mode-pear-hook 'php-enable-pear-coding-style
              nil t)
+
+  (add-hook 'php-mode-drupal-hook 'php-enable-drupal-coding-style
+             nil t)
+
+  (add-hook 'php-mode-wordpress-hook 'php-enable-wordpress-coding-style
+             nil t)
+
 
   (if (or php-mode-force-pear
           (and (stringp buffer-file-name)
