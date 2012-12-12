@@ -231,6 +231,20 @@ have any tags inside a PHP string, it will be fooled."
   :type '(choice (const :tag "Warg" t) (const "Don't warn" nil))
   :group 'php)
 
+(defcustom php-mode-coding-style 'pear
+  "Select default coding style to use with php-mode.
+This variable can take one of the following symbol values:
+
+`pear' - use coding styles preferred for PEAR code and modules.
+
+`drupal' - use coding styles preferred for working with Drupal projects.
+
+`wordpress' - use coding styles preferred for working with WordPress projects."
+  :type '(radio (const :tag "PEAR" pear)
+				(const :tag "Drupal" drupal)
+				(const :tag "WordPress" wordpress))
+  :group 'php)
+
 
 (defun php-enable-pear-coding-style ()
   "Sets up php-mode to use the coding styles preferred for PEAR
