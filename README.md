@@ -119,9 +119,7 @@ By default `php-mode` tries to provide a reasonable style for indentation and fo
 2. `php-enable-drupal-coding-style`
 3. `php-enable-wordpress-coding-style`
 
-They will help format your code for PEAR projects, or work on the Drupal and WordPress software, respectively.  You may enable any of them by default by adding the following to your Emacs configuration file:
-
-    (add-hook 'php-mode-hook 'php-enable-wordpress-coding-style)
+They will help format your code for PEAR projects, or work on the Drupal and WordPress software, respectively.  You may enable any of them by default by running `M-x customize-group <RET> php` and looking for the ‘PHP Mode Coding Style’ option.
 
 # How to Contribute
 
