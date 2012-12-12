@@ -250,10 +250,22 @@ This variable can take one of the following symbol values:
 `Drupal' - use coding styles preferred for working with Drupal projects.
 
 `WordPress' - use coding styles preferred for working with WordPress projects."
-  :type '(radio (const :tag "PEAR" pear)
-                (const :tag "Drupal" drupal)
-                (const :tag "WordPress" wordpress))
-  :group 'php)
+  :type '(choice (const :tag "PEAR" pear)
+				 (const :tag "Drupal" drupal)
+				 (const :tag "WordPress" wordpress))
+  :group 'php
+  :set 'php-mode-custom-coding-style-set
+  :initialize 'custom-initialize-default)
+
+(defun php-mode-custom-coding-style-set (sym value)
+  (set         sym value)
+  (set-default sym value)
+  (cond ((eq value 'pear)
+  		 (php-enable-pear-coding-style))
+		((eq value 'drupal)
+  		 (php-enable-drupal-coding-style))
+		((eq value 'wordpress)
+		 (php-enable-wordpress-coding-style))))
 
 
 (defun php-enable-pear-coding-style ()
@@ -576,17 +588,20 @@ This is was done due to the problem reported here:
   (add-hook 'php-mode-pear-hook 'php-enable-pear-coding-style
              nil t)
 
-  ;; Drupal coding standards
+  ;; ;; Drupal coding standards
   (add-hook 'php-mode-drupal-hook 'php-enable-drupal-coding-style
              nil t)
 
-  ;; WordPress coding standards
+  ;; ;; WordPress coding standards
   (add-hook 'php-mode-wordpress-hook 'php-enable-wordpress-coding-style
              nil t)
 
-  (cond ((eq php-mode-coding-style 'pear) (message "PEAR style"))
-		((eq php-mode-coding-style 'drupal) (message "Drupal style"))
-		((eq php-mode-coding-style 'wordpress) (message "Wordpress style")))
+  (cond ((eq php-mode-coding-style 'pear)
+  		 (run-hooks 'php-mode-pear-hook))
+  		((eq php-mode-coding-style 'drupal)
+  		 (run-hooks 'php-mode-drupal-hook))
+  		((eq php-mode-coding-style 'wordpress)
+  		 (run-hooks 'php-mode-wordpress-hook)))
 
   (if (or php-mode-force-pear
           (and (stringp buffer-file-name)
