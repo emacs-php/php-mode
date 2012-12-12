@@ -241,8 +241,8 @@ This variable can take one of the following symbol values:
 
 `wordpress' - use coding styles preferred for working with WordPress projects."
   :type '(radio (const :tag "PEAR" pear)
-				(const :tag "Drupal" drupal)
-				(const :tag "WordPress" wordpress))
+                (const :tag "Drupal" drupal)
+                (const :tag "WordPress" wordpress))
   :group 'php)
 
 
