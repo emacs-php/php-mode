@@ -245,11 +245,11 @@ have any tags inside a PHP string, it will be fooled."
   "Select default coding style to use with php-mode.
 This variable can take one of the following symbol values:
 
-`pear' - use coding styles preferred for PEAR code and modules.
+`PEAR' - use coding styles preferred for PEAR code and modules.
 
-`drupal' - use coding styles preferred for working with Drupal projects.
+`Drupal' - use coding styles preferred for working with Drupal projects.
 
-`wordpress' - use coding styles preferred for working with WordPress projects."
+`WordPress' - use coding styles preferred for working with WordPress projects."
   :type '(radio (const :tag "PEAR" pear)
                 (const :tag "Drupal" drupal)
                 (const :tag "WordPress" wordpress))
@@ -576,12 +576,17 @@ This is was done due to the problem reported here:
   (add-hook 'php-mode-pear-hook 'php-enable-pear-coding-style
              nil t)
 
+  ;; Drupal coding standards
   (add-hook 'php-mode-drupal-hook 'php-enable-drupal-coding-style
              nil t)
 
+  ;; WordPress coding standards
   (add-hook 'php-mode-wordpress-hook 'php-enable-wordpress-coding-style
              nil t)
 
+  (cond ((eq php-mode-coding-style 'pear) (message "PEAR style"))
+		((eq php-mode-coding-style 'drupal) (message "Drupal style"))
+		((eq php-mode-coding-style 'wordpress) (message "Wordpress style")))
 
   (if (or php-mode-force-pear
           (and (stringp buffer-file-name)
