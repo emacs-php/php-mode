@@ -5,7 +5,8 @@
  *
  * Indenting the code below, particularly the closures, should not
  * cause any problems such as the long backtrace reported in the issue
- * URL above.
+ * URL above.  This code helps us test, for example, that the Elisp
+ * function php-unindent-closure works correctly.
  */
 
 $di->set('config', function () use ($config) {
