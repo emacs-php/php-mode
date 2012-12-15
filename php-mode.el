@@ -13,7 +13,7 @@
 (defconst php-mode-version-number "1.9"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2012-12-11"
+(defconst php-mode-modified "2012-12-14"
   "PHP Mode build date.")
 
 ;;; License
@@ -522,7 +522,7 @@ This is was done due to the problem reported here:
         (save-excursion
           (let ((count-func (if (fboundp 'cl-count) #'cl-count #'count)))
             (beginning-of-line)
-            (delete-char (* (cl-count 'arglist-cont-nonempty syntax)
+            (delete-char (* (funcall count-func 'arglist-cont-nonempty syntax)
                             c-basic-offset)))))))
 
 ;;;###autoload
