@@ -2,7 +2,7 @@
 
 This updates `php-mode` with features to make it more friendly to use with PHP 5.4 and 5.5.  It is based on the work of:
 
-1. Turadg Aleahmad
+1. Turadg Aleahmad: The original author.
 
 2. Aaron S. Hawley
 
