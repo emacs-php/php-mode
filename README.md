@@ -137,6 +137,10 @@ All contributions to `php-mode` are welcome.  But please try to do the following
 
 If you are fixing a bug related to a Github issue, then first of all, thank you for the help improving `php-mode`.  Second, there is a `tests/` directory which contains PHP scripts for each issue (although not all of them).  Please consider adding a test script to that directory that documents the expected behavior and provides code that allows others to see if said behavior works properly.  Please try to follow the format of the existing tests.
 
+# The Wiki
+
+The Github project page [has a wiki](https://github.com/ejmr/php-mode/wiki) that you should feel free to edit.  The wiki lists the features and bugs that are on plan to include in upcoming versions of `php-mode`.  It is also a place to add any tips to make the mode more useful.
+
 # License
 
 The code for `php-mode` is covered by the [GNU General Public License 3](http://www.gnu.org/copyleft/gpl.html).
