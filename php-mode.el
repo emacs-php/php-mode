@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.9"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2012-12-16"
+(defconst php-mode-modified "2012-12-20"
   "PHP Mode build date.")
 
 ;;; License
@@ -67,10 +67,15 @@
 (require 'custom)
 (require 'flymake)
 (eval-when-compile
-  (require 'cl)
+  (require 'cl-lib)
   (require 'regexp-opt)
   (defvar c-vsemi-status-unknown-p)
   (defvar syntax-propertize-via-font-lock))
+
+;;; Emacs 24.3 obsoletes flet in favor of cl-flet.  So if we are not
+;;; using that version then we revert to using flet.
+(unless (fboundp 'cl-flet)
+  (defalias 'cl-flet 'flet))
 
 ;; Local variables
 ;;;###autoload
@@ -778,7 +783,7 @@ current `tags-file-name'."
 for the word at point.  The function returns t if the requested
 documentation exists, and nil otherwise."
   (interactive)
-  (flet ((php-function-file-for (name)
+  (cl-flet ((php-function-file-for (name)
                                 (expand-file-name
                                  (format "function.%s.html"
                                          (replace-regexp-in-string "_" "-" name))
@@ -796,7 +801,7 @@ will first try searching the local documentation.  If the
 requested documentation does not exist it will fallback to
 searching the PHP website."
   (interactive)
-  (flet ((php-search-web-documentation ()
+  (cl-flet ((php-search-web-documentation ()
                                        (browse-url (concat php-search-url (current-word)))))
     (if (and (stringp php-manual-path)
              (not (string= php-manual-path "")))
@@ -1385,7 +1390,7 @@ The output will appear in the buffer *PHP*."
     ;; Calling 'php -r' will fail if we send it code that starts with
     ;; '<?php', which is likely.  So we run the code through this
     ;; function to check for that prefix and remove it.
-    (flet ((clean-php-code (code)
+    (cl-flet ((clean-php-code (code)
                            (if (string-prefix-p "<?php" code t)
                                (substring code 5)
                              code)))
