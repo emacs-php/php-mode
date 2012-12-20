@@ -73,6 +73,11 @@
   (require 'regexp-opt)
   (defvar c-vsemi-status-unknown-p)
   (defvar syntax-propertize-via-font-lock))
+
+;;; Emacs 24.3 obsoletes flet in favor of cl-flet.  So if we are not
+;;; using that version then we revert to using flet.
+(unless (fboundp 'cl-flet)
+  (defalias 'cl-flet 'flet))
 
 ;; Local variables
 ;;;###autoload
