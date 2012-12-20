@@ -67,7 +67,8 @@
 (require 'custom)
 (require 'flymake)
 (eval-when-compile
-  (require 'cl-lib)
+  (unless (require 'cl-lib nil t)
+    (require 'cl))
   (require 'regexp-opt)
   (defvar c-vsemi-status-unknown-p)
   (defvar syntax-propertize-via-font-lock))
