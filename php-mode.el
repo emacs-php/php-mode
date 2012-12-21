@@ -545,7 +545,6 @@ This is was done due to the problem reported here:
   ;; These settings ensure that chained method calls line up correctly
   ;; over multiple lines.
   (c-set-offset 'topmost-intro-cont 'c-lineup-cascaded-calls)
-  (c-set-offset 'statement-cont 'c-lineup-cascaded-calls)
   (c-set-offset 'brace-list-entry 'c-lineup-cascaded-calls)
 
   (set (make-local-variable 'c-block-stmt-1-key) php-block-stmt-1-key)
