@@ -280,7 +280,8 @@ code and modules."
   (set (make-local-variable 'c-basic-offset) 4)
   (set (make-local-variable 'indent-tabs-mode) nil)
   (c-set-offset 'block-open '-)
-  (c-set-offset 'block-close 0))
+  (c-set-offset 'block-close 0)
+  (c-set-offset 'statement-cont '+))
 
 (defun php-enable-drupal-coding-style ()
   "Makes php-mode use coding styles that are preferable for
@@ -295,7 +296,8 @@ working with Drupal."
   (c-set-offset 'case-label '+)
   (c-set-offset 'arglist-close 0)
   (c-set-offset 'arglist-intro '+)
-  (c-set-offset 'arglist-cont-nonempty 'c-lineup-math))
+  (c-set-offset 'arglist-cont-nonempty 'c-lineup-math)
+  (c-set-offset 'statement-cont '+))
 
 (defun php-enable-wordpress-coding-style ()
   "Makes php-mode use coding styles that are preferable for
@@ -311,7 +313,8 @@ working with Wordpress."
   (c-set-offset 'case-label 2)
   (c-set-offset 'arglist-close 0)
   (c-set-offset 'defun-close 0)
-  (c-set-offset 'defun-block-intro tab-width))
+  (c-set-offset 'defun-block-intro tab-width)
+  (c-set-offset 'statement-cont '+))
 
 
 (defun php-mode-version ()
