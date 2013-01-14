@@ -1,6 +1,6 @@
 # php-mode
 
-This updates `php-mode` with features to make it more friendly to use with PHP 5.4 and 5.5.  It is based on the work of:
+This updates php-mode with features to make it more friendly to use with PHP 5.4 and 5.5.  It is based on the work of:
 
 1. Turadg Aleahmad: The original author.
 
@@ -22,7 +22,7 @@ Please email any bugs or feature requests to `lobbyjones at gmail dot com` or su
 
 ## New Keywords
 
-Now `php-mode` supports syntax highlighting for new keywords which were added as part of PHP 5.4, e.g. those related to traits, such as `insteadof`.  Also supported are the older keywords `clone` and `default`.
+Now php-mode supports syntax highlighting for new keywords which were added as part of PHP 5.4, e.g. those related to traits, such as `insteadof`.  Also supported are the older keywords `clone` and `default`.
 
 ## Constants
 
@@ -70,7 +70,7 @@ By customizing the variable `php-executable` you can enable Flymake mode in orde
 
 ## Search Local Documentation
 
-The key command `C-c C-f` will search the PHP website for documentation on the word under the cursor.  However, if you have a [local copy of the PHP documentation](http://us2.php.net/download-docs.php) then `php-mode` will try searching that documentation first.  All you need to do is customize the variable `php-manual-path` and give it the path to your copy of the documentation.  If `php-mode` cannot find something locally then it will still fallback on searching the PHP website.
+The key command `C-c C-f` will search the PHP website for documentation on the word under the cursor.  However, if you have a [local copy of the PHP documentation](http://us2.php.net/download-docs.php) then php-mode will try searching that documentation first.  All you need to do is customize the variable `php-manual-path` and give it the path to your copy of the documentation.  If php-mode cannot find something locally then it will still fallback on searching the PHP website.
 
 ## Executing Regions of PHP
 
@@ -109,11 +109,11 @@ Projects like [Symfony](http://symfony.com/) use annotations in comments.  For e
         protected $description;
     }
 
-The annotations are the lines that begin with the `@` character, and `php-mode` will give these special highlighting to help them stand out.
+The annotations are the lines that begin with the `@` character, and php-mode will give these special highlighting to help them stand out.
 
 ## Coding Styles
 
-By default `php-mode` tries to provide a reasonable style for indentation and formatting.  However, it provides other options suited for particular projects which you may find useful.  These coding styles are available through three functions:
+By default php-mode tries to provide a reasonable style for indentation and formatting.  However, it provides other options suited for particular projects which you may find useful.  These coding styles are available through three functions:
 
 1. `php-enable-pear-coding-style`
 2. `php-enable-drupal-coding-style`
@@ -123,7 +123,7 @@ They will help format your code for PEAR projects, or work on the Drupal and Wor
 
 # How to Contribute
 
-All contributions to `php-mode` are welcome.  But please try to do the following when sending improvements or bug fixes:
+All contributions to php-mode are welcome.  But please try to do the following when sending improvements or bug fixes:
 
 1. Add your name to the list of ‘Contributors’ in this `README.md` file if it is not there already.  If you have a Github page then please link your name to it, so people can see your other work.
 
@@ -135,15 +135,15 @@ All contributions to `php-mode` are welcome.  But please try to do the following
 
 5. Send me a pull request here on Github.  Or if you do not have a Github account then email the patches to me at `lobbyjones at gmail dot com`.  Please try to make sure the patches are acceptable input to the comand `git am`.  Please note that even if you send a pull request it is very likely that I will *not* simply merge your branch through Github; I prefer to go through commits and cherry-pick them so I can review the commit messages and sign-off on them.  You can see which commits I did or did not merge by using the [`git-cherry`](http://www.kernel.org/pub/software/scm/git/docs/git-cherry.html) command.
 
-If you are fixing a bug related to a Github issue, then first of all, thank you for the help improving `php-mode`.  Second, there is a `tests/` directory which contains PHP scripts for each issue (although not all of them).  Please consider adding a test script to that directory that documents the expected behavior and provides code that allows others to see if said behavior works properly.  Please try to follow the format of the existing tests.
+If you are fixing a bug related to a Github issue, then first of all, thank you for the help improving php-mode.  Second, there is a `tests/` directory which contains PHP scripts for each issue (although not all of them).  Please consider adding a test script to that directory that documents the expected behavior and provides code that allows others to see if said behavior works properly.  Please try to follow the format of the existing tests.
 
 # The Wiki
 
-The Github project page [has a wiki](https://github.com/ejmr/php-mode/wiki) that you should feel free to edit.  The wiki lists the features and bugs that are on plan to include in upcoming versions of `php-mode`.  It is also a place to add any tips to make the mode more useful.
+The Github project page [has a wiki](https://github.com/ejmr/php-mode/wiki) that you should feel free to edit.  The wiki lists the features and bugs that are on plan to include in upcoming versions of php-mode.  It is also a place to add any tips to make the mode more useful.
 
 # License
 
-The code for `php-mode` is covered by the [GNU General Public License 3](http://www.gnu.org/copyleft/gpl.html).
+The code for php-mode is covered by the [GNU General Public License 3](http://www.gnu.org/copyleft/gpl.html).
 
 # Contributors
 
