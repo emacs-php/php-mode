@@ -16,7 +16,7 @@ Please email any bugs or feature requests to `lobbyjones at gmail dot com` or su
 
 # Status
 
-**2 December 2012:**  Currently I am not working on any major PHP projects.  However, I do keep up with the development of PHP (i.e. following the official mailing list).  With PHP 5.5 on the horizon I will be adding basic support for new 5.5 features in the near future.  That also goes for anything promising that appears in version 5.6.0-dev, which I use for testing.  And as always I welcome any feature additions and bug fixes from users.
+[The php-mode wiki](https://github.com/ejmr/php-mode/wiki) describes the plan for the next release and I update it to mark off issues when they are complete.  However, there is no hard date set for each release.  Serious bugs I try to resolve as soon as possibe.  But lately I have been lax when it comes to finishing feature requests, so my apologies.  That said, php-mode is in no way a dead project by any means, even if updates are sometimes sparse.
 
 # Features
 
