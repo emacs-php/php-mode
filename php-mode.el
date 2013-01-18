@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.9"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2013-01-09"
+(defconst php-mode-modified "2013-01-18"
   "PHP Mode build date.")
 
 ;;; License
@@ -892,6 +892,12 @@ searching the PHP website."
        "DATE_RFC822" "DATE_RFC850" "DATE_RFC1036" "DATE_RFC1123"
        "DATE_RFC2822" "DATE_RFC3339"
        "DATE_RSS" "DATE_W3C"
+
+       ;; upload error message constants
+       "UPLOAD_ERR_CANT_WRITE" "UPLOAD_ERR_EXTENSION"
+       "UPLOAD_ERR_FORM_SIZE" "UPLOAD_ERR_INI_SIZE"
+       "UPLOAD_ERR_NO_FILE" "UPLOAD_ERR_NO_TMP_DIR"
+       "UPLOAD_ERR_OK" "UPLOAD_ERR_PARTIAL"
 
        ;; from ext/standard:
        "EXTR_OVERWRITE"
