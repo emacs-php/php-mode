@@ -10,7 +10,7 @@ This updates php-mode with features to make it more friendly to use with PHP 5.4
 
 And all those mentioned in the ‘Contributors’ section below.
 
-Please email any bugs or feature requests to `lobbyjones at gmail dot com` or submit them as Issues here on the Github page.  Also please include the output of `php-mode-version` in bug reports.
+Please email any bugs or feature requests to `lobbyjones at gmail dot com` or submit them as Issues on the [Github page](https://github.com/ejmr/php-mode).  Also please include the output of `php-mode-version` in bug reports.
 
 **Note:** [You can see all of the previous changes for each version here.](https://github.com/ejmr/php-mode/blob/master/Changelog.md)
 
