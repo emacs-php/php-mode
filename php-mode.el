@@ -1591,11 +1591,11 @@ searching the PHP website."
     ;; $variable
     '("\\$\\(\\sw+\\)" (1 font-lock-variable-name-face))
 
-    ;; ->variable
-    '("->\\(\\sw+\\)" (1 font-lock-variable-name-face t t))
-
     ;; ->function_call
     '("->\\(\\sw+\\)\\s-*(" (1 php-function-call-face t t))
+
+    ;; ->variable
+    '("->\\(\\sw+\\)" (1 font-lock-variable-name-face t t))
 
     ;; class::member
     '("\\(\\(\\sw\\|\\\\\\)+\\)::\\sw+\\s-*(?" . (1 font-lock-type-face))
