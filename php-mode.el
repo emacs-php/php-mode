@@ -255,8 +255,8 @@ This variable can take one of the following symbol values:
 
 `WordPress' - use coding styles preferred for working with WordPress projects."
   :type '(choice (const :tag "PEAR" pear)
-				 (const :tag "Drupal" drupal)
-				 (const :tag "WordPress" wordpress))
+                                 (const :tag "Drupal" drupal)
+                                 (const :tag "WordPress" wordpress))
   :group 'php
   :set 'php-mode-custom-coding-style-set
   :initialize 'custom-initialize-default)
@@ -265,11 +265,11 @@ This variable can take one of the following symbol values:
   (set         sym value)
   (set-default sym value)
   (cond ((eq value 'pear)
-  		 (php-enable-pear-coding-style))
-		((eq value 'drupal)
-  		 (php-enable-drupal-coding-style))
-		((eq value 'wordpress)
-		 (php-enable-wordpress-coding-style))))
+                 (php-enable-pear-coding-style))
+                ((eq value 'drupal)
+                 (php-enable-drupal-coding-style))
+                ((eq value 'wordpress)
+                 (php-enable-wordpress-coding-style))))
 
 
 (defun php-enable-pear-coding-style ()
@@ -345,7 +345,7 @@ Implements PHP version of `beginning-of-defun-function'."
         (if (eq opoint (point))
             (re-search-forward php-beginning-of-defun-regexp
                                nil 'noerror))
-	(setq arg (1+ arg))))))
+        (setq arg (1+ arg))))))
 
 (defun php-end-of-defun (&optional arg)
   "Move the end of the ARGth PHP function from point.
@@ -576,7 +576,7 @@ This is was done due to the problem reported here:
 
   (set (make-local-variable 'syntax-propertize-via-font-lock)
        '(("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
-	 ("\\(\'\\)\\(\\\\.\\|[^\'\n\\]\\)*\\(\'\\)" (1 "\"") (3 "\""))))
+         ("\\(\'\\)\\(\\\\.\\|[^\'\n\\]\\)*\\(\'\\)" (1 "\"") (3 "\""))))
 
   (setq font-lock-maximum-decoration t
         imenu-generic-expression php-imenu-generic-expression)
@@ -603,11 +603,11 @@ This is was done due to the problem reported here:
              nil t)
 
   (cond ((eq php-mode-coding-style 'pear)
-  		 (run-hooks 'php-mode-pear-hook))
-  		((eq php-mode-coding-style 'drupal)
-  		 (run-hooks 'php-mode-drupal-hook))
-  		((eq php-mode-coding-style 'wordpress)
-  		 (run-hooks 'php-mode-wordpress-hook)))
+                 (run-hooks 'php-mode-pear-hook))
+                ((eq php-mode-coding-style 'drupal)
+                 (run-hooks 'php-mode-drupal-hook))
+                ((eq php-mode-coding-style 'wordpress)
+                 (run-hooks 'php-mode-wordpress-hook)))
 
   (if (or php-mode-force-pear
           (and (stringp buffer-file-name)
@@ -1672,12 +1672,12 @@ The output will appear in the buffer *PHP*."
 
 (defun php-annotations-font-lock-find-annotation (limit)
   (let ((match
-	 (catch 'match
-	   (save-match-data
-	     (while (re-search-forward php-annotations-re limit t)
-	       (when (php-annotations-inside-comment-p (match-beginning 0))
-		 (goto-char (match-end 0))
-		 (throw 'match (match-data))))))))
+         (catch 'match
+           (save-match-data
+             (while (re-search-forward php-annotations-re limit t)
+               (when (php-annotations-inside-comment-p (match-beginning 0))
+                 (goto-char (match-end 0))
+                 (throw 'match (match-data))))))))
     (when match
       (set-match-data match)
       t)))
