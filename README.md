@@ -26,7 +26,7 @@ Now php-mode supports syntax highlighting for new keywords which were added as p
 
 ## Constants
 
-Every magic constant and predefined constant listed on the official PHP site is included in syntax highlighted.
+Syntax highlighting includes every magic constant and predefined constant listed on the official PHP site.  However, some constants from specific extensions are not currently included.
 
 ## Traits, Interfaces, and Namespaces
 
