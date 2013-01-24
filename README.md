@@ -30,7 +30,7 @@ Syntax highlighting includes every magic constant and predefined constant listed
 
 ## Traits, Interfaces, and Namespaces
 
-Traits, interfaces, and namespaces now appear under Imenu listings.  Fontification works properly for namespaces as well, so that code like `namespace Foo\Bar\Baz` no longer looks like a warning.  This is also true for namespace aliases, e.g. `use <namespace> as <alias>`; currently the aliased name is not listed in Imenu, but that will be addressed in the future.
+Traits, interfaces, and namespaces now appear under Imenu listings. Fontification works properly for namespaces as well, so that code like `namespace Foo\Bar\Baz` no longer looks like a warning.  This is also true for namespace aliases, e.g. `use <namespace> as <alias>`; currently the aliased name is not listed in Imenu, but that will be addressed in the future.
 
 ## Treatment of Underscores
 
@@ -67,6 +67,10 @@ will now appear on Imenu; in this case the name will be `$greet`.
 ## Flymake Support
 
 By customizing the variable `php-executable` you can enable Flymake mode in order to see warnings and errors in real-time as you write code.
+
+## Better Heredoc Formatting
+
+The formatting for heredoc strings is better thanks to code borrowed from [pi-php-mode](https://github.com/pivaldi/pi-php-mode) (with permission).  However, php-mode currently does not visually distinguish between nowdoc strings and heredoc strings.
 
 ## Search Local Documentation
 
