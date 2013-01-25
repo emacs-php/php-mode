@@ -356,152 +356,6 @@ See `php-beginning-of-defun'."
   (php-beginning-of-defun (- (or arg 1))))
 
 
-;;; All of the code in this section adds support for heredoc
-;;; formatting and highlight.  This code comes from pi-php-mode
-;;; by Philippe Ivaldi, used with his permission.
-
-(defface php-heredoc
-  '((((min-colors 88) (class color)
-      (background dark))
-     (:foreground "LightSalmon" :weight bold))
-    (((class color)
-      (background dark))
-     (:foreground "LightSalmon" :weight bold))
-    (((class color)
-      (background light))
-     (:foreground "tan1" ))
-    (t
-     (:weight bold)))
-  "Face to show a php heredoc."
-  :group 'php)
-
-(defvar php-heredoc-face 'php-heredoc)
-
-(defconst php-escaped-line-re
-  ;; Should match until the real end-of-continued-line, but if that is
-  ;; not possible (because we bump into EOB or the search bound), then
-  ;; we should match until the search bound.
-  "\\(?:\\(?:.*[^\\\n]\\)?\\(?:\\\\\\\\\\)*\\\\\n\\)*.*")
-
-(defconst php-here-doc-open-re
-  (concat "<<<\\s-*\\\\?\\(\\(?:['\"][^'\"]+['\"]\\|\\sw\\)+\\)"
-          php-escaped-line-re "\\(\n\\)"))
-
-(defvar php-here-doc-markers nil)
-(defvar php-here-doc-re php-here-doc-open-re)
-(defconst php-here-doc-syntax (string-to-syntax "|"))
-(make-variable-buffer-local 'php-here-doc-markers)
-(make-variable-buffer-local 'php-here-doc-re)
-
-(defun php-font-lock-here-doc (limit)
-  "Search for a heredoc marker."
-  ;; This looks silly, but it's because `php-here-doc-re' keeps changing.
-  (re-search-forward php-here-doc-re limit t))
-
-(defun php-in-comment-or-string (start)
-  "Return non-nil if START is in a comment or string."
-  (save-excursion
-    (let ((state (syntax-ppss start)))
-      (or (nth 3 state) (nth 4 state)))))
-
-(defun php-font-lock-syntactic-face-function (state)
-  (let ((q (nth 3 state)))
-    (if q
-        (if (characterp q)
-            (if (eq q ?\`) 'sh-quoted-exec font-lock-string-face)
-          php-heredoc-face)
-      font-lock-comment-face)))
-
-(defun php-font-lock-open-heredoc (start string)
-  "Determine the syntax of the \\n after a <<<EOF.
-START is the position of <<<.  STRING is the actual word used as
-delimiter (e.g. \"EOF\").  Point is at the beginning of the next
-line."
-  (unless (or (memq (char-before start) '(?< ?>))
-              (php-in-comment-or-string start))
-    ;; We're looking at <<STRING, so we add "^STRING$" to the
-    ;; syntactic font-lock keywords to detect the end of this here
-    ;; document.
-    (let ((str (replace-regexp-in-string "['\"]" "" string)))
-      (unless (member str php-here-doc-markers)
-        (push str php-here-doc-markers)
-        (setq php-here-doc-re
-              (concat php-here-doc-open-re "\\|^\\([ \t]*\\)"
-                      (regexp-opt php-here-doc-markers t) "\\([\n; \t]\\)"))))
-    (let ((ppss (save-excursion (syntax-ppss (1- (point))))))
-      (if (nth 4 ppss)
-          ;; The \n not only starts the heredoc but also closes a
-          ;; comment.  Let's close the comment just before the \n.
-          (put-text-property (1- (point)) (point) 'syntax-table '(12))) ;">"
-      (if (or (nth 5 ppss) (> (count-lines start (point)) 1))
-          ;; If the php-escaped-line-re part of php-here-doc-re has
-          ;; matched several lines, make sure we refontify them
-          ;; together.  Furthermore, if (nth 5 ppss) is non-nil
-          ;; (i.e. the \n is escaped), it means the right \n is
-          ;; actually further down.  Don't bother fixing it now, but
-          ;; place a multiline property so that when
-          ;; jit-lock-context-* refontifies the rest of the buffer, it
-          ;; also refontifies the current line with it.
-          (put-text-property start (point) 'font-lock-multiline t)))
-    php-here-doc-syntax))
-
-(defun php-font-lock-close-heredoc (bol eof indented)
-  "Determine the syntax of the \\n after an EOF.
-If non-nil INDENTED indicates that the EOF was indented."
-  (let* ((eof-re (if eof (regexp-quote eof) ""))
-         ;; A rough regexp that should find the opening <<<EOF back.
-         ;; (sre (concat php-here-doc-open-re
-         (sre (concat "<<<\\(-?\\)\\s-*['\"\\]?"
-                      ;; Use \s| to cheaply check it's an open-heredoc.
-                      eof-re "['\"]?\\([ \t|;&)<>]"
-                      php-escaped-line-re
-                      "\\)?\\s|"))
-         ;; A regexp that will find other EOFs.
-         (ere (concat "^" (if indented "[ \t;]*") eof-re "\n"))
-         (start (save-excursion
-                  (goto-char bol)
-                  (re-search-backward (concat sre "\\|" ere) nil t))))
-    ;; If subgroup 1 matched, we found an open-heredoc, otherwise we first
-    ;; found a close-heredoc which makes the current close-heredoc inoperant.
-    (cond
-     ((and start (match-end 1)
-           (not (and indented (= (match-beginning 1) (match-end 1))))
-           (not (php-in-comment-or-string (match-beginning 0))))
-      php-here-doc-syntax)
-     ((not (or start (save-excursion (re-search-forward sre nil t))))
-      ;; There's no <<<EOF either before or after us,
-      ;; so we should remove ourselves from font-lock's keywords.
-      (setq php-here-doc-markers (delete eof php-here-doc-markers))
-      (setq php-here-doc-re
-            (concat php-here-doc-open-re "\\|^\\([ \t]*\\)"
-                    (regexp-opt php-here-doc-markers t) "\\(\n\\)"))
-      nil))))
-
-(defcustom php-here-document-word "EOF"
-  "Word to delimit here documents.  Any quote characters or
-leading whitespace in the word are removed when closing the here
-document."
-  :type 'string
-  :group 'php)
-
-(defun php-maybe-here-document (arg)
-  "Insert self.  Without prefix, following `<<' inserts here document.
-The document is bounded by `php-here-document-word'."
-  (interactive "*P")
-  (self-insert-command (prefix-numeric-value arg))
-  (or arg
-      (not (looking-back "[^<]<<<"))
-      (let ((delim (replace-regexp-in-string
-                    "['\"]" ""
-                    php-here-document-word)))
-        (insert php-here-document-word)
-        (insert ?\n)
-        (end-of-line 1)
-        (save-excursion
-          (insert ?\n (replace-regexp-in-string
-                       "\\`$-?[ \t]*" "" delim) ";")))))
-
-
 (defvar php-warned-bad-indent nil)
 
 ;; Do it but tell it is not good if html tags in buffer.
@@ -712,8 +566,7 @@ This is was done due to the problem reported here:
           nil                ; KEYWORDS-ONLY
           t                  ; CASE-FOLD
           (("_" . "w"))      ; SYNTAX-ALIST
-          nil                ; SYNTAX-BEGIN
-          (font-lock-syntactic-face-function . php-font-lock-syntactic-face-function)))
+          nil))              ; SYNTAX-BEGIN
 
   (modify-syntax-entry ?_    "_" php-mode-syntax-table)
   (modify-syntax-entry ?`    "\"" php-mode-syntax-table)
@@ -1631,16 +1484,6 @@ searching the PHP website."
    ;; Fontify ASP-style tag
    '("<\\%\\(=\\)?" . font-lock-preprocessor-face)
    '("\\%>" . font-lock-preprocessor-face)
-
-   ;; Fontify heredocs
-   '((php-font-lock-here-doc
-      (2 (php-font-lock-open-heredoc
-          (match-beginning 0) (match-string 1)) nil t)
-      (5 (php-font-lock-close-heredoc
-          (match-beginning 0) (match-string 4)
-          (and (match-beginning 3)
-               (/= (match-beginning 3) (match-end 3))))
-         nil t)))
 
    )
   "Subdued level highlighting for PHP mode.")

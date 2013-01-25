@@ -199,4 +199,3 @@ In chronological order:
 44. [zapad](https://github.com/zargener)
 45. [Carl Groner](https://github.com/cgroner)
 46. [Michael Dwyer](https://github.com/kalifg)
-47. [Philippe Ivaldi](https://github.com/pivaldi)
