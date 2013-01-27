@@ -68,3 +68,38 @@ have a string face."
     (should-not (eq
                  (get-text-property (search-forward ">We") 'face)
                  'font-lock-string-face))))
+
+(ert-deftest php-mode-test-issue-14 ()
+  "Array indentation."
+  (with-php-mode-test ("issue-14.php")
+    (let ((expected (concat "$post = Post::model()->find(array(\n"
+                            "    'select' => 'title',\n"
+                            "    'condition' => 'postID=:postID',\n"
+                            "    'params' => array(':postID'=>10),\n"
+                            "));")))
+      (indent-region (point-min) (point-max))
+      (goto-char (point-min))
+      (re-search-forward "^\\$post")
+      (should (string= (buffer-substring-no-properties (match-beginning 0) (point-max))
+                       expected)))))
+
+(ert-deftest php-mode-test-issue-16 ()
+  "Comma separated \"use\" (namespaces).
+Gets the face of the text after the comma."
+  (with-php-mode-test ("issue-16.php")
+    (re-search-forward "^use " nil nil 3)
+    (should (eq
+             (get-text-property (search-forward ", ") 'face)
+             'font-lock-type-face))))
+
+(ert-deftest php-mode-test-issue-18 ()
+  "Indentation of strings which include \"//\"."
+  (with-php-mode-test ("issue-18.php")
+    (let ((expected (concat "if ($a === 'github') {\n"
+                            "    header('Location: http://github.com');\n"
+                            "}")))
+      (indent-region (point-min) (point-max))
+      (goto-char (point-min))
+      (re-search-forward "^if ")
+      (should (string= (buffer-substring-no-properties (match-beginning 0) (point-max))
+                       expected)))))
