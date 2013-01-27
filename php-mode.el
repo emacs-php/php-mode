@@ -1667,7 +1667,8 @@ The output will appear in the buffer *PHP*."
 
 (defmacro php-annotations-inside-comment-p (pos)
   "Return non-nil if POS is inside a comment."
-  `(eq (get-char-property ,pos 'face) 'font-lock-comment-face))
+  `(or (eq (get-char-property ,pos 'face) 'font-lock-comment-face)
+       (eq (get-char-property ,pos 'face) 'font-lock-comment-delimiter-face)))
 
 (defun php-annotations-font-lock-find-annotation (limit)
   (let ((match
