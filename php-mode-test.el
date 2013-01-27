@@ -52,6 +52,14 @@ the coding style to one of `pear', `drupal', or `wordpress'."
      (font-lock-fontify-buffer)
      ,@body))
 
+(ert-deftest php-mode-test-issue-8 ()
+  "Annotation highlighting."
+  (with-php-mode-test ("issue-8.php")
+  (search-forward "@ORM")
+  (should (eq
+           (get-text-property (match-beginning 0) 'face)
+           'php-annotations-annotation-face))))
+
 (ert-deftest php-mode-test-issue-9 ()
   "Single quote in text in HTML misinterpreted.
 The next character after \">We\" is a single quote. It should not
