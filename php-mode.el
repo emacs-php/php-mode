@@ -272,49 +272,62 @@ This variable can take one of the following symbol values:
                  (php-enable-wordpress-coding-style))))
 
 
+
+(c-add-style
+ "pear"
+ '((c-basic-offset . 4)
+   (c-offsets-alist . ((block-open . -)
+                       (block-close . 0)
+                       (statement-cont . +)))))
+
 (defun php-enable-pear-coding-style ()
   "Sets up php-mode to use the coding styles preferred for PEAR
 code and modules."
   (interactive)
-  (set (make-local-variable 'tab-width) 4)
-  (set (make-local-variable 'c-basic-offset) 4)
-  (set (make-local-variable 'indent-tabs-mode) nil)
-  (c-set-offset 'block-open '-)
-  (c-set-offset 'block-close 0)
-  (c-set-offset 'statement-cont '+))
+  (setq tab-width 4
+        indent-tabs-mode nil)
+  (c-set-style "pear"))
+
+(c-add-style
+ "drupal"
+ '((c-basic-offset . 2)
+   (c-offsets-alist . ((case-label . +)
+                       (arglist-close . 0)
+                       (arglist-intro . +)
+                       (arglist-cont-nonempty . c-lineup-math)
+                       (statement-cont . +)))))
 
 (defun php-enable-drupal-coding-style ()
   "Makes php-mode use coding styles that are preferable for
 working with Drupal."
   (interactive)
-  (setq tab-width 2)
-  (setq c-basic-offset 2)
-  (setq indent-tabs-mode nil)
-  (setq fill-column 78)
-  (setq show-trailing-whitespace t)
+  (setq tab-width 2
+        indent-tabs-mode nil
+        fill-column 78
+        show-trailing-whitespace t)
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
-  (c-set-offset 'case-label '+)
-  (c-set-offset 'arglist-close 0)
-  (c-set-offset 'arglist-intro '+)
-  (c-set-offset 'arglist-cont-nonempty 'c-lineup-math)
-  (c-set-offset 'statement-cont '+))
+  (c-set-style "drupal"))
+
+(c-add-style
+ "wordpress"
+ '((c-basic-offset . 4)
+   (c-offsets-alist . ((arglist-cont . 0)
+                       (arglist-intro . +)
+                       (case-label . 2)
+                       (arglist-close . 0)
+                       (defun-close . 0)
+                       (defun-block-intro . +)
+                       (statement-cont . +)))))
 
 (defun php-enable-wordpress-coding-style ()
   "Makes php-mode use coding styles that are preferable for
 working with Wordpress."
   (interactive)
-  (setq indent-tabs-mode t)
-  (setq fill-column 78)
-  (setq tab-width 4)
-  (setq c-basic-offset tab-width)
-  (setq c-indent-comments-syntactically-p t)
-  (c-set-offset 'arglist-cont 0)
-  (c-set-offset 'arglist-intro '+)
-  (c-set-offset 'case-label 2)
-  (c-set-offset 'arglist-close 0)
-  (c-set-offset 'defun-close 0)
-  (c-set-offset 'defun-block-intro tab-width)
-  (c-set-offset 'statement-cont '+))
+  (setq indent-tabs-mode t
+        fill-column 78
+        tab-width 4
+        c-indent-comments-syntactically-p t)
+  (c-set-style "wordpress"))
 
 
 (defun php-mode-version ()
