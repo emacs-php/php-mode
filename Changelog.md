@@ -13,7 +13,7 @@ not have a record of all changes available.
 * Add new test cases for indentation and highlighting.
 * Add new PHP 5.5 `PASSWORD_*` constants.
 * Do not treat function-like language constructs as functions,
-  e.g. `array()`.
+	e.g. `array()`.
 * Treat `callable` as a valid type hint.
 * Fix an error regarding the requirement of `flymake`.
 * Fix a syntax error in `php-unindent-closure`.
@@ -30,8 +30,8 @@ not have a record of all changes available.
 * Add test cases for indentation features.
 * Fix syntax highlighting for multiline strings.
 * Fix compiler warnings for:
-  - `font-lock-syntactic-keywords`
-  - `c-vsemi-status-unknown-p`
+	- `font-lock-syntactic-keywords`
+	- `c-vsemi-status-unknown-p`
 * Support highlighting in annotations in comments.
 * Fix the ‘#’ sign as a comment delimeter.
 * Improve indentation for anonymous functions.
@@ -47,7 +47,7 @@ not have a record of all changes available.
 * Add `php-function-call-face`.
 * Add IMAP related constants.
 * Fix fontification of function arguments to work across multiple
-  lines, including type-hints.
+	lines, including type-hints.
 * Fix bug when trying to browse online documentation.
 * Allow sending code to PHP directly for execution.
 * Add `die` to the list of language constructs.
@@ -69,7 +69,7 @@ There was no version 1.6.5 release due to poor planning on my part
 * Properly fontify the ‘instanceof’ operator.
 * Add function to search local PHP documentation.
 * Try searching local documentation before searching the manual
-  on PHP.net online.
+	on PHP.net online.
 * Add PHP to `interpreter-mode-alist`.
 * Improve indentation of nested arrays.
 * Add `.phpt` to `auto-mode-alist`.
@@ -141,7 +141,7 @@ There was no version 1.6.5 release due to poor planning on my part
 * Warn only once per session about indentation.
 * Tell if cannot complete in `php-complete-function`.
 * Move back point after checking indentation in
-  `php-check-html-for-indentation`.
+	`php-check-html-for-indentation`.
 * Add `c-at-vsemi-p-fn`.
 
 
@@ -151,23 +151,23 @@ There was no version 1.6.5 release due to poor planning on my part
 * Support function keywords like `public` and `private`.
 * Support the ampersand for function-based commands.
 * Add support for the follow keywords in Imenu:
-  - `abstract`
-  - `final`
-  - `static`
-  - `public`
-  - `private`
+	- `abstract`
+	- `final`
+	- `static`
+	- `public`
+	- `private`
 * Fix the reverse order of Imenu entries.
 * Use `font-lock-preprocessor-face` for PHP and ASP tags.
 * Make `php-mode-modified` a literal value instead of a computed
-  string.
+	string.
 * Add date and time constants from PHP.
 * Fix false syntax highlighting of keywords due to the underscore.
 * Change HTML indentation warning to match only HTML at the beginning
-  of the line.
+	of the line.
 * Fix byte-compiler warnings.
 * Clean-up whitespace and audit style consistency of code.
 * Remove conditional bindings and XEmacs code that likely does
-  nothing.
+	nothing.
 
 
 1.4
@@ -186,5 +186,5 @@ There was no version 1.6.5 release due to poor planning on my part
 ---
 
 * Change the definition of `#` to correct highlighting and
-  indentation.
+	indentation.
 * Change the highlighting of HTML.
