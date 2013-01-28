@@ -51,6 +51,7 @@ the coding style to one of `pear', `drupal', or `wordpress'."
         (wordpress '(php-enable-wordpress-coding-style)))
      (php-mode)
      (font-lock-fontify-buffer)
+     (goto-char (point-min))
      ,@body))
 
 (ert-deftest php-mode-test-issue-8 ()
@@ -115,3 +116,58 @@ Gets the face of the text after the comma."
       (let ((col (current-column)))
         (search-forward "->")
         (should (eq (current-column) col))))))
+
+(ert-deftest php-mode-test-issue-21 ()
+  "Font locking multi-line string."
+  (with-php-mode-test ("issue-21.php")
+    (search-forward "\"")
+    (while (not (looking-at "\""))
+      (should (eq (get-text-property (point) 'face)
+                  'font-lock-string-face))
+      (forward-char))))
+
+(ert-deftest php-mode-test-issue-22 ()
+  "Font lock quotes within comments as regular comments.
+This applies for both single and double quotes."
+  (with-php-mode-test ("issue-21.php")
+    (while (search-forward "#" nil t)
+     (while (not (looking-at "\n"))
+       (should (eq (get-text-property (point) 'face)
+                   'font-lock-comment-face))
+       (forward-char)))))
+
+(ert-deftest php-mode-test-issue-27 ()
+  "Indentation in a file with a shebang."
+  (with-php-mode-test ("issue-27.php")
+    (re-search-forward "^\\s-*// Tab")
+    (indent-for-tab-command)
+    (back-to-indentation)
+    (should (eq (current-column) tab-width))))
+
+(ert-deftest php-mode-test-issue-28 ()
+  "Slowdown when scrolling.
+No obvious way to test this. One possibility is to record time it
+takes to scroll down the whole buffer using `next-line'. This may
+not cause the desired fontification, and it could take different
+amounts of time on different machines, so an absolute time would
+not be very useful.
+
+This doesn't test anything, for now."
+  (should t))
+
+(ert-deftest php-mode-test-issue-29 ()
+  "Indentation of anonymous functions as arguments.
+The closing brace and parenthesis should be at column 0."
+  (with-php-mode-test ("issue-29.php")
+    (indent-region (point-min) (point-max))
+    (goto-char (point-min))
+    (re-search-forward "^\\s-*});")
+    (back-to-indentation)
+    (should (eq (current-column) 0))))
+
+(ert-deftest php-mode-test-issue-42 ()
+  "Error while indenting closures.
+If the bug has been fixed, indenting the buffer should not cause
+an error."
+  (with-php-mode-test ("issue-42.php")
+    (indent-region (point-min) (point-max))))
