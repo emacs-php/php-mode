@@ -204,11 +204,8 @@ You can replace \"en\" with your ISO language code."
   :type '(repeat (regexp :tag "Pattern"))
   :set (lambda (sym val)
          (set-default sym val)
-         (let ((php-file-patterns-temp val))
-           (while php-file-patterns-temp
-             (add-to-list 'auto-mode-alist
-                          (cons (car php-file-patterns-temp) 'php-mode))
-             (setq php-file-patterns-temp (cdr php-file-patterns-temp)))))
+         (mapc (lambda (i) (add-to-list 'auto-mode-alist (cons i 'php-mode)))
+               val))
   :group 'php)
 
 (defcustom php-mode-hook nil
