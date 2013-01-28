@@ -66,6 +66,7 @@ the coding style to one of `pear', `drupal', or `wordpress'."
   "Single quote in text in HTML misinterpreted.
 The next character after \">We\" is a single quote. It should not
 have a string face."
+  :expected-result :failed
   (with-php-mode-test ("issue-9.php")
     (should-not (eq
                  (get-text-property (search-forward ">We") 'face)
@@ -73,6 +74,7 @@ have a string face."
 
 (ert-deftest php-mode-test-issue-14 ()
   "Array indentation."
+  :expected-result :failed
   (with-php-mode-test ("issue-14.php")
     (let ((expected (concat "$post = Post::model()->find(array(\n"
                             "    'select' => 'title',\n"
@@ -108,6 +110,7 @@ Gets the face of the text after the comma."
 
 (ert-deftest php-mode-test-issue-19 ()
   "Alignment of arrow operators."
+  :expected-result :failed
   (with-php-mode-test ("issue-19.php")
     (indent-region (point-min) (point-max))
     (goto-char (point-min))
