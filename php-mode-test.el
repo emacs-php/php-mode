@@ -29,6 +29,7 @@
 
 ;;; Code:
 
+(require 'php-mode)
 (require 'ert)
 (eval-when-compile
   (require 'cl))
