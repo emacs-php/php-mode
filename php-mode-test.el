@@ -103,3 +103,14 @@ Gets the face of the text after the comma."
       (re-search-forward "^if ")
       (should (string= (buffer-substring-no-properties (match-beginning 0) (point-max))
                        expected)))))
+
+(ert-deftest php-mode-test-issue-19 ()
+  "Alignment of arrow operators."
+  (with-php-mode-test ("issue-19.php")
+    (indent-region (point-min) (point-max))
+    (goto-char (point-min))
+    (while (re-search-forward "^\\s-*\\$object->")
+      ;; Point is just after `->'
+      (let ((col (current-column)))
+        (search-forward "->")
+        (should (eq (current-column) col))))))
