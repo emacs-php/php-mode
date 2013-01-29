@@ -1462,7 +1462,7 @@ searching the PHP website."
 
    ;; Fontify keywords and targets, and case default tags.
    (list "\\<\\(break\\|case\\|continue\\)\\>\\s-+\\(-?\\sw+\\)?"
-         '(1 font-lock-keyword-face) '(2 font-lock-constant-face t t))
+         '(1 font-lock-keyword-face) '(2 font-lock-constant-face keep t))
    ;; This must come after the one for keywords and targets.
    '(":" ("^\\s-+\\(\\sw+\\)\\s-+\\s-+$"
           (beginning-of-line) (end-of-line)
