@@ -1585,10 +1585,10 @@ searching the PHP website."
     '("\\$\\(\\sw+\\)" (1 font-lock-variable-name-face))
 
     ;; ->function_call
-    '("->\\(\\sw+\\)\\s-*(" (1 php-function-call-face t t))
+    '("->\\(\\sw+\\)\\s-*(" (1 php-function-call-face keep t))
 
     ;; ->variable
-    '("->\\(\\sw+\\)" (1 font-lock-variable-name-face t t))
+    '("->\\(\\sw+\\)" (1 font-lock-variable-name-face keep t))
 
     ;; class::member
     '("\\(\\(\\sw\\|\\\\\\)+\\)::\\sw+\\s-*(?" . (1 font-lock-type-face))
