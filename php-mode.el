@@ -6,9 +6,9 @@
 
 ;;; Author: Eric James Michael Ritz
 ;;; URL: https://github.com/ejmr/php-mode
-;;; Version: 1.9
+;;; Version: 1.10
 
-(defconst php-mode-version-number "1.9"
+(defconst php-mode-version-number "1.10"
   "PHP Mode version number.")
 
 (defconst php-mode-modified "2013-02-06"
