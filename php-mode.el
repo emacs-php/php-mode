@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.9"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2013-01-29"
+(defconst php-mode-modified "2013-02-06"
   "PHP Mode build date.")
 
 ;;; License
@@ -1394,6 +1394,7 @@ searching the PHP website."
        "else"
        "elseif"
        "empty"
+       "encoding"
        "endfor"
        "endforeach"
        "endif"
@@ -1418,6 +1419,7 @@ searching the PHP website."
        "return"
        "static"
        "switch"
+       "ticks"
        "throw"
        "try"
        "unset"
