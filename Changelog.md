@@ -6,6 +6,37 @@ because when I (Eric James Michael Ritz) took over the project I did
 not have a record of all changes available.
 
 
+1.10
+----
+
+* Add `php-mode-coding-style` so users can customize their preferred
+  coding style.
+* Fix a bug that messes up the indentation of some closures.
+* Update php-mode for Emacs 24 with regard to changes to the `cl`
+  Elisp library.
+* Submit php-mode to the [MELPA](http://melpa.milkbox.net/)
+  repository.
+* Fix indentation of `foreach` blocks that have only a single
+  statement following them, without any braces.
+* Add all valid flags for `htmlspecialchars()` to the list of
+  constants.
+* Improve indentation of chained method calls, although this still has
+  an issue to iron out.
+* Provide a test suite for developers working on php-mode to help
+  improve quality control.
+* Add all constants for errors.
+* Add all constants for the cURL module.
+* Fix a bug where some methods are not highlighted as functions.
+* Remove `then` as a PHP keyword, since it is not a valid keyword.
+* Fix annotation highlighting when using C-style `/*...*/` comments.
+* Redefine the php-mode coding styles using cc-mode.
+* Fix a bug that applies incorrect syntax highlighting to certain PHP
+  keywords when they appear in block comments, e.g. `continue`.
+* Fix a bug where php-mode incorrectly highlights variables and
+  methods inside of comments.
+* Treat acceptable directives to `declare()` as keywords.
+
+
 1.9
 ---
 
