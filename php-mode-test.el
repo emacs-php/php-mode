@@ -108,17 +108,7 @@ have a string face."
 (ert-deftest php-mode-test-issue-14 ()
   "Array indentation."
   :expected-result :failed
-  (with-php-mode-test ("issue-14.php")
-    (let ((expected (concat "$post = Post::model()->find(array(\n"
-                            "    'select' => 'title',\n"
-                            "    'condition' => 'postID=:postID',\n"
-                            "    'params' => array(':postID'=>10),\n"
-                            "));")))
-      (indent-region (point-min) (point-max))
-      (goto-char (point-min))
-      (re-search-forward "^\\$post")
-      (should (string= (buffer-substring-no-properties (match-beginning 0) (point-max))
-                       expected)))))
+  (with-php-mode-test ("issue-14.php" :indent t :magic t)))
 
 (ert-deftest php-mode-test-issue-16 ()
   "Comma separated \"use\" (namespaces).
@@ -136,9 +126,7 @@ Gets the face of the text after the comma."
 (ert-deftest php-mode-test-issue-19 ()
   "Alignment of arrow operators."
   :expected-result :failed
-  (with-php-mode-test ("issue-19.php")
-    (indent-region (point-min) (point-max))
-    (goto-char (point-min))
+  (with-php-mode-test ("issue-19.php" :indent t)
     (while (re-search-forward "^\\s-*\\$object->")
       ;; Point is just after `->'
       (let ((col (current-column)))
@@ -166,11 +154,7 @@ This applies for both single and double quotes."
 
 (ert-deftest php-mode-test-issue-27 ()
   "Indentation in a file with a shebang."
-  (with-php-mode-test ("issue-27.php")
-    (re-search-forward "^\\s-*// Tab")
-    (indent-for-tab-command)
-    (back-to-indentation)
-    (should (eq (current-column) tab-width))))
+  (with-php-mode-test ("issue-27.php" :indent t :magic t)))
 
 (ert-deftest php-mode-test-issue-28 ()
   "Slowdown when scrolling.
@@ -186,16 +170,10 @@ This doesn't test anything, for now."
 (ert-deftest php-mode-test-issue-29 ()
   "Indentation of anonymous functions as arguments.
 The closing brace and parenthesis should be at column 0."
-  (with-php-mode-test ("issue-29.php")
-    (indent-region (point-min) (point-max))
-    (goto-char (point-min))
-    (re-search-forward "^\\s-*});")
-    (back-to-indentation)
-    (should (eq (current-column) 0))))
+  (with-php-mode-test ("issue-29.php" :indent t :magic t)))
 
 (ert-deftest php-mode-test-issue-42 ()
   "Error while indenting closures.
 If the bug has been fixed, indenting the buffer should not cause
 an error."
-  (with-php-mode-test ("issue-42.php")
-    (indent-region (point-min) (point-max))))
+  (with-php-mode-test ("issue-42.php" :indent t)))
