@@ -37,7 +37,35 @@
 (defvar php-mode-test-dir (expand-file-name "tests" (file-name-directory load-file-name))
   "Directory containing the `php-mode' test files.")
 
-(defmacro* with-php-mode-test ((file &optional &key style) &rest body)
+(defvar php-mode-test-valid-magics '(indent)
+  "List of allowed \"magic\" directives which can appear in test cases.")
+
+(defvar php-mode-test-magic-regexp "###php-mode-test### \\((.+)\\)"
+  "Regexp which identifies a magic comment.")
+
+(defun php-mode-test-process-magics ()
+  "Process the test directives in the current buffer.
+These are the ###php-mode-test### comments. Valid magics are
+listed in `php-mode-test-valid-magics'; no other directives will
+be processed."
+  (flet ((indent (offset) (equal (current-indentation) offset)))
+    (let (directives answers)
+     (save-excursion
+       (goto-char (point-min))
+       (while (re-search-forward php-mode-test-magic-regexp nil t)
+         (setq directives (read (buffer-substring (match-beginning 1)
+                                                  (match-end 1))))
+         (setq answers
+               (append (mapcar (lambda (curr)
+                                 (let ((fn (car curr))
+                                       (args (mapcar 'eval (cdr-safe curr))))
+                                   (if (memq fn php-mode-test-valid-magics)
+                                       (apply fn args))))
+                               directives)
+                       answers))))
+     answers)))
+
+(defmacro* with-php-mode-test ((file &optional &key style indent magic) &rest body)
   "Set up environment for testing `php-mode'.
 Execute BODY in a temporary buffer containing the contents of
 FILE, in `php-mode'. Optional keyword `:style' can be used to set
@@ -51,6 +79,11 @@ the coding style to one of `pear', `drupal', or `wordpress'."
         (wordpress '(php-enable-wordpress-coding-style)))
      (php-mode)
      (font-lock-fontify-buffer)
+     ,(if indent
+          '(indent-region (point-min) (point-max)))
+     ,(if magic
+          '(should (reduce (lambda (l r) (and l r))
+                           (php-mode-test-process-magics))))
      (goto-char (point-min))
      ,@body))
 
@@ -98,15 +131,7 @@ Gets the face of the text after the comma."
 
 (ert-deftest php-mode-test-issue-18 ()
   "Indentation of strings which include \"//\"."
-  (with-php-mode-test ("issue-18.php")
-    (let ((expected (concat "if ($a === 'github') {\n"
-                            "    header('Location: http://github.com');\n"
-                            "}")))
-      (indent-region (point-min) (point-max))
-      (goto-char (point-min))
-      (re-search-forward "^if ")
-      (should (string= (buffer-substring-no-properties (match-beginning 0) (point-max))
-                       expected)))))
+  (with-php-mode-test ("issue-18.php" :indent t :magic t)))
 
 (ert-deftest php-mode-test-issue-19 ()
   "Alignment of arrow operators."
