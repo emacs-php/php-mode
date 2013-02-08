@@ -12,5 +12,5 @@
  */
 
 if (1 == 1) {
-    // Tab
+    // Tab ###php-mode-test### ((indent c-basic-offset))
 }
