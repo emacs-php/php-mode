@@ -6,12 +6,12 @@
 
 ;;; Author: Eric James Michael Ritz
 ;;; URL: https://github.com/ejmr/php-mode
-;;; Version: 1.9
+;;; Version: 1.10
 
-(defconst php-mode-version-number "1.9"
+(defconst php-mode-version-number "1.10"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2013-01-21"
+(defconst php-mode-modified "2013-02-06"
   "PHP Mode build date.")
 
 ;;; License
@@ -204,11 +204,8 @@ You can replace \"en\" with your ISO language code."
   :type '(repeat (regexp :tag "Pattern"))
   :set (lambda (sym val)
          (set-default sym val)
-         (let ((php-file-patterns-temp val))
-           (while php-file-patterns-temp
-             (add-to-list 'auto-mode-alist
-                          (cons (car php-file-patterns-temp) 'php-mode))
-             (setq php-file-patterns-temp (cdr php-file-patterns-temp)))))
+         (mapc (lambda (i) (add-to-list 'auto-mode-alist (cons i 'php-mode)))
+               val))
   :group 'php)
 
 (defcustom php-mode-hook nil
@@ -272,49 +269,62 @@ This variable can take one of the following symbol values:
                  (php-enable-wordpress-coding-style))))
 
 
+
+(c-add-style
+ "pear"
+ '((c-basic-offset . 4)
+   (c-offsets-alist . ((block-open . -)
+                       (block-close . 0)
+                       (statement-cont . +)))))
+
 (defun php-enable-pear-coding-style ()
   "Sets up php-mode to use the coding styles preferred for PEAR
 code and modules."
   (interactive)
-  (set (make-local-variable 'tab-width) 4)
-  (set (make-local-variable 'c-basic-offset) 4)
-  (set (make-local-variable 'indent-tabs-mode) nil)
-  (c-set-offset 'block-open '-)
-  (c-set-offset 'block-close 0)
-  (c-set-offset 'statement-cont '+))
+  (setq tab-width 4
+        indent-tabs-mode nil)
+  (c-set-style "pear"))
+
+(c-add-style
+ "drupal"
+ '((c-basic-offset . 2)
+   (c-offsets-alist . ((case-label . +)
+                       (arglist-close . 0)
+                       (arglist-intro . +)
+                       (arglist-cont-nonempty . c-lineup-math)
+                       (statement-cont . +)))))
 
 (defun php-enable-drupal-coding-style ()
   "Makes php-mode use coding styles that are preferable for
 working with Drupal."
   (interactive)
-  (setq tab-width 2)
-  (setq c-basic-offset 2)
-  (setq indent-tabs-mode nil)
-  (setq fill-column 78)
-  (setq show-trailing-whitespace t)
+  (setq tab-width 2
+        indent-tabs-mode nil
+        fill-column 78
+        show-trailing-whitespace t)
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
-  (c-set-offset 'case-label '+)
-  (c-set-offset 'arglist-close 0)
-  (c-set-offset 'arglist-intro '+)
-  (c-set-offset 'arglist-cont-nonempty 'c-lineup-math)
-  (c-set-offset 'statement-cont '+))
+  (c-set-style "drupal"))
+
+(c-add-style
+ "wordpress"
+ '((c-basic-offset . 4)
+   (c-offsets-alist . ((arglist-cont . 0)
+                       (arglist-intro . +)
+                       (case-label . 2)
+                       (arglist-close . 0)
+                       (defun-close . 0)
+                       (defun-block-intro . +)
+                       (statement-cont . +)))))
 
 (defun php-enable-wordpress-coding-style ()
   "Makes php-mode use coding styles that are preferable for
 working with Wordpress."
   (interactive)
-  (setq indent-tabs-mode t)
-  (setq fill-column 78)
-  (setq tab-width 4)
-  (setq c-basic-offset tab-width)
-  (setq c-indent-comments-syntactically-p t)
-  (c-set-offset 'arglist-cont 0)
-  (c-set-offset 'arglist-intro '+)
-  (c-set-offset 'case-label 2)
-  (c-set-offset 'arglist-close 0)
-  (c-set-offset 'defun-close 0)
-  (c-set-offset 'defun-block-intro tab-width)
-  (c-set-offset 'statement-cont '+))
+  (setq indent-tabs-mode t
+        fill-column 78
+        tab-width 4
+        c-indent-comments-syntactically-p t)
+  (c-set-style "wordpress"))
 
 
 (defun php-mode-version ()
@@ -532,6 +542,30 @@ This is was done due to the problem reported here:
             (delete-char (* (funcall count-func 'arglist-cont-nonempty syntax)
                             c-basic-offset)))))))
 
+(defvar php-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map [menu-bar php]
+      (cons "PHP" (make-sparse-keymap "PHP")))
+
+    (define-key map [menu-bar php complete-function]
+      '("Complete function name" . php-complete-function))
+    (define-key map [menu-bar php browse-manual]
+      '("Browse manual" . php-browse-manual))
+    (define-key map [menu-bar php search-documentation]
+      '("Search documentation" . php-search-documentation))
+
+    (define-key map [(control c) (control f)] 'php-search-documentation)
+    (define-key map [(meta tab)] 'php-complete-function)
+    (define-key map [(control c) (control m)] 'php-browse-manual)
+    (define-key map [(control .)] 'php-show-arglist)
+    (define-key map [(control c) (control r)] 'php-send-region)
+    ;; Use the Emacs standard indentation binding. This may upset c-mode
+    ;; which does not follow this at the moment, but I see no better
+    ;; choice.
+    (define-key map [tab] 'indent-for-tab-command)
+    map)
+  "Keymap for `php-mode'")
+
 ;;;###autoload
 (define-derived-mode php-mode c-mode "PHP"
   "Major mode for editing PHP code.\n\n\\{php-mode-map}"
@@ -634,22 +668,6 @@ This is was done due to the problem reported here:
        "^\\s-*function\\s-+&?\\s-*\\(\\(\\sw\\|\\s_\\)+\\)\\s-*")
   (set (make-local-variable 'add-log-current-defun-header-regexp)
        php-beginning-of-defun-regexp))
-
-;; Make a menu keymap (with a prompt string)
-;; and make it the menu bar item's definition.
-(define-key php-mode-map [menu-bar] (make-sparse-keymap))
-(define-key php-mode-map [menu-bar php]
-  (cons "PHP" (make-sparse-keymap "PHP")))
-
-;; Define specific subcommands in this menu.
-(define-key php-mode-map [menu-bar php complete-function]
-  '("Complete function name" . php-complete-function))
-(define-key php-mode-map
-  [menu-bar php browse-manual]
-  '("Browse manual" . php-browse-manual))
-(define-key php-mode-map
-  [menu-bar php search-documentation]
-  '("Search documentation" . php-search-documentation))
 
 ;; Define function name completion function
 (defvar php-completion-table nil
@@ -818,30 +836,6 @@ searching the PHP website."
   (interactive)
   (browse-url php-manual-url))
 
-;; Define shortcut
-(define-key php-mode-map
-  "\C-c\C-f"
-  'php-search-documentation)
-
-;; Define shortcut
-(define-key php-mode-map
-  [(meta tab)]
-  'php-complete-function)
-
-;; Define shortcut
-(define-key php-mode-map
-  "\C-c\C-m"
-  'php-browse-manual)
-
-;; Define shortcut
-(define-key php-mode-map
-  '[(control .)]
-  'php-show-arglist)
-
-;; Use the Emacs standard indentation binding. This may upset c-mode
-;; which does not follow this at the moment, but I see no better
-;; choice.
-(define-key php-mode-map [?\t] 'indent-for-tab-command)
 
 (defconst php-constants
   (eval-when-compile
@@ -1400,6 +1394,7 @@ searching the PHP website."
        "else"
        "elseif"
        "empty"
+       "encoding"
        "endfor"
        "endforeach"
        "endif"
@@ -1424,6 +1419,7 @@ searching the PHP website."
        "return"
        "static"
        "switch"
+       "ticks"
        "throw"
        "try"
        "unset"
@@ -1468,7 +1464,7 @@ searching the PHP website."
 
    ;; Fontify keywords and targets, and case default tags.
    (list "\\<\\(break\\|case\\|continue\\)\\>\\s-+\\(-?\\sw+\\)?"
-         '(1 font-lock-keyword-face) '(2 font-lock-constant-face t t))
+         '(1 font-lock-keyword-face) '(2 font-lock-constant-face keep t))
    ;; This must come after the one for keywords and targets.
    '(":" ("^\\s-+\\(\\sw+\\)\\s-+\\s-+$"
           (beginning-of-line) (end-of-line)
@@ -1591,10 +1587,10 @@ searching the PHP website."
     '("\\$\\(\\sw+\\)" (1 font-lock-variable-name-face))
 
     ;; ->function_call
-    '("->\\(\\sw+\\)\\s-*(" (1 php-function-call-face t t))
+    '("->\\(\\sw+\\)\\s-*(" (1 php-function-call-face keep t))
 
     ;; ->variable
-    '("->\\(\\sw+\\)" (1 font-lock-variable-name-face t t))
+    '("->\\(\\sw+\\)" (1 font-lock-variable-name-face keep t))
 
     ;; class::member
     '("\\(\\(\\sw\\|\\\\\\)+\\)::\\sw+\\s-*(?" . (1 font-lock-type-face))
@@ -1657,8 +1653,6 @@ The output will appear in the buffer *PHP*."
                              code)))
       (call-process "php" nil php-buffer nil "-r" (clean-php-code code)))))
 
-(define-key php-mode-map "\C-c\C-r" 'php-send-region)
-
 
 (defface php-annotations-annotation-face '((t . (:inherit 'font-lock-constant-face)))
   "Face used to highlight annotations.")
@@ -1667,7 +1661,8 @@ The output will appear in the buffer *PHP*."
 
 (defmacro php-annotations-inside-comment-p (pos)
   "Return non-nil if POS is inside a comment."
-  `(eq (get-char-property ,pos 'face) 'font-lock-comment-face))
+  `(or (eq (get-char-property ,pos 'face) 'font-lock-comment-face)
+       (eq (get-char-property ,pos 'face) 'font-lock-comment-delimiter-face)))
 
 (defun php-annotations-font-lock-find-annotation (limit)
   (let ((match
