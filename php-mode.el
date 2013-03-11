@@ -1527,8 +1527,9 @@ searching the PHP website."
       (1 font-lock-keyword-face)
       (2 font-lock-function-name-face nil t))
 
-    ;; class hierarchy
-    '("\\<\\(self\\|parent\\)\\>" (1 font-lock-constant-face nil nil))
+    ;; self and parent uses in class contexts
+    '("\\<\\(self\\)\\(?:::\\)" (1 font-lock-constant-face nil nil))
+    '("\\<\\(parent\\)\\(?:::\\|\\s-*(\\)" (1 font-lock-constant-face nil nil))
 
     ;; method and variable features
     '("\\<\\(private\\|protected\\|public\\)\\s-+\\$?\\sw+"
