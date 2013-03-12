@@ -45,9 +45,11 @@ PHP mode treats underscores as ‘symbol constituents’ (in Emacs terminology) 
 
 PHP mode will align method calls over multiple lines anchored around the `->` operator, e.g.:
 
-    $object->foo()
-           ->bar()
-           ->baz();
+```php
+$object->foo()
+       ->bar()
+       ->baz();
+```
 
 ### Nested Array Formatting ###
 
@@ -68,7 +70,7 @@ $results = Post::model()->find(
 Anonymous functions such as
 
 ```php
-$greet = function($name) { … };
+$greet = function($name) { ... };
 ```
 
 will now appear on Imenu; in this case the name will be `$greet`.
