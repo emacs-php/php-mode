@@ -124,7 +124,6 @@ Gets the face of the text after the comma."
 
 (ert-deftest php-mode-test-issue-19 ()
   "Alignment of arrow operators."
-  :expected-result :failed
   (with-php-mode-test ("issue-19.php" :indent t)
     (while (re-search-forward "^\\s-*\\$object->")
       ;; Point is just after `->'
