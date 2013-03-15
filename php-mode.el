@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.10"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2013-03-14"
+(defconst php-mode-modified "2013-03-15"
   "PHP Mode build date.")
 
 ;;; License
@@ -242,8 +242,8 @@ This variable can take one of the following symbol values:
 
 `WordPress' - use coding styles preferred for working with WordPress projects."
   :type '(choice (const :tag "PEAR" pear)
-                                 (const :tag "Drupal" drupal)
-                                 (const :tag "WordPress" wordpress))
+                 (const :tag "Drupal" drupal)
+                 (const :tag "WordPress" wordpress))
   :group 'php
   :set 'php-mode-custom-coding-style-set
   :initialize 'custom-initialize-default)
@@ -252,11 +252,11 @@ This variable can take one of the following symbol values:
   (set         sym value)
   (set-default sym value)
   (cond ((eq value 'pear)
-                 (php-enable-pear-coding-style))
-                ((eq value 'drupal)
-                 (php-enable-drupal-coding-style))
-                ((eq value 'wordpress)
-                 (php-enable-wordpress-coding-style))))
+         (php-enable-pear-coding-style))
+        ((eq value 'drupal)
+         (php-enable-drupal-coding-style))
+        ((eq value 'wordpress)
+         (php-enable-wordpress-coding-style))))
 
 
 
@@ -265,6 +265,8 @@ This variable can take one of the following symbol values:
  '((c-basic-offset . 4)
    (c-offsets-alist . ((block-open . -)
                        (block-close . 0)
+                       (arglist-close . php-lineup-arglist-close)
+                       (arglist-intro . php-lineup-arglist-intro)
                        (statement-cont . +)))))
 
 (defun php-enable-pear-coding-style ()
@@ -279,8 +281,8 @@ code and modules."
  "drupal"
  '((c-basic-offset . 2)
    (c-offsets-alist . ((case-label . +)
-                       (arglist-close . 0)
-                       (arglist-intro . +)
+                       (arglist-close . php-lineup-arglist-close)
+                       (arglist-intro . php-lineup-arglist-intro)
                        (arglist-cont-nonempty . c-lineup-math)
                        (statement-cont . +)))))
 
@@ -299,7 +301,8 @@ working with Drupal."
  "wordpress"
  '((c-basic-offset . 4)
    (c-offsets-alist . ((arglist-cont . 0)
-                       (arglist-intro . +)
+                       (arglist-intro . php-lineup-arglist-intro)
+                       (arglist-close . php-lineup-arglist-close)
                        (case-label . 2)
                        (arglist-close . 0)
                        (defun-close . 0)
@@ -627,11 +630,14 @@ This is was done due to the problem reported here:
              nil t)
 
   (cond ((eq php-mode-coding-style 'pear)
-                 (run-hooks 'php-mode-pear-hook))
-                ((eq php-mode-coding-style 'drupal)
-                 (run-hooks 'php-mode-drupal-hook))
-                ((eq php-mode-coding-style 'wordpress)
-                 (run-hooks 'php-mode-wordpress-hook)))
+         (php-enable-pear-coding-style)
+         (run-hooks 'php-mode-pear-hook))
+        ((eq php-mode-coding-style 'drupal)
+         (php-enable-drupal-coding-style)
+         (run-hooks 'php-mode-drupal-hook))
+        ((eq php-mode-coding-style 'wordpress)
+         (php-enable-wordpress-coding-style)
+         (run-hooks 'php-mode-wordpress-hook)))
 
   (if (or php-mode-force-pear
           (and (stringp buffer-file-name)

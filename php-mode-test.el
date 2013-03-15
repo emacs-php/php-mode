@@ -107,7 +107,6 @@ have a string face."
 
 (ert-deftest php-mode-test-issue-14 ()
   "Array indentation."
-  :expected-result :failed
   (with-php-mode-test ("issue-14.php" :indent t :magic t)))
 
 (ert-deftest php-mode-test-issue-16 ()
