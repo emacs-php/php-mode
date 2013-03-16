@@ -265,9 +265,12 @@ This variable can take one of the following symbol values:
  '((c-basic-offset . 4)
    (c-offsets-alist . ((block-open . -)
                        (block-close . 0)
+                       (topmost-intro-cont . c-lineup-cascaded-calls)
+                       (brace-list-intro . +)
+                       (brace-list-entry . c-lineup-cascaded-calls)
                        (arglist-close . php-lineup-arglist-close)
                        (arglist-intro . php-lineup-arglist-intro)
-                       (statement-cont . +)))))
+                       (statement-cont . c-lineup-cascaded-calls)))))
 
 (defun php-enable-pear-coding-style ()
   "Sets up php-mode to use the coding styles preferred for PEAR
@@ -281,10 +284,13 @@ code and modules."
  "drupal"
  '((c-basic-offset . 2)
    (c-offsets-alist . ((case-label . +)
+                       (topmost-intro-cont . c-lineup-cascaded-calls)
+                       (brace-list-intro . +)
+                       (brace-list-entry . c-lineup-cascaded-calls)
                        (arglist-close . php-lineup-arglist-close)
                        (arglist-intro . php-lineup-arglist-intro)
                        (arglist-cont-nonempty . c-lineup-math)
-                       (statement-cont . +)))))
+                       (statement-cont . c-lineup-cascaded-calls)))))
 
 (defun php-enable-drupal-coding-style ()
   "Makes php-mode use coding styles that are preferable for
@@ -303,11 +309,14 @@ working with Drupal."
    (c-offsets-alist . ((arglist-cont . 0)
                        (arglist-intro . php-lineup-arglist-intro)
                        (arglist-close . php-lineup-arglist-close)
+                       (topmost-intro-cont . c-lineup-cascaded-calls)
+                       (brace-list-intro . +)
+                       (brace-list-entry . c-lineup-cascaded-calls)
                        (case-label . 2)
                        (arglist-close . 0)
                        (defun-close . 0)
                        (defun-block-intro . +)
-                       (statement-cont . +)))))
+                       (statement-cont . c-lineup-cascaded-calls)))))
 
 (defun php-enable-wordpress-coding-style ()
   "Makes php-mode use coding styles that are preferable for
@@ -568,11 +577,6 @@ This is was done due to the problem reported here:
   ;; HACK: Overwrite this syntax with rules to match <?php and others.
   (set (make-local-variable 'c-opt-cpp-start) php-tags-key)
   (set (make-local-variable 'c-opt-cpp-prefix) php-tags-key)
-
-  ;; These settings ensure that chained method calls line up correctly
-  ;; over multiple lines.
-  (c-set-offset 'topmost-intro-cont 'c-lineup-cascaded-calls)
-  (c-set-offset 'brace-list-entry 'c-lineup-cascaded-calls)
 
   (set (make-local-variable 'c-block-stmt-1-key) php-block-stmt-1-key)
   (set (make-local-variable 'c-block-stmt-2-key) php-block-stmt-2-key)
