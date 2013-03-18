@@ -51,6 +51,8 @@ $object->foo()
        ->baz();
 ```
 
+**Note:** Alignment will only work if you use one of the three coding styles described below.  PHP mode uses [CC mode][] for indentation.  If you use any indentation style other than `pear`, `drupal`, and `wordpress` then the method alignment above is not guaranteed to work.
+
 ### Nested Array Formatting ###
 
 Nested function calls and `array()` structures now look better by default (or at least in my opinion).  Here is an example of the style:
@@ -226,3 +228,4 @@ In chronological order:
 
 [wiki]: https://github.com/ejmr/php-mode/wiki
 [ert]: http://www.gnu.org/software/emacs/manual/html_node/ert/index.html
+[cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
