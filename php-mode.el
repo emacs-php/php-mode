@@ -556,6 +556,17 @@ This is was done due to the problem reported here:
     (define-key map [menu-bar php search-documentation]
       '("Search documentation" . php-search-documentation))
 
+    ;; By default PHP mode binds C-M-h to c-mark-function, which it
+    ;; inherits from cc-mode.  But there are situations where
+    ;; c-mark-function fails to properly mark a function.  For
+    ;; example, if we use c-mark-function within a method definition
+    ;; then the region will expand beyond the method and into the
+    ;; class definition itself.
+    ;;
+    ;; Changing the default to mark-defun provides behavior that users
+    ;; are more likely to expect.
+    (define-key map (kbd "C-M-h") 'mark-defun)
+
     (define-key map [(control c) (control f)] 'php-search-documentation)
     (define-key map [(meta tab)] 'php-complete-function)
     (define-key map [(control c) (control m)] 'php-browse-manual)
