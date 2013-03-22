@@ -170,6 +170,8 @@ can be used to match against definitions for that classlike."
     ,(php-create-regexp-for-classlike "interface") 1)
    ("Traits"
     ,(php-create-regexp-for-classlike "trait") 1)
+   ("All Methods"
+    ,(php-create-regexp-for-method "\\(?:\\sw\\|\\s_\\)+") 1)
    ("Private Methods"
     ,(php-create-regexp-for-method "private") 1)
    ("Protected Methods"
