@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.10"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2013-03-15"
+(defconst php-mode-modified "2013-03-21"
   "PHP Mode build date.")
 
 ;;; License
@@ -879,6 +879,11 @@ searching the PHP website."
        "PHP_WINDOWS_NT_DOMAIN_CONTROLLER"
        "PHP_WINDOWS_NT_SERVER"
        "PHP_WINDOWS_NT_WORKSTATION"
+
+       ;; CLI SAPI
+       "STDIN"
+       "STDOUT"
+       "STDERR"
 
        ;; date and time constants
        "DATE_ATOM" "DATE_COOKIE" "DATE_ISO8601"
