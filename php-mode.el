@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.10"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2013-03-21"
+(defconst php-mode-modified "2013-03-22"
   "PHP Mode build date.")
 
 ;;; License
@@ -121,14 +121,22 @@ Turning this on will open it whenever `php-mode' is loaded."
              (speedbar 1)))
   :group 'php)
 
-(defun php-create-regexp-for-method (type)
-  "Accepts a `type' of function as a string, e.g. 'public' or 'private',
-and returns a regexp that will match that type of function."
+(defun php-create-regexp-for-method (visibility)
+  "Make a regular expression for methods with the given VISIBILITY.
+
+VISIBILITY must be a string that names the visibility for a PHP
+method, e.g. 'public'.  The parameter VISIBILITY can itself also
+be a regular expression.
+
+The regular expression this function returns will check for other
+keywords that can appear in method signatures, e.g. 'final' and
+'static'.  The regular expression will have one capture group
+which will be the name of the method."
   (concat
    ;; Initial space with possible 'abstract' or 'final' keywords
    "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?"
-   ;; The function type
-   type
+   ;; The function visilibity
+   visibility
    ;; Is it static?
    "\\s-+\\(?:static\\s-+\\)?"
    ;; Make sure 'function' comes next with some space after
@@ -162,6 +170,8 @@ can be used to match against definitions for that classlike."
     ,(php-create-regexp-for-classlike "interface") 1)
    ("Traits"
     ,(php-create-regexp-for-classlike "trait") 1)
+   ("All Methods"
+    ,(php-create-regexp-for-method "\\(?:\\sw\\|\\s_\\)+") 1)
    ("Private Methods"
     ,(php-create-regexp-for-method "private") 1)
    ("Protected Methods"
