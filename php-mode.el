@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.10"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2013-03-22"
+(defconst php-mode-modified "2013-03-23"
   "PHP Mode build date.")
 
 ;;; License
@@ -1404,7 +1404,8 @@ searching the PHP website."
     (regexp-opt
      ;; "class", "new" and "extends" get special treatment
      ;; "case" gets special treatment elsewhere
-     '("and"
+     '("abstract"
+       "and"
        "array"
        "as"
        "break"
