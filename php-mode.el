@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.10"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2013-02-06"
+(defconst php-mode-modified "2013-03-23"
   "PHP Mode build date.")
 
 ;;; License
@@ -121,14 +121,22 @@ Turning this on will open it whenever `php-mode' is loaded."
              (speedbar 1)))
   :group 'php)
 
-(defun php-create-regexp-for-method (type)
-  "Accepts a `type' of function as a string, e.g. 'public' or 'private',
-and returns a regexp that will match that type of function."
+(defun php-create-regexp-for-method (visibility)
+  "Make a regular expression for methods with the given VISIBILITY.
+
+VISIBILITY must be a string that names the visibility for a PHP
+method, e.g. 'public'.  The parameter VISIBILITY can itself also
+be a regular expression.
+
+The regular expression this function returns will check for other
+keywords that can appear in method signatures, e.g. 'final' and
+'static'.  The regular expression will have one capture group
+which will be the name of the method."
   (concat
    ;; Initial space with possible 'abstract' or 'final' keywords
    "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?"
-   ;; The function type
-   type
+   ;; The function visilibity
+   visibility
    ;; Is it static?
    "\\s-+\\(?:static\\s-+\\)?"
    ;; Make sure 'function' comes next with some space after
@@ -162,6 +170,8 @@ can be used to match against definitions for that classlike."
     ,(php-create-regexp-for-classlike "interface") 1)
    ("Traits"
     ,(php-create-regexp-for-classlike "trait") 1)
+   ("All Methods"
+    ,(php-create-regexp-for-method "\\(?:\\sw\\|\\s_\\)+") 1)
    ("Private Methods"
     ,(php-create-regexp-for-method "private") 1)
    ("Protected Methods"
@@ -197,16 +207,6 @@ You can replace \"en\" with your ISO language code."
 
 ;;;###autoload
 (add-to-list 'interpreter-mode-alist (cons "php" 'php-mode))
-
-;;;###autoload
-(defcustom php-file-patterns '("\\.php[s345t]?\\'" "\\.phtml\\'" "\\.inc\\'")
-  "List of file patterns for which to automatically invoke `php-mode'."
-  :type '(repeat (regexp :tag "Pattern"))
-  :set (lambda (sym val)
-         (set-default sym val)
-         (mapc (lambda (i) (add-to-list 'auto-mode-alist (cons i 'php-mode)))
-               val))
-  :group 'php)
 
 (defcustom php-mode-hook nil
   "List of functions to be executed on entry to `php-mode'."
@@ -252,8 +252,8 @@ This variable can take one of the following symbol values:
 
 `WordPress' - use coding styles preferred for working with WordPress projects."
   :type '(choice (const :tag "PEAR" pear)
-                                 (const :tag "Drupal" drupal)
-                                 (const :tag "WordPress" wordpress))
+                 (const :tag "Drupal" drupal)
+                 (const :tag "WordPress" wordpress))
   :group 'php
   :set 'php-mode-custom-coding-style-set
   :initialize 'custom-initialize-default)
@@ -262,11 +262,11 @@ This variable can take one of the following symbol values:
   (set         sym value)
   (set-default sym value)
   (cond ((eq value 'pear)
-                 (php-enable-pear-coding-style))
-                ((eq value 'drupal)
-                 (php-enable-drupal-coding-style))
-                ((eq value 'wordpress)
-                 (php-enable-wordpress-coding-style))))
+         (php-enable-pear-coding-style))
+        ((eq value 'drupal)
+         (php-enable-drupal-coding-style))
+        ((eq value 'wordpress)
+         (php-enable-wordpress-coding-style))))
 
 
 
@@ -275,7 +275,12 @@ This variable can take one of the following symbol values:
  '((c-basic-offset . 4)
    (c-offsets-alist . ((block-open . -)
                        (block-close . 0)
-                       (statement-cont . +)))))
+                       (topmost-intro-cont . c-lineup-cascaded-calls)
+                       (brace-list-intro . +)
+                       (brace-list-entry . c-lineup-cascaded-calls)
+                       (arglist-close . php-lineup-arglist-close)
+                       (arglist-intro . php-lineup-arglist-intro)
+                       (statement-cont . c-lineup-cascaded-calls)))))
 
 (defun php-enable-pear-coding-style ()
   "Sets up php-mode to use the coding styles preferred for PEAR
@@ -289,10 +294,13 @@ code and modules."
  "drupal"
  '((c-basic-offset . 2)
    (c-offsets-alist . ((case-label . +)
-                       (arglist-close . 0)
-                       (arglist-intro . +)
+                       (topmost-intro-cont . c-lineup-cascaded-calls)
+                       (brace-list-intro . +)
+                       (brace-list-entry . c-lineup-cascaded-calls)
+                       (arglist-close . php-lineup-arglist-close)
+                       (arglist-intro . php-lineup-arglist-intro)
                        (arglist-cont-nonempty . c-lineup-math)
-                       (statement-cont . +)))))
+                       (statement-cont . c-lineup-cascaded-calls)))))
 
 (defun php-enable-drupal-coding-style ()
   "Makes php-mode use coding styles that are preferable for
@@ -309,12 +317,16 @@ working with Drupal."
  "wordpress"
  '((c-basic-offset . 4)
    (c-offsets-alist . ((arglist-cont . 0)
-                       (arglist-intro . +)
+                       (arglist-intro . php-lineup-arglist-intro)
+                       (arglist-close . php-lineup-arglist-close)
+                       (topmost-intro-cont . c-lineup-cascaded-calls)
+                       (brace-list-intro . +)
+                       (brace-list-entry . c-lineup-cascaded-calls)
                        (case-label . 2)
                        (arglist-close . 0)
                        (defun-close . 0)
                        (defun-block-intro . +)
-                       (statement-cont . +)))))
+                       (statement-cont . c-lineup-cascaded-calls)))))
 
 (defun php-enable-wordpress-coding-style ()
   "Makes php-mode use coding styles that are preferable for
@@ -554,6 +566,17 @@ This is was done due to the problem reported here:
     (define-key map [menu-bar php search-documentation]
       '("Search documentation" . php-search-documentation))
 
+    ;; By default PHP mode binds C-M-h to c-mark-function, which it
+    ;; inherits from cc-mode.  But there are situations where
+    ;; c-mark-function fails to properly mark a function.  For
+    ;; example, if we use c-mark-function within a method definition
+    ;; then the region will expand beyond the method and into the
+    ;; class definition itself.
+    ;;
+    ;; Changing the default to mark-defun provides behavior that users
+    ;; are more likely to expect.
+    (define-key map (kbd "C-M-h") 'mark-defun)
+
     (define-key map [(control c) (control f)] 'php-search-documentation)
     (define-key map [(meta tab)] 'php-complete-function)
     (define-key map [(control c) (control m)] 'php-browse-manual)
@@ -575,11 +598,6 @@ This is was done due to the problem reported here:
   ;; HACK: Overwrite this syntax with rules to match <?php and others.
   (set (make-local-variable 'c-opt-cpp-start) php-tags-key)
   (set (make-local-variable 'c-opt-cpp-prefix) php-tags-key)
-
-  ;; These settings ensure that chained method calls line up correctly
-  ;; over multiple lines.
-  (c-set-offset 'topmost-intro-cont 'c-lineup-cascaded-calls)
-  (c-set-offset 'brace-list-entry 'c-lineup-cascaded-calls)
 
   (set (make-local-variable 'c-block-stmt-1-key) php-block-stmt-1-key)
   (set (make-local-variable 'c-block-stmt-2-key) php-block-stmt-2-key)
@@ -637,11 +655,14 @@ This is was done due to the problem reported here:
              nil t)
 
   (cond ((eq php-mode-coding-style 'pear)
-                 (run-hooks 'php-mode-pear-hook))
-                ((eq php-mode-coding-style 'drupal)
-                 (run-hooks 'php-mode-drupal-hook))
-                ((eq php-mode-coding-style 'wordpress)
-                 (run-hooks 'php-mode-wordpress-hook)))
+         (php-enable-pear-coding-style)
+         (run-hooks 'php-mode-pear-hook))
+        ((eq php-mode-coding-style 'drupal)
+         (php-enable-drupal-coding-style)
+         (run-hooks 'php-mode-drupal-hook))
+        ((eq php-mode-coding-style 'wordpress)
+         (php-enable-wordpress-coding-style)
+         (run-hooks 'php-mode-wordpress-hook)))
 
   (if (or php-mode-force-pear
           (and (stringp buffer-file-name)
@@ -879,6 +900,11 @@ searching the PHP website."
        "PHP_WINDOWS_NT_DOMAIN_CONTROLLER"
        "PHP_WINDOWS_NT_SERVER"
        "PHP_WINDOWS_NT_WORKSTATION"
+
+       ;; CLI SAPI
+       "STDIN"
+       "STDOUT"
+       "STDERR"
 
        ;; date and time constants
        "DATE_ATOM" "DATE_COOKIE" "DATE_ISO8601"
@@ -1378,7 +1404,8 @@ searching the PHP website."
     (regexp-opt
      ;; "class", "new" and "extends" get special treatment
      ;; "case" gets special treatment elsewhere
-     '("and"
+     '("abstract"
+       "and"
        "array"
        "as"
        "break"
@@ -1527,8 +1554,10 @@ searching the PHP website."
       (1 font-lock-keyword-face)
       (2 font-lock-function-name-face nil t))
 
-    ;; class hierarchy
-    '("\\<\\(self\\|parent\\)\\>" (1 font-lock-constant-face nil nil))
+    ;; self, parent, and static in class contexts
+    '("\\<\\(self\\)\\(?:::\\)" (1 font-lock-constant-face nil nil))
+    '("\\<\\(parent\\)\\(?:::\\|\\s-*(\\)" (1 font-lock-constant-face nil nil))
+    '("\\<\\(static\\)\\(?:::\\)" (1 font-lock-constant-face t nil))
 
     ;; method and variable features
     '("\\<\\(private\\|protected\\|public\\)\\s-+\\$?\\sw+"
@@ -1681,6 +1710,10 @@ The output will appear in the buffer *PHP*."
   '(font-lock-add-keywords 'php-mode '((php-annotations-font-lock-find-annotation (2 'php-annotations-annotation-face t)))))
 
 
+
+;;;###autoload
+(dolist (pattern '("\\.php[s345t]?\\'" "\\.phtml\\'"))
+  (add-to-list 'auto-mode-alist `(,pattern . php-mode)))
 
 (provide 'php-mode)
 

@@ -107,7 +107,6 @@ have a string face."
 
 (ert-deftest php-mode-test-issue-14 ()
   "Array indentation."
-  :expected-result :failed
   (with-php-mode-test ("issue-14.php" :indent t :magic t)))
 
 (ert-deftest php-mode-test-issue-16 ()
@@ -125,13 +124,12 @@ Gets the face of the text after the comma."
 
 (ert-deftest php-mode-test-issue-19 ()
   "Alignment of arrow operators."
-  :expected-result :failed
   (with-php-mode-test ("issue-19.php" :indent t)
-    (while (re-search-forward "^\\s-*\\$object->")
+    (while (search-forward "$object->" (point-max) t)
       ;; Point is just after `->'
       (let ((col (current-column)))
         (search-forward "->")
-        (should (eq (current-column) col))))))
+        (should (= (current-column) col))))))
 
 (ert-deftest php-mode-test-issue-21 ()
   "Font locking multi-line string."
