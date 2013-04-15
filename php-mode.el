@@ -1711,6 +1711,22 @@ The output will appear in the buffer *PHP*."
 
 
 
+;;; Correct the behavior of `delete-indentation' by modifying the
+;;; logic of `fixup-whitespace'.
+(defadvice fixup-whitespace (after php-mode-fixup-whitespace)
+  "Remove whitespace before certain characters in PHP mode."
+  (let* ((no-behind-space ";\\|,\\|->\\|::")
+         (no-front-space "->\\|::"))
+    (when (and (eq major-mode 'php-mode)
+               (or (looking-at-p (concat " \\(" no-behind-space "\\)"))
+                   (save-excursion
+                     (forward-char -2)
+                     (looking-at-p no-front-space))))
+      (delete-char 1))))
+
+(ad-activate 'fixup-whitespace)
+
+
 ;;;###autoload
 (dolist (pattern '("\\.php[s345t]?\\'" "\\.phtml\\'"))
   (add-to-list 'auto-mode-alist `(,pattern . php-mode)))
