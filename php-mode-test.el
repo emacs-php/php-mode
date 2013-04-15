@@ -175,3 +175,25 @@ The closing brace and parenthesis should be at column 0."
 If the bug has been fixed, indenting the buffer should not cause
 an error."
   (with-php-mode-test ("issue-42.php" :indent t)))
+
+(ert-deftest php-mode-test-issue-73 ()
+  "The `delete-indentation' function should work properly for PHP.
+ This means modifying the logic of `fixup-whitespace' so that it
+ eliminates spaces before ',', ';', '->' amd '::' and after '->' and
+ '::'."
+  (with-php-mode-test ("issue-73.php")
+    (when (search-forward "# Correct" nil t)
+      (forward-line 1)
+      (let ((correct-line (thing-at-point 'line)))
+        (while (search-forward "# Test" nil t)
+          (forward-line 1)
+          (let ((current-line (line-number-at-pos)))
+            (catch 'eob
+              (while (not (looking-at-p "$"))
+                (unless (zerop (forward-line 1))
+                  (throw 'eob t))))
+            (forward-line -1)
+            (while (not (eq (line-number-at-pos) current-line))
+              (delete-indentation))
+            (beginning-of-line)
+            (should (string= (thing-at-point 'line) correct-line))))))))
