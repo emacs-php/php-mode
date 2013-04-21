@@ -121,6 +121,11 @@ Turning this on will open it whenever `php-mode' is loaded."
              (speedbar 1)))
   :group 'php)
 
+(defcustom php-extra-constants '()
+  "List of PHP constants that will also we used for the fontification."
+  :type 'list
+  :group 'php)
+
 (defun php-create-regexp-for-method (visibility)
   "Make a regular expression for methods with the given VISIBILITY.
 
@@ -862,8 +867,7 @@ searching the PHP website."
   (eval-when-compile
     (regexp-opt
      (append
-      (if (boundp 'php-mode-extra-constants)
-          php-mode-extra-constants '())
+      php-extra-constants
       '(;; core constants
         "__LINE__" "__FILE__" "__DIR__"
         "__FUNCTION__" "__CLASS__" "__TRAIT__" "__METHOD__"
