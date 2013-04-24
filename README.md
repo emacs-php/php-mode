@@ -136,6 +136,10 @@ By default php-mode tries to provide a reasonable style for indentation and form
 
 They will help format your code for PEAR projects, or work on the Drupal and WordPress software, respectively.  You may enable any of them by default by running `M-x customize-group <RET> php` and looking for the ‘PHP Mode Coding Style’ option.
 
+### Extra Constants ###
+
+If you commonly use a framework or library that defines a set of constants then you may wish to customize the value of `php-extra-constants`.  It is a list of strings that PHP mode will treat as additional constants, i.e. providing them the same level syntax highlighting that PHP mode uses for built-in constants.
+
 
 How to Contribute
 -----------------
