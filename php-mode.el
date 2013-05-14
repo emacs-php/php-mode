@@ -233,6 +233,11 @@ You can replace \"en\" with your ISO language code."
   :type 'hook
   :group 'php)
 
+(defcustom php-mode-symfony2-hook nil
+  "Hook called when a Symfony2 file is opened with `php-mode'."
+  :type 'hook
+  :group 'php)
+
 (defcustom php-mode-force-pear nil
   "Normally PEAR coding rules are enforced only when the filename contains \"PEAR.\"
 Turning this on will force PEAR rules on all PHP files."
@@ -255,10 +260,13 @@ This variable can take one of the following symbol values:
 
 `Drupal' - use coding styles preferred for working with Drupal projects.
 
-`WordPress' - use coding styles preferred for working with WordPress projects."
+`WordPress' - use coding styles preferred for working with WordPress projects.
+
+`Symfony2' - use coding styles preferred for working with Symfony2 projects."
   :type '(choice (const :tag "PEAR" pear)
                  (const :tag "Drupal" drupal)
-                 (const :tag "WordPress" wordpress))
+                 (const :tag "WordPress" wordpress)
+                 (const :tag "Symfony2" symfony2))
   :group 'php
   :set 'php-mode-custom-coding-style-set
   :initialize 'custom-initialize-default)
@@ -271,7 +279,9 @@ This variable can take one of the following symbol values:
         ((eq value 'drupal)
          (php-enable-drupal-coding-style))
         ((eq value 'wordpress)
-         (php-enable-wordpress-coding-style))))
+         (php-enable-wordpress-coding-style))
+        ((eq value 'symfony2)
+         (php-enable-symfony2-coding-style))))
 
 
 
@@ -342,6 +352,30 @@ working with Wordpress."
         tab-width 4
         c-indent-comments-syntactically-p t)
   (c-set-style "wordpress"))
+
+(c-add-style
+ "symfony2"
+ '((c-basic-offset . 4)
+   (c-offsets-alist . ((arglist-cont . 0)
+                       (arglist-intro . php-lineup-arglist-intro)
+                       (arglist-close . php-lineup-arglist-close)
+                       (topmost-intro-cont . c-lineup-cascaded-calls)
+                       (brace-list-intro . +)
+                       (brace-list-entry . c-lineup-cascaded-calls)
+                       (case-label . 2)
+                       (defun-close . 0)
+                       (defun-block-intro . +)
+                       (statement-cont . php-lineup-hanging-semicolon)))))
+
+(defun php-enable-symfony2-coding-style ()
+  "Makes php-mode use coding styles that are preferable for
+working with Symfony2."
+  (interactive)
+  (setq indent-tabs-mode nil
+        fill-column 78
+        tab-width 4
+        c-indent-comments-syntactically-p t)
+  (c-set-style "symfony2"))
 
 
 (defun php-mode-version ()
@@ -545,6 +579,11 @@ This is was done due to the problem reported here:
 (c-set-offset 'arglist-intro 'php-lineup-arglist-intro)
 (c-set-offset 'arglist-close 'php-lineup-arglist-close)
 
+(defun php-lineup-hanging-semicolon (langelem)
+  (save-excursion
+    (beginning-of-line)
+    (if (looking-at-p "\\s-*;\\s-*$") 0 '+)))
+
 (defun php-unindent-closure ()
   (let ((syntax (mapcar 'car c-syntactic-context)))
     (if (and (member 'arglist-cont-nonempty syntax)
@@ -659,6 +698,10 @@ This is was done due to the problem reported here:
   (add-hook 'php-mode-wordpress-hook 'php-enable-wordpress-coding-style
              nil t)
 
+  ;; ;; Symfony2 coding standards
+  (add-hook 'php-mode-symfony2-hook 'php-enable-symfony2-coding-style
+             nil t)
+
   (cond ((eq php-mode-coding-style 'pear)
          (php-enable-pear-coding-style)
          (run-hooks 'php-mode-pear-hook))
@@ -667,7 +710,10 @@ This is was done due to the problem reported here:
          (run-hooks 'php-mode-drupal-hook))
         ((eq php-mode-coding-style 'wordpress)
          (php-enable-wordpress-coding-style)
-         (run-hooks 'php-mode-wordpress-hook)))
+         (run-hooks 'php-mode-wordpress-hook))
+        ((eq php-mode-coding-style 'symfony2)
+         (php-enable-symfony2-coding-style)
+         (run-hooks 'php-mode-symfony2-hook)))
 
   (if (or php-mode-force-pear
           (and (stringp buffer-file-name)
