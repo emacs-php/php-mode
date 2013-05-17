@@ -137,6 +137,20 @@ By default php-mode tries to provide a reasonable style for indentation and form
 
 They will help format your code for PEAR projects, or work on Drupal, WordPress, and Symfony2 software, respectively.  You may enable any of them by default by running `M-x customize-group <RET> php` and looking for the ‘PHP Mode Coding Style’ option.
 
+#### Symfony2 Style ####
+
+With this style method call chains can be formatted with indented continuation and a hanging semi-colon:
+
+```php
+    $user1
+        ->setCreateDate(new \DateTime('2007-05-07 01:34:45'))
+        ->setLastDate(new \DateTime('2012-08-18 19:03:02'))
+        ->setUsername('jay')
+    ;
+```
+
+This style is used widely throughout Symfony2 source code even if it is not explicitly mentioned in their conventions documents.
+
 ### Extra Constants ###
 
 If you commonly use a framework or library that defines a set of constants then you may wish to customize the value of `php-extra-constants`.  It is a list of strings that PHP mode will treat as additional constants, i.e. providing them the same level syntax highlighting that PHP mode uses for built-in constants.
