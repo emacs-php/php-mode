@@ -356,7 +356,7 @@ working with Wordpress."
 (c-add-style
  "symfony2"
  '((c-basic-offset . 4)
-   (c-offsets-alist . ((arglist-cont . 0)
+   (c-offsets-alist . ((arglist-cont . php-lineup-arglist)
                        (arglist-intro . php-lineup-arglist-intro)
                        (arglist-close . php-lineup-arglist-close)
                        (topmost-intro-cont . c-lineup-cascaded-calls)
@@ -578,6 +578,11 @@ This is was done due to the problem reported here:
 
 (c-set-offset 'arglist-intro 'php-lineup-arglist-intro)
 (c-set-offset 'arglist-close 'php-lineup-arglist-close)
+
+(defun php-lineup-arglist (langelem)
+  (save-excursion
+    (beginning-of-line)
+    (if (looking-at-p "\\s-*->") '+ 0)))
 
 (defun php-lineup-hanging-semicolon (langelem)
   (save-excursion
