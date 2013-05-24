@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.10"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2013-05-20"
+(defconst php-mode-modified "2013-05-24"
   "PHP Mode build date.")
 
 ;;; License
@@ -119,6 +119,11 @@ Turning this on will open it whenever `php-mode' is loaded."
          (set-default sym val)
          (when val
              (speedbar 1)))
+  :group 'php)
+
+(defcustom php-template-compatibility t
+  "Should detect presence of html tags."
+  :type 'boolean
   :group 'php)
 
 (defcustom php-extra-constants '()
@@ -540,27 +545,29 @@ POS is a position on the line in question.
 This is was done due to the problem reported here:
 
   URL `https://answers.launchpad.net/nxhtml/+question/43320'"
-  (setq pos (or pos (point)))
-  (let ((here (point))
-        ret)
-  (save-match-data
-    (goto-char pos)
-    (beginning-of-line)
-    (setq ret (looking-at
-               (rx
-                (or (seq
-                     bol
-                     (0+ space)
-                     "<"
-                     (in "a-z\\?"))
-                    (seq
-                     (0+ not-newline)
-                     (in "a-z\\?")
-                     ">"
-                     (0+ space)
-                     eol))))))
-  (goto-char here)
-  ret))
+  (if (not php-template-compatibility)
+      nil
+    (setq pos (or pos (point)))
+    (let ((here (point))
+          ret)
+      (save-match-data
+        (goto-char pos)
+        (beginning-of-line)
+        (setq ret (looking-at
+                   (rx
+                    (or (seq
+                         bol
+                         (0+ space)
+                         "<"
+                         (in "a-z\\?"))
+                        (seq
+                         (0+ not-newline)
+                         (in "a-z\\?")
+                         ">"
+                         (0+ space)
+                         eol))))))
+      (goto-char here)
+      ret)))
 
 (defun php-c-vsemi-status-unknown-p ()
   "See `php-c-at-vsemi-p'."
@@ -1536,36 +1543,42 @@ searching the PHP website."
 
 ;; Set up font locking
 (defconst php-font-lock-keywords-1
-  (list
+  (append
+   (list
 
-   ;; Fontify constants
-   (cons
-    (concat "[^_$]?\\<\\(" php-constants "\\)\\>[^_]?")
-    '(1 font-lock-constant-face))
+    ;; Fontify constants
+    (cons
+     (concat "[^_$]?\\<\\(" php-constants "\\)\\>[^_]?")
+     '(1 font-lock-constant-face))
 
-   ;; Fontify keywords
-   (cons
-    (concat "[^_$]?\\<\\(" php-keywords "\\)\\>[^_]?")
-    '(1 font-lock-keyword-face))
+    ;; Fontify keywords
+    (cons
+     (concat "[^_$]?\\<\\(" php-keywords "\\)\\>[^_]?")
+     '(1 font-lock-keyword-face))
 
-   ;; Fontify keywords and targets, and case default tags.
-   (list "\\<\\(break\\|case\\|continue\\)\\>\\s-+\\(-?\\sw+\\)?"
-         '(1 font-lock-keyword-face) '(2 font-lock-constant-face keep t))
-   ;; This must come after the one for keywords and targets.
-   '(":" ("^\\s-+\\(\\sw+\\)\\s-+\\s-+$"
-          (beginning-of-line) (end-of-line)
-          (1 font-lock-constant-face)))
+    ;; Fontify keywords and targets, and case default tags.
+    (list "\\<\\(break\\|case\\|continue\\)\\>\\s-+\\(-?\\sw+\\)?"
+          '(1 font-lock-keyword-face) '(2 font-lock-constant-face keep t))
+    ;; This must come after the one for keywords and targets.
+    '(":" ("^\\s-+\\(\\sw+\\)\\s-+\\s-+$"
+           (beginning-of-line) (end-of-line)
+           (1 font-lock-constant-face)))
 
-   ;; treat 'print' as keyword only when not used like a function name
-   '("\\<print\\s-*(" . php-function-call-face)
-   '("\\<print\\>" . font-lock-keyword-face)
+    ;; treat 'print' as keyword only when not used like a function name
+    '("\\<print\\s-*(" . php-function-call-face)
+    '("\\<print\\>" . font-lock-keyword-face)
 
-   ;; Fontify PHP tag
-   (cons php-tags-key font-lock-preprocessor-face)
+    ;; Fontify PHP tag
+    (cons php-tags-key font-lock-preprocessor-face)
 
-   ;; Fontify ASP-style tag
-   '("<\\%\\(=\\)?" . font-lock-preprocessor-face)
-   '("\\%>" . font-lock-preprocessor-face)
+    )
+
+   (if php-template-compatibility
+       (list
+        ;; Fontify ASP-style tag
+        '("<\\%\\(=\\)?" . font-lock-preprocessor-face)
+        '("\\%>" . font-lock-preprocessor-face))
+     ())
 
    )
   "Subdued level highlighting for PHP mode.")
@@ -1634,16 +1647,19 @@ searching the PHP website."
 (defconst php-font-lock-keywords-3
   (append
    php-font-lock-keywords-2
+   (if php-template-compatibility
+       (list
+        '("</?[a-z!:]+" . font-lock-constant-face)
+        ;; HTML >
+        '("<[^>]*\\(>\\)" (1 font-lock-constant-face))
+        ;; HTML tags
+        '("\\(<[a-z]+\\)[[:space:]]+\\([a-z:]+=\\)[^>]*?"
+          (1 font-lock-constant-face)
+          (2 font-lock-constant-face))
+        '("\"[[:space:]]+\\([a-z:]+=\\)" (1 font-lock-constant-face))
+        )
+     ())
    (list
-    '("</?[a-z!:]+" . font-lock-constant-face)
-
-    ;; HTML >
-    '("<[^>]*\\(>\\)" (1 font-lock-constant-face))
-
-    ;; HTML tags
-    '("\\(<[a-z]+\\)[[:space:]]+\\([a-z:]+=\\)[^>]*?" (1 font-lock-constant-face) (2 font-lock-constant-face) )
-    '("\"[[:space:]]+\\([a-z:]+=\\)" (1 font-lock-constant-face))
-
     ;; warn about $word.word -- it could be a valid concatenation,
     ;; but without any spaces we'll assume $word->word was meant.
     '("\\$\\sw+\\(\\.\\)\\sw"
