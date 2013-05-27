@@ -248,6 +248,7 @@ In chronological order:
 49. [Steve Purcell](https://github.com/purcell)
 50. TatriX
 51. [François-Xavier Bois](https://github.com/fxbois)
+52. [James Laver](https://github.com/jjl)
 
 
 
