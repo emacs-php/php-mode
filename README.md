@@ -51,7 +51,7 @@ $object->foo()
        ->baz();
 ```
 
-**Note:** Alignment will only work if you use one of the three coding styles described below.  PHP mode uses [CC mode][] for indentation.  If you use any indentation style other than `pear`, `drupal`, and `wordpress` then the method alignment above is not guaranteed to work.
+**Note:** Alignment will only work if you use one of the coding styles described below.  PHP mode uses [CC mode][] for indentation.  If you use any indentation style other than those described under the *Coding Styles* section then the method alignment above is not guaranteed to work.
 
 ### Nested Array Formatting ###
 
