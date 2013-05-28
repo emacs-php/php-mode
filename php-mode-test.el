@@ -69,14 +69,22 @@ be processed."
   "Set up environment for testing `php-mode'.
 Execute BODY in a temporary buffer containing the contents of
 FILE, in `php-mode'. Optional keyword `:style' can be used to set
-the coding style to one of `pear', `drupal', or `wordpress'."
+the coding style to one of the following:
+
+1. `pear'
+2. `drupal'
+3. `wordpress'
+4. `symfony2'
+
+Using any other symbol for STYLE results in undefined behavior."
   (declare (indent 1))
   `(with-temp-buffer
      (insert-file-contents (expand-file-name ,file php-mode-test-dir))
      ,(case style
         (pear '(php-enable-pear-coding-style))
         (drupal '(php-enable-drupal-coding-style))
-        (wordpress '(php-enable-wordpress-coding-style)))
+        (wordpress '(php-enable-wordpress-coding-style))
+        (symfony2 '(php-enable-symfony2-coding-style)))
      (php-mode)
      (font-lock-fontify-buffer)
      ,(if indent
