@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.10"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2013-05-24"
+(defconst php-mode-modified "2013-06-07"
   "PHP Mode build date.")
 
 ;;; License
@@ -632,6 +632,17 @@ This is was done due to the problem reported here:
     ;; Changing the default to mark-defun provides behavior that users
     ;; are more likely to expect.
     (define-key map (kbd "C-M-h") 'mark-defun)
+
+    ;; Many packages based on cc-mode provide the 'C-c C-w' binding
+    ;; to toggle Subword Mode.  See the page
+    ;;
+    ;;     https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
+    ;;
+    ;; for more information about Submode Word.
+    (if (boundp 'subword-mode)
+        (if subword-mode
+            (subword-mode nil)
+          (subword-mode t)))
 
     (define-key map [(control c) (control f)] 'php-search-documentation)
     (define-key map [(meta tab)] 'php-complete-function)
