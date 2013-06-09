@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.10"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2013-06-07"
+(defconst php-mode-modified "2013-06-09"
   "PHP Mode build date.")
 
 ;;; License
@@ -300,7 +300,7 @@ This variable can take one of the following symbol values:
                        (brace-list-entry . c-lineup-cascaded-calls)
                        (arglist-close . php-lineup-arglist-close)
                        (arglist-intro . php-lineup-arglist-intro)
-                       (statement-cont . c-lineup-cascaded-calls)))))
+                       (statement-cont . (first c-lineup-cascaded-calls +))))))
 
 (defun php-enable-pear-coding-style ()
   "Sets up php-mode to use the coding styles preferred for PEAR
@@ -320,7 +320,7 @@ code and modules."
                        (arglist-close . php-lineup-arglist-close)
                        (arglist-intro . php-lineup-arglist-intro)
                        (arglist-cont-nonempty . c-lineup-math)
-                       (statement-cont . c-lineup-cascaded-calls)))))
+                       (statement-cont . (first c-lineup-cascaded-calls +))))))
 
 (defun php-enable-drupal-coding-style ()
   "Makes php-mode use coding styles that are preferable for
@@ -346,7 +346,7 @@ working with Drupal."
                        (arglist-close . 0)
                        (defun-close . 0)
                        (defun-block-intro . +)
-                       (statement-cont . c-lineup-cascaded-calls)))))
+                       (statement-cont . (first c-lineup-cascaded-calls +))))))
 
 (defun php-enable-wordpress-coding-style ()
   "Makes php-mode use coding styles that are preferable for

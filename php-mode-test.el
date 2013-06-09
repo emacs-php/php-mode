@@ -205,3 +205,7 @@ an error."
               (delete-indentation))
             (beginning-of-line)
             (should (string= (thing-at-point 'line) correct-line))))))))
+
+(ert-deftest php-mode-test-issue-99 ()
+  "Proper indentation for 'foreach' statements without braces."
+  (with-php-mode-test ("issue-99.php" :indent t :magic t)))
