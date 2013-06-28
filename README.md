@@ -51,7 +51,7 @@ $object->foo()
        ->baz();
 ```
 
-**Note:** Alignment will only work if you use one of the three coding styles described below.  PHP mode uses [CC mode][] for indentation.  If you use any indentation style other than `pear`, `drupal`, and `wordpress` then the method alignment above is not guaranteed to work.
+**Note:** Alignment will only work if you use one of the coding styles described below.  PHP mode uses [CC mode][] for indentation.  If you use any indentation style other than those described under the *Coding Styles* section then the method alignment above is not guaranteed to work.
 
 ### Nested Array Formatting ###
 
@@ -155,6 +155,22 @@ This style is used widely throughout Symfony2 source code even if it is not expl
 
 If you commonly use a framework or library that defines a set of constants then you may wish to customize the value of `php-extra-constants`.  It is a list of strings that PHP mode will treat as additional constants, i.e. providing them the same level syntax highlighting that PHP mode uses for built-in constants.
 
+### Avoid HTML Template Compatibility ###
+
+Many developers use PHP Mode to edit pure PHP scripts (e.g. files with only PHP and no HTML). A basic compatibility layer with HTML has historically been part of PHP Mode but it does not work perfectly and can cause some bad side effects such as slowness and incorrect font locking.  Configuring the `php-template-compatibility` property with a `nil` will cancel any attempt of HTML compatibility.  [Web Mode](http://web-mode.org/) is a great complement to PHP Mode if you need to work with PHP scripts that do contain HTML and other markup.
+
+### Subword Mode ###
+
+GNU Emacs comes with [Subword Mode][],, a minor mode that allows you to navigate the parts of a [camelCase][] as if they were separate words.  For example, PHP Mode treats the variable `$fooBarBaz` as a whole name by default.  But if you enable Subword Mode then Emacs will treat the variable name as three separate words, and therefore word-related commands (e.g. `M-f`, `M-b`, `M-d`) will only affect the camelCase part of the name under the cursor.
+
+If you want to always use Subword Mode for PHP files then you can add this to your Emacs configuration:
+
+```lisp
+(add-hook 'php-mode-hook (lambda () (subword-mode 1)))
+```
+
+The key-binding `C-c C-w` will also toggle Subword Mode on and off.
+
 
 How to Contribute
 -----------------
@@ -244,9 +260,12 @@ In chronological order:
 49. [Steve Purcell](https://github.com/purcell)
 50. TatriX
 51. [François-Xavier Bois](https://github.com/fxbois)
+52. [James Laver](https://github.com/jjl)
 
 
 
 [wiki]: https://github.com/ejmr/php-mode/wiki
 [ert]: http://www.gnu.org/software/emacs/manual/html_node/ert/index.html
 [cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
+[Subword Mode]: https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
+[camelCase]: http://en.wikipedia.org/wiki/Camel_case
