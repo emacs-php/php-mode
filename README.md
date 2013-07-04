@@ -261,6 +261,7 @@ In chronological order:
 50. TatriX
 51. [François-Xavier Bois](https://github.com/fxbois)
 52. [James Laver](https://github.com/jjl)
+52. [Jacek Wysocki](https://github.com/exu)
 
 
 
