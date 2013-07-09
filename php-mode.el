@@ -367,7 +367,7 @@ working with Wordpress."
                        (arglist-close . php-lineup-arglist-close)
                        (topmost-intro-cont . c-lineup-cascaded-calls)
                        (brace-list-intro . +)
-                       (brace-list-entry . c-lineup-cascaded-calls)
+                       (brace-list-entry . 4)
                        (case-label . 4)
                        (defun-close . 0)
                        (defun-block-intro . +)
