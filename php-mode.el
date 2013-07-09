@@ -277,16 +277,17 @@ This variable can take one of the following symbol values:
   :initialize 'custom-initialize-default)
 
 (defun php-mode-custom-coding-style-set (sym value)
-  (set         sym value)
-  (set-default sym value)
-  (cond ((eq value 'pear)
-         (php-enable-pear-coding-style))
-        ((eq value 'drupal)
-         (php-enable-drupal-coding-style))
-        ((eq value 'wordpress)
-         (php-enable-wordpress-coding-style))
-        ((eq value 'symfony2)
-         (php-enable-symfony2-coding-style))))
+  (when (eq major-mode 'php-mode)
+    (set         sym value)
+    (set-default sym value)
+    (cond ((eq value 'pear)
+           (php-enable-pear-coding-style))
+          ((eq value 'drupal)
+           (php-enable-drupal-coding-style))
+          ((eq value 'wordpress)
+           (php-enable-wordpress-coding-style))
+          ((eq value 'symfony2)
+           (php-enable-symfony2-coding-style)))))
 
 
 
