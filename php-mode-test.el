@@ -65,7 +65,7 @@ be processed."
                        answers))))
      answers)))
 
-(defmacro* with-php-mode-test ((file &optional &key style indent magic) &rest body)
+(defmacro* with-php-mode-test ((file &key style indent magic) &rest body)
   "Set up environment for testing `php-mode'.
 Execute BODY in a temporary buffer containing the contents of
 FILE, in `php-mode'. Optional keyword `:style' can be used to set
