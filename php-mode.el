@@ -369,6 +369,7 @@ working with Wordpress."
                        (brace-list-intro . +)
                        (brace-list-entry . c-lineup-cascaded-calls)
                        (case-label . 4)
+                       (statement-case-intro . 4)
                        (defun-close . 0)
                        (defun-block-intro . +)
                        (statement-cont . php-lineup-hanging-semicolon)))))
