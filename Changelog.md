@@ -6,6 +6,52 @@ because when I (Eric James Michael Ritz) took over the project I did
 not have a record of all changes available.
 
 
+1.11
+----
+
+* Add STDOUT, STDIN, and STDERR to the php-constants list
+* Add Symfony2 coding style.
+* Add a full copy of the license
+* Add proper statement-case-intro indent for symfony2
+* Added "function" as a PHP keyword.
+* Added function php-lineup-arglist
+* Added gitignore with *.elc
+* Associate file extensions when installing from an Elisp repository
+* Be nice to PSR standards (there should be 4 spaces)
+* Correct indentation for array arguments (tests/issues-14.php)
+* Correct syntax highlighting for ‘parent’ and ‘self’
+* Describe php-extra-constants in the README
+* Describe php-template-compatibility in the README
+* Do not expect failure for test issue-19
+* Do not trigger search error in php-mode-test-issue-19
+* Document Subword Mode in the README
+* Document support for the Symfony2 style in the README
+* Fix chained method alignment
+* Fix indentation of statements after ‘foreach’ without braces
+* Highlight ‘static’ as a constant when it appears in a class context
+* Improve the docstring for php-create-regexp-for-method
+* Improve the plain-text formatting of the README
+* Introduce php-extra-constants
+* Introduce php-template-compatility
+* Introduce ‘C-c C-w’ to toggle Subword Mode
+* Issue #73, correct behavior of `delete-indentation`.
+* List all methods via Imenu regardless of their visibility
+* Make `with-php-mode-test` aware of the Symfony2 coding style
+* README: Change the absolute link to the Changelog to a relative link
+* README: Correct the documentation for chained-method call alignment
+* README: Document how chained method alignment may fail
+* README: Reword the mention of Web Mode for clarity
+* README: Use syntax highlighting for the method alignment example
+* Re-define C-M-h to mark-defun instead of c-mark-function
+* Remove the unnecessary &optional from the with-php-mode-test macro
+* Set brace-list-entry to offset of four
+* Tests: Remove executable permissions from the issue 27 test
+* Treat ‘abstract’ as a keyword
+* Use "magic" comments in PHP files to simplify indentation testing
+* Use magic for tests of issues #14, #19, #27, #29, #42
+* Workaround "bug" in `load-theme`
+
+
 1.10
 ----
 
