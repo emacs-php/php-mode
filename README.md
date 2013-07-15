@@ -171,6 +171,10 @@ If you want to always use Subword Mode for PHP files then you can add this to yo
 
 The key-binding `C-c C-w` will also toggle Subword Mode on and off.
 
+### Amaka Support ###
+
+Viewing and editing build scripts for [Amaka](http://trashofmasters.github.io/amaka/) will automatically enable PHP Mode.
+
 
 How to Contribute
 -----------------

@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.11"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2013-07-09"
+(defconst php-mode-modified "2013-07-15"
   "PHP Mode build date.")
 
 ;;; License
@@ -1815,7 +1815,7 @@ The output will appear in the buffer *PHP*."
 
 
 ;;;###autoload
-(dolist (pattern '("\\.php[s345t]?\\'" "\\.phtml\\'"))
+(dolist (pattern '("\\.php[s345t]?\\'" "\\.phtml\\'" "Amkfile"))
   (add-to-list 'auto-mode-alist `(,pattern . php-mode)))
 
 (provide 'php-mode)
