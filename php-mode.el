@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.11"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2013-07-15"
+(defconst php-mode-modified "2013-07-18"
   "PHP Mode build date.")
 
 ;;; License
@@ -646,6 +646,15 @@ This is was done due to the problem reported here:
             (subword-mode nil)
           (subword-mode t)))
 
+    ;; We inherit c-beginning-of-defun and c-end-of-defun from CC Mode
+    ;; but we have two replacement functions specifically for PHP.  We
+    ;; remap the commands themselves and not their default
+    ;; key-bindings so that our PHP-specific versions will work even
+    ;; if the user has reconfigured their keys, e.g. if they rebind
+    ;; c-end-of-defun to something other than C-M-e.
+    (define-key map [remap c-beginning-of-defun] 'php-beginning-of-defun)
+    (define-key map [remap c-end-of-defun] 'php-end-of-defun)
+
     (define-key map [(control c) (control f)] 'php-search-documentation)
     (define-key map [(meta tab)] 'php-complete-function)
     (define-key map [(control c) (control m)] 'php-browse-manual)
@@ -755,10 +764,18 @@ This is was done due to the problem reported here:
 
   (set (make-local-variable 'syntax-begin-function)
        'c-beginning-of-syntax)
+
+  ;; We map the php-{beginning,end}-of-defun functions so that they
+  ;; replace the similar commands that we inherit from CC Mode.
+  ;; Because of our remapping we may not actually need to keep the
+  ;; following two local variables, but we keep them for now until we
+  ;; are completely sure their removal will not break any current
+  ;; behavior or backwards compatibility.
   (set (make-local-variable 'beginning-of-defun-function)
        'php-beginning-of-defun)
   (set (make-local-variable 'end-of-defun-function)
        'php-end-of-defun)
+  
   (set (make-local-variable 'open-paren-in-column-0-is-defun-start)
        nil)
   (set (make-local-variable 'defun-prompt-regexp)

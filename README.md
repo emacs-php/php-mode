@@ -246,7 +246,7 @@ In chronological order:
 31. [Bill Lovett](https://github.com/lovett)
 32. Dias Badekas
 33. David House
-34. [Tom Willemsen](https://github.com/ryuslash)
+34. [Tom Willemse](https://github.com/ryuslash)
 35. [Olaf the Viking](https://github.com/olavTHEviking)
 36. [Maël Nison](https://github.com/arcanis)
 37. [flack](https://github.com/flack)
