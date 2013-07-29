@@ -381,7 +381,8 @@ working with Symfony2."
   (setq indent-tabs-mode nil
         fill-column 78
         tab-width 4
-        c-indent-comments-syntactically-p t)
+        c-indent-comments-syntactically-p t
+        require-final-newline t)
   (c-set-style "symfony2"))
 
 
