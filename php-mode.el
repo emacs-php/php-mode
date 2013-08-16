@@ -83,7 +83,9 @@
 (defgroup php nil
   "Major mode `php-mode' for editing PHP code."
   :prefix "php-"
-  :group 'languages)
+  :group 'languages
+  :link '(url-link :tag "Official Site" "https://github.com/ejmr/php-mode")
+  :link '(url-link :tag "PHP Mode Wiki" "https://github.com/ejmr/php-mode/wiki"))
 
 (defcustom php-executable "/usr/bin/php"
   "The location of the PHP executable."
