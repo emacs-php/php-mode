@@ -1713,7 +1713,7 @@ searching the PHP website."
       1 font-lock-type-face)
 
     ;; Function calls qualified by namespaces
-    '("\\(?:\\(\\sw+\\)\\\\\\)+\\sw+("
+    '("\\(\\\\?\\(?:\\sw+\\\\\\)+\\)\\sw+("
       (1 font-lock-type-face))
 
     ;; Fontify variables and function calls
@@ -1751,7 +1751,8 @@ searching the PHP website."
     '("\\<[0-9]+" . php-default-face)
 
     ;; Warn on any words not already fontified
-    '("\\<\\sw+\\>" . font-lock-warning-face)))
+;;    '("\\<\\sw+\\>" . font-lock-warning-face)
+))
 
   "Gauchy level highlighting for PHP mode.")
 
