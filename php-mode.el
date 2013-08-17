@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.11"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2013-08-16"
+(defconst php-mode-modified "2013-08-17"
   "PHP Mode build date.")
 
 ;;; License
@@ -128,6 +128,7 @@ Turning this on will open it whenever `php-mode' is loaded."
   :type 'boolean
   :group 'php)
 
+;;;###autoload
 (defcustom php-extra-constants '()
   "A list of additional strings to treat as PHP constants."
   :type 'list
