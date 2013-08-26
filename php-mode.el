@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.11"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2013-08-22"
+(defconst php-mode-modified "2013-08-26"
   "PHP Mode build date.")
 
 ;;; License
@@ -532,7 +532,7 @@ example `html-mode'.  Known such libraries are:\n\t"
 
 (defconst php-block-stmt-1-kwds '("do" "else" "finally" "try"))
 (defconst php-block-stmt-2-kwds
-  '("for" "if" "while" "switch" "foreach" "elseif"  "catch all"))
+  '("for" "if" "while" "switch" "foreach" "elseif" "catch" "catch all"))
 
 (defconst php-block-stmt-1-key
   (regexp-opt php-block-stmt-1-kwds))
