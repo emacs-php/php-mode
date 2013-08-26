@@ -305,6 +305,7 @@ This variable can take one of the following symbol values:
                        (brace-list-entry . c-lineup-cascaded-calls)
                        (arglist-close . php-lineup-arglist-close)
                        (arglist-intro . php-lineup-arglist-intro)
+                       (knr-argdecl . [0])
                        (statement-cont . (first c-lineup-cascaded-calls +))))))
 
 (defun php-enable-pear-coding-style ()
@@ -325,6 +326,7 @@ code and modules."
                        (arglist-close . php-lineup-arglist-close)
                        (arglist-intro . php-lineup-arglist-intro)
                        (arglist-cont-nonempty . c-lineup-math)
+                       (knr-argdecl . [0])
                        (statement-cont . (first c-lineup-cascaded-calls +))))))
 
 (defun php-enable-drupal-coding-style ()
@@ -351,6 +353,7 @@ working with Drupal."
                        (arglist-close . 0)
                        (defun-close . 0)
                        (defun-block-intro . +)
+                       (knr-argdecl . [0])
                        (statement-cont . (first c-lineup-cascaded-calls +))))))
 
 (defun php-enable-wordpress-coding-style ()
@@ -376,6 +379,7 @@ working with Wordpress."
                        (statement-case-intro . 4)
                        (defun-close . 0)
                        (defun-block-intro . +)
+                       (knr-argdecl . [0])
                        (statement-cont . php-lineup-hanging-semicolon)))))
 
 (defun php-enable-symfony2-coding-style ()

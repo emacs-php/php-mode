@@ -14,10 +14,10 @@
  */
 
 $x = some_function(__FILE__) . '';
-                             $broken = true;
+$broken = true;
 
 some_function(__FILE__) . '';
-                        $broken = true;
+$broken = true;
 
 some_function(__FILE__) + 1;
-                        $broken = true;
+$broken = true;
