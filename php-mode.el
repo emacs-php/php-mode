@@ -603,8 +603,16 @@ This is was done due to the problem reported here:
     (beginning-of-line)
     (if (looking-at-p "\\s-*;\\s-*$") 0 '+)))
 
+;;; We silence all byte-compiler warnings when creating the `syntax'
+;;; variable binding in this function.  Emacs will normally warn us
+;;; that `c-syntactic-context' is unbound.  The variable comes from CC
+;;; Mode and it is only bound dynamically when calling certain
+;;; indentation functions.  See the documentation in section "8.1.1
+;;; Custom Brace Hanging" of the CC Mode manual for more information,
+;;; along with an explanation of why we do not simply bind the
+;;; variable to a value in order to appease the compiler warning.
 (defun php-unindent-closure ()
-  (let ((syntax (mapcar 'car c-syntactic-context)))
+  (let ((syntax (with-no-warnings (mapcar 'car c-syntactic-context))))
     (if (and (member 'arglist-cont-nonempty syntax)
              (or
               (member 'statement-block-intro syntax)
