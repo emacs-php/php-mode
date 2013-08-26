@@ -11,9 +11,15 @@ This updates PHP Mode with features to make it more friendly to use with PHP 5.4
 
 All contributors listed below improved PHP Mode as well.
 
-Please email any bugs or feature requests to `lobbyjones at gmail dot com` or submit them as Issues on the [GitHub page](https://github.com/ejmr/php-mode).  Also please include the output of `php-mode-version` in bug reports.
+Please email any bugs or feature requests to `lobbyjones at gmail dot com` or submit them as Issues on the [GitHub page](https://github.com/ejmr/php-mode).  Also please include the output of `php-mode-version` in bug reports.  [There is a changelog for previous versions.](./Changelog.md)
 
-**Note:** [There is a changelog for previous versions.](./Changelog.md)
+
+Installation
+------------
+
+If you are using GNU Emacs 24 or later then you can use its [package][] feature to install PHP Mode from [MELPA][].  *The [Marmalade][] package repository only has the original PHP Mode from 2004.*
+
+If you are using an older version of Emacs, or if you simply do not wish to use the package manager, then all you need to do is download the `php-mode.el` file, place it inside your `load-path`, and optionally add `(require 'php-mode)` to your Emacs configuration to automatically enable PHP Mode whenever you open a PHP file.
 
 
 Status
@@ -277,3 +283,6 @@ In chronological order:
 [cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
 [Subword Mode]: https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
 [camelCase]: http://en.wikipedia.org/wiki/Camel_case
+[package]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html
+[MELPA]: http://melpa.milkbox.net/
+[Marmalade]: http://marmalade-repo.org/
