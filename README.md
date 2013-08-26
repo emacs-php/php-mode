@@ -1,7 +1,7 @@
 PHP Mode for GNU Emacs
 ======================
 
-This updates php-mode with features to make it more friendly to use with PHP 5.4 and later.  This fork builds on the work of:
+This updates PHP Mode with features to make it more friendly to use with PHP 5.4 and later.  This fork builds on the work of:
 
 1. Turadg Aleahmad (Original Author)
 
@@ -9,7 +9,7 @@ This updates php-mode with features to make it more friendly to use with PHP 5.4
 
 3. Lennart Borgman
 
-All contributors listed below improved PHP mode as well.
+All contributors listed below improved PHP Mode as well.
 
 Please email any bugs or feature requests to `lobbyjones at gmail dot com` or submit them as Issues on the [Github page](https://github.com/ejmr/php-mode).  Also please include the output of `php-mode-version` in bug reports.
 
@@ -19,7 +19,7 @@ Please email any bugs or feature requests to `lobbyjones at gmail dot com` or su
 Status
 ------
 
-[The php-mode wiki][wiki] describes the plan for the next release and I update it to mark off issues when they are complete.  However, there is no hard date set for each release.  Serious bugs I try to resolve as soon as possibe.  But lately I have been lax when it comes to finishing feature requests, so my apologies.  That said, php-mode is in no way a dead project by any means, even if updates are sometimes sparse.
+[The PHP Mode wiki][wiki] describes the plan for the next release and I update it to mark off issues when they are complete.  However, there is no hard date set for each release.  Serious bugs I try to resolve as soon as possibe.  But lately I have been lax when it comes to finishing feature requests, so my apologies.  That said, PHP Mode is in no way a dead project by any means, even if updates are sometimes sparse.
 
 
 Features
@@ -27,7 +27,7 @@ Features
 
 ### New Keywords ###
 
-Now php-mode supports syntax highlighting for new keywords which PHP 5.4 introduced, e.g. those related to traits, such as `insteadof`.  Also supported are the older keywords `clone` and `default`.
+Now PHP Mode supports syntax highlighting for new keywords which PHP 5.4 introduced, e.g. those related to traits, such as `insteadof`.  Also supported are the older keywords `clone` and `default`.
 
 ### Constants ###
 
@@ -39,11 +39,11 @@ Traits, interfaces, and namespaces now appear under Imenu listings. Fontificatio
 
 ### Treatment of Underscores ###
 
-PHP mode treats underscores as ‘symbol constituents’ (in Emacs terminology) so that you can use keys like `M-f` and `M-b` to move through the individual parts of a variable name like `$foo_bar_baz`.
+PHP Mode treats underscores as ‘symbol constituents’ (in Emacs terminology) so that you can use keys like `M-f` and `M-b` to move through the individual parts of a variable name like `$foo_bar_baz`.
 
 ### Chained Method Calls ###
 
-PHP mode will align method calls over multiple lines anchored around the `->` operator, e.g.:
+PHP Mode will align method calls over multiple lines anchored around the `->` operator, e.g.:
 
 ```php
 $object->foo()
@@ -51,7 +51,7 @@ $object->foo()
        ->baz();
 ```
 
-**Note:** Alignment will only work if you use one of the coding styles described below.  PHP mode uses [CC mode][] for indentation.  If you use any indentation style other than those described under the *Coding Styles* section then the method alignment above is not guaranteed to work.
+**Note:** Alignment will only work if you use one of the coding styles described below.  PHP Mode uses [CC mode][] for indentation.  If you use any indentation style other than those described under the *Coding Styles* section then the method alignment above is not guaranteed to work.
 
 ### Nested Array Formatting ###
 
@@ -83,7 +83,7 @@ By customizing the variable `php-executable` you can enable Flymake mode in orde
 
 ### Search Local Documentation ###
 
-The key command `C-c C-f` will search the PHP website for documentation on the word under the cursor.  However, if you have a [local copy of the PHP documentation](http://us2.php.net/download-docs.php) then php-mode will try searching that documentation first.  All you need to do is customize the variable `php-manual-path` and give it the path to your copy of the documentation.  If php-mode cannot find something locally then it will still fallback on searching the PHP website.
+The key command `C-c C-f` will search the PHP website for documentation on the word under the cursor.  However, if you have a [local copy of the PHP documentation](http://us2.php.net/download-docs.php) then PHP Mode will try searching that documentation first.  All you need to do is customize the variable `php-manual-path` and give it the path to your copy of the documentation.  If PHP Mode cannot find something locally then it will still fallback on searching the PHP website.
 
 ### Executing Regions of PHP ###
 
@@ -124,11 +124,11 @@ class Product
 }
 ```
 
-The annotations are the lines that begin with the `@` character, and php-mode will give these special highlighting to help them stand out.
+The annotations are the lines that begin with the `@` character, and PHP Mode will give these special highlighting to help them stand out.
 
 ### Coding Styles ###
 
-By default php-mode tries to provide a reasonable style for indentation and formatting.  However, it provides other options suited for particular projects which you may find useful.  These coding styles are available through these functions:
+By default PHP Mode tries to provide a reasonable style for indentation and formatting.  However, it provides other options suited for particular projects which you may find useful.  These coding styles are available through these functions:
 
 1. `php-enable-pear-coding-style`
 2. `php-enable-drupal-coding-style`
@@ -153,7 +153,7 @@ This style is used widely throughout Symfony2 source code even if it is not expl
 
 ### Extra Constants ###
 
-If you commonly use a framework or library that defines a set of constants then you may wish to customize the value of `php-extra-constants`.  It is a list of strings that PHP mode will treat as additional constants, i.e. providing them the same level syntax highlighting that PHP mode uses for built-in constants.
+If you commonly use a framework or library that defines a set of constants then you may wish to customize the value of `php-extra-constants`.  It is a list of strings that PHP Mode will treat as additional constants, i.e. providing them the same level syntax highlighting that PHP Mode uses for built-in constants.
 
 ### Avoid HTML Template Compatibility ###
 
@@ -179,7 +179,7 @@ Viewing and editing build scripts for [Amaka](http://trashofmasters.github.io/am
 How to Contribute
 -----------------
 
-All contributions to php-mode are welcome.  But please try to do the following when sending improvements or bug fixes:
+All contributions to PHP Mode are welcome.  But please try to do the following when sending improvements or bug fixes:
 
 1. Add your name to the list of ‘Contributors’ in this `README.md` file if it is not there already.  If you have a Github page then please link your name to it, so people can see your other work.
 
@@ -193,13 +193,13 @@ All contributions to php-mode are welcome.  But please try to do the following w
 
 6. Send me a pull request here on Github.  Or if you do not have a Github account then email the patches to me at `lobbyjones at gmail dot com`.  Please try to make sure the patches are acceptable input to the comand `git am`.  Please note that even if you send a pull request it is very likely that I will *not* simply merge your branch through Github; I prefer to go through commits and cherry-pick them so I can review the commit messages and sign-off on them.  You can see which commits I did or did not merge by using the [`git-cherry`](http://www.kernel.org/pub/software/scm/git/docs/git-cherry.html) command.
 
-If you are fixing a bug related to a Github issue, then first of all, thank you for the help improving php-mode.  Second, there is a `tests/` directory which contains PHP scripts for issues (although not all of them).  Please consider adding a test script to that directory that documents the expected behavior and provides code that allows others to see if said behavior works properly.  Then create a unit test within `php-mode-test.el` using [ERT][]. Please try to follow the format of the existing tests.
+If you are fixing a bug related to a Github issue, then first of all, thank you for the help improving PHP Mode.  Second, there is a `tests/` directory which contains PHP scripts for issues (although not all of them).  Please consider adding a test script to that directory that documents the expected behavior and provides code that allows others to see if said behavior works properly.  Then create a unit test within `php-mode-test.el` using [ERT][]. Please try to follow the format of the existing tests.
 
 
 The Wiki
 --------
 
-The Github project page has a [wiki][] that you should feel free to edit.  The wiki lists the features and bugs that are on plan to include in upcoming versions of php-mode.  It is also a place to add any tips to make the mode more useful.
+The Github project page has a [wiki][] that you should feel free to edit.  The wiki lists the features and bugs that are on plan to include in upcoming versions of PHP Mode.  It is also a place to add any tips to make the mode more useful.
 
 
 License
