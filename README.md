@@ -19,7 +19,9 @@ Please email any bugs or feature requests to `lobbyjones at gmail dot com` or su
 Status
 ------
 
-[The PHP Mode wiki][wiki] describes the plan for the next release and I update it to mark off issues when they are complete.  However, there is no hard date set for each release.  Serious bugs I try to resolve as soon as possibe.  But lately I have been lax when it comes to finishing feature requests, so my apologies.  That said, PHP Mode is in no way a dead project by any means, even if updates are sometimes sparse.
+[The PHP Mode wiki][wiki] describes the plan for the next release and I update it to mark off issues when they are complete.  Serious bugs I try to resolve as soon as possibe.  But feature requests tend to take more time, so my apologies.
+
+I am currently looking for someone willing to take over as the maintainer of PHP Mode starting in 2014.  Please see [this discussion](https://github.com/ejmr/php-mode/issues/109) for details.
 
 
 Features
