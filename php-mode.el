@@ -961,6 +961,7 @@ searching the PHP website."
     (regexp-opt
      (append
       php-extra-constants
+      (when (boundp 'web-mode-extra-php-constants) web-mode-extra-php-constants)
       '( ;; core constants
         "__LINE__" "__FILE__" "__DIR__"
         "__FUNCTION__" "__CLASS__" "__TRAIT__" "__METHOD__"
@@ -1503,6 +1504,7 @@ searching the PHP website."
 (defconst php-keywords
   (eval-when-compile
     (regexp-opt
+     (when (boundp 'web-mode-extra-php-keywords) web-mode-extra-php-keywords)
      ;; "class", "new" and "extends" get special treatment
      ;; "case" gets special treatment elsewhere
      '("abstract"
