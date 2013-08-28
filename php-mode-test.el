@@ -76,17 +76,19 @@ the coding style to one of the following:
 3. `wordpress'
 4. `symfony2'
 
-Using any other symbol for STYLE results in undefined behavior."
+Using any other symbol for STYLE results in undefined behavior.
+The test will use the PEAR style by default."
   (declare (indent 1))
   `(with-temp-buffer
      (insert-file-contents (expand-file-name ,file php-mode-test-dir))
+     (php-mode)
+     (font-lock-fontify-buffer)
      ,(case style
         (pear '(php-enable-pear-coding-style))
         (drupal '(php-enable-drupal-coding-style))
         (wordpress '(php-enable-wordpress-coding-style))
-        (symfony2 '(php-enable-symfony2-coding-style)))
-     (php-mode)
-     (font-lock-fontify-buffer)
+        (symfony2 '(php-enable-symfony2-coding-style))
+        (t '(php-enable-pear-coding-style)))
      ,(if indent
           '(indent-region (point-min) (point-max)))
      ,(if magic
@@ -209,3 +211,8 @@ an error."
 (ert-deftest php-mode-test-issue-99 ()
   "Proper indentation for 'foreach' statements without braces."
   (with-php-mode-test ("issue-99.php" :indent t :magic t)))
+
+(ert-deftest php-mode-test-issue-115 ()
+  "Proper alignment for chained method calls inside arrays."
+  :expected-result :failed
+  (with-php-mode-test ("issue-115.php" :indent t :magic t)))
