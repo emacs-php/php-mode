@@ -306,6 +306,7 @@ This variable can take one of the following symbol values:
                        (arglist-close . php-lineup-arglist-close)
                        (arglist-intro . php-lineup-arglist-intro)
                        (knr-argdecl . [0])
+                       (arglist-cont-nonempty . c-lineup-cascaded-calls)
                        (statement-cont . (first c-lineup-cascaded-calls +))))))
 
 (defun php-enable-pear-coding-style ()
@@ -325,7 +326,7 @@ code and modules."
                        (brace-list-entry . c-lineup-cascaded-calls)
                        (arglist-close . php-lineup-arglist-close)
                        (arglist-intro . php-lineup-arglist-intro)
-                       (arglist-cont-nonempty . c-lineup-math)
+                       (arglist-cont-nonempty . (first c-lineup-math c-lineup-cascaded-calls))
                        (knr-argdecl . [0])
                        (statement-cont . (first c-lineup-cascaded-calls +))))))
 
@@ -354,6 +355,7 @@ working with Drupal."
                        (defun-close . 0)
                        (defun-block-intro . +)
                        (knr-argdecl . [0])
+                       (arglist-cont-nonempty . c-lineup-cascaded-calls)
                        (statement-cont . (first c-lineup-cascaded-calls +))))))
 
 (defun php-enable-wordpress-coding-style ()
@@ -380,6 +382,7 @@ working with Wordpress."
                        (defun-close . 0)
                        (defun-block-intro . +)
                        (knr-argdecl . [0])
+                       (arglist-cont-nonempty . c-lineup-cascaded-calls)
                        (statement-cont . php-lineup-hanging-semicolon)))))
 
 (defun php-enable-symfony2-coding-style ()
