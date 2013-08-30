@@ -67,6 +67,7 @@
 (require 'cc-langs)
 (require 'custom)
 (require 'flymake)
+(require 'speedbar)
 (eval-when-compile
   (unless (require 'cl-lib nil t)
     (require 'cl))
@@ -109,7 +110,7 @@ Ignores php-file patterns option; fixed to expression \"\\.\\(inc\\|php[s345]?\\
   :type 'boolean
   :set (lambda (sym val)
          (set-default sym val)
-         (if (and val (boundp 'speedbar))
+         (when val
              (speedbar-add-supported-extension
               "\\.\\(inc\\|php[s345]?\\|phtml\\)")))
   :group 'php)
