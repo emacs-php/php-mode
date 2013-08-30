@@ -67,6 +67,7 @@
 (require 'cc-langs)
 (require 'custom)
 (require 'flymake)
+(require 'etags)
 (require 'speedbar)
 (eval-when-compile
   (unless (require 'cl-lib nil t)
@@ -847,11 +848,9 @@ current `tags-file-name'."
            (save-excursion (tags-verify-table tags-file-name))
            php-completion-table)
       (let ((tags-table
-             (if (and tags-file-name
-                      (functionp 'etags-tags-completion-table))
-                 (with-current-buffer (get-file-buffer tags-file-name)
-                   (etags-tags-completion-table))
-               nil))
+             (when tags-file-name
+               (with-current-buffer (get-file-buffer tags-file-name)
+                 (etags-tags-completion-table))))
             (php-table
              (cond ((and (not (string= "" php-completion-file))
                          (file-readable-p php-completion-file))
