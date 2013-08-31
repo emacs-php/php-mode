@@ -10,10 +10,17 @@
  *         ReflectionProperty;
  *
  * Each namespace must have the correct font-face.  Aligning the
- * namespaces is not required to satisfy the test but is desirable.
+ * namespaces is also required to satisfy the test.
  * 
  */
 
 use ReflectionMethod,
     ReflectionObject,
     ReflectionProperty;
+
+class Foo
+{
+    use ReflectionMethod,
+        ReflectionObject,
+        ReflectionProperty;
+}
