@@ -302,7 +302,8 @@ This variable can take one of the following symbol values:
  '((c-basic-offset . 4)
    (c-offsets-alist . ((block-open . -)
                        (block-close . 0)
-                       (topmost-intro-cont . c-lineup-cascaded-calls)
+                       (topmost-intro-cont . (first c-lineup-cascaded-calls
+                                                    php-lineup-arglist-intro))
                        (brace-list-intro . +)
                        (brace-list-entry . c-lineup-cascaded-calls)
                        (arglist-close . php-lineup-arglist-close)
@@ -323,7 +324,8 @@ code and modules."
  "drupal"
  '((c-basic-offset . 2)
    (c-offsets-alist . ((case-label . +)
-                       (topmost-intro-cont . c-lineup-cascaded-calls)
+                       (topmost-intro-cont . (first c-lineup-cascaded-calls
+                                                    php-lineup-arglist-intro))
                        (brace-list-intro . +)
                        (brace-list-entry . c-lineup-cascaded-calls)
                        (arglist-close . php-lineup-arglist-close)
@@ -349,7 +351,8 @@ working with Drupal."
    (c-offsets-alist . ((arglist-cont . 0)
                        (arglist-intro . php-lineup-arglist-intro)
                        (arglist-close . php-lineup-arglist-close)
-                       (topmost-intro-cont . c-lineup-cascaded-calls)
+                       (topmost-intro-cont . (first c-lineup-cascaded-calls
+                                                    php-lineup-arglist-intro))
                        (brace-list-intro . +)
                        (brace-list-entry . c-lineup-cascaded-calls)
                        (case-label . 2)
@@ -376,7 +379,8 @@ working with Wordpress."
    (c-offsets-alist . ((arglist-cont . php-lineup-arglist)
                        (arglist-intro . php-lineup-arglist-intro)
                        (arglist-close . php-lineup-arglist-close)
-                       (topmost-intro-cont . c-lineup-cascaded-calls)
+                       (topmost-intro-cont . (first c-lineup-cascaded-calls
+                                                    php-lineup-arglist-intro))
                        (brace-list-intro . +)
                        (brace-list-entry . c-lineup-cascaded-calls)
                        (case-label . 4)
@@ -1660,7 +1664,7 @@ searching the PHP website."
       (1 font-lock-type-face nil t))
 
     ;; namespace imports
-    '("\\<\\(use\\)\\s-+\\(\\(?:\\sw\\|\\(?:,\s-?\\)\\|\\\\\\)+\\)"
+    '("\\<\\(use\\)\\s-+\\(\\(?:\\sw\\|\\(?:,\\s-*\\)\\|\\\\\\)+\\)"
       (1 font-lock-keyword-face)
       (2 font-lock-type-face))
 
