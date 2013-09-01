@@ -5,6 +5,51 @@ Changes for PHP Mode by Version
 because when I (Eric James Michael Ritz) took over the project I did
 not have a record of all changes available.
 
+1.12
+----
+
+* Automatically enable PHP Mode for Amaka scripts
+* Also enable PHP Mode for Amaka scripts using the ‘*.amk’ extension
+* Use mode-specific functions for defun movement
+* Treat `const` as a keyword instead of a type-hint
+* Add `enddeclare` to the list of keywords
+* Treat `eval` as a built-in keyword
+* Show links to the official site and wiki when customizing PHP Mode
+* Update php-mode-modified for changes made today
+* Add FILTER_SANITIZE_FULL_SPECIAL_CHARS to the list of constants
+* Fix an error about php-extra-constants being void
+* Use extra constants and keywords from Web Mode if available
+* README: Replace ‘php-mode’ with ‘PHP Mode’ for consistency
+* README: Update the ‘Status’ section
+* README: Use the spelling ‘GitHub’ consistently
+* README: Add installation instructions
+* Address the compiler warning regarding `c-syntactic-context`
+* GitHub-Issue: 102 (Unit Test)
+* Fix indentation error involving magic constants
+* Merge branch 'ejmr/issue-102'
+* Stop marching indentation for try-catch blocks
+* GitHub-Issue: 100 (Unit Test)
+* Fix two errors with the regex for matching namespace imports
+* GitHub-Issue: 115 (Unit Test)
+* Use the PEAR indentation style by default for unit tests
+* Align chained method calls inside of arrays
+* Update php-mode-modified
+* Merge branch 'ejmr/align-method-calls-in-arrays'
+* Update php-mode-modified for byte-compiler fixes
+* Merge branch 'github/pr/123'
+* README: Document use of Web Mode constants and keywords
+* Merge branch 'ejmr/web-mode-constants'
+* Change the test for Issue 100 to require correct indentation
+* Line-up multiple namespaces in a multi-line ‘use’ statement
+* Merge branch 'ejmr/multiline-use-statements'
+* Increase the version number to 1.12
+* Fix the compiler warning about `add-log-current-defun-header-regexp`
+* Add (require 'speedbar) as functions are used.
+* Remove eval-when-compile.
+* Add (require 'etags) as etag functions are used.
+* Added newline at end of file restriction to Symfony2 style.
+* Fix regex for namespaces in function calls
+
 
 1.11
 ----
