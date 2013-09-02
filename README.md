@@ -279,6 +279,7 @@ In chronological order:
 52. [James Laver](https://github.com/jjl)
 52. [Jacek Wysocki](https://github.com/exu)
 53. [Jon Dufrense](https://github.com/jdufresne)
+54. [Andrei Chițu](https://github.com/achitu)
 
 
 
