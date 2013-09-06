@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.12"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2013-09-01"
+(defconst php-mode-modified "2013-09-06"
   "PHP Mode build date.")
 
 ;;; License
@@ -1203,6 +1203,21 @@ searching the PHP website."
       "PASSWORD_DEFAULT"
       "PASSWORD_BCRYPT"
 
+      ;; PREG constants
+      "PREG_PATTERN_ORDER"
+      "PREG_SET_ORDER"
+      "PREG_OFFSET_CAPTURE"
+      "PREG_SPLIT_NO_EMPTY"
+      "PREG_SPLIT_DELIM_CAPTURE"
+      "PREG_SPLIT_OFFSET_CAPTURE"
+      "PREG_NO_ERROR"
+      "PREG_INTERNAL_ERROR"
+      "PREG_BACKTRACK_LIMIT_ERROR"
+      "PREG_RECURSION_LIMIT_ERROR"
+      "PREG_BAD_UTF8_ERROR"
+      "PREG_BAD_UTF8_OFFSET_ERROR"
+      "PCRE_VERSION"
+
       ;; cURL constants
       "CURLOPT_AUTOREFERER"
       "CURLOPT_COOKIESESSION"
@@ -1582,11 +1597,6 @@ searching the PHP website."
         "xor"
         "yield"))))
   "PHP keywords.")
-
-(defconst php-identifier
-  (eval-when-compile
-    '"[a-zA-Z\_\x7f-\xff][a-zA-Z0-9\_\x7f-\xff]*")
-  "Characters in a PHP identifier.")
 
 (defconst php-types
   (eval-when-compile
