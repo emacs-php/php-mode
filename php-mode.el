@@ -714,14 +714,12 @@ the string HEREDOC-START."
 (defun php-heredoc-syntax ()
   "Mark the boundaries of searched heredoc."
   (goto-char (match-beginning 0))
-  (put-text-property (point) (1+ (point))
-                     'syntax-table (string-to-syntax "|"))
+  (c-put-char-property (point) 'syntax-table (string-to-syntax "|"))
   (if (re-search-forward (php-heredoc-end-re (match-string 0)) nil t)
       (goto-char (match-end 1))
     ;; Did not find the delimiter so go to the end of the buffer.
     (goto-char (point-max)))
-  (put-text-property (1- (point)) (point)
-                     'syntax-table (string-to-syntax "|")))
+  (c-put-char-property (1- (point)) 'syntax-table (string-to-syntax "|")))
 
 (defun php-syntax-propertize-extend-region (start end)
   "Extend the propertize region of START falls inside a heredoc."
