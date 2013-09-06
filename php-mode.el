@@ -693,6 +693,45 @@ This is was done due to the problem reported here:
     map)
   "Keymap for `php-mode'")
 
+(eval-and-compile
+  ;; PHP-SYNTAX-PROPERTIZE-FUNCTION requires PHP-HEREDOC-START-RE
+  ;; available at compile time. So wrap in `eval-and-compile'.
+  (defconst php-heredoc-start-re
+    "<<<\\(?:\\w+\\|'\\w+'\\)$"
+    "Regular expression for the start of a PHP heredoc."))
+
+(defun php-heredoc-end-re (heredoc-start)
+  "Build a regular expression for the end of a heredoc started by
+the string HEREDOC-START."
+  ;; Extract just the identifier without <<< and quotes.
+  (string-match "\\w+" heredoc-start)
+  (concat "^\\(" (match-string 0 heredoc-start) "\\)\\W"))
+
+(defconst php-syntax-propertize-function
+  (syntax-propertize-rules
+   (php-heredoc-start-re (0 (ignore (php-heredoc-syntax))))))
+
+(defun php-heredoc-syntax ()
+  "Mark the boundaries of searched heredoc."
+  (goto-char (match-beginning 0))
+  (put-text-property (point) (1+ (point))
+                     'syntax-table (string-to-syntax "|"))
+  (if (re-search-forward (php-heredoc-end-re (match-string 0)) nil t)
+      (goto-char (match-end 1))
+    ;; Did not find the delimiter so go to the end of the buffer.
+    (goto-char (point-max)))
+  (put-text-property (1- (point)) (point)
+                     'syntax-table (string-to-syntax "|")))
+
+(defun php-syntax-propertize-extend-region (start end)
+  "Extend the propertize region of START falls inside a heredoc."
+  (when (re-search-backward php-heredoc-start-re nil t)
+    (let ((new-start (point)))
+      (when (and (re-search-forward
+                  (php-heredoc-end-re (match-string 0)) nil t)
+                 (> (point) start))
+        (cons new-start end)))))
+
 ;;;###autoload
 (define-derived-mode php-mode c-mode "PHP"
   "Major mode for editing PHP code.\n\n\\{php-mode-map}"
@@ -733,6 +772,11 @@ This is was done due to the problem reported here:
   (set (make-local-variable 'syntax-propertize-via-font-lock)
        '(("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
          ("\\(\'\\)\\(\\\\.\\|[^\'\n\\]\\)*\\(\'\\)" (1 "\"") (3 "\""))))
+
+  (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
+               'php-syntax-propertize-extend-region)
+  (set (make-local-variable 'syntax-propertize-function)
+       php-syntax-propertize-function)
 
   (setq font-lock-maximum-decoration t
         imenu-generic-expression php-imenu-generic-expression)
