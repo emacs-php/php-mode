@@ -1598,11 +1598,6 @@ searching the PHP website."
         "yield"))))
   "PHP keywords.")
 
-(defconst php-identifier
-  (eval-when-compile
-    '"[a-zA-Z\_\x7f-\xff][a-zA-Z0-9\_\x7f-\xff]*")
-  "Characters in a PHP identifier.")
-
 (defconst php-types
   (eval-when-compile
     (regexp-opt '("array" "bool" "boolean" "callable" "char" "double" "float"
