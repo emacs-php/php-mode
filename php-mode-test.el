@@ -34,6 +34,10 @@
 (eval-when-compile
   (require 'cl))
 
+;; Work around bug #14325
+;; <http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14325>.
+(c-after-font-lock-init)
+
 (defvar php-mode-test-dir (expand-file-name "tests" (file-name-directory load-file-name))
   "Directory containing the `php-mode' test files.")
 
@@ -216,3 +220,17 @@ an error."
   "Proper alignment for chained method calls inside arrays."
   :expected-result :failed
   (with-php-mode-test ("issue-115.php" :indent t :magic t)))
+
+(ert-deftest php-mode-test-issue-124 ()
+  "Proper syntax propertizing when a quote appears in a heredoc."
+  (with-php-mode-test ("issue-124.php" :indent t)
+     (search-forward "Heredoc")
+     ;; The heredoc should be recognized as a string.
+     (dolist (syntax (c-guess-basic-syntax))
+       (should (eq (car syntax) 'string)))
+     (search-forward "function bar")
+     ;; After the heredoc should *not* be recognized as a string.
+     (dolist (syntax (c-guess-basic-syntax))
+       (should (not (eq (car syntax) 'string))))))
+
+;;; php-mode-test.el ends here
