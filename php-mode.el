@@ -309,7 +309,9 @@ This variable can take one of the following symbol values:
                        (arglist-close . php-lineup-arglist-close)
                        (arglist-intro . php-lineup-arglist-intro)
                        (knr-argdecl . [0])
-                       (arglist-cont-nonempty . c-lineup-cascaded-calls)
+                       (arglist-cont-nonempty . (first c-lineup-cascaded-calls
+                                                       c-lineup-arglist-intro-after-paren
+                                                       php-lineup-arglist-intro))
                        (statement-cont . (first c-lineup-cascaded-calls +))))))
 
 (defun php-enable-pear-coding-style ()
