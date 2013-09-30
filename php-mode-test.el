@@ -233,4 +233,8 @@ an error."
      (dolist (syntax (c-guess-basic-syntax))
        (should (not (eq (car syntax) 'string))))))
 
+(ert-deftest php-mode-test-issue-130 ()
+  "Proper array indentation for the PEAR coding style."
+  (with-php-mode-test ("issue-130.php" :indent t :magic t :style 'pear)))
+
 ;;; php-mode-test.el ends here
