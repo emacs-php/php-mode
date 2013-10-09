@@ -21,6 +21,8 @@ If you are using GNU Emacs 24 or later then you can use its [package][] feature 
 
 If you are using an older version of Emacs, or if you simply do not wish to use the package manager, then all you need to do is download the `php-mode.el` file, place it inside your `load-path`, and optionally add `(require 'php-mode)` to your Emacs configuration to automatically enable PHP Mode whenever you open a PHP file.
 
+**Note:** PHP Mode requires Emacs 23.1 or later.
+
 
 Status
 ------
