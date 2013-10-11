@@ -15,12 +15,39 @@
  */
 
 $name = "Eric";
-$user = (object) [ "name" => "Eric" ];
+
+class User
+{
+        public $name;
+        public $id = 0;
+
+        public function getName()
+        {
+                return $this->name;
+        }
+
+        public function getID()
+        {
+                return $this->id;
+        }
+}
+
+$user = new User();
+$user->name = "Eric";
+
+$users = array($user);
+$index = 0;
 
 ob_start();
 
 echo "My name is $name";
+echo "My name is ${name}";
 echo "My name is {$name}";
 echo "My name is {$user->name}";
+echo "My name is {$user->getName()}";
+echo "My name is {$users[0]->name}";
+echo "My name is {$users[$index]->name}";
+echo "My name is {$users[$user->id]->name}";
+echo "My name is {$users[$user->getID()]->name}";
 
 ob_end_clean();

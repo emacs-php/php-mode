@@ -237,8 +237,17 @@ an error."
   "Proper highlighting for variable interpolation."
   (with-php-mode-test ("issue-136.php")
     (let ((variables '("$name"
+                       "${name}"
                        "{$name}"
-                       "{$user->name}")))
+                       "{$user->name}"
+                       "{$user->getName()}"
+                       "{$users[0]->name}"
+                       "{$users[$index]->name}"
+                       "{$users[$user->id]->name}"
+                       "{$users[$user->getID()]->name}")))
+      ;; All of the strings we want to test come after the call to
+      ;; ob_start(), so we jump to there first.
+      (search-forward "ob_start()")
       (dolist (variable variables)
         (search-forward variable)
         (should (eq 'font-lock-variable-name-face
