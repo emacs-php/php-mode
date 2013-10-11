@@ -233,4 +233,15 @@ an error."
      (dolist (syntax (c-guess-basic-syntax))
        (should (not (eq (car syntax) 'string))))))
 
+(ert-deftest php-mode-test-issue-136 ()
+  "Proper highlighting for variable interpolation."
+  (with-php-mode-test ("issue-136.php")
+    (let ((variables '("$name"
+                       "{$name}"
+                       "{$user->name}")))
+      (dolist (variable variables)
+        (search-forward variable)
+        (should (eq 'font-lock-variable-name-face
+                    (get-text-property (point) 'face)))))))
+
 ;;; php-mode-test.el ends here
