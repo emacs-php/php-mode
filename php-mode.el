@@ -774,10 +774,11 @@ the string HEREDOC-START."
        '(("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
          ("\\(\'\\)\\(\\\\.\\|[^\'\n\\]\\)*\\(\'\\)" (1 "\"") (3 "\""))))
 
-  (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
-               'php-syntax-propertize-extend-region)
-  (set (make-local-variable 'syntax-propertize-function)
-       #'php-syntax-propertize-function)
+  (when (boundp 'syntax-propertize-function)
+    (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
+                 #'php-syntax-propertize-extend-region)
+    (set (make-local-variable 'syntax-propertize-function)
+         #'php-syntax-propertize-function))
 
   (setq font-lock-maximum-decoration t
         imenu-generic-expression php-imenu-generic-expression)
