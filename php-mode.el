@@ -693,12 +693,9 @@ This is was done due to the problem reported here:
     map)
   "Keymap for `php-mode'")
 
-(eval-and-compile
-  ;; PHP-SYNTAX-PROPERTIZE-FUNCTION requires PHP-HEREDOC-START-RE
-  ;; available at compile time. So wrap in `eval-and-compile'.
-  (defconst php-heredoc-start-re
-    "<<<\\(?:\\w+\\|'\\w+'\\)$"
-    "Regular expression for the start of a PHP heredoc."))
+(defconst php-heredoc-start-re
+  "<<<\\(?:\\w+\\|'\\w+'\\)$"
+  "Regular expression for the start of a PHP heredoc.")
 
 (defun php-heredoc-end-re (heredoc-start)
   "Build a regular expression for the end of a heredoc started by
@@ -707,9 +704,15 @@ the string HEREDOC-START."
   (string-match "\\w+" heredoc-start)
   (concat "^\\(" (match-string 0 heredoc-start) "\\)\\W"))
 
-(defconst php-syntax-propertize-function
-  (syntax-propertize-rules
-   (php-heredoc-start-re (0 (ignore (php-heredoc-syntax))))))
+(defun php-syntax-propertize-function (start end)
+  "Apply propertize rules from START to END."
+  ;; (defconst php-syntax-propertize-function
+  ;;   (syntax-propertize-rules
+  ;;    (php-heredoc-start-re (0 (ignore (php-heredoc-syntax))))))
+  (goto-char start)
+  (while (and (< (point) end)
+              (re-search-forward php-heredoc-start-re end t))
+    (php-heredoc-syntax)))
 
 (defun php-heredoc-syntax ()
   "Mark the boundaries of searched heredoc."
@@ -771,10 +774,11 @@ the string HEREDOC-START."
        '(("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
          ("\\(\'\\)\\(\\\\.\\|[^\'\n\\]\\)*\\(\'\\)" (1 "\"") (3 "\""))))
 
-  (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
-               'php-syntax-propertize-extend-region)
-  (set (make-local-variable 'syntax-propertize-function)
-       php-syntax-propertize-function)
+  (when (boundp 'syntax-propertize-function)
+    (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
+                 #'php-syntax-propertize-extend-region)
+    (set (make-local-variable 'syntax-propertize-function)
+         #'php-syntax-propertize-function))
 
   (setq font-lock-maximum-decoration t
         imenu-generic-expression php-imenu-generic-expression)
