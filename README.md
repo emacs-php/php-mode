@@ -251,35 +251,37 @@ In chronological order:
 24. Eric Mc Sween
 25. Ville Skytta
 26. Giacomo Tesio
-27. Lennart Borgman
-28. Stefan Monnier
-29. Aaron S. Hawley
-30. [Ian Eure](https://github.com/ieure)
-31. [Bill Lovett](https://github.com/lovett)
-32. Dias Badekas
-33. David House
-34. [Tom Willemse](https://github.com/ryuslash)
-35. [Olaf the Viking](https://github.com/olavTHEviking)
-36. [Maël Nison](https://github.com/arcanis)
-37. [flack](https://github.com/flack)
-38. [Michele Bini](https://github.com/rev22)
-39. Emanuele Tomasi
-40. [David Maus](https://github.com/dmj)
-41. [Jakub Jankiewicz](https://github.com/jcubic)
-42. [Marcin Antczak](https://github.com/marcinant)
-43. [顾伟刚](https://github.com/cnwggu)
-44. [zapad](https://github.com/zargener)
-45. [Carl Groner](https://github.com/cgroner)
-46. [Michael Dwyer](https://github.com/kalifg)
-47. [Daniel Hackney](https://github.com/haxney)
-48. [Nate Eagleson](https://github.com/NateEag)
-49. [Steve Purcell](https://github.com/purcell)
-50. TatriX
-51. [François-Xavier Bois](https://github.com/fxbois)
-52. [James Laver](https://github.com/jjl)
-52. [Jacek Wysocki](https://github.com/exu)
-53. [Jon Dufrense](https://github.com/jdufresne)
-54. [Andrei Chițu](https://github.com/achitu)
+27. Urban Müller
+28. [Engelke Eschner](https://github.com/tekai)
+29. Lennart Borgman
+30. Stefan Monnier
+31. Aaron S. Hawley
+32. [Ian Eure](https://github.com/ieure)
+33. [Bill Lovett](https://github.com/lovett)
+34. Dias Badekas
+35. David House
+36. [Tom Willemse](https://github.com/ryuslash)
+37. [Olaf the Viking](https://github.com/olavTHEviking)
+38. [Maël Nison](https://github.com/arcanis)
+39. [flack](https://github.com/flack)
+40. [Michele Bini](https://github.com/rev22)
+41. Emanuele Tomasi
+42. [David Maus](https://github.com/dmj)
+43. [Jakub Jankiewicz](https://github.com/jcubic)
+44. [Marcin Antczak](https://github.com/marcinant)
+45. [顾伟刚](https://github.com/cnwggu)
+46. [zapad](https://github.com/zargener)
+47. [Carl Groner](https://github.com/cgroner)
+48. [Michael Dwyer](https://github.com/kalifg)
+49. [Daniel Hackney](https://github.com/haxney)
+50. [Nate Eagleson](https://github.com/NateEag)
+51. [Steve Purcell](https://github.com/purcell)
+52. TatriX
+53. [François-Xavier Bois](https://github.com/fxbois)
+54. [James Laver](https://github.com/jjl)
+55. [Jacek Wysocki](https://github.com/exu)
+56. [Jon Dufrense](https://github.com/jdufresne)
+57. [Andrei Chițu](https://github.com/achitu)
 
 
 
