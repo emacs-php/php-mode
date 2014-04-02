@@ -2,13 +2,13 @@
 
 ;; Copyright (C) 1999, 2000, 2001, 2003, 2004 Turadg Aleahmad
 ;;               2008 Aaron S. Hawley
-;;               2011, 2012, 2013 Eric James Michael Ritz
+;;               2011, 2012, 2013, 2014 Eric James Michael Ritz
 
 ;;; Author: Eric James Michael Ritz
 ;;; URL: https://github.com/ejmr/php-mode
-;;; Version: 1.12
+;;; Version: 1.13.1
 
-(defconst php-mode-version-number "1.13"
+(defconst php-mode-version-number "1.13.1"
   "PHP Mode version number.")
 
 (defconst php-mode-modified "2013-12-03"
@@ -616,28 +616,6 @@ This is was done due to the problem reported here:
     (beginning-of-line)
     (if (looking-at-p "\\s-*;\\s-*$") 0 '+)))
 
-;;; We silence all byte-compiler warnings when creating the `syntax'
-;;; variable binding in this function.  Emacs will normally warn us
-;;; that `c-syntactic-context' is unbound.  The variable comes from CC
-;;; Mode and it is only bound dynamically when calling certain
-;;; indentation functions.  See the documentation in section "8.1.1
-;;; Custom Brace Hanging" of the CC Mode manual for more information,
-;;; along with an explanation of why we do not simply bind the
-;;; variable to a value in order to appease the compiler warning.
-(defun php-unindent-closure ()
-  (let ((syntax (with-no-warnings (mapcar 'car c-syntactic-context))))
-    (if (and (member 'arglist-cont-nonempty syntax)
-             (or
-              (member 'statement-block-intro syntax)
-              (member 'brace-list-intro syntax)
-              (member 'brace-list-close syntax)
-              (member 'block-close syntax)))
-        (save-excursion
-          (let ((count-func (if (fboundp 'cl-count) #'cl-count #'count)))
-            (beginning-of-line)
-            (delete-char (* (funcall count-func 'arglist-cont-nonempty syntax)
-                            c-basic-offset)))))))
-
 (defvar php-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map [menu-bar php]
@@ -830,7 +808,6 @@ the string HEREDOC-START."
 
   (setq indent-line-function 'php-cautious-indent-line)
   (setq indent-region-function 'php-cautious-indent-region)
-  (add-hook 'c-special-indent-hook 'php-unindent-closure)
   (setq c-at-vsemi-p-fn 'php-c-at-vsemi-p)
   (setq c-vsemi-status-unknown-p 'php-c-vsemi-status-unknown-p)
 

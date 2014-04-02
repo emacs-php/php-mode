@@ -1,6 +1,7 @@
 ;;; php-mode-test.el --- Tests for php-mode
 
 ;; Copyright (C) 2013 Daniel Hackney
+;;               2014 Eric James Michael Ritz
 
 ;; Author: Daniel Hackney <dan@haxney.org>
 ;; URL: https://github.com/ejmr/php-mode
@@ -252,5 +253,9 @@ an error."
         (search-forward variable)
         (should (eq 'font-lock-variable-name-face
                     (get-text-property (point) 'face)))))))
+
+(ert-deftest php-mode-test-issue-145 ()
+  "Closure indentation."
+  (with-php-mode-test ("issue-145.php" :indent t)))
 
 ;;; php-mode-test.el ends here
