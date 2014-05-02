@@ -282,6 +282,7 @@ In chronological order:
 55. [Jacek Wysocki](https://github.com/exu)
 56. [Jon Dufrense](https://github.com/jdufresne)
 57. [Andrei Chițu](https://github.com/achitu)
+58. [phil-s](https://github.com/phil-s)
 
 
 
