@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.13.1"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2014-05-03"
+(defconst php-mode-modified "2014-05-10"
   "PHP Mode build date.")
 
 ;;; License
@@ -318,7 +318,11 @@ code and modules."
   (interactive)
   (setq tab-width 4
         indent-tabs-mode nil)
-  (c-set-style "pear"))
+  (c-set-style "pear")
+  ;; Undo drupal coding style whitespace effects
+  (setq show-trailing-whitespace nil)
+  (remove-hook 'before-save-hook 'delete-trailing-whitespace t))
+
 
 (c-add-style
  "drupal"
@@ -342,7 +346,7 @@ working with Drupal."
         indent-tabs-mode nil
         fill-column 78
         show-trailing-whitespace t)
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)
   (c-set-style "drupal"))
 
 (c-add-style
@@ -371,7 +375,10 @@ working with Wordpress."
         fill-column 78
         tab-width 4
         c-indent-comments-syntactically-p t)
-  (c-set-style "wordpress"))
+  (c-set-style "wordpress")
+  ;; Undo drupal coding style whitespace effects
+  (setq show-trailing-whitespace nil)
+  (remove-hook 'before-save-hook 'delete-trailing-whitespace t))
 
 (c-add-style
  "symfony2"
@@ -400,7 +407,10 @@ working with Symfony2."
         tab-width 4
         c-indent-comments-syntactically-p t
         require-final-newline t)
-  (c-set-style "symfony2"))
+  (c-set-style "symfony2")
+  ;; Undo drupal coding style whitespace effects
+  (setq show-trailing-whitespace nil)
+  (remove-hook 'before-save-hook 'delete-trailing-whitespace t))
 
 
 (defun php-mode-version ()
