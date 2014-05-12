@@ -27,7 +27,7 @@ If you are using an older version of Emacs, or if you simply do not wish to use 
 Status
 ------
 
-Version 1.13 is the finaly version I intend to release, with the exception of critical bug fixes.  I am currently looking for someone willing to take over as the maintainer of PHP Mode starting in 2014.  Please see [this discussion](https://github.com/ejmr/php-mode/issues/109) for details.
+I am currently looking for someone willing to take over as the maintainer of PHP Mode, ideally before the end of 2014.  Please see [this discussion](https://github.com/ejmr/php-mode/issues/109) for details.
 
 
 Features
