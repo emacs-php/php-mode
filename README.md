@@ -11,7 +11,7 @@ This updates PHP Mode with features to make it more friendly to use with PHP 5.4
 
 All contributors listed below improved PHP Mode as well.
 
-Please email any bugs or feature requests to `lobbyjones at gmail dot com` or submit them as Issues on the [GitHub page](https://github.com/ejmr/php-mode).  Also please include the output of `php-mode-version` in bug reports.  [There is a changelog for previous versions.](./Changelog.md)
+Please email any bugs or feature requests to `ejmr at plutono dot com` or submit them as Issues on the [GitHub page](https://github.com/ejmr/php-mode).  Also please include the output of `php-mode-version` in bug reports.  [There is a changelog for previous versions.](./Changelog.md)
 
 
 Installation
