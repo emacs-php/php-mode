@@ -191,6 +191,21 @@ If the bug has been fixed, indenting the buffer should not cause
 an error."
   (with-php-mode-test ("issue-42.php" :indent t)))
 
+(ert-deftest php-mode-test-issue-53 ()
+  "Check if whitespace effects are undone when changing coding
+style from Drupal."
+  (with-php-mode-test
+   ("issue-53.php")
+   (search-forward "return $this->bar;")
+   ;; the file written to has no significance, only the buffer
+   (let ((tmp-filename (make-temp-name temporary-file-directory)))
+     (dolist (mode '(pear wordpress symfony2))
+       (php-mode-custom-coding-style-set 'php-mode-coding-style 'drupal)
+       (php-mode-custom-coding-style-set 'php-mode-coding-style mode)
+       (should-not show-trailing-whitespace)
+       (write-file tmp-filename)
+       (should (char-equal (char-after) ?\s))))))
+
 (ert-deftest php-mode-test-issue-73 ()
   "The `delete-indentation' function should work properly for PHP.
  This means modifying the logic of `fixup-whitespace' so that it
