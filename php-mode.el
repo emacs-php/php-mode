@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.13.1"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2014-05-10"
+(defconst php-mode-modified "2014-05-19"
   "PHP Mode build date.")
 
 ;;; License
