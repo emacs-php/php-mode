@@ -11,7 +11,7 @@ This updates PHP Mode with features to make it more friendly to use with PHP 5.4
 
 All contributors listed below improved PHP Mode as well.
 
-Please email any bugs or feature requests to `lobbyjones at gmail dot com` or submit them as Issues on the [GitHub page](https://github.com/ejmr/php-mode).  Also please include the output of `php-mode-version` in bug reports.  [There is a changelog for previous versions.](./Changelog.md)
+Please email any bugs or feature requests to `ejmr at plutono dot com` or submit them as Issues on the [GitHub page](https://github.com/ejmr/php-mode).  Also please include the output of `php-mode-version` in bug reports.  [There is a changelog for previous versions.](./Changelog.md)
 
 
 Installation
@@ -27,7 +27,7 @@ If you are using an older version of Emacs, or if you simply do not wish to use 
 Status
 ------
 
-Version 1.13 is the finaly version I intend to release, with the exception of critical bug fixes.  I am currently looking for someone willing to take over as the maintainer of PHP Mode starting in 2014.  Please see [this discussion](https://github.com/ejmr/php-mode/issues/109) for details.
+I am currently looking for someone willing to take over as the maintainer of PHP Mode, ideally before the end of 2014.  Please see [this discussion](https://github.com/ejmr/php-mode/issues/109) for details.
 
 
 Features
