@@ -283,6 +283,7 @@ In chronological order:
 56. [Jon Dufrense](https://github.com/jdufresne)
 57. [Andrei Chițu](https://github.com/achitu)
 58. [phil-s](https://github.com/phil-s)
+59. [Bence Kalmar](https://github.com/brkalmar)
 
 
 
