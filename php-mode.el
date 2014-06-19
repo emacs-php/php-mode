@@ -8,10 +8,10 @@
 ;;; URL: https://github.com/ejmr/php-mode
 ;;; Version: 1.13.2
 
-(defconst php-mode-version-number "1.13.2"
+(defconst php-mode-version-number "1.13.3"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2014-05-19"
+(defconst php-mode-modified "2014-06-19"
   "PHP Mode build date.")
 
 ;;; License
