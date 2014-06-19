@@ -471,7 +471,8 @@ See `php-beginning-of-defun'."
       (setq php-warned-bad-indent t)
       (let* ((known-multi-libs '(("mumamo" mumamo (lambda () (nxhtml-mumamo)))
                                  ("mmm-mode" mmm-mode (lambda () (mmm-mode 1)))
-                                 ("multi-mode" multi-mode (lambda () (multi-mode 1)))))
+                                 ("multi-mode" multi-mode (lambda () (multi-mode 1)))
+                                 ("web-mode" web-mode (lambda () (web-mode)))))
              (known-names (mapcar (lambda (lib) (car lib)) known-multi-libs))
              (available-multi-libs (delq nil
                                          (mapcar
