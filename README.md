@@ -285,6 +285,7 @@ In chronological order:
 58. [phil-s](https://github.com/phil-s)
 59. [Bence Kalmar](https://github.com/brkalmar)
 60. [Elis Axelsson](https://github.com/etu)
+61. [Alan Pearce](https://github.com/alanpearce)
 
 
 
