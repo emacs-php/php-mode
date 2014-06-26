@@ -8,10 +8,10 @@
 ;;; URL: https://github.com/ejmr/php-mode
 ;;; Version: 1.13.2
 
-(defconst php-mode-version-number "1.13.2"
+(defconst php-mode-version-number "1.13.3"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2014-05-19"
+(defconst php-mode-modified "2014-06-19"
   "PHP Mode build date.")
 
 ;;; License
@@ -471,7 +471,8 @@ See `php-beginning-of-defun'."
       (setq php-warned-bad-indent t)
       (let* ((known-multi-libs '(("mumamo" mumamo (lambda () (nxhtml-mumamo)))
                                  ("mmm-mode" mmm-mode (lambda () (mmm-mode 1)))
-                                 ("multi-mode" multi-mode (lambda () (multi-mode 1)))))
+                                 ("multi-mode" multi-mode (lambda () (multi-mode 1)))
+                                 ("web-mode" web-mode (lambda () (web-mode)))))
              (known-names (mapcar (lambda (lib) (car lib)) known-multi-libs))
              (available-multi-libs (delq nil
                                          (mapcar

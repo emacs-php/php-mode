@@ -284,6 +284,7 @@ In chronological order:
 57. [Andrei Chițu](https://github.com/achitu)
 58. [phil-s](https://github.com/phil-s)
 59. [Bence Kalmar](https://github.com/brkalmar)
+60. [Elis Axelsson](https://github.com/etu)
 
 
 
