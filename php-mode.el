@@ -1501,6 +1501,11 @@ searching the PHP website."
       "CURLSSH_AUTH_PASSWORD"
       "CURLSSH_AUTH_PUBLICKEY"
 
+      ;; SESSION constants
+      "PHP_SESSION_DISABLED"
+      "PHP_SESSION_NONE"
+      "PHP_SESSION_ACTIVE"
+      
       ;; IMAP constants
       "NIL"
       "OP_DEBUG"
