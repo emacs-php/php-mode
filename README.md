@@ -269,7 +269,7 @@ In chronological order:
 42. [David Maus](https://github.com/dmj)
 43. [Jakub Jankiewicz](https://github.com/jcubic)
 44. [Marcin Antczak](https://github.com/marcinant)
-45. [顾伟刚](https://github.com/cnwggu)
+45. [顾伟刚](https://github.com/guweigang)
 46. [zapad](https://github.com/zargener)
 47. [Carl Groner](https://github.com/cgroner)
 48. [Michael Dwyer](https://github.com/kalifg)
