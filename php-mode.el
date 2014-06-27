@@ -249,6 +249,11 @@ You can replace \"en\" with your ISO language code."
   :type 'hook
   :group 'php)
 
+(defcustom php-mode-psr2-hook nil
+  "Hook called when a PSR-2 file is opened with `php-mode'."
+  :type 'hook
+  :group 'php)
+
 (defcustom php-mode-force-pear nil
   "Normally PEAR coding rules are enforced only when the filename contains \"PEAR.\"
 Turning this on will force PEAR rules on all PHP files."
@@ -273,11 +278,14 @@ This variable can take one of the following symbol values:
 
 `WordPress' - use coding styles preferred for working with WordPress projects.
 
-`Symfony2' - use coding styles preferred for working with Symfony2 projects."
+`Symfony2' - use coding styles preferred for working with Symfony2 projects.
+
+`PSR-2' - use coding styles preferred for working with projects using PSR-2 standards."
   :type '(choice (const :tag "PEAR" pear)
                  (const :tag "Drupal" drupal)
                  (const :tag "WordPress" wordpress)
-                 (const :tag "Symfony2" symfony2))
+                 (const :tag "Symfony2" symfony2)
+                 (const :tag "PSR-2" psr2))
   :group 'php
   :set 'php-mode-custom-coding-style-set
   :initialize 'custom-initialize-default)
@@ -293,7 +301,9 @@ This variable can take one of the following symbol values:
           ((eq value 'wordpress)
            (php-enable-wordpress-coding-style))
           ((eq value 'symfony2)
-           (php-enable-symfony2-coding-style)))))
+           (php-enable-symfony2-coding-style))
+          ((eq value 'psr2)
+           (php-enable-psr2-coding-style)))))
 
 
 
@@ -408,6 +418,32 @@ working with Symfony2."
         c-indent-comments-syntactically-p t
         require-final-newline t)
   (c-set-style "symfony2")
+  ;; Undo drupal coding style whitespace effects
+  (setq show-trailing-whitespace nil)
+  (remove-hook 'before-save-hook 'delete-trailing-whitespace t))
+
+(c-add-style
+ "psr2"
+ '((c-basic-offset . 4)
+   (c-offsets-alist . ((block-open . -)
+                       (block-close . 0)
+                       (topmost-intro-cont . (first c-lineup-cascaded-calls
+                                                    php-lineup-arglist-intro))
+                       (brace-list-intro . +)
+                       (brace-list-entry . c-lineup-cascaded-calls)
+                       (arglist-close . php-lineup-arglist-close)
+                       (arglist-intro . php-lineup-arglist-intro)
+                       (knr-argdecl . [0])
+                       (arglist-cont-nonempty . c-lineup-cascaded-calls)
+                       (statement-cont . (first c-lineup-cascaded-calls +))
+                       (case-label . +)))))
+
+(defun php-enable-psr2-coding-style ()
+  "Makes php-mode use coding styles defined by PSR-2"
+  (interactive)
+  (setq tab-width 4
+        indent-tabs-mode nil)
+  (c-set-style "psr2")
   ;; Undo drupal coding style whitespace effects
   (setq show-trailing-whitespace nil)
   (remove-hook 'before-save-hook 'delete-trailing-whitespace t))
@@ -797,6 +833,10 @@ the string HEREDOC-START."
   (add-hook 'php-mode-symfony2-hook 'php-enable-symfony2-coding-style
              nil t)
 
+  ;; ;; PSR-2 coding standards
+  (add-hook 'php-mode-psr2-hook 'php-enable-psr2-coding-style
+             nil t)
+
   (cond ((eq php-mode-coding-style 'pear)
          (php-enable-pear-coding-style)
          (run-hooks 'php-mode-pear-hook))
@@ -808,7 +848,10 @@ the string HEREDOC-START."
          (run-hooks 'php-mode-wordpress-hook))
         ((eq php-mode-coding-style 'symfony2)
          (php-enable-symfony2-coding-style)
-         (run-hooks 'php-mode-symfony2-hook)))
+         (run-hooks 'php-mode-symfony2-hook))
+        ((eq php-mode-coding-style 'psr2)
+         (php-enable-psr2-coding-style)
+         (run-hooks 'php-mode-psr2-hook)))
 
   (if (or php-mode-force-pear
           (and (stringp buffer-file-name)
