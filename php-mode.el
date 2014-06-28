@@ -444,9 +444,9 @@ working with Symfony2."
   (setq tab-width 4
         indent-tabs-mode nil)
   (c-set-style "psr2")
-  ;; Undo drupal coding style whitespace effects
-  (setq show-trailing-whitespace nil)
-  (remove-hook 'before-save-hook 'delete-trailing-whitespace t))
+  (set (make-local-variable 'require-final-newline) t)
+  (set (make-local-variable 'show-trailing-whitespace) t)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace nil t))
 
 
 (defun php-mode-version ()
