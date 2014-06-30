@@ -6,12 +6,12 @@
 
 ;;; Author: Eric James Michael Ritz
 ;;; URL: https://github.com/ejmr/php-mode
-;;; Version: 1.13.2
+;;; Version: 1.13.4
 
-(defconst php-mode-version-number "1.13.3"
+(defconst php-mode-version-number "1.13.4"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2014-06-19"
+(defconst php-mode-modified "2014-06-30"
   "PHP Mode build date.")
 
 ;;; License
@@ -435,7 +435,7 @@ working with Symfony2."
                        (arglist-intro . php-lineup-arglist-intro)
                        (knr-argdecl . [0])
                        (arglist-cont-nonempty . c-lineup-cascaded-calls)
-                       (statement-cont . (first c-lineup-cascaded-calls +))
+                       (statement-cont . +)
                        (case-label . +)))))
 
 (defun php-enable-psr2-coding-style ()
