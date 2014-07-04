@@ -436,7 +436,8 @@ working with Symfony2."
                        (knr-argdecl . [0])
                        (arglist-cont-nonempty . c-lineup-cascaded-calls)
                        (statement-cont . +)
-                       (case-label . +)))))
+                       (case-label . +)
+                       (comment-intro . 0)))))
 
 (defun php-enable-psr2-coding-style ()
   "Makes php-mode use coding styles defined by PSR-2"
