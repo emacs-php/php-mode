@@ -751,13 +751,26 @@ the string HEREDOC-START."
   (c-put-char-property (1- (point)) 'syntax-table (string-to-syntax "|")))
 
 (defun php-syntax-propertize-extend-region (start end)
-  "Extend the propertize region of START falls inside a heredoc."
-  (when (re-search-backward php-heredoc-start-re nil t)
-    (let ((new-start (point)))
-      (when (and (re-search-forward
-                  (php-heredoc-end-re (match-string 0)) nil t)
-                 (> (point) start))
-        (cons new-start end)))))
+  "Extend the propertize region if START or END falls inside a
+PHP heredoc."
+  (let ((new-start)
+        (new-end))
+    (goto-char start)
+    (when (re-search-backward php-heredoc-start-re nil t)
+      (let ((maybe (point)))
+        (when (and (re-search-forward
+                    (php-heredoc-end-re (match-string 0)) nil t)
+                   (> (point) start))
+          (setq new-start (maybe)))))
+    (goto-char end)
+    (when (re-search-backward php-heredoc-start-re nil t)
+      (if (re-search-forward
+           (php-heredoc-end-re (match-string 0)) nil t)
+          (when (> (point) end)
+            (setq new-end (point)))
+        (setq new-end (point-max))))
+    (when (or new-start new-end)
+      (cons (or new-start start) (or new-end end)))))
 
 ;;;###autoload
 (define-derived-mode php-mode c-mode "PHP"
@@ -1576,7 +1589,7 @@ searching the PHP website."
       "PHP_SESSION_DISABLED"
       "PHP_SESSION_NONE"
       "PHP_SESSION_ACTIVE"
-      
+
       ;; IMAP constants
       "NIL"
       "OP_DEBUG"
