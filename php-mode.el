@@ -436,6 +436,7 @@ working with Symfony2."
                        (knr-argdecl . [0])
                        (arglist-cont-nonempty . c-lineup-cascaded-calls)
                        (statement-cont . +)
+                       (substatement-open . 0)
                        (case-label . +)
                        (comment-intro . 0)))))
 
@@ -1576,7 +1577,7 @@ searching the PHP website."
       "PHP_SESSION_DISABLED"
       "PHP_SESSION_NONE"
       "PHP_SESSION_ACTIVE"
-      
+
       ;; IMAP constants
       "NIL"
       "OP_DEBUG"
