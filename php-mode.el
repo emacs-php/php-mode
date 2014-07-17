@@ -436,6 +436,7 @@ working with Symfony2."
                        (knr-argdecl . [0])
                        (arglist-cont-nonempty . c-lineup-cascaded-calls)
                        (statement-cont . +)
+                       (substatement-open . 0)
                        (case-label . +)
                        (comment-intro . 0)))))
 
