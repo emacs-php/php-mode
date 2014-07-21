@@ -326,8 +326,7 @@ This variable can take one of the following symbol values:
   "Sets up php-mode to use the coding styles preferred for PEAR
 code and modules."
   (interactive)
-  (setq tab-width 4
-        indent-tabs-mode nil)
+  (setq indent-tabs-mode nil)
   (c-set-style "pear")
   ;; Undo drupal coding style whitespace effects
   (setq show-trailing-whitespace nil)
@@ -352,8 +351,7 @@ code and modules."
   "Makes php-mode use coding styles that are preferable for
 working with Drupal."
   (interactive)
-  (setq tab-width 2
-        indent-tabs-mode nil
+  (setq indent-tabs-mode nil
         fill-column 78
         show-trailing-whitespace t)
   (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)
@@ -414,7 +412,6 @@ working with Symfony2."
   (interactive)
   (setq indent-tabs-mode nil
         fill-column 78
-        tab-width 4
         c-indent-comments-syntactically-p t
         require-final-newline t)
   (c-set-style "symfony2")
@@ -443,8 +440,7 @@ working with Symfony2."
 (defun php-enable-psr2-coding-style ()
   "Makes php-mode use coding styles defined by PSR-2"
   (interactive)
-  (setq tab-width 4
-        indent-tabs-mode nil)
+  (setq indent-tabs-mode nil)
   (c-set-style "psr2")
   (set (make-local-variable 'require-final-newline) t)
   (set (make-local-variable 'show-trailing-whitespace) t)
