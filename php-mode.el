@@ -758,7 +758,7 @@ PHP heredoc."
         (when (and (re-search-forward
                     (php-heredoc-end-re (match-string 0)) nil t)
                    (> (point) start))
-          (setq new-start (maybe)))))
+          (setq new-start maybe))))
     (goto-char end)
     (when (re-search-backward php-heredoc-start-re nil t)
       (if (re-search-forward
