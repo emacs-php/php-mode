@@ -27,7 +27,7 @@ If you are using an older version of Emacs, or if you simply do not wish to use 
 Status
 ------
 
-I am currently looking for someone willing to take over as the maintainer of PHP Mode, ideally before the end of 2014.  Please see [this discussion](https://github.com/ejmr/php-mode/issues/109) for details.
+I am currently looking for someone willing to take over as the maintainer of PHP Mode, ideally before the end of 2014.  Please see [this discussion](https://github.com/ejmr/php-mode/issues/109) for details along with [this blog post of my own.](http://ericjmritz.name/2014/08/22/emacs-no-more-of-my-own-code-for-php-mode/)
 
 
 Features
