@@ -11,7 +11,7 @@
  */
 
 $foo = <<<EOT
-Heredoc with a ' inside.
+Start of heredoc with a ' inside.
 EOT;
 
 function bar()
