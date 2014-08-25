@@ -286,6 +286,7 @@ In chronological order:
 59. [Bence Kalmar](https://github.com/brkalmar)
 60. [Elis Axelsson](https://github.com/etu)
 61. [Alan Pearce](https://github.com/alanpearce)
+62. Syohei Yoshida
 
 
 
