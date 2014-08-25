@@ -240,7 +240,7 @@ style from Drupal."
 (ert-deftest php-mode-test-issue-124 ()
   "Proper syntax propertizing when a quote appears in a heredoc."
   (with-php-mode-test ("issue-124.php" :indent t)
-     (search-forward "Heredoc")
+     (search-forward "Start of heredoc")
      ;; The heredoc should be recognized as a string.
      (dolist (syntax (c-guess-basic-syntax))
        (should (eq (car syntax) 'string)))
