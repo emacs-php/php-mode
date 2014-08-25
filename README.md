@@ -287,6 +287,7 @@ In chronological order:
 60. [Elis Axelsson](https://github.com/etu)
 61. [Alan Pearce](https://github.com/alanpearce)
 62. Syohei Yoshida
+63. Joris Steyn
 
 
 
