@@ -27,7 +27,7 @@ If you are using an older version of Emacs, or if you simply do not wish to use 
 Status
 ------
 
-I am currently looking for someone willing to take over as the maintainer of PHP Mode, ideally before the end of 2014.  Please see [this discussion](https://github.com/ejmr/php-mode/issues/109) for details along with [this blog post of my own.](http://ericjmritz.name/2014/08/22/emacs-no-more-of-my-own-code-for-php-mode/)
+I am currently looking for someone willing to take over as the maintainer of PHP Mode, ideally before the end of 2014.  **From this point forward I will only address bug fixes and add features from other developers.** Please read [my short blog post on the matter](http://ericjmritz.name/2014/08/22/emacs-no-more-of-my-own-code-for-php-mode/).  **PHP Mode is not dead.**  However, I will no longer be contributing my own features because my time is taken up my game development that I am doing.  Nonetheless, I still welcome all contributions and will try to review and merge them as best as possible, so please continue to improve the mode all you great Emacs Lisp developers.
 
 
 Features
