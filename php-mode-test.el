@@ -270,6 +270,12 @@ style from Drupal."
         (should (eq 'font-lock-variable-name-face
                     (get-text-property (point) 'face)))))))
 
+(ert-deftest php-mode-test-issue-144 ()
+  "Indentation test '#' comment line has single quote."
+  (with-php-mode-test ("issue-144.php" :indent t)
+    (search-forward "$a" nil nil 3)
+    (should (= (current-indentation) c-basic-offset))))
+
 (ert-deftest php-mode-test-issue-145 ()
   "Closure indentation."
   (with-php-mode-test ("issue-145.php" :indent t)))
