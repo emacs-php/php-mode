@@ -388,18 +388,9 @@ This variable can take one of the following symbol values:
 (c-lang-defconst c-vsemi-status-unknown-p-fn
   php 'php-c-vsemi-status-unknown-p)
 
-(c-lang-defconst c-symbol-start
-  "Regexp that matches the start of a symbol, i.e. any identifier
-or keyword."
-  php (concat "[" c-alpha "_$]"))
-
-(c-lang-defconst c-symbol-chars
- "Set of characters that can be part of a symbol."
- php (concat c-alnum "_"))
-
 (c-lang-defconst c-identifier-ops
   php '((prefix "\\")
-        (left-assoc "::" "\\")
+        (left-assoc "::" "\\" "->")
         (prefix "::")))
 
 (c-lang-defconst c-after-id-concat-ops
@@ -413,10 +404,6 @@ or keyword."
   php (append (remove ">>>=" (c-lang-const c-assignment-operators))
               '(".=")))
  
-;; Some of the operators will need to be modified, since Java has angle brackets
-;; and lacks the -> operator
-;; (c-lang-defconst c-operators)
-
 (c-lang-defconst beginning-of-defun-function
   php 'php-beginning-of-defun)
 
@@ -427,16 +414,18 @@ or keyword."
   php '("int" "integer" "bool" "boolean" "float" "double" "real"
         "string" "array" "object" "unset"))
 
+(c-lang-defconst c-class-decl-kwds
+  "Keywords introducing declarations where the following block (if any)
+contains another declaration level that should be considered a class."
+  php '("class" "trait" "interface"))
+
 ;; Why does this need to be set as well?
+;; If we don't set it: the first class definition of a file will
+;; not get the appropriate face
 (c-lang-defconst c-type-prefix-kwds
   "Keywords where the following name - if any - is a type name, and
 where the keyword together with the symbol works as a type in
 declarations."
-  php '("class" "trait" "interface" "namespace"))
-
-(c-lang-defconst c-class-decl-kwds
-  "Keywords introducing declarations where the following block (if any)
-contains another declaration level that should be considered a class."
   php '("class" "trait" "interface" "namespace"))
 
 (c-lang-defconst c-brace-list-decl-kwds
@@ -452,22 +441,23 @@ declaration level that should not be considered a class."
   php '("namespace"))
 
 (c-lang-defconst c-typeless-decl-kwds
- php (append (c-lang-const c-class-decl-kwds) '("function")))
+  php (append (c-lang-const c-class-decl-kwds) '("function")))
 
 (c-lang-defconst c-modifier-kwds
-  php '("function" "abstract" "const" "final" "native" "private" "protected" "public"
-        "static" "strictfp" "synchronized" "transient" "volatile"))
+  php '("abstract" "const" "final" "native" "static" "strictfp"
+        "synchronized" "transient" "volatile"))
 
-;; Doesn't java have this? Apparently not, as cc-langs does not set this for
-;; `java-mode'
-;;
-;; (c-lang-defconst c-protection-kwds)
+(c-lang-defconst c-protection-kwds
+  "Access protection label keywords in classes."
+  php '("private" "protected" "public"))
 
 (c-lang-defconst c-postfix-decl-spec-kwds
-  php (remove "throws" (c-lang-const c-postfix-decl-spec-kwds)))
+  php (append (remove "throws" (c-lang-const c-postfix-decl-spec-kwds))
+              '("extends" "implements")))
 
 (c-lang-defconst c-type-list-kwds
-  php (remove "import" (c-lang-const c-type-list-kwds)))
+  php (append (remove "import" (c-lang-const c-type-list-kwds))
+              '("use" "as")))
 
 (c-lang-defconst c-ref-list-kwds
   php nil)
@@ -1099,7 +1089,6 @@ declaration level that should not be considered a class."
     "endwhile"
     "eval"
     "exit"
-    "extends"
     "final"
     "finally"
     "for"
@@ -1145,7 +1134,8 @@ declaration level that should not be considered a class."
    (c-doc-comment-style . javadoc)
    (c-offsets-alist . ((block-open . -)
                        (block-close . 0)
-                       (statement-cont . +)
+                       (inlambda . 0)
+                       (statement-cont . c-lineup-cascaded-calls)
                        (topmost-intro-cont . c-lineup-cascaded-calls)
                        (brace-list-entry . c-lineup-cascaded-calls)
                        (arglist-intro . php-lineup-arglist-intro)
@@ -1158,8 +1148,7 @@ declaration level that should not be considered a class."
  '("php"
    (c-basic-offset . 4)
    (c-offsets-alist . ((block-open . -)
-                       (block-close . 0)
-                       (statement-cont . +)))))
+                       (block-close . 0)))))
 
 (defun php-enable-pear-coding-style ()
   "Sets up php-mode to use the coding styles preferred for PEAR
@@ -1745,7 +1734,9 @@ searching the PHP website."
 (defconst php-font-lock-keywords-2 (c-lang-const c-matchers-2 php)
   "Medium level highlighting for PHP mode.")
 
-(defconst php-font-lock-keywords-3 (c-lang-const c-matchers-3 php)
+(defconst php-font-lock-keywords-3 (append
+                                     (c-lang-const c-matchers-3 php)
+                                    '(("\\$\\(\\sw+\\)" 1 font-lock-variable-name-face)))
   "Detailed highlighting for PHP mode.")
 
 (defvar php-font-lock-keywords php-font-lock-keywords-3
