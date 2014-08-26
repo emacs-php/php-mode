@@ -100,7 +100,8 @@ The test will use the PEAR style by default."
           '(should (reduce (lambda (l r) (and l r))
                            (php-mode-test-process-magics))))
      (goto-char (point-min))
-     ,@body))
+     (let ((case-fold-search nil))
+       ,@body)))
 
 (ert-deftest php-mode-test-issue-8 ()
   "Annotation highlighting."
