@@ -61,10 +61,19 @@
 
 ;;; Code:
 
-(require 'add-log)
-(require 'font-lock)
 (require 'cc-mode)
-(require 'cc-langs)
+(eval-when-compile
+  (require 'cc-langs)
+  (require 'cc-fonts))
+
+;; Boilerplate from other `cc-mode' derived modes. See
+;; http://cc-mode.sourceforge.net/derived-mode-ex.el for details on how this all
+;; fits together.
+(eval-and-compile
+  (c-add-language 'php-mode 'java-mode))
+
+(require 'font-lock)
+(require 'add-log)
 (require 'custom)
 (require 'flymake)
 (require 'etags)
@@ -305,75 +314,296 @@ This variable can take one of the following symbol values:
           ((eq value 'psr2)
            (php-enable-psr2-coding-style)))))
 
-
+(defun php-mode-version ()
+  "Display string describing the version of PHP mode."
+  (interactive)
+  (message "PHP mode %s of %s"
+           php-mode-version-number php-mode-modified))
+
+(defvar php-mode-map
+  (let ((map (make-sparse-keymap)))
+    ;; (define-key map [menu-bar php]
+    ;;   (cons "PHP" (make-sparse-keymap "PHP")))
+
+    ;; (define-key map [menu-bar php complete-function]
+    ;;   '("Complete function name" . php-complete-function))
+    ;; (define-key map [menu-bar php browse-manual]
+    ;;   '("Browse manual" . php-browse-manual))
+    ;; (define-key map [menu-bar php search-documentation]
+    ;;   '("Search documentation" . php-search-documentation))
+
+    ;; By default PHP mode binds C-M-h to c-mark-function, which it
+    ;; inherits from cc-mode.  But there are situations where
+    ;; c-mark-function fails to properly mark a function.  For
+    ;; example, if we use c-mark-function within a method definition
+    ;; then the region will expand beyond the method and into the
+    ;; class definition itself.
+    ;;
+    ;; Changing the default to mark-defun provides behavior that users
+    ;; are more likely to expect.
+    (define-key map (kbd "C-M-h") 'mark-defun)
+
+    ;; Many packages based on cc-mode provide the 'C-c C-w' binding
+    ;; to toggle Subword Mode.  See the page
+    ;;
+    ;;     https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
+    ;;
+    ;; for more information about Submode Word.
+    (if (boundp 'subword-mode)
+        (if subword-mode
+            (subword-mode nil)
+          (subword-mode t)))
+
+    ;; We inherit c-beginning-of-defun and c-end-of-defun from CC Mode
+    ;; but we have two replacement functions specifically for PHP.  We
+    ;; remap the commands themselves and not their default
+    ;; key-bindings so that our PHP-specific versions will work even
+    ;; if the user has reconfigured their keys, e.g. if they rebind
+    ;; c-end-of-defun to something other than C-M-e.
+    (define-key map [remap c-beginning-of-defun] 'php-beginning-of-defun)
+    (define-key map [remap c-end-of-defun] 'php-end-of-defun)
+
+    (define-key map [(control c) (control f)] 'php-search-documentation)
+    (define-key map [(meta tab)] 'php-complete-function)
+    (define-key map [(control c) (control m)] 'php-browse-manual)
+    (define-key map [(control .)] 'php-show-arglist)
+    (define-key map [(control c) (control r)] 'php-send-region)
+    ;; Use the Emacs standard indentation binding. This may upset c-mode
+    ;; which does not follow this at the moment, but I see no better
+    ;; choice.
+    (define-key map [tab] 'indent-for-tab-command)
+    map)
+  "Keymap for `php-mode'")
+
+(c-lang-defconst c-mode-menu
+  php (append '(["Complete function name" php-complete-function t]
+                ["Browse manual" php-browse-manual t]
+                ["Search documentation" php-search-documentation t]
+                ["----" t])
+              (c-lang-const c-mode-menu)))
+
+(c-lang-defconst c-at-vsemi-p-fn
+  php 'php-c-at-vsemi-p)
+
+(c-lang-defconst c-vsemi-status-unknown-p-fn
+  php 'php-c-vsemi-status-unknown-p)
+
+(c-lang-defconst c-identifier-ops
+  php '((prefix "\\")
+        (left-assoc "::" "\\" "->")
+        (prefix "::")))
+
+(c-lang-defconst c-after-id-concat-ops
+  php nil)
+
+(c-lang-defconst c-string-escaped-newlines
+  php t)
+
+(c-lang-defconst c-assignment-operators
+  ;; falls back to java, so no need to specify the language
+  php (append (remove ">>>=" (c-lang-const c-assignment-operators))
+              '(".=")))
+ 
+(c-lang-defconst beginning-of-defun-function
+  php 'php-beginning-of-defun)
+
+(c-lang-defconst end-of-defun-function
+  php 'php-end-of-defun)
+
+(c-lang-defconst c-primitive-type-kwds
+  php '("int" "integer" "bool" "boolean" "float" "double" "real"
+        "string" "array" "object" "unset"))
+
+(c-lang-defconst c-class-decl-kwds
+  "Keywords introducing declarations where the following block (if any)
+contains another declaration level that should be considered a class."
+  php '("class" "trait" "interface"))
+
+;; Why does this need to be set as well?
+;; If we don't set it: the first class definition of a file will
+;; not get the appropriate face
+(c-lang-defconst c-type-prefix-kwds
+  "Keywords where the following name - if any - is a type name, and
+where the keyword together with the symbol works as a type in
+declarations."
+  php '("class" "trait" "interface" "namespace"))
+
+(c-lang-defconst c-brace-list-decl-kwds
+  "Keywords introducing declarations where the following block (if
+any) is a brace list.
+
+PHP does not have an \"enum\"-like keyword."
+  php nil)
+
+(c-lang-defconst c-other-block-decl-kwds
+  "Keywords where the following block (if any) contains another
+declaration level that should not be considered a class."
+  php '("namespace"))
+
+(c-lang-defconst c-typeless-decl-kwds
+  php (append (c-lang-const c-class-decl-kwds) '("function")))
+
+(c-lang-defconst c-modifier-kwds
+  php '("abstract" "const" "final" "native" "static" "strictfp"
+        "synchronized" "transient" "volatile"))
+
+(c-lang-defconst c-protection-kwds
+  "Access protection label keywords in classes."
+  php '("private" "protected" "public"))
+
+(c-lang-defconst c-postfix-decl-spec-kwds
+  php (append (remove "throws" (c-lang-const c-postfix-decl-spec-kwds))
+              '("extends" "implements")))
+
+(c-lang-defconst c-type-list-kwds
+  php (append (remove "import" (c-lang-const c-type-list-kwds))
+              '("use" "as")))
+
+(c-lang-defconst c-ref-list-kwds
+  php nil)
+
+(c-lang-defconst c-block-stmt-2-kwds
+  php (append '("elseif" "foreach" "declare")
+              (remove "synchronized" (c-lang-const c-block-stmt-2-kwds))))
+
+(c-lang-defconst c-simple-stmt-kwds
+  php (append '("include" "include_once" "require" "require_once" "echo")
+              (c-lang-const c-simple-stmt-kwds)))
+
+(c-lang-defconst c-constant-kwds
+  php '("true"
+        "false"
+        "null"
+        ))
+
+(c-lang-defconst c-lambda-kwds
+  php '("function"))
+
+(c-lang-defconst c-other-kwds
+  "Keywords not accounted for by any other `*-kwds' language constant."
+  php '("abstract"
+    "and"
+    "array"
+    "break"
+    "catch all"
+    "catch"
+    "clone"
+    "const"
+    "continue"
+    "declare"
+    "default"
+    "die"
+    "do"
+    "echo"
+    "else"
+    "elseif"
+    "empty"
+    "encoding"
+    "enddeclare"
+    "endfor"
+    "endforeach"
+    "endif"
+    "endswitch"
+    "endwhile"
+    "eval"
+    "exit"
+    "final"
+    "finally"
+    "for"
+    "foreach"
+    "function"
+    "global"
+    "if"
+    "include"
+    "include_once"
+    "instanceof"
+    "insteadof"
+    "isset"
+    "list"
+    "or"
+    "require"
+    "require_once"
+    "return"
+    "static"
+    "switch"
+    "throw"
+    "ticks"
+    "try"
+    "unset"
+    "var"
+    "while"
+    "xor"
+    "yield"))
+
+;; PHP does not have <> templates/generics
+(c-lang-defconst c-recognize-<>-arglists
+  php nil)
+
+(c-lang-defconst c-enums-contain-decls
+  php nil)
+
+(c-add-style
+ "php"
+ '((c-basic-offset . 4)
+   (c-doc-comment-style . javadoc)
+   (c-offsets-alist . ((block-open . -)
+                       (block-close . 0)
+                       (inlambda . 0)
+                       (statement-cont . c-lineup-cascaded-calls)
+                       (topmost-intro-cont . c-lineup-cascaded-calls)
+                       (brace-list-entry . c-lineup-cascaded-calls)
+                       (arglist-intro . php-lineup-arglist-intro)
+                       (arglist-close . php-lineup-arglist-close)))))
+
+(add-to-list 'c-default-style '(php-mode . "php"))
 
 (c-add-style
  "pear"
- '((c-basic-offset . 4)
+ '("php"
+   (c-basic-offset . 4)
    (c-offsets-alist . ((block-open . -)
-                       (block-close . 0)
-                       (topmost-intro-cont . (first c-lineup-cascaded-calls
-                                                    php-lineup-arglist-intro))
-                       (brace-list-intro . +)
-                       (brace-list-entry . c-lineup-cascaded-calls)
-                       (arglist-close . php-lineup-arglist-close)
-                       (arglist-intro . php-lineup-arglist-intro)
-                       (knr-argdecl . [0])
-                       (arglist-cont-nonempty . c-lineup-cascaded-calls)
-                       (statement-cont . (first c-lineup-cascaded-calls +))))))
+                       (block-close . 0)))))
 
 (defun php-enable-pear-coding-style ()
   "Sets up php-mode to use the coding styles preferred for PEAR
 code and modules."
   (interactive)
-  (setq indent-tabs-mode nil)
-  (c-set-style "pear")
-  ;; Undo drupal coding style whitespace effects
-  (setq show-trailing-whitespace nil)
-  (remove-hook 'before-save-hook 'delete-trailing-whitespace t))
-
+  (setq tab-width 4
+        indent-tabs-mode nil)
+  (c-set-style "pear"))
 
 (c-add-style
  "drupal"
- '((c-basic-offset . 2)
+ '("php"
+   (c-basic-offset . 2)
    (c-offsets-alist . ((case-label . +)
-                       (topmost-intro-cont . (first c-lineup-cascaded-calls
-                                                    php-lineup-arglist-intro))
-                       (brace-list-intro . +)
-                       (brace-list-entry . c-lineup-cascaded-calls)
-                       (arglist-close . php-lineup-arglist-close)
-                       (arglist-intro . php-lineup-arglist-intro)
-                       (arglist-cont-nonempty . (first c-lineup-math c-lineup-cascaded-calls))
-                       (knr-argdecl . [0])
-                       (statement-cont . (first c-lineup-cascaded-calls +))))))
+                       (arglist-close . 0)
+                       (arglist-intro . +)
+                       (arglist-cont-nonempty . c-lineup-math)
+                       (statement-cont . +)))))
 
 (defun php-enable-drupal-coding-style ()
   "Makes php-mode use coding styles that are preferable for
 working with Drupal."
   (interactive)
-  (setq indent-tabs-mode nil
+  (setq tab-width 2
+        indent-tabs-mode nil
         fill-column 78
         show-trailing-whitespace t)
-  (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
   (c-set-style "drupal"))
 
 (c-add-style
- "wordpress"
- '((c-basic-offset . 4)
-   (c-offsets-alist . ((arglist-cont . 0)
-                       (arglist-intro . php-lineup-arglist-intro)
-                       (arglist-close . php-lineup-arglist-close)
-                       (topmost-intro-cont . (first c-lineup-cascaded-calls
-                                                    php-lineup-arglist-intro))
-                       (brace-list-intro . +)
-                       (brace-list-entry . c-lineup-cascaded-calls)
-                       (case-label . 2)
-                       (arglist-close . 0)
-                       (defun-close . 0)
-                       (defun-block-intro . +)
-                       (knr-argdecl . [0])
-                       (arglist-cont-nonempty . c-lineup-cascaded-calls)
-                       (statement-cont . (first c-lineup-cascaded-calls +))))))
+  "wordpress"
+  '("php"
+    (c-basic-offset . 4)
+    (c-offsets-alist . ((arglist-cont . 0)
+                        (arglist-intro . +)
+                        (case-label . 2)
+                        (arglist-close . 0)
+                        (defun-close . 0)
+                        (defun-block-intro . +)
+                        (statement-cont . +)))))
 
 (defun php-enable-wordpress-coding-style ()
   "Makes php-mode use coding styles that are preferable for
@@ -383,75 +613,7 @@ working with Wordpress."
         fill-column 78
         tab-width 4
         c-indent-comments-syntactically-p t)
-  (c-set-style "wordpress")
-  ;; Undo drupal coding style whitespace effects
-  (setq show-trailing-whitespace nil)
-  (remove-hook 'before-save-hook 'delete-trailing-whitespace t))
-
-(c-add-style
- "symfony2"
- '((c-basic-offset . 4)
-   (c-offsets-alist . ((arglist-cont . php-lineup-arglist)
-                       (arglist-intro . php-lineup-arglist-intro)
-                       (arglist-close . php-lineup-arglist-close)
-                       (topmost-intro-cont . (first c-lineup-cascaded-calls
-                                                    php-lineup-arglist-intro))
-                       (brace-list-intro . +)
-                       (brace-list-entry . c-lineup-cascaded-calls)
-                       (case-label . 4)
-                       (statement-case-intro . 4)
-                       (defun-close . 0)
-                       (defun-block-intro . +)
-                       (knr-argdecl . [0])
-                       (arglist-cont-nonempty . c-lineup-cascaded-calls)
-                       (statement-cont . php-lineup-hanging-semicolon)))))
-
-(defun php-enable-symfony2-coding-style ()
-  "Makes php-mode use coding styles that are preferable for
-working with Symfony2."
-  (interactive)
-  (setq indent-tabs-mode nil
-        fill-column 78
-        c-indent-comments-syntactically-p t
-        require-final-newline t)
-  (c-set-style "symfony2")
-  ;; Undo drupal coding style whitespace effects
-  (setq show-trailing-whitespace nil)
-  (remove-hook 'before-save-hook 'delete-trailing-whitespace t))
-
-(c-add-style
- "psr2"
- '((c-basic-offset . 4)
-   (c-offsets-alist . ((block-open . -)
-                       (block-close . 0)
-                       (topmost-intro-cont . (first c-lineup-cascaded-calls
-                                                    php-lineup-arglist-intro))
-                       (brace-list-intro . +)
-                       (brace-list-entry . c-lineup-cascaded-calls)
-                       (arglist-close . php-lineup-arglist-close)
-                       (arglist-intro . php-lineup-arglist-intro)
-                       (knr-argdecl . [0])
-                       (arglist-cont-nonempty . c-lineup-cascaded-calls)
-                       (statement-cont . +)
-                       (substatement-open . 0)
-                       (case-label . +)
-                       (comment-intro . 0)))))
-
-(defun php-enable-psr2-coding-style ()
-  "Makes php-mode use coding styles defined by PSR-2"
-  (interactive)
-  (setq indent-tabs-mode nil)
-  (c-set-style "psr2")
-  (set (make-local-variable 'require-final-newline) t)
-  (set (make-local-variable 'show-trailing-whitespace) t)
-  (add-hook 'before-save-hook 'delete-trailing-whitespace nil t))
-
-
-(defun php-mode-version ()
-  "Display string describing the version of PHP mode."
-  (interactive)
-  (message "PHP mode %s of %s"
-           php-mode-version-number php-mode-modified))
+  (c-set-style "wordpress"))
 
 (defconst php-beginning-of-defun-regexp
   "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("
@@ -584,25 +746,6 @@ example `html-mode'.  Known such libraries are:\n\t"
 (defconst php-tags '("<?php" "?>" "<?" "<?="))
 (defconst php-tags-key (regexp-opt php-tags))
 
-(defconst php-block-stmt-1-kwds '("do" "else" "finally" "try"))
-(defconst php-block-stmt-2-kwds
-  '("for" "if" "while" "switch" "foreach" "elseif" "catch" "catch all"))
-
-(defconst php-block-stmt-1-key
-  (regexp-opt php-block-stmt-1-kwds))
-(defconst php-block-stmt-2-key
-  (regexp-opt php-block-stmt-2-kwds))
-
-(defconst php-class-decl-kwds '("class" "interface" "trait" "namespace"))
-
-(defconst php-class-key
-  (concat
-   "\\(" (regexp-opt php-class-decl-kwds) "\\)\\s-+"
-   (c-lang-const c-symbol-key c)                ;; Class name.
-   "\\(\\s-+extends\\s-+" (c-lang-const c-symbol-key c) "\\)?" ;; Name of superclass.
-   "\\(\\s-+implements\\s-+[^{]+{\\)?")) ;; List of any adopted protocols.
-
-
 (defun php-c-at-vsemi-p (&optional pos)
   "Return t on html lines (including php region border), otherwise nil.
 POS is a position on the line in question.
@@ -648,9 +791,6 @@ This is was done due to the problem reported here:
     (goto-char (cdr langelem))
     (vector (current-column))))
 
-(c-set-offset 'arglist-intro 'php-lineup-arglist-intro)
-(c-set-offset 'arglist-close 'php-lineup-arglist-close)
-
 (defun php-lineup-arglist (langelem)
   (save-excursion
     (beginning-of-line)
@@ -660,61 +800,6 @@ This is was done due to the problem reported here:
   (save-excursion
     (beginning-of-line)
     (if (looking-at-p "\\s-*;\\s-*$") 0 '+)))
-
-(defvar php-mode-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map [menu-bar php]
-      (cons "PHP" (make-sparse-keymap "PHP")))
-
-    (define-key map [menu-bar php complete-function]
-      '("Complete function name" . php-complete-function))
-    (define-key map [menu-bar php browse-manual]
-      '("Browse manual" . php-browse-manual))
-    (define-key map [menu-bar php search-documentation]
-      '("Search documentation" . php-search-documentation))
-
-    ;; By default PHP mode binds C-M-h to c-mark-function, which it
-    ;; inherits from cc-mode.  But there are situations where
-    ;; c-mark-function fails to properly mark a function.  For
-    ;; example, if we use c-mark-function within a method definition
-    ;; then the region will expand beyond the method and into the
-    ;; class definition itself.
-    ;;
-    ;; Changing the default to mark-defun provides behavior that users
-    ;; are more likely to expect.
-    (define-key map (kbd "C-M-h") 'mark-defun)
-
-    ;; Many packages based on cc-mode provide the 'C-c C-w' binding
-    ;; to toggle Subword Mode.  See the page
-    ;;
-    ;;     https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
-    ;;
-    ;; for more information about Submode Word.
-    (if (boundp 'subword-mode)
-        (if subword-mode
-            (subword-mode nil)
-          (subword-mode t)))
-
-    ;; We inherit c-beginning-of-defun and c-end-of-defun from CC Mode
-    ;; but we have two replacement functions specifically for PHP.  We
-    ;; remap the commands themselves and not their default
-    ;; key-bindings so that our PHP-specific versions will work even
-    ;; if the user has reconfigured their keys, e.g. if they rebind
-    ;; c-end-of-defun to something other than C-M-e.
-    (define-key map [remap c-beginning-of-defun] 'php-beginning-of-defun)
-    (define-key map [remap c-end-of-defun] 'php-end-of-defun)
-
-    (define-key map [(control c) (control f)] 'php-search-documentation)
-    (define-key map [(meta tab)] 'php-complete-function)
-    (define-key map [(control c) (control m)] 'php-browse-manual)
-    (define-key map [(control .)] 'php-show-arglist)
-    (define-key map [(control c) (control r)] 'php-send-region)
-    ;; Use the Emacs standard indentation binding. This may upset c-mode
-    ;; which does not follow this at the moment, but I see no better
-    ;; choice.
-    (define-key map [tab] 'indent-for-tab-command)
-    map)
-  "Keymap for `php-mode'")
 
 (defconst php-heredoc-start-re
   "<<<\\(?:\\w+\\|'\\w+'\\)$"
@@ -780,36 +865,18 @@ PHP heredoc."
     (when (or new-start new-end)
       (cons (or new-start start) (or new-end end)))))
 
+(easy-menu-define php-mode-menu php-mode-map "PHP Mode Commands"
+  (cons "PHP" (c-lang-const c-mode-menu php)))
+
 ;;;###autoload
 (define-derived-mode php-mode c-mode "PHP"
-  "Major mode for editing PHP code.\n\n\\{php-mode-map}"
-  (c-add-language 'php-mode 'c-mode)
+  "Major mode for editing PHP code.
 
-  ;; PHP doesn't have C-style macros.
-  ;; HACK: Overwrite this syntax with rules to match <?php and others.
-  (set (make-local-variable 'c-opt-cpp-start) php-tags-key)
-  (set (make-local-variable 'c-opt-cpp-prefix) php-tags-key)
+\\{php-mode-map}"
 
-  (set (make-local-variable 'c-block-stmt-1-key) php-block-stmt-1-key)
-  (set (make-local-variable 'c-block-stmt-2-key) php-block-stmt-2-key)
-
-  ;; Specify that cc-mode recognize Javadoc comment style
-  (set (make-local-variable 'c-doc-comment-style)
-    '((php-mode . javadoc)))
-
-  (set (make-local-variable 'c-class-key) php-class-key)
-
-  (make-local-variable 'font-lock-defaults)
-  (setq font-lock-defaults
-        '((php-font-lock-keywords-1
-           php-font-lock-keywords-2
-           ;; Comment-out the next line if the font-coloring is too
-           ;; extreme/ugly for you.
-           php-font-lock-keywords-3)
-          nil                ; KEYWORDS-ONLY
-          t                  ; CASE-FOLD
-          (("_" . "w"))      ; SYNTAX-ALIST
-          nil))              ; SYNTAX-BEGIN
+  (c-initialize-cc-mode t)
+  (c-init-language-vars php-mode)
+  (c-common-init 'php-mode)
 
   (modify-syntax-entry ?_    "_" php-mode-syntax-table)
   (modify-syntax-entry ?`    "\"" php-mode-syntax-table)
@@ -1078,842 +1145,22 @@ searching the PHP website."
   (interactive)
   (browse-url php-manual-url))
 
-
-(defconst php-constants
-  (regexp-opt
-   (append
-    php-extra-constants
-    (when (boundp 'web-mode-extra-php-constants) web-mode-extra-php-constants)
-    '( ;; core constants
-      "__LINE__" "__FILE__" "__DIR__"
-      "__FUNCTION__" "__CLASS__" "__TRAIT__" "__METHOD__"
-      "__NAMESPACE__"
-      "__COMPILER_HALT_OFFSET__"
-      "PHP_OS" "PHP_VERSION"
-      "PHP_MINOR_VERSION" "PHP_MAJOR_VERSION" "PHP_RELEASE_VERSION"
-      "PHP_VERSION_ID" "PHP_EXTRA_VERSION"
-      "TRUE" "FALSE" "NULL"
-      "E_ERROR" "E_NOTICE" "E_PARSE" "E_WARNING" "E_ALL" "E_STRICT"
-      "E_USER_ERROR" "E_USER_WARNING" "E_USER_NOTICE"
-      "E_CORE_ERROR" "E_CORE_WARNING"
-      "E_COMPILE_ERROR" "E_COMPILE_WARNING"
-      "E_DEPRECATED" "E_USER_DEPRECATED"
-      "DEFAULT_INCLUDE_PATH" "PEAR_INSTALL_DIR" "PEAR_EXTENSION_DIR"
-      "PHP_BINDIR" "PHP_LIBDIR" "PHP_DATADIR" "PHP_SYSCONFDIR"
-      "PHP_LOCALSTATEDIR" "PHP_CONFIG_FILE_PATH"
-      "PHP_EOL"
-      "PHP_ZTS"
-      "PHP_DEBUG"
-      "PHP_MAXPATHLEN"
-      "PHP_SAPI"
-      "PHP_INT_MAX" "PHP_INT_SIZE"
-      "PHP_EXTENSION_DIR"
-      "PHP_PREFIX"
-      "PHP_MANDIR"
-      "PHP_CONFIG_FILE_SCAN_DIR"
+(defconst php-font-lock-keywords-1 (c-lang-const c-matchers-1 php)
+  "Basic highlighting for PHP mode.")
 
-      "PHP_WINDOWS_VERSION_MAJOR"
-      "PHP_WINDOWS_VERSION_MINOR"
-      "PHP_WINDOWS_VERSION_BUILD"
-      "PHP_WINDOWS_VERSION_PLATFORM"
-      "PHP_WINDOWS_VERSION_SP_MAJOR"
-      "PHP_WINDOWS_VERSION_SP_MINOR"
-      "PHP_WINDOWS_VERSION_SUITEMASK"
-      "PHP_WINDOWS_VERSION_PRODUCTTYPE"
-      "PHP_WINDOWS_NT_DOMAIN_CONTROLLER"
-      "PHP_WINDOWS_NT_SERVER"
-      "PHP_WINDOWS_NT_WORKSTATION"
-
-      ;; CLI SAPI
-      "STDIN"
-      "STDOUT"
-      "STDERR"
-
-      ;; date and time constants
-      "DATE_ATOM" "DATE_COOKIE" "DATE_ISO8601"
-      "DATE_RFC822" "DATE_RFC850" "DATE_RFC1036" "DATE_RFC1123"
-      "DATE_RFC2822" "DATE_RFC3339"
-      "DATE_RSS" "DATE_W3C"
-
-      ;; upload error message constants
-      "UPLOAD_ERR_CANT_WRITE" "UPLOAD_ERR_EXTENSION"
-      "UPLOAD_ERR_FORM_SIZE" "UPLOAD_ERR_INI_SIZE"
-      "UPLOAD_ERR_NO_FILE" "UPLOAD_ERR_NO_TMP_DIR"
-      "UPLOAD_ERR_OK" "UPLOAD_ERR_PARTIAL"
-
-      ;; from ext/standard:
-      "EXTR_OVERWRITE"
-      "EXTR_PREFIX_SAME"
-      "EXTR_PREFIX_INVALID"
-      "EXTR_IF_EXISTS"
-      "SORT_DESC"
-      "SORT_NUMERIC"
-      "CASE_LOWER"
-      "COUNT_NORMAL"
-      "ASSERT_ACTIVE"
-      "ASSERT_BAIL"
-      "ASSERT_QUIET_EVAL"
-      "CONNECTION_NORMAL"
-      "INI_USER"
-      "INI_SYSTEM"
-      "M_E"
-      "M_LOG10E"
-      "M_LN10"
-      "M_PI_2"
-      "M_1_PI"
-      "M_2_SQRTPI"
-      "M_SQRT1_2"
-      "CRYPT_STD_DES"
-      "CRYPT_MD5"
-      "DIRECTORY_SEPARATOR"
-      "SEEK_SET"
-      "SEEK_CUR"
-      "SEEK_END"
-      "LOCK_SH"
-      "LOCK_EX"
-      "LOCK_UN"
-      "LOCK_NB"
-      "GLOB_BRACE"
-      "GLOB_ONLYDIR"
-      "GLOB_MARK"
-      "GLOB_NOSORT"
-      "GLOB_NOCHECK"
-      "GLOB_NOESCAPE"
-      "GLOB_AVAILABLE_FLAGS"
-      "FILE_USE_INCLUDE_PATH"
-      "FILE_NO_DEFAULT_CONTEXT"
-      "FILE_APPEND"
-      "FILE_IGNORE_NEW_LINES"
-      "FILE_SKIP_EMPTY_LINES"
-      "FILE_BINARY"
-      "FILE_TEXT"
-      "INI_SCANNER_NORMAL"
-      "INI_SCANNER_RAW"
-      "FNM_NOESCAPE"
-      "FNM_PATHNAME"
-      "FNM_PERIOD"
-      "FNM_CASEFOLD"
-      "HTML_SPECIALCHARS"
-      "ENT_COMPAT"
-      "ENT_QUOTES"
-      "ENT_NOQUOTES"
-      "ENT_IGNORE"
-      "ENT_SUBSTITUTE"
-      "ENT_DISALLOWED"
-      "ENT_HTML401"
-      "ENT_XML1"
-      "ENT_XHTML"
-      "ENT_HTML5"
-      "INFO_CREDITS"
-      "INFO_MODULES"
-      "INFO_VARIABLES"
-      "INFO_ALL"
-      "CREDITS_GENERAL"
-      "CREDITS_MODULES"
-      "CREDITS_FULLPAGE"
-      "CREDITS_ALL"
-      "STR_PAD_RIGHT"
-      "PATHINFO_DIRNAME"
-      "PATHINFO_BASENAME"
-      "PATHINFO_EXTENSION"
-      "PATHINFO_FILENAME"
-      "CHAR_MAX"
-      "LC_NUMERIC"
-      "LC_COLLATE"
-      "LC_ALL"
-      "ABDAY_1"
-      "ABDAY_3"
-      "ABDAY_5"
-      "ABDAY_7"
-      "DAY_2"
-      "DAY_4"
-      "DAY_6"
-      "ABMON_1"
-      "ABMON_3"
-      "ABMON_5"
-      "ABMON_7"
-      "ABMON_9"
-      "ABMON_11"
-      "MON_1"
-      "MON_3"
-      "MON_5"
-      "MON_7"
-      "MON_9"
-      "MON_11"
-      "AM_STR"
-      "D_T_FMT"
-      "T_FMT"
-      "ERA"
-      "ERA_D_T_FMT"
-      "ERA_T_FMT"
-      "INT_CURR_SYMBOL"
-      "CRNCYSTR"
-      "MON_THOUSANDS_SEP"
-      "POSITIVE_SIGN"
-      "INT_FRAC_DIGITS"
-      "P_CS_PRECEDES"
-      "N_CS_PRECEDES"
-      "P_SIGN_POSN"
-      "DECIMAL_POINT"
-      "THOUSANDS_SEP"
-      "GROUPING"
-      "NOEXPR"
-      "NOSTR"
-      "LOG_EMERG"
-      "LOG_CRIT"
-      "LOG_WARNING"
-      "LOG_INFO"
-      "LOG_KERN"
-      "LOG_MAIL"
-      "LOG_AUTH"
-      "LOG_LPR"
-      "LOG_UUCP"
-      "LOG_AUTHPRIV"
-      "LOG_LOCAL1"
-      "LOG_LOCAL3"
-      "LOG_LOCAL5"
-      "LOG_LOCAL7"
-      "LOG_CONS"
-      "LOG_NDELAY"
-      "LOG_PERROR"
-
-      ;; Filter constants
-      "INPUT_POST"
-      "INPUT_GET"
-      "INPUT_COOKIE"
-      "INPUT_ENV"
-      "INPUT_SERVER"
-      "INPUT_SESSION"
-      "INPUT_REQUEST"
-      "FILTER_FLAG_NONE"
-      "FILTER_REQUIRE_SCALAR"
-      "FILTER_REQUIRE_ARRAY"
-      "FILTER_FORCE_ARRAY"
-      "FILTER_NULL_ON_FAILURE"
-      "FILTER_VALIDATE_INT"
-      "FILTER_VALIDATE_BOOLEAN"
-      "FILTER_VALIDATE_FLOAT"
-      "FILTER_VALIDATE_REGEXP"
-      "FILTER_VALIDATE_URL"
-      "FILTER_VALIDATE_EMAIL"
-      "FILTER_VALIDATE_IP"
-      "FILTER_DEFAULT"
-      "FILTER_UNSAFE_RAW"
-      "FILTER_SANITIZE_STRING"
-      "FILTER_SANITIZE_STRIPPED"
-      "FILTER_SANITIZE_ENCODED"
-      "FILTER_SANITIZE_SPECIAL_CHARS"
-      "FILTER_SANITIZE_FULL_SPECIAL_CHARS"
-      "FILTER_SANITIZE_EMAIL"
-      "FILTER_SANITIZE_URL"
-      "FILTER_SANITIZE_NUMBER_INT"
-      "FILTER_SANITIZE_NUMBER_FLOAT"
-      "FILTER_SANITIZE_MAGIC_QUOTES"
-      "FILTER_CALLBACK"
-      "FILTER_FLAG_ALLOW_OCTAL"
-      "FILTER_FLAG_ALLOW_HEX"
-      "FILTER_FLAG_STRIP_LOW"
-      "FILTER_FLAG_STRIP_HIGH"
-      "FILTER_FLAG_ENCODE_LOW"
-      "FILTER_FLAG_ENCODE_HIGH"
-      "FILTER_FLAG_ENCODE_AMP"
-      "FILTER_FLAG_NO_ENCODE_QUOTES"
-      "FILTER_FLAG_EMPTY_STRING_NULL"
-      "FILTER_FLAG_ALLOW_FRACTION"
-      "FILTER_FLAG_ALLOW_THOUSAND"
-      "FILTER_FLAG_ALLOW_SCIENTIFIC"
-      "FILTER_FLAG_PATH_REQUIRED"
-      "FILTER_FLAG_QUERY_REQUIRED"
-      "FILTER_FLAG_IPV4"
-      "FILTER_FLAG_IPV6"
-      "FILTER_FLAG_NO_RES_RANGE"
-      "FILTER_FLAG_NO_PRIV_RANGE"
-
-      ;; Password constants
-      "PASSWORD_DEFAULT"
-      "PASSWORD_BCRYPT"
-
-      ;; PREG constants
-      "PREG_PATTERN_ORDER"
-      "PREG_SET_ORDER"
-      "PREG_OFFSET_CAPTURE"
-      "PREG_SPLIT_NO_EMPTY"
-      "PREG_SPLIT_DELIM_CAPTURE"
-      "PREG_SPLIT_OFFSET_CAPTURE"
-      "PREG_NO_ERROR"
-      "PREG_INTERNAL_ERROR"
-      "PREG_BACKTRACK_LIMIT_ERROR"
-      "PREG_RECURSION_LIMIT_ERROR"
-      "PREG_BAD_UTF8_ERROR"
-      "PREG_BAD_UTF8_OFFSET_ERROR"
-      "PCRE_VERSION"
-
-      ;; cURL constants
-      "CURLOPT_AUTOREFERER"
-      "CURLOPT_COOKIESESSION"
-      "CURLOPT_DNS_USE_GLOBAL_CACHE"
-      "CURLOPT_DNS_CACHE_TIMEOUT"
-      "CURLOPT_FTP_SSL"
-      "CURLFTPSSL_TRY"
-      "CURLFTPSSL_ALL"
-      "CURLFTPSSL_CONTROL"
-      "CURLFTPSSL_NONE"
-      "CURLOPT_PRIVATE"
-      "CURLOPT_FTPSSLAUTH"
-      "CURLOPT_PORT"
-      "CURLOPT_FILE"
-      "CURLOPT_INFILE"
-      "CURLOPT_INFILESIZE"
-      "CURLOPT_URL"
-      "CURLOPT_PROXY"
-      "CURLOPT_VERBOSE"
-      "CURLOPT_HEADER"
-      "CURLOPT_HTTPHEADER"
-      "CURLOPT_NOPROGRESS"
-      "CURLOPT_NOBODY"
-      "CURLOPT_FAILONERROR"
-      "CURLOPT_UPLOAD"
-      "CURLOPT_POST"
-      "CURLOPT_FTPLISTONLY"
-      "CURLOPT_FTPAPPEND"
-      "CURLOPT_FTP_CREATE_MISSING_DIRS"
-      "CURLOPT_NETRC"
-      "CURLOPT_FOLLOWLOCATION"
-      "CURLOPT_FTPASCII"
-      "CURLOPT_PUT"
-      "CURLOPT_MUTE"
-      "CURLOPT_USERPWD"
-      "CURLOPT_PROXYUSERPWD"
-      "CURLOPT_RANGE"
-      "CURLOPT_TIMEOUT"
-      "CURLOPT_TIMEOUT_MS"
-      "CURLOPT_TCP_NODELAY"
-      "CURLOPT_POSTFIELDS"
-      "CURLOPT_PROGRESSFUNCTION"
-      "CURLOPT_REFERER"
-      "CURLOPT_USERAGENT"
-      "CURLOPT_FTPPORT"
-      "CURLOPT_FTP_USE_EPSV"
-      "CURLOPT_LOW_SPEED_LIMIT"
-      "CURLOPT_LOW_SPEED_TIME"
-      "CURLOPT_RESUME_FROM"
-      "CURLOPT_COOKIE"
-      "CURLOPT_SSLCERT"
-      "CURLOPT_SSLCERTPASSWD"
-      "CURLOPT_WRITEHEADER"
-      "CURLOPT_SSL_VERIFYHOST"
-      "CURLOPT_COOKIEFILE"
-      "CURLOPT_SSLVERSION"
-      "CURLOPT_TIMECONDITION"
-      "CURLOPT_TIMEVALUE"
-      "CURLOPT_CUSTOMREQUEST"
-      "CURLOPT_STDERR"
-      "CURLOPT_TRANSFERTEXT"
-      "CURLOPT_RETURNTRANSFER"
-      "CURLOPT_QUOTE"
-      "CURLOPT_POSTQUOTE"
-      "CURLOPT_INTERFACE"
-      "CURLOPT_KRB4LEVEL"
-      "CURLOPT_HTTPPROXYTUNNEL"
-      "CURLOPT_FILETIME"
-      "CURLOPT_WRITEFUNCTION"
-      "CURLOPT_READFUNCTION"
-      "CURLOPT_PASSWDFUNCTION"
-      "CURLOPT_HEADERFUNCTION"
-      "CURLOPT_MAXREDIRS"
-      "CURLOPT_MAXCONNECTS"
-      "CURLOPT_CLOSEPOLICY"
-      "CURLOPT_FRESH_CONNECT"
-      "CURLOPT_FORBID_REUSE"
-      "CURLOPT_RANDOM_FILE"
-      "CURLOPT_EGDSOCKET"
-      "CURLOPT_CONNECTTIMEOUT"
-      "CURLOPT_CONNECTTIMEOUT_MS"
-      "CURLOPT_SSL_VERIFYPEER"
-      "CURLOPT_CAINFO"
-      "CURLOPT_CAPATH"
-      "CURLOPT_COOKIEJAR"
-      "CURLOPT_SSL_CIPHER_LIST"
-      "CURLOPT_BINARYTRANSFER"
-      "CURLOPT_NOSIGNAL"
-      "CURLOPT_PROXYTYPE"
-      "CURLOPT_BUFFERSIZE"
-      "CURLOPT_HTTPGET"
-      "CURLOPT_HTTP_VERSION"
-      "CURLOPT_SSLKEY"
-      "CURLOPT_SSLKEYTYPE"
-      "CURLOPT_SSLKEYPASSWD"
-      "CURLOPT_SSLENGINE"
-      "CURLOPT_SSLENGINE_DEFAULT"
-      "CURLOPT_SSLCERTTYPE"
-      "CURLOPT_CRLF"
-      "CURLOPT_ENCODING"
-      "CURLOPT_PROXYPORT"
-      "CURLOPT_UNRESTRICTED_AUTH"
-      "CURLOPT_FTP_USE_EPRT"
-      "CURLOPT_HTTP200ALIASES"
-      "CURLOPT_HTTPAUTH"
-      "CURLAUTH_BASIC"
-      "CURLAUTH_DIGEST"
-      "CURLAUTH_GSSNEGOTIATE"
-      "CURLAUTH_NTLM"
-      "CURLAUTH_ANY"
-      "CURLAUTH_ANYSAFE"
-      "CURLOPT_PROXYAUTH"
-      "CURLOPT_MAX_RECV_SPEED_LARGE"
-      "CURLOPT_MAX_SEND_SPEED_LARGE"
-      "CURLCLOSEPOLICY_LEAST_RECENTLY_USED"
-      "CURLCLOSEPOLICY_LEAST_TRAFFIC"
-      "CURLCLOSEPOLICY_SLOWEST"
-      "CURLCLOSEPOLICY_CALLBACK"
-      "CURLCLOSEPOLICY_OLDEST"
-      "CURLINFO_PRIVATE"
-      "CURLINFO_EFFECTIVE_URL"
-      "CURLINFO_HTTP_CODE"
-      "CURLINFO_HEADER_OUT"
-      "CURLINFO_HEADER_SIZE"
-      "CURLINFO_REQUEST_SIZE"
-      "CURLINFO_TOTAL_TIME"
-      "CURLINFO_NAMELOOKUP_TIME"
-      "CURLINFO_CONNECT_TIME"
-      "CURLINFO_PRETRANSFER_TIME"
-      "CURLINFO_SIZE_UPLOAD"
-      "CURLINFO_SIZE_DOWNLOAD"
-      "CURLINFO_SPEED_DOWNLOAD"
-      "CURLINFO_SPEED_UPLOAD"
-      "CURLINFO_FILETIME"
-      "CURLINFO_SSL_VERIFYRESULT"
-      "CURLINFO_CONTENT_LENGTH_DOWNLOAD"
-      "CURLINFO_CONTENT_LENGTH_UPLOAD"
-      "CURLINFO_STARTTRANSFER_TIME"
-      "CURLINFO_CONTENT_TYPE"
-      "CURLINFO_REDIRECT_TIME"
-      "CURLINFO_REDIRECT_COUNT"
-      "CURL_TIMECOND_IFMODSINCE"
-      "CURL_TIMECOND_IFUNMODSINCE"
-      "CURL_TIMECOND_LASTMOD"
-      "CURL_VERSION_IPV6"
-      "CURL_VERSION_KERBEROS4"
-      "CURL_VERSION_SSL"
-      "CURL_VERSION_LIBZ"
-      "CURLVERSION_NOW"
-      "CURLE_OK"
-      "CURLE_UNSUPPORTED_PROTOCOL"
-      "CURLE_FAILED_INIT"
-      "CURLE_URL_MALFORMAT"
-      "CURLE_URL_MALFORMAT_USER"
-      "CURLE_COULDNT_RESOLVE_PROXY"
-      "CURLE_COULDNT_RESOLVE_HOST"
-      "CURLE_COULDNT_CONNECT"
-      "CURLE_FTP_WEIRD_SERVER_REPLY"
-      "CURLE_FTP_ACCESS_DENIED"
-      "CURLE_FTP_USER_PASSWORD_INCORRECT"
-      "CURLE_FTP_WEIRD_PASS_REPLY"
-      "CURLE_FTP_WEIRD_USER_REPLY"
-      "CURLE_FTP_WEIRD_PASV_REPLY"
-      "CURLE_FTP_WEIRD_227_FORMAT"
-      "CURLE_FTP_CANT_GET_HOST"
-      "CURLE_FTP_CANT_RECONNECT"
-      "CURLE_FTP_COULDNT_SET_BINARY"
-      "CURLE_PARTIAL_FILE"
-      "CURLE_FTP_COULDNT_RETR_FILE"
-      "CURLE_FTP_WRITE_ERROR"
-      "CURLE_FTP_QUOTE_ERROR"
-      "CURLE_HTTP_NOT_FOUND"
-      "CURLE_WRITE_ERROR"
-      "CURLE_MALFORMAT_USER"
-      "CURLE_FTP_COULDNT_STOR_FILE"
-      "CURLE_READ_ERROR"
-      "CURLE_OUT_OF_MEMORY"
-      "CURLE_OPERATION_TIMEOUTED"
-      "CURLE_FTP_COULDNT_SET_ASCII"
-      "CURLE_FTP_PORT_FAILED"
-      "CURLE_FTP_COULDNT_USE_REST"
-      "CURLE_FTP_COULDNT_GET_SIZE"
-      "CURLE_HTTP_RANGE_ERROR"
-      "CURLE_HTTP_POST_ERROR"
-      "CURLE_SSL_CONNECT_ERROR"
-      "CURLE_FTP_BAD_DOWNLOAD_RESUME"
-      "CURLE_FILE_COULDNT_READ_FILE"
-      "CURLE_LDAP_CANNOT_BIND"
-      "CURLE_LDAP_SEARCH_FAILED"
-      "CURLE_LIBRARY_NOT_FOUND"
-      "CURLE_FUNCTION_NOT_FOUND"
-      "CURLE_ABORTED_BY_CALLBACK"
-      "CURLE_BAD_FUNCTION_ARGUMENT"
-      "CURLE_BAD_CALLING_ORDER"
-      "CURLE_HTTP_PORT_FAILED"
-      "CURLE_BAD_PASSWORD_ENTERED"
-      "CURLE_TOO_MANY_REDIRECTS"
-      "CURLE_UNKNOWN_TELNET_OPTION"
-      "CURLE_TELNET_OPTION_SYNTAX"
-      "CURLE_OBSOLETE"
-      "CURLE_SSL_PEER_CERTIFICATE"
-      "CURLE_GOT_NOTHING"
-      "CURLE_SSL_ENGINE_NOTFOUND"
-      "CURLE_SSL_ENGINE_SETFAILED"
-      "CURLE_SEND_ERROR"
-      "CURLE_RECV_ERROR"
-      "CURLE_SHARE_IN_USE"
-      "CURLE_SSL_CERTPROBLEM"
-      "CURLE_SSL_CIPHER"
-      "CURLE_SSL_CACERT"
-      "CURLE_BAD_CONTENT_ENCODING"
-      "CURLE_LDAP_INVALID_URL"
-      "CURLE_FILESIZE_EXCEEDED"
-      "CURLE_FTP_SSL_FAILED"
-      "CURLFTPAUTH_DEFAULT"
-      "CURLFTPAUTH_SSL"
-      "CURLFTPAUTH_TLS"
-      "CURLPROXY_HTTP"
-      "CURLPROXY_SOCKS5"
-      "CURL_NETRC_OPTIONAL"
-      "CURL_NETRC_IGNORED"
-      "CURL_NETRC_REQUIRED"
-      "CURL_HTTP_VERSION_NONE"
-      "CURL_HTTP_VERSION_1_0"
-      "CURL_HTTP_VERSION_1_1"
-      "CURLM_CALL_MULTI_PERFORM"
-      "CURLM_OK"
-      "CURLM_BAD_HANDLE"
-      "CURLM_BAD_EASY_HANDLE"
-      "CURLM_OUT_OF_MEMORY"
-      "CURLM_INTERNAL_ERROR"
-      "CURLMSG_DONE"
-      "CURLOPT_KEYPASSWD"
-      "CURLOPT_SSH_AUTH_TYPES"
-      "CURLOPT_SSH_HOST_PUBLIC_KEY_MD5"
-      "CURLOPT_SSH_PRIVATE_KEYFILE"
-      "CURLOPT_SSH_PUBLIC_KEYFILE"
-      "CURLSSH_AUTH_ANY"
-      "CURLSSH_AUTH_DEFAULT"
-      "CURLSSH_AUTH_HOST"
-      "CURLSSH_AUTH_KEYBOARD"
-      "CURLSSH_AUTH_NONE"
-      "CURLSSH_AUTH_PASSWORD"
-      "CURLSSH_AUTH_PUBLICKEY"
-
-      ;; SESSION constants
-      "PHP_SESSION_DISABLED"
-      "PHP_SESSION_NONE"
-      "PHP_SESSION_ACTIVE"
-
-      ;; IMAP constants
-      "NIL"
-      "OP_DEBUG"
-      "OP_READONLY"
-      "OP_ANONYMOUS"
-      "OP_SHORTCACHE"
-      "OP_SILENT"
-      "OP_PROTOTYPE"
-      "OP_HALFOPEN"
-      "OP_EXPUNGE"
-      "OP_SECURE"
-      "CL_EXPUNGE"
-      "FT_UID"
-      "FT_PEEK"
-      "FT_NOT"
-      "FT_INTERNAL"
-      "FT_PREFETCHTEXT"
-      "ST_UID"
-      "ST_SILENT"
-      "ST_SET"
-      "CP_UID"
-      "CP_MOVE"
-      "SE_UID"
-      "SE_FREE"
-      "SE_NOPREFETCH"
-      "SO_FREE"
-      "SO_NOSERVER"
-      "SA_MESSAGES"
-      "SA_RECENT"
-      "SA_UNSEEN"
-      "SA_UIDNEXT"
-      "SA_UIDVALIDITY"
-      "SA_ALL"
-      "LATT_NOINFERIORS"
-      "LATT_NOSELECT"
-      "LATT_MARKED"
-      "LATT_UNMARKED"
-      "SORTDATE"
-      "SORTARRIVAL"
-      "SORTFROM"
-      "SORTSUBJECT"
-      "SORTTO"
-      "SORTCC"
-      "SORTSIZE"
-      "TYPETEXT"
-      "TYPEMULTIPART"
-      "TYPEMESSAGE"
-      "TYPEAPPLCATION"
-      "TYPEAUDIO"
-      "TYPEIMAGE"
-      "TYPEVIDEO"
-      "TYPEOTHER"
-      "ENC7BIT"
-      "ENC8BIT"
-      "ENCBINARY"
-      "ENCBASE64"
-      "ENCQUOTEDPRINTABLE"
-      "ENCOTHER"
-      "IMAP_OPENTIMEOUT"
-      "IMAP_READTIMEOUT"
-      "IMAP_WRITETIMEOUT"
-      "IMAP_CLOSETIMEOUT"
-      "LATT_REFERRAL"
-      "LATT_HASCHILDREN"
-      "LATT_HASNOCHILDREN"
-      "TYPEMODEL"
-      "IMAP_GC_ELT"
-      "IMAP_GC_ENV"
-      "IMAP_GC_TEXTS")))
-  "PHP constants.")
-
-(defconst php-keywords
-  (eval-when-compile
-    (regexp-opt
-     (append
-      (when (boundp 'web-mode-extra-php-keywords) web-mode-extra-php-keywords)
-      ;; "class", "new" and "extends" get special treatment
-      ;; "case" gets special treatment elsewhere
-      '("abstract"
-        "and"
-        "array"
-        "as"
-        "break"
-        "catch all"
-        "catch"
-        "clone"
-        "const"
-        "continue"
-        "declare"
-        "default"
-        "die"
-        "do"
-        "echo"
-        "else"
-        "elseif"
-        "empty"
-        "encoding"
-        "enddeclare"
-        "endfor"
-        "endforeach"
-        "endif"
-        "endswitch"
-        "endwhile"
-        "eval"
-        "exit"
-        "extends"
-        "final"
-        "finally"
-        "for"
-        "foreach"
-        "function"
-        "global"
-        "if"
-        "include"
-        "include_once"
-        "instanceof"
-        "insteadof"
-        "isset"
-        "list"
-        "or"
-        "private"
-        "protected"
-        "public"
-        "require"
-        "require_once"
-        "return"
-        "static"
-        "switch"
-        "throw"
-        "ticks"
-        "try"
-        "unset"
-        "use"
-        "var"
-        "while"
-        "xor"
-        "yield"))))
-  "PHP keywords.")
-
-(defconst php-types
-  (eval-when-compile
-    (regexp-opt '("array" "bool" "boolean" "callable" "char" "double" "float"
-                  "int" "integer" "long" "mixed" "object" "real"
-                  "string")))
-  "PHP types.")
-
-(defconst php-superglobals
-  (eval-when-compile
-    (regexp-opt '("_GET" "_POST" "_COOKIE" "_SESSION" "_ENV" "GLOBALS"
-                  "_SERVER" "_FILES" "_REQUEST")))
-  "PHP superglobal variables.")
-
-;; Set up font locking
-(defconst php-font-lock-keywords-1
-  (append
-   (list
-
-    ;; Fontify constants
-    (cons
-     (concat "[^_$]?\\<\\(" php-constants "\\)\\>[^_]?")
-     '(1 font-lock-constant-face))
-
-    ;; Fontify keywords
-    (cons
-     (concat "[^_$]?\\<\\(" php-keywords "\\)\\>[^_]?")
-     '(1 font-lock-keyword-face))
-
-    ;; Fontify keywords and targets, and case default tags.
-    (list "\\<\\(break\\|case\\|continue\\)\\>\\s-+\\(-?\\sw+\\)?"
-          '(1 font-lock-keyword-face) '(2 font-lock-constant-face keep t))
-    ;; This must come after the one for keywords and targets.
-    '(":" ("^\\s-+\\(\\sw+\\)\\s-+\\s-+$"
-           (beginning-of-line) (end-of-line)
-           (1 font-lock-constant-face)))
-
-    ;; treat 'print' as keyword only when not used like a function name
-    '("\\<print\\s-*(" . php-function-call-face)
-    '("\\<print\\>" . font-lock-keyword-face)
-
-    ;; Fontify PHP tag
-    (cons php-tags-key font-lock-preprocessor-face)
-
-    )
-
-   (if php-template-compatibility
-       (list
-        ;; Fontify ASP-style tag
-        '("<\\%\\(=\\)?" . font-lock-preprocessor-face)
-        '("\\%>" . font-lock-preprocessor-face))
-     ())
-
-   )
-  "Subdued level highlighting for PHP mode.")
-
-(defconst php-font-lock-keywords-2
-  (append
-   php-font-lock-keywords-1
-   (list
-
-    ;; namespace, class, interface, and trait declarations
-    '("\\<\\(namespace\\|class\\|interface\\|trait\\)\\s-+\\(\\(?:\\sw\\|\\\\\\)+\\)?"
-      (1 font-lock-keyword-face)
-      (2 font-lock-type-face nil t))
-
-    ;; handle several words specially, to include following word,
-    ;; thereby excluding it from unknown-symbol checks later
-    ;; FIX to handle implementing multiple
-    ;; currently breaks on "class Foo implements Bar, Baz"
-    '("\\<\\(new\\|extends\\|implements\\)\\s-+\\$?\\(\\(:?\\sw\\|\\\\\\)+\\)"
-      (1 font-lock-keyword-face)
-      (2 font-lock-type-face nil t))
-
-    ;; instanceof operator
-    '("\\<instanceof\\s-+\\([^$]\\(:?\\sw\\|\\\\\\)+\\)"
-      (1 font-lock-type-face nil t))
-
-    ;; namespace imports
-    '("\\<use\\s-+\\(\\(?:\\sw\\|\\(?:,\\s-*\\)\\|\\\\\\)+\\)"
-      (1 font-lock-type-face))
-
-    ;; namespace imports with aliases
-    '("\\<use\\s-+\\(\\(?:\\sw\\|\\\\\\)+\\)\\s-+as\\s-+\\(\\(?:\\sw\\|\\\\\\)+\\)"
-      (1 font-lock-type-face)
-      (2 font-lock-type-face))
-
-    ;; constants
-    '("\\<const\\s-+\\(\\sw+\\)"
-      (1 font-lock-type-face))
-
-    ;; function declaration
-    '("\\<function\\s-+&?\\(\\sw+\\)\\s-*("
-      (1 font-lock-function-name-face nil t))
-
-    ;; self, parent, and static in class contexts
-    '("\\<\\(self\\)\\(?:::\\)" (1 font-lock-constant-face nil nil))
-    '("\\<\\(parent\\)\\(?:::\\|\\s-*(\\)" (1 font-lock-constant-face nil nil))
-    '("\\<\\(static\\)\\(?:::\\)" (1 font-lock-constant-face t nil))
-    ))
+(defconst php-font-lock-keywords-2 (c-lang-const c-matchers-2 php)
   "Medium level highlighting for PHP mode.")
 
-(defconst php-font-lock-keywords-3
-  (append
-   php-font-lock-keywords-2
-   (if php-template-compatibility
-       (list
-        '("</?[a-z!:]+" . font-lock-constant-face)
-        ;; HTML >
-        '("<[^>]*\\(>\\)" (1 font-lock-constant-face))
-        ;; HTML tags
-        '("\\(<[a-z]+\\)[[:space:]]+\\([a-z:]+=\\)[^>]*?"
-          (1 font-lock-constant-face)
-          (2 font-lock-constant-face))
-        '("\"[[:space:]]+\\([a-z:]+=\\)" (1 font-lock-constant-face))
-        )
-     ())
-   (list
-    ;; warn about $word.word -- it could be a valid concatenation,
-    ;; but without any spaces we'll assume $word->word was meant.
-    '("\\$\\sw+\\(\\.\\)\\sw"
-      1 font-lock-warning-face)
+(defconst php-font-lock-keywords-3 (append
+                                     (c-lang-const c-matchers-3 php)
+                                     '(
+                                       ("\\$\\(\\sw+\\)" 1 font-lock-variable-name-face t)
+                                       ("\\<\\([A-Z0-9_]\\{2,\\}\\)\\>" 1 font-lock-constant-face t)
+                                       ("\\([a-zA-Z0-9_]+\\)::" 1 font-lock-constant-face t)))
+  "Detailed highlighting for PHP mode.")
 
-    ;; Warn about ==> instead of =>
-    '("==+>" . font-lock-warning-face)
-
-    ;; exclude casts from bare-word treatment (may contain spaces)
-    `(,(concat "(\\s-*\\(" php-types "\\)\\s-*)")
-      1 font-lock-type-face)
-
-    ;; PHP5: function declarations may contain classes as parameters type
-    `("[(,]\\(?:\\s-\\|\n\\)*\\(\\(?:\\sw\\|\\\\\\)+\\)\\s-+&?\\$\\sw+\\>"
-      1 font-lock-type-face)
-
-    ;; Function calls qualified by namespaces
-    '("\\(\\\\?\\(?:\\sw+\\\\\\)+\\)\\sw+("
-      (1 font-lock-type-face))
-
-    ;; Fontify variables and function calls
-    '("\\$\\(this\\|that\\)\\W" (1 font-lock-constant-face nil nil))
-
-    ;; $_GET & co
-    `(,(concat "\\$\\(" php-superglobals "\\)\\W")
-      (1 font-lock-constant-face nil nil))
-
-    ;; $variable
-    '("\\$\\(\\sw+\\)" (1 font-lock-variable-name-face))
-
-    ;; ->function_call
-    '("->\\(\\sw+\\)\\s-*(" (1 php-function-call-face keep t))
-
-    ;; ->variable
-    '("->\\(\\sw+\\)" (1 font-lock-variable-name-face keep t))
-
-    ;; class::member
-    '("\\(\\(\\sw\\|\\\\\\)+\\)::\\sw+\\s-*(?" . (1 font-lock-type-face))
-
-    ;; class::constant
-    '("::\\(\\(?:\\sw\\|\\s_\\)+\\>\\)[^(]" . (1 font-lock-constant-face))
-
-    ;; using a trait in a class
-    '("\\<use\\s-+\\(\\sw+\\)\\s-*;" . (1 font-lock-type-face))
-
-    ;; word(
-    '("\\<\\(\\sw+\\s-*\\)(" . (1 php-function-call-face))
-
-    ;; word[
-    '("\\<\\(\\sw+\\s-*\\)\\[" . (1 php-default-face))
-
-    ;; number (also matches word)
-    '("\\<[0-9]+" . php-default-face)
-
-    ;; Warn on any words not already fontified
-    '("\\<\\sw+\\>" . font-lock-warning-face)))
-
-  "Gauchy level highlighting for PHP mode.")
-
-
+(defvar php-font-lock-keywords php-font-lock-keywords-3
+  "Default expressions to highlight in PHP mode.")
 
 ;;; Provide support for Flymake so that users can see warnings and
 ;;; errors in real-time as they write code.
