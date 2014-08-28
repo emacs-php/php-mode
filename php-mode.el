@@ -727,6 +727,9 @@ the string HEREDOC-START."
   (string-match "\\w+" heredoc-start)
   (concat "^\\(" (match-string 0 heredoc-start) "\\)\\W"))
 
+(defsubst php-in-string-p ()
+  (nth 3 (syntax-ppss)))
+
 (defsubst php-in-comment-p ()
   (nth 4 (syntax-ppss)))
 
@@ -1971,8 +1974,25 @@ The output will appear in the buffer *PHP*."
       (set-match-data match)
       t)))
 
+(defconst php-string-interpolated-variable-regexp
+  "{\\$[^}\n\\\\]*\\(?:\\\\.[^}\n\\\\]*\\)*}\\|\\${\\sw+}\\|\\$\\sw+")
+
+(defun php-string-intepolated-variable-font-lock-find (limit)
+  (while (re-search-forward php-string-interpolated-variable-regexp limit t)
+    (when (php-in-string-p)
+      (put-text-property (match-beginning 0) (match-end 0)
+                         'face 'font-lock-variable-name-face)))
+  nil)
+
 (eval-after-load 'php-mode
-  '(font-lock-add-keywords 'php-mode '((php-annotations-font-lock-find-annotation (2 'php-annotations-annotation-face t)))))
+  '(progn
+     (font-lock-add-keywords
+      'php-mode
+      '((php-annotations-font-lock-find-annotation (2 'php-annotations-annotation-face t))))
+     (font-lock-add-keywords
+      'php-mode
+      `((php-string-intepolated-variable-font-lock-find))
+      'append)))
 
 
 
