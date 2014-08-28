@@ -267,6 +267,7 @@ style from Drupal."
       (search-forward "ob_start()")
       (dolist (variable variables)
         (search-forward variable)
+        (goto-char (match-beginning 0))
         (should (eq 'font-lock-variable-name-face
                     (get-text-property (point) 'face)))))))
 
