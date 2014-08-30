@@ -281,4 +281,32 @@ style from Drupal."
   "Closure indentation."
   (with-php-mode-test ("issue-145.php" :indent t)))
 
+(ert-deftest php-mode-test-constants ()
+  "Proper highlighting for constants."
+  (custom-set-variables '(php-extra-constants (quote ("extraconstant"))))
+  (with-php-mode-test ("constants.php")
+    (let ((variables '(
+                       "true" "TRUE"
+                       "false" "FALSE"
+                       "null" "NULL"
+                       "IS_CONSTANT"
+                       "__IS_CONSTANT__"
+                       "IS_CONSTANT99"
+                       "extraconstant")))
+      (dolist (variable variables)
+        (search-forward variable)
+        (goto-char (match-beginning 0))
+        (should (eq 'font-lock-constant-face
+                    (get-text-property (point) 'face))))))
+  (custom-set-variables '(php-extra-constants (quote ())))
+  (with-php-mode-test ("constants.php")
+    (let ((variables '("no_constant"
+                       "no_CONSTANT"
+                       "extraconstant")))
+      (dolist (variable variables)
+        (search-forward variable)
+        (goto-char (match-beginning 0))
+        (should (not (eq 'font-lock-constant-face
+                    (get-text-property (point) 'face))))))))
+
 ;;; php-mode-test.el ends here

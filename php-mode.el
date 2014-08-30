@@ -140,10 +140,35 @@ Turning this on will open it whenever `php-mode' is loaded."
   :type 'boolean
   :group 'php)
 
+(defun php-mode-extra-constants-create-regexp(kwds)
+  "Create regexp for the list of extra constant keywords KWDS."
+   (concat "[^_$]?\\<\\("
+           (regexp-opt
+             (append kwds
+                     (when (boundp 'web-mode-extra-php-constants) web-mode-extra-php-constants)))
+           "\\)\\>[^_]?"))
+
+(defun php-mode-extra-constants-set(sym value)
+  "Apply the list of extra constant keywords VALUE.
+
+This function is called when the custom variable php-extra-constants
+is updated. The web-mode-extra-constants list is appended to the list
+of constants when set."
+  ;; remove old keywords
+  (when (boundp 'php-extra-constants)
+    (font-lock-remove-keywords
+     'php-mode `((,(php-mode-extra-constants-create-regexp php-extra-constants) 1 font-lock-constant-face))))
+  ;; add new keywords
+  (when value
+    (font-lock-add-keywords
+     'php-mode `((,(php-mode-extra-constants-create-regexp value) 1 font-lock-constant-face))))
+  (set sym value))
+
 ;;;###autoload
 (defcustom php-extra-constants '()
   "A list of additional strings to treat as PHP constants."
   :type 'list
+  :set 'php-mode-extra-constants-set
   :group 'php)
 
 (defun php-create-regexp-for-method (visibility)
@@ -473,8 +498,7 @@ declaration level that should not be considered a class."
 (c-lang-defconst c-constant-kwds
   php '("true"
         "false"
-        "null"
-        ))
+        "null"))
 
 (c-lang-defconst c-lambda-kwds
   php '("function"))
