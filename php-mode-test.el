@@ -327,6 +327,14 @@ style from Drupal."
     (search-forward "syntaxerror")
     (goto-char (match-beginning 0))
     (should (not (eq 'font-lock-variable-name-face
-                     (get-text-property (point) 'face))))))
+                     (get-text-property (point) 'face))))
+    (search-forward "ClassName")
+    (goto-char (match-beginning 0))
+    (should (eq 'font-lock-constant-face
+                (get-text-property (point) 'face)))
+    (search-forward "SpaceName")
+    (goto-char (match-beginning 0))
+    (should (eq 'font-lock-constant-face
+                (get-text-property (point) 'face)))))
 
 ;;; php-mode-test.el ends here

@@ -1182,7 +1182,7 @@ searching the PHP website."
                                      '(
                                        ("\\<\\$\\([a-zA-Z0-9_]+\\)" 1 font-lock-variable-name-face t)
                                        ("\\<\\([A-Z0-9_]\\{2,\\}\\)\\>" 1 font-lock-constant-face t)
-                                       ("\\([a-zA-Z0-9_]+\\)::" 1 font-lock-constant-face t)))
+                                       ("\\(\\sw+\\)::" 1 font-lock-constant-face t)))
   "Detailed highlighting for PHP mode.")
 
 (defvar php-font-lock-keywords php-font-lock-keywords-3
