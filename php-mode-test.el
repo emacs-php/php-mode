@@ -117,8 +117,10 @@ The next character after \">We\" is a single quote. It should not
 have a string face."
   :expected-result :failed
   (with-php-mode-test ("issue-9.php")
+                      (search-forward ">We")
+                      (forward-char) ;; Jump to after the opening apostrophe
     (should-not (eq
-                 (get-text-property (search-forward ">We") 'face)
+                 (get-text-property (point) 'face)
                  'font-lock-string-face))))
 
 (ert-deftest php-mode-test-issue-14 ()
