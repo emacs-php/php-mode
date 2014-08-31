@@ -414,12 +414,14 @@ This variable can take one of the following symbol values:
   php 'php-c-vsemi-status-unknown-p)
 
 (c-lang-defconst c-identifier-ops
-  php '((prefix "\\")
-        (left-assoc "::" "\\" "->")
-        (prefix "::")))
+  php '(
+        (left-assoc "\\" "::" "->")
+        (prefix "\\" "::")))
 
-(c-lang-defconst c-after-id-concat-ops
-  php nil)
+;; Make the namespace separator part of identifiers
+(c-lang-defconst c-identifier-syntax-modifications
+  php (append '((?\\ . "w") (?: . "w"))
+           (c-lang-const c-identifier-syntax-modifications)))
 
 (c-lang-defconst c-string-escaped-newlines
   php t)
@@ -1178,7 +1180,7 @@ searching the PHP website."
 (defconst php-font-lock-keywords-3 (append
                                      (c-lang-const c-matchers-3 php)
                                      '(
-                                       ("\\$\\(\\sw+\\)" 1 font-lock-variable-name-face t)
+                                       ("\\<\\$\\([a-zA-Z0-9_]+\\)" 1 font-lock-variable-name-face t)
                                        ("\\<\\([A-Z0-9_]\\{2,\\}\\)\\>" 1 font-lock-constant-face t)
                                        ("\\([a-zA-Z0-9_]+\\)::" 1 font-lock-constant-face t)))
   "Detailed highlighting for PHP mode.")

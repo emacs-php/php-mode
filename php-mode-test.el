@@ -309,4 +309,24 @@ style from Drupal."
         (should (not (eq 'font-lock-constant-face
                     (get-text-property (point) 'face))))))))
 
+(ert-deftest php-mode-test-identifiers()
+  "Proper highlighting for identifiers including their namespace."
+  (with-php-mode-test ("identifiers.php")
+    (let ((variables '("UnqualifiedClassName"
+                       "FullyQualifiedClassName"
+                       "SpaceName")))
+      (dolist (variable variables)
+        (search-forward variable)
+        (goto-char (match-beginning 0))
+        (should (eq 'font-lock-type-face
+                    (get-text-property (point) 'face)))))
+    (search-forward "var")
+    (goto-char (match-beginning 0))
+    (should (eq 'font-lock-variable-name-face
+                (get-text-property (point) 'face)))
+    (search-forward "syntaxerror")
+    (goto-char (match-beginning 0))
+    (should (not (eq 'font-lock-variable-name-face
+                     (get-text-property (point) 'face))))))
+
 ;;; php-mode-test.el ends here
