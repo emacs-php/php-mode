@@ -578,6 +578,7 @@ declaration level that should not be considered a class."
                        (statement-cont . c-lineup-cascaded-calls)
                        (topmost-intro-cont . c-lineup-cascaded-calls)
                        (brace-list-entry . c-lineup-cascaded-calls)
+                       (arglist-cont-nonempty . (first c-lineup-cascaded-calls c-lineup-arglist))
                        (arglist-intro . php-lineup-arglist-intro)
                        (arglist-close . php-lineup-arglist-close)))))
 

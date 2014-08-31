@@ -10,9 +10,19 @@
  */
 
 $x = ["x" => $this->foo()
-                  ->bar()   // ###php-mode-test### ((indent c-lineup-cascaded-calls))
-                  ->baz()]; // ###php-mode-test### ((indent c-lineup-cascaded-calls))
+/*                | column 18 */
+                  ->bar()   // ###php-mode-test### ((indent 18))
+                  ->baz()]; // ###php-mode-test### ((indent 18))
 
 $y = array("y" => $this->foo()
-                       ->bar()   // ###php-mode-test### ((indent c-lineup-cascaded-calls))
-                       ->baz()); // ###php-mode-test### ((indent c-lineup-cascaded-calls))
+/*                     | column 23 */
+                       ->bar()   // ###php-mode-test### ((indent 23))
+                       ->baz()); // ###php-mode-test### ((indent 23))
+
+// Test the combination of arglist indentation and cascaded calls
+$x = ['x' => M_PI,
+/*    | column 6 */
+      'x' => 123,          // ###php-mode-test### ((indent 6))
+      'x' => $y->method()  // ###php-mode-test### ((indent 6))
+/*             | column 15 */
+               ->method()] // ###php-mode-test### ((indent 15))
