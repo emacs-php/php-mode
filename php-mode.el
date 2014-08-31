@@ -598,7 +598,11 @@ code and modules."
   (interactive)
   (setq tab-width 4
         indent-tabs-mode nil)
-  (c-set-style "pear"))
+  (c-set-style "pear")
+
+  ;; Undo drupal coding style whitespace effects
+  (setq show-trailing-whitespace nil)
+  (remove-hook 'before-save-hook 'delete-trailing-whitespace))
 
 (c-add-style
  "drupal"
@@ -641,7 +645,47 @@ working with Wordpress."
         fill-column 78
         tab-width 4
         c-indent-comments-syntactically-p t)
-  (c-set-style "wordpress"))
+  (c-set-style "wordpress")
+
+  ;; Undo drupal coding style whitespace effects
+  (setq show-trailing-whitespace nil)
+  (remove-hook 'before-save-hook 'delete-trailing-whitespace))
+
+(c-add-style
+  "symfony2"
+  '("php"
+    (c-offsets-alist . ((statement-cont . php-lineup-hanging-semicolon)))))
+
+(defun php-enable-symfony2-coding-style ()
+  "Makes php-mode use coding styles that are preferable for
+working with Symfony2."
+  (interactive)
+  (setq indent-tabs-mode nil
+        fill-column 78
+        c-indent-comments-syntactically-p t
+        require-final-newline t)
+  (c-set-style "symfony2")
+
+  ;; Undo drupal coding style whitespace effects
+  (setq show-trailing-whitespace nil)
+  (remove-hook 'before-save-hook 'delete-trailing-whitespace))
+
+(c-add-style
+  "psr2"
+  '("php"))
+
+(defun php-enable-psr2-coding-style ()
+  "Makes php-mode comply to the PSR-2 coding style"
+  (interactive)
+  (setq indent-tabs-mode nil
+        fill-column 78
+        c-indent-comments-syntactically-p t
+        require-final-newline t)
+  (c-set-style "psr2")
+
+  ;; Undo drupal coding style whitespace effects
+  (setq show-trailing-whitespace nil)
+  (remove-hook 'before-save-hook 'delete-trailing-whitespace))
 
 (defconst php-beginning-of-defun-regexp
   "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("
