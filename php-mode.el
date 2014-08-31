@@ -1180,11 +1180,11 @@ searching the PHP website."
   "Medium level highlighting for PHP mode.")
 
 (defconst php-font-lock-keywords-3 (append
-                                     (c-lang-const c-matchers-3 php)
                                      '(
-                                       ("\\<\\$\\([a-zA-Z0-9_]+\\)" 1 font-lock-variable-name-face t)
-                                       ("\\<\\([A-Z0-9_]\\{2,\\}\\)\\>" 1 font-lock-constant-face t)
-                                       ("\\(\\sw+\\)::" 1 font-lock-constant-face t)))
+                                       ("\\<\\$\\([a-zA-Z0-9_]+\\)" 1 font-lock-variable-name-face)
+                                       ("\\<\\([A-Z0-9_]\\{2,\\}\\)\\>" 1 font-lock-constant-face)
+                                       ("\\(\\sw+\\)::" 1 font-lock-constant-face))
+                                     (c-lang-const c-matchers-3 php))
   "Detailed highlighting for PHP mode.")
 
 (defvar php-font-lock-keywords php-font-lock-keywords-3
