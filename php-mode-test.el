@@ -239,6 +239,14 @@ style from Drupal."
   "Proper alignment for chained method calls inside arrays."
   (with-php-mode-test ("issue-115.php" :indent t :magic t)))
 
+(ert-deftest php-mode-test-issue-135 ()
+  "Proper alignment multiline statements."
+  (with-php-mode-test ("issue-135.php" :indent t :magic t)))
+
+(ert-deftest php-mode-test-issue-130 ()
+  "Proper alignment array elements."
+  (with-php-mode-test ("issue-130.php" :indent t :magic t)))
+
 (ert-deftest php-mode-test-issue-124 ()
   "Proper syntax propertizing when a quote appears in a heredoc."
   (with-php-mode-test ("issue-124.php" :indent t)
