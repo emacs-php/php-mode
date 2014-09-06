@@ -573,13 +573,16 @@ declaration level that should not be considered a class."
  "php"
  '((c-basic-offset . 4)
    (c-doc-comment-style . javadoc)
-   (c-offsets-alist . ((block-open . -)
-                       (block-close . 0)
+   (c-offsets-alist . ((inline-open . 0)
                        (inlambda . 0)
+                       (class-open . -)
                        (statement-cont . (first c-lineup-cascaded-calls +))
                        (topmost-intro-cont . (first c-lineup-cascaded-calls +))
-                       (brace-list-entry . c-lineup-cascaded-calls)
                        (arglist-cont . (first c-lineup-cascaded-calls 0))
+                       (statement-block-intro . +)
+                       (substatement-open . 0)
+                       (case-label . +)
+                       (label . +)
                        (arglist-cont-nonempty . (first c-lineup-cascaded-calls c-lineup-arglist))
                        (arglist-intro . php-lineup-arglist-intro)
                        (arglist-close . php-lineup-arglist-close)))))
@@ -590,8 +593,7 @@ declaration level that should not be considered a class."
  "pear"
  '("php"
    (c-basic-offset . 4)
-   (c-offsets-alist . ((block-open . -)
-                       (block-close . 0)))))
+   (c-offsets-alist . ((case-label . 0)))))
 
 (defun php-enable-pear-coding-style ()
   "Sets up php-mode to use the coding styles preferred for PEAR
@@ -609,11 +611,11 @@ code and modules."
  "drupal"
  '("php"
    (c-basic-offset . 2)
-   (c-offsets-alist . ((case-label . +)
-                       (arglist-close . 0)
+   (c-offsets-alist . ((arglist-close . 0)
                        (arglist-intro . +)
                        (arglist-cont-nonempty . c-lineup-math)
-                       (statement-cont . +)))))
+                       (statement-cont . +)
+                       (topmost-intro-cont . +)))))
 
 (defun php-enable-drupal-coding-style ()
   "Makes php-mode use coding styles that are preferable for
