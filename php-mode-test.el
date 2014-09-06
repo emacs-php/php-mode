@@ -360,17 +360,33 @@ style from Drupal."
   (ert-deftest php-mode-test-variables()
     "Proper highlighting for variables."
     (with-php-mode-test ("variables.php")
-      (search-forward "regularVariable")
+      (let ((variables '("regularVariable"
+                         "variableVariable"
+                         "staticVariable"
+                         "memberVariable")))
+        (dolist (variable variables)
+          (search-forward variable)
+          (goto-char (match-beginning 0))
+          (should (eq 'font-lock-variable-name-face
+                      (get-text-property (point) 'face))))))))
+
+(when (php-mode-test-support-font-lock-add-keywords-p)
+  (ert-deftest php-mode-test-arrays()
+    "Proper highlighting for array keyword."
+    (with-php-mode-test ("arrays.php")
+      (let ((variables '("array();"
+                         "array $test"
+                         "array()")))
+        (dolist (variable variables)
+          (search-forward variable)
+          (goto-char (match-beginning 0))
+          (should (eq 'font-lock-keyword-face
+                      (get-text-property (point) 'face)))))
+      ;; when used as a cast, array should behave like other casts
+      (search-forward "(array)")
       (goto-char (match-beginning 0))
-      (should (eq 'font-lock-variable-name-face
-                  (get-text-property (point) 'face)))
-      (search-forward "variableVariable")
-      (goto-char (match-beginning 0))
-      (should (eq 'font-lock-variable-name-face
-                  (get-text-property (point) 'face)))
-      (search-forward "staticVariable")
-      (goto-char (match-beginning 0))
-      (should (eq 'font-lock-variable-name-face
+      (right-char)
+      (should (eq 'font-lock-type-face
                   (get-text-property (point) 'face))))))
 
 ;;; php-mode-test.el ends here

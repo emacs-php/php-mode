@@ -440,7 +440,7 @@ This variable can take one of the following symbol values:
 
 (c-lang-defconst c-primitive-type-kwds
   php '("int" "integer" "bool" "boolean" "float" "double" "real"
-        "string" "array" "object" "unset"))
+        "string" "object"))
 
 (c-lang-defconst c-class-decl-kwds
   "Keywords introducing declarations where the following block (if any)
@@ -1307,11 +1307,12 @@ a completion list."
 
 (defconst php-font-lock-keywords-3 (append
                                      `(
-                                       ("\\$\\([a-zA-Z0-9_]+\\)" 1 font-lock-variable-name-face)
+                                       ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 font-lock-variable-name-face)
                                        ("\\<\\([A-Z0-9_]\\{2,\\}\\)\\>" 1 font-lock-constant-face)
                                        ("\\(\\sw+\\)::" 1 font-lock-constant-face)
                                        ("\\sw+::\\(class\\)" 1 font-lock-constant-face)
-                                       (,(regexp-opt '("<?php" "?>" "<?" "<?=" "<%" "%>")) 0 font-lock-preprocessor-face))
+                                       (,(regexp-opt '("<?php" "?>" "<?" "<?=" "<%" "%>")) 0 font-lock-preprocessor-face)
+                                       ("(\\(array\\))" 1 font-lock-type-face)) ;; array is a keyword, except when used as cast
                                      (c-lang-const c-matchers-3 php))
   "Detailed highlighting for PHP mode.")
 

@@ -4,3 +4,4 @@
 $regularVariable;
 $$variableVariable;
 Class::$staticVariable;
+$object->memberVariable;
