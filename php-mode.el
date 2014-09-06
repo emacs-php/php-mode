@@ -454,7 +454,8 @@ contains another declaration level that should be considered a class."
   "Keywords where the following name - if any - is a type name, and
 where the keyword together with the symbol works as a type in
 declarations."
-  php '("class" "trait" "interface" "namespace"))
+  php '("class" "trait" "interface" "namespace"
+        "as" "insteadof" "instanceof"))
 
 (c-lang-defconst c-brace-list-decl-kwds
   "Keywords introducing declarations where the following block (if
@@ -485,7 +486,7 @@ declaration level that should not be considered a class."
 
 (c-lang-defconst c-type-list-kwds
   php (append (remove "import" (c-lang-const c-type-list-kwds))
-              '("use" "as")))
+              '("use")))
 
 (c-lang-defconst c-ref-list-kwds
   php nil)
@@ -495,7 +496,7 @@ declaration level that should not be considered a class."
               (remove "synchronized" (c-lang-const c-block-stmt-2-kwds))))
 
 (c-lang-defconst c-simple-stmt-kwds
-  php (append '("include" "include_once" "require" "require_once" "echo")
+  php (append '("include" "include_once" "require" "require_once" "echo" "print")
               (c-lang-const c-simple-stmt-kwds)))
 
 (c-lang-defconst c-constant-kwds
@@ -543,8 +544,6 @@ declaration level that should not be considered a class."
     "if"
     "include"
     "include_once"
-    "instanceof"
-    "insteadof"
     "isset"
     "list"
     "or"
