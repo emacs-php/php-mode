@@ -356,4 +356,21 @@ style from Drupal."
       (should (eq 'font-lock-constant-face
                   (get-text-property (point) 'face))))))
 
+(when (php-mode-test-support-font-lock-add-keywords-p)
+  (ert-deftest php-mode-test-variables()
+    "Proper highlighting for variables."
+    (with-php-mode-test ("variables.php")
+      (search-forward "regularVariable")
+      (goto-char (match-beginning 0))
+      (should (eq 'font-lock-variable-name-face
+                  (get-text-property (point) 'face)))
+      (search-forward "variableVariable")
+      (goto-char (match-beginning 0))
+      (should (eq 'font-lock-variable-name-face
+                  (get-text-property (point) 'face)))
+      (search-forward "staticVariable")
+      (goto-char (match-beginning 0))
+      (should (eq 'font-lock-variable-name-face
+                  (get-text-property (point) 'face))))))
+
 ;;; php-mode-test.el ends here

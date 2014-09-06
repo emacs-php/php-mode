@@ -1307,7 +1307,7 @@ a completion list."
 
 (defconst php-font-lock-keywords-3 (append
                                      `(
-                                       ("\\<\\$\\([a-zA-Z0-9_]+\\)" 1 font-lock-variable-name-face)
+                                       ("\\$\\([a-zA-Z0-9_]+\\)" 1 font-lock-variable-name-face)
                                        ("\\<\\([A-Z0-9_]\\{2,\\}\\)\\>" 1 font-lock-constant-face)
                                        ("\\(\\sw+\\)::" 1 font-lock-constant-face)
                                        ("\\sw+::\\(class\\)" 1 font-lock-constant-face)
