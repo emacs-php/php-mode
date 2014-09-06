@@ -14,3 +14,10 @@ no_CONSTANT;
 
 // Test php-extra-constants
 extraconstant;
+
+// Everything called statically should be highlighted with the constant face
+// (like c++-mode)
+ClassName::$test;
+
+// Class name resolution is a special case
+stdClass::class;

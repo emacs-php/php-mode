@@ -1310,6 +1310,7 @@ a completion list."
                                        ("\\<\\$\\([a-zA-Z0-9_]+\\)" 1 font-lock-variable-name-face)
                                        ("\\<\\([A-Z0-9_]\\{2,\\}\\)\\>" 1 font-lock-constant-face)
                                        ("\\(\\sw+\\)::" 1 font-lock-constant-face)
+                                       ("\\sw+::\\(class\\)" 1 font-lock-constant-face)
                                        (,(regexp-opt '("<?php" "?>" "<?" "<?=" "<%" "%>")) 0 font-lock-preprocessor-face))
                                      (c-lang-const c-matchers-3 php))
   "Detailed highlighting for PHP mode.")

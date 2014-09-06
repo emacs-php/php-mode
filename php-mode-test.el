@@ -308,7 +308,9 @@ style from Drupal."
                          "IS_CONSTANT"
                          "__IS_CONSTANT__"
                          "IS_CONSTANT99"
-                         "extraconstant")))
+                         "extraconstant"
+                         "ClassName"
+                         "class")))
         (dolist (variable variables)
           (search-forward variable)
           (goto-char (match-beginning 0))
