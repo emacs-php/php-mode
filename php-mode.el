@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.13.5"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2014-07-18"
+(defconst php-mode-modified "2014-09-04"
   "PHP Mode build date.")
 
 ;;; License
@@ -1176,41 +1176,124 @@ current `tags-file-name'."
         (message "Arglist for %s: %s" tagname arglist)
         (message "Unknown function: %s" tagname))))
 
-(defun php-search-local-documentation ()
-  "Search the local PHP documentation (i.e. in `php-manual-path')
-for the word at point.  The function returns t if the requested
-documentation exists, and nil otherwise."
-  (interactive)
-  (cl-flet ((php-function-file-for (name)
-                                (expand-file-name
-                                 (format "function.%s.html"
-                                         (replace-regexp-in-string "_" "-" name))
-                                 php-manual-path)))
-    (let ((doc-file (php-function-file-for (current-word))))
-      (and (file-exists-p doc-file)
-           ;; Some browsers require the file:// prefix.  Others do not
-           ;; seem to care.  But it should never be incorrect to use
-           ;; the prefix.
-           (browse-url (if (string-prefix-p "file://" doc-file)
-                           doc-file
-                         (concat "file://" doc-file)))
-           t))))
+(defcustom php-search-documentation-browser-function nil
+  "Function to display PHP documentation in a WWW browser.
+
+If non-nil, this shadows the value of `browse-url-browser-function' when
+calling `php-search-documentation' or `php-search-local-documentation'."
+  :type '(choice (const :tag "default" nil) function)
+  :link '(variable-link browse-url-browser-function)
+  :group 'php)
+
+(defun php-browse-documentation-url (url)
+  "Browse a documentation URL using the configured browser function.
+
+See `php-search-documentation-browser-function'."
+  (let ((browse-url-browser-function
+         (or php-search-documentation-browser-function
+             browse-url-browser-function)))
+    (browse-url url)))
+
+(defvar php-search-local-documentation-types
+  (list "function" "control-structures" "class" "book")
+  ;; "intro" and "ref" also look interesting, but for all practical purposes
+  ;; their terms are sub-sets of the "book" terms (with the few exceptions
+  ;; being very unlikely search terms).
+  "The set (and priority sequence) of documentation file prefixes
+under which to search for files in the local documentation directory.")
+
+(defvar php-search-local-documentation-words-cache nil)
+
+(defun php--search-documentation-read-arg ()
+  "Obtain interactive argument for searching documentation."
+  ;; Cache the list of documentation words available for completion,
+  ;; based on the defined types-of-interest.
+  (let ((types-list php-search-local-documentation-types)
+        (words-cache php-search-local-documentation-words-cache)
+        (local-manual (and (stringp php-manual-path)
+                           (not (string= php-manual-path "")))))
+    (when (and local-manual
+               (not (assq types-list words-cache)))
+      ;; Generate the cache on the first run, or if the types changed.
+      ;; We read the filenames matching our types list in the local
+      ;; documention directory, and extract the 'middle' component
+      ;; of each. e.g. "function.array-map.html" => "array_map".
+      (let* ((types-opt (regexp-opt types-list))
+             (pattern (concat "\\`" types-opt "\\.\\(.+\\)\\.html\\'"))
+             (collection
+              (mapcar (lambda (filename) (subst-char-in-string
+                                          ?- ?_ (replace-regexp-in-string
+                                                 pattern "\\1" filename)))
+                      (directory-files php-manual-path nil pattern))))
+        ;; Replace the entire cache. If the types changed, we don't need
+        ;; to retain the collection for the previous value.
+        (setq words-cache (list (cons types-list collection)))
+        (setq php-search-local-documentation-words-cache words-cache)))
+    ;; By default we search for (current-word) immediately, without prompting.
+    ;; With a prefix argument, or if there is no (current-word), we perform a
+    ;; completing read for a word from the cached collection.
+    (let* ((default (current-word))
+           (prompt (if default
+                       (format "Search PHP docs (%s): " default)
+                     "Search PHP docs: "))
+           (collection (and local-manual
+                            (cdr (assq types-list words-cache))))
+           (word (if (or current-prefix-arg (not default))
+                     (completing-read prompt collection nil nil nil nil default)
+                   default)))
+      ;; Return interactive argument list.
+      (list word))))
+
+(defun php-search-local-documentation (word)
+  "Search the local PHP documentation (i.e. in `php-manual-path') for
+the word at point.  The function returns t if the requested documentation
+exists, and nil otherwise.
+
+With a prefix argument, prompt (with completion) for a word to search for."
+  (interactive (php--search-documentation-read-arg))
+  (cl-flet ((php-file-for (type name)
+                          (expand-file-name
+                           (format "%s.%s.html" type
+                                   (replace-regexp-in-string
+                                    "_" "-" (downcase name)))
+                           php-manual-path))
+            (php-file-url (file)
+                          ;; Some browsers require the file:// prefix.
+                          ;; Others do not seem to care.  But it should
+                          ;; never be incorrect to use the prefix.
+                          (if (string-prefix-p "file://" file)
+                              file
+                            (concat "file://" file))))
+    (let ((file (catch 'found
+                  (loop for type in php-search-local-documentation-types do
+                        (let ((file (php-file-for type word)))
+                          (when (file-exists-p file)
+                            (throw 'found file)))))))
+      (when file
+        (php-browse-documentation-url (php-file-url file))
+        t))))
 
 ;; Define function documentation function
-(defun php-search-documentation ()
-  "Search PHP documentation for the word at point.  If
-`php-manual-path' has a non-empty string value then the command
-will first try searching the local documentation.  If the
-requested documentation does not exist it will fallback to
-searching the PHP website."
-  (interactive)
-  (cl-flet ((php-search-web-documentation ()
-                                       (browse-url (concat php-search-url (current-word)))))
+(defun php-search-documentation (word)
+  "Search PHP documentation for the word at point.
+
+If `php-manual-path' has a non-empty string value then the command
+will first try searching the local documentation.  If the requested
+documentation does not exist it will fallback to searching the PHP
+website.
+
+With a prefix argument, prompt for a documentation word to search
+for.  If the local documentation is available, it is used to build
+a completion list."
+  (interactive (php--search-documentation-read-arg))
+  (cl-flet ((php-search-web-documentation (name)
+                                          (php-browse-documentation-url
+                                           (concat php-search-url name))))
     (if (and (stringp php-manual-path)
              (not (string= php-manual-path "")))
-        (or (php-search-local-documentation)
-            (php-search-web-documentation))
-      (php-search-web-documentation))))
+        (or (php-search-local-documentation word)
+            (php-search-web-documentation word))
+      (php-search-web-documentation word))))
 
 ;; Define function for browsing manual
 (defun php-browse-manual ()
