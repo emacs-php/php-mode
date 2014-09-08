@@ -70,10 +70,6 @@ be processed."
                        answers))))
      answers)))
 
-(defun php-mode-test-support-font-lock-add-keywords-p ()
-  "font-lock-add-keywords does not work in batch-mode on Emacs 24.3 or lower."
-  (and (>= emacs-major-version 24) (>= emacs-minor-version 4)))
-
 (defmacro* with-php-mode-test ((file &key style indent magic) &rest body)
   "Set up environment for testing `php-mode'.
 Execute BODY in a temporary buffer containing the contents of
@@ -107,14 +103,13 @@ The test will use the PEAR style by default."
      (let ((case-fold-search nil))
        ,@body)))
 
-(when (php-mode-test-support-font-lock-add-keywords-p)
-  (ert-deftest php-mode-test-issue-8 ()
-    "Annotation highlighting."
-    (with-php-mode-test ("issue-8.php")
-      (search-forward "@ORM")
-      (should (eq
-               (get-text-property (match-beginning 0) 'face)
-               'php-annotations-annotation-face)))))
+(ert-deftest php-mode-test-issue-8 ()
+  "Annotation highlighting."
+  (with-php-mode-test ("issue-8.php")
+    (search-forward "@ORM")
+    (should (eq
+             (get-text-property (match-beginning 0) 'face)
+             'php-annotations-annotation-face))))
 
 (ert-deftest php-mode-test-issue-9 ()
   "Single quote in text in HTML misinterpreted.
@@ -255,27 +250,26 @@ style from Drupal."
      (dolist (syntax (c-guess-basic-syntax))
        (should (not (eq (car syntax) 'string))))))
 
-(when (php-mode-test-support-font-lock-add-keywords-p)
-  (ert-deftest php-mode-test-issue-136 ()
-    "Proper highlighting for variable interpolation."
-    (with-php-mode-test ("issue-136.php")
-      (let ((variables '("$name"
-                         "${name}"
-                         "{$name}"
-                         "{$user->name}"
-                         "{$user->getName()}"
-                         "{$users[0]->name}"
-                         "{$users[$index]->name}"
-                         "{$users[$user->id]->name}"
-                         "{$users[$user->getID()]->name}")))
-        ;; All of the strings we want to test come after the call to
-        ;; ob_start(), so we jump to there first.
-        (search-forward "ob_start()")
-        (dolist (variable variables)
-          (search-forward variable)
-          (goto-char (match-beginning 0))
-          (should (eq 'font-lock-variable-name-face
-                      (get-text-property (point) 'face))))))))
+(ert-deftest php-mode-test-issue-136 ()
+  "Proper highlighting for variable interpolation."
+  (with-php-mode-test ("issue-136.php")
+    (let ((variables '("$name"
+                       "${name}"
+                       "{$name}"
+                       "{$user->name}"
+                       "{$user->getName()}"
+                       "{$users[0]->name}"
+                       "{$users[$index]->name}"
+                       "{$users[$user->id]->name}"
+                       "{$users[$user->getID()]->name}")))
+      ;; All of the strings we want to test come after the call to
+      ;; ob_start(), so we jump to there first.
+      (search-forward "ob_start()")
+      (dolist (variable variables)
+        (search-forward variable)
+        (goto-char (match-beginning 0))
+        (should (eq 'font-lock-variable-name-face
+                    (get-text-property (point) 'face)))))))
 
 (ert-deftest php-mode-test-issue-144 ()
   "Indentation test '#' comment line has single quote."
