@@ -414,6 +414,16 @@ This variable can take one of the following symbol values:
 (c-lang-defconst c-vsemi-status-unknown-p-fn
   php 'php-c-vsemi-status-unknown-p)
 
+;; Make php-mode recognize opening tags as preprocessor macro's.
+;;
+;; This is a workaround, the tags must be recognized as something
+;; in order for the syntactic guesses of code below the tag
+;; to be correct and as a result not break indentation.
+;;
+;; Note that submatches or \\| here are not expected by cc-mode.
+(c-lang-defconst c-opt-cpp-prefix
+  php "\\s-*<\\?")
+
 (c-lang-defconst c-identifier-ops
   php '(
         (left-assoc "\\" "::" "->")
@@ -447,27 +457,12 @@ This variable can take one of the following symbol values:
 contains another declaration level that should be considered a class."
   php '("class" "trait" "interface"))
 
-;; Why does this need to be set as well?
-;; If we don't set it: the first class definition of a file will
-;; not get the appropriate face
-(c-lang-defconst c-type-prefix-kwds
-  "Keywords where the following name - if any - is a type name, and
-where the keyword together with the symbol works as a type in
-declarations."
-  php '("class" "trait" "interface" "namespace"
-        "as" "insteadof" "instanceof"))
-
 (c-lang-defconst c-brace-list-decl-kwds
   "Keywords introducing declarations where the following block (if
 any) is a brace list.
 
 PHP does not have an \"enum\"-like keyword."
   php nil)
-
-(c-lang-defconst c-other-block-decl-kwds
-  "Keywords where the following block (if any) contains another
-declaration level that should not be considered a class."
-  php '("namespace"))
 
 (c-lang-defconst c-typeless-decl-kwds
   php (append (c-lang-const c-class-decl-kwds) '("function")))
@@ -481,15 +476,13 @@ declaration level that should not be considered a class."
   php '("private" "protected" "public"))
 
 (c-lang-defconst c-postfix-decl-spec-kwds
-  php (append (remove "throws" (c-lang-const c-postfix-decl-spec-kwds))
-              '("extends" "implements")))
+  php '("implements" "extends"))
 
 (c-lang-defconst c-type-list-kwds
-  php (append (remove "import" (c-lang-const c-type-list-kwds))
-              '("use")))
+  php '("new" "use" "implements" "extends"))
 
 (c-lang-defconst c-ref-list-kwds
-  php nil)
+  php '("namespace"))
 
 (c-lang-defconst c-block-stmt-2-kwds
   php (append '("elseif" "foreach" "declare")
@@ -1306,14 +1299,43 @@ a completion list."
   "Medium level highlighting for PHP mode.")
 
 (defconst php-font-lock-keywords-3 (append
-                                     `(
-                                       ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 font-lock-variable-name-face)
-                                       ("\\<\\([A-Z0-9_]\\{2,\\}\\)\\>" 1 font-lock-constant-face)
-                                       ("\\(\\sw+\\)::" 1 font-lock-constant-face)
-                                       ("\\sw+::\\(class\\)" 1 font-lock-constant-face)
-                                       (,(regexp-opt '("<?php" "?>" "<?" "<?=" "<%" "%>")) 0 font-lock-preprocessor-face)
-                                       ("(\\(array\\))" 1 font-lock-type-face)) ;; array is a keyword, except when used as cast
-                                     (c-lang-const c-matchers-3 php))
+                                    `(
+                                      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var'
+                                      ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 font-lock-variable-name-face)
+
+                                      ;; Highlight all upper-cased symbols as constant
+                                      ("\\<\\([A-Z0-9_]\\{2,\\}\\)\\>" 1 font-lock-constant-face)
+
+                                      ;; Highlight all statically accessed class names as constant,
+                                      ;; another valid option would be using type-face, but using constant-face
+                                      ;; because this is how it works in c++-mode.
+                                      ("\\(\\sw+\\)::" 1 font-lock-constant-face)
+
+                                      ;; Support the ::class constant in PHP5.6
+                                      ("\\sw+::\\(class\\)" 1 font-lock-constant-face)
+
+                                      ;; Array is a keyword, except when used as cast, so that (int) and (array)
+                                      ;; look the same
+                                      ("(\\(array\\))" 1 font-lock-type-face)
+
+                                      ;; Class names are highlighted by cc-mode as defined in c-class-decl-kwds,
+                                      ;; below regexp is a workaround for a bug where the class names are not
+                                      ;; highlighted right after opening a buffer (editing a file corrects it).
+                                      ;;
+                                      ;; This behaviour is caused by the preceding '<?php', which cc-mode cannot
+                                      ;; handle easily. Registering it as a cpp preprocessor works well (i.e. the
+                                      ;; next line is not a statement-cont) but the highlighting glitch remains.
+                                      (,(concat (regexp-opt (c-lang-const c-class-decl-kwds php))
+                                                " \\(\\sw+\\)")
+                                       1 font-lock-type-face)
+
+                                      ;; While c-opt-cpp-* highlights the <?php opening tags, it is not possible
+                                      ;; to make it highlight short open tags and closing tags as well. So we force
+                                      ;; the correct face on all cases that c-opt-cpp-* lacks for this purpose.
+                                      ;; Note that starting a file with <% breaks indentation, a limitation we
+                                      ;; can/should live with.
+                                      (,(regexp-opt '("?>" "<?" "<%" "%>")) 0 font-lock-preprocessor-face))
+                                    (c-lang-const c-matchers-3 php))
   "Detailed highlighting for PHP mode.")
 
 (defvar php-font-lock-keywords php-font-lock-keywords-3
