@@ -5,3 +5,4 @@ $regularVariable;
 $$variableVariable;
 Class::$staticVariable;
 $object->memberVariable;
+$object->funCall();

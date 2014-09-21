@@ -110,11 +110,6 @@
   :type 'face
   :group 'php)
 
-(defcustom php-function-call-face 'default
-  "Default face for function calls in `php-mode' buffers."
-  :type 'face
-  :group 'php)
-
 (defcustom php-speedbar-config t
   "When set to true automatically configures Speedbar to observe PHP files.
 Ignores php-file patterns option; fixed to expression \"\\.\\(inc\\|php[s345]?\\)\""
@@ -1300,7 +1295,9 @@ a completion list."
 
 (defconst php-font-lock-keywords-3 (append
                                     `(
-                                      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var'
+                                      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but not
+                                      ;; in $obj->var()
+                                      ("->\\(\\sw+\\)\\s-*(" 1 'default)
                                       ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 font-lock-variable-name-face)
 
                                       ;; Highlight all upper-cased symbols as constant

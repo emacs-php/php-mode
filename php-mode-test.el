@@ -356,10 +356,15 @@ style from Drupal."
                        "staticVariable"
                        "memberVariable")))
       (dolist (variable variables)
-        (search-forward variable)
-        (goto-char (match-beginning 0))
-        (should (eq 'font-lock-variable-name-face
-                    (get-text-property (point) 'face)))))))
+        (save-excursion
+          (search-forward variable)
+          (goto-char (match-beginning 0))
+          (should (eq 'font-lock-variable-name-face
+                      (get-text-property (point) 'face))))))
+    (search-forward "funCall")
+    (goto-char (match-beginning 0))
+    (should-not (eq 'font-lock-variable-name-face
+                    (get-text-property (point) 'face)))))
 
 (ert-deftest php-mode-test-arrays()
   "Proper highlighting for array keyword."
