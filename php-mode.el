@@ -429,6 +429,12 @@ This variable can take one of the following symbol values:
   php (append '((?\\ . "w") (?: . "w"))
            (c-lang-const c-identifier-syntax-modifications)))
 
+;; Allow '\' when scanning from open brace back to defining
+;; construct like class
+(c-lang-defconst c-block-prefix-disallowed-chars
+  php (set-difference (c-lang-const c-block-prefix-disallowed-chars)
+                      '(?\\)))
+
 (c-lang-defconst c-string-escaped-newlines
   php t)
 
