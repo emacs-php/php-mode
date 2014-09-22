@@ -426,14 +426,19 @@ This variable can take one of the following symbol values:
 
 ;; Make the namespace separator part of identifiers
 (c-lang-defconst c-identifier-syntax-modifications
-  php (append '((?\\ . "w") (?: . "w"))
-           (c-lang-const c-identifier-syntax-modifications)))
+  php (append '((?\\ . "w"))
+              (c-lang-const c-identifier-syntax-modifications)))
 
 ;; Allow '\' when scanning from open brace back to defining
 ;; construct like class
 (c-lang-defconst c-block-prefix-disallowed-chars
   php (set-difference (c-lang-const c-block-prefix-disallowed-chars)
                       '(?\\)))
+
+;; Allow $ so variables are recognized in cc-mode and remove @. This
+;; makes cc-mode highlight variables and their type hints in arglists.
+(c-lang-defconst c-symbol-start
+  php (concat "[" c-alpha "_$]"))
 
 (c-lang-defconst c-string-escaped-newlines
   php t)
@@ -1305,6 +1310,11 @@ a completion list."
                                       ;; in $obj->var()
                                       ("->\\(\\sw+\\)\\s-*(" 1 'default)
                                       ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 font-lock-variable-name-face)
+
+                                      ;; The dollar sign should not get a variable-name face, below pattern
+                                      ;; resets the face to default in case cc-mode set the variable-name face
+                                      ;; (cc-mode does this for variables prefixed with type, like in arglist)
+                                      ("\\(\\$\\)\\(\\sw+\\)" 1 'default)
 
                                       ;; Highlight all upper-cased symbols as constant
                                       ("\\<\\([A-Z0-9_]\\{2,\\}\\)\\>" 1 font-lock-constant-face)
