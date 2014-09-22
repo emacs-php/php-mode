@@ -1331,6 +1331,9 @@ a completion list."
                                       ;; look the same
                                       ("(\\(array\\))" 1 font-lock-type-face)
 
+                                      ;; Highlight function/method names
+                                      ("\\<function\\s-+&?\\(\\sw+\\)\\s-*(" 1 font-lock-function-name-face)
+
                                       ;; Class names are highlighted by cc-mode as defined in c-class-decl-kwds,
                                       ;; below regexp is a workaround for a bug where the class names are not
                                       ;; highlighted right after opening a buffer (editing a file corrects it).
