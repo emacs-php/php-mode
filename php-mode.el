@@ -485,10 +485,10 @@ PHP does not have an \"enum\"-like keyword."
   php '("implements" "extends"))
 
 (c-lang-defconst c-type-list-kwds
-  php '("new" "use" "implements" "extends"))
+  php '("new" "use" "as" "implements" "extends" "namespace"))
 
 (c-lang-defconst c-ref-list-kwds
-  php '("namespace"))
+  php nil)
 
 (c-lang-defconst c-block-stmt-2-kwds
   php (append '("elseif" "foreach" "declare")
