@@ -35,7 +35,7 @@ Experimental and In-Progress Features
 
 ### CC Mode ###
 
-Daniel Haxney began incorparating CC Mode, and now the task is carried on by Jorys Steyn.  The features are not complete but are usable.  To test this out you can siwtch to the `cc-mode-version` branch.  Please report all feedback [on this thread](https://github.com/ejmr/php-mode/issues/66#issuecomment-53677111)
+Daniel Haxney began incorparating CC Mode, and now the task is carried on by Jorys Steyn.  The features are not complete but are usable.  To test this out you can siwtch to the `cc-mode-conversion` branch.  Please report all feedback [on this thread](https://github.com/ejmr/php-mode/issues/66#issuecomment-53677111)
 
 
 Features

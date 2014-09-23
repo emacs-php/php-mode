@@ -49,3 +49,15 @@ foo(
     ClassName::method()
     ->chained()       // ###php-mode-test### ((indent 4))
 );
+
+// Test same behaviour inside method
+class Test {
+    public function test() {
+        $variable->method()   // ###php-mode-test### ((indent 8))
+/*               | column 17 */
+                 ->chained(); // ###php-mode-test### ((indent 17))
+
+        ClassName::method()   // ###php-mode-test### ((indent 8))
+            ->chained();      // ###php-mode-test### ((indent 12))
+    }
+}

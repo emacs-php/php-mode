@@ -106,10 +106,10 @@ The test will use the PEAR style by default."
 (ert-deftest php-mode-test-issue-8 ()
   "Annotation highlighting."
   (with-php-mode-test ("issue-8.php")
-  (search-forward "@ORM")
-  (should (eq
-           (get-text-property (match-beginning 0) 'face)
-           'php-annotations-annotation-face))))
+    (search-forward "@ORM")
+    (should (eq
+             (get-text-property (match-beginning 0) 'face)
+             'php-annotations-annotation-face))))
 
 (ert-deftest php-mode-test-issue-9 ()
   "Single quote in text in HTML misinterpreted.
@@ -301,7 +301,9 @@ style from Drupal."
                        "IS_CONSTANT"
                        "__IS_CONSTANT__"
                        "IS_CONSTANT99"
-                       "extraconstant")))
+                       "extraconstant"
+                       "ClassName"
+                       "class")))
       (dolist (variable variables)
         (search-forward variable)
         (goto-char (match-beginning 0))
@@ -316,7 +318,7 @@ style from Drupal."
         (search-forward variable)
         (goto-char (match-beginning 0))
         (should (not (eq 'font-lock-constant-face
-                    (get-text-property (point) 'face))))))))
+                     (get-text-property (point) 'face))))))))
 
 (ert-deftest php-mode-test-identifiers()
   "Proper highlighting for identifiers including their namespace."
@@ -344,6 +346,42 @@ style from Drupal."
     (search-forward "SpaceName")
     (goto-char (match-beginning 0))
     (should (eq 'font-lock-constant-face
+                (get-text-property (point) 'face)))))
+
+(ert-deftest php-mode-test-variables()
+  "Proper highlighting for variables."
+  (with-php-mode-test ("variables.php")
+    (let ((variables '("regularVariable"
+                       "variableVariable"
+                       "staticVariable"
+                       "memberVariable")))
+      (dolist (variable variables)
+        (save-excursion
+          (search-forward variable)
+          (goto-char (match-beginning 0))
+          (should (eq 'font-lock-variable-name-face
+                      (get-text-property (point) 'face))))))
+    (search-forward "funCall")
+    (goto-char (match-beginning 0))
+    (should-not (eq 'font-lock-variable-name-face
+                    (get-text-property (point) 'face)))))
+
+(ert-deftest php-mode-test-arrays()
+  "Proper highlighting for array keyword."
+  (with-php-mode-test ("arrays.php")
+    (let ((variables '("array();"
+                       "array $test"
+                       "array()")))
+      (dolist (variable variables)
+        (search-forward variable)
+        (goto-char (match-beginning 0))
+        (should (eq 'font-lock-keyword-face
+                    (get-text-property (point) 'face)))))
+    ;; when used as a cast, array should behave like other casts
+    (search-forward "(array)")
+    (goto-char (match-beginning 0))
+    (right-char)
+    (should (eq 'font-lock-type-face
                 (get-text-property (point) 'face)))))
 
 ;;; php-mode-test.el ends here

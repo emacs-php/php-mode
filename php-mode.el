@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.13.5"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2014-07-18"
+(defconst php-mode-modified "2014-09-04"
   "PHP Mode build date.")
 
 ;;; License
@@ -62,6 +62,7 @@
 ;;; Code:
 
 (require 'cc-mode)
+(require 'cl)
 (eval-when-compile
   (require 'cc-langs)
   (require 'cc-fonts))
@@ -106,11 +107,6 @@
 
 (defcustom php-default-face 'default
   "Default face in `php-mode' buffers."
-  :type 'face
-  :group 'php)
-
-(defcustom php-function-call-face 'default
-  "Default face for function calls in `php-mode' buffers."
   :type 'face
   :group 'php)
 
@@ -413,6 +409,16 @@ This variable can take one of the following symbol values:
 (c-lang-defconst c-vsemi-status-unknown-p-fn
   php 'php-c-vsemi-status-unknown-p)
 
+;; Make php-mode recognize opening tags as preprocessor macro's.
+;;
+;; This is a workaround, the tags must be recognized as something
+;; in order for the syntactic guesses of code below the tag
+;; to be correct and as a result not break indentation.
+;;
+;; Note that submatches or \\| here are not expected by cc-mode.
+(c-lang-defconst c-opt-cpp-prefix
+  php "\\s-*<\\?")
+
 (c-lang-defconst c-identifier-ops
   php '(
         (left-assoc "\\" "::" "->")
@@ -420,8 +426,19 @@ This variable can take one of the following symbol values:
 
 ;; Make the namespace separator part of identifiers
 (c-lang-defconst c-identifier-syntax-modifications
-  php (append '((?\\ . "w") (?: . "w"))
-           (c-lang-const c-identifier-syntax-modifications)))
+  php (append '((?\\ . "w"))
+              (c-lang-const c-identifier-syntax-modifications)))
+
+;; Allow '\' when scanning from open brace back to defining
+;; construct like class
+(c-lang-defconst c-block-prefix-disallowed-chars
+  php (set-difference (c-lang-const c-block-prefix-disallowed-chars)
+                      '(?\\)))
+
+;; Allow $ so variables are recognized in cc-mode and remove @. This
+;; makes cc-mode highlight variables and their type hints in arglists.
+(c-lang-defconst c-symbol-start
+  php (concat "[" c-alpha "_$]"))
 
 (c-lang-defconst c-string-escaped-newlines
   php t)
@@ -439,21 +456,12 @@ This variable can take one of the following symbol values:
 
 (c-lang-defconst c-primitive-type-kwds
   php '("int" "integer" "bool" "boolean" "float" "double" "real"
-        "string" "array" "object" "unset"))
+        "string" "object"))
 
 (c-lang-defconst c-class-decl-kwds
   "Keywords introducing declarations where the following block (if any)
 contains another declaration level that should be considered a class."
   php '("class" "trait" "interface"))
-
-;; Why does this need to be set as well?
-;; If we don't set it: the first class definition of a file will
-;; not get the appropriate face
-(c-lang-defconst c-type-prefix-kwds
-  "Keywords where the following name - if any - is a type name, and
-where the keyword together with the symbol works as a type in
-declarations."
-  php '("class" "trait" "interface" "namespace"))
 
 (c-lang-defconst c-brace-list-decl-kwds
   "Keywords introducing declarations where the following block (if
@@ -461,11 +469,6 @@ any) is a brace list.
 
 PHP does not have an \"enum\"-like keyword."
   php nil)
-
-(c-lang-defconst c-other-block-decl-kwds
-  "Keywords where the following block (if any) contains another
-declaration level that should not be considered a class."
-  php '("namespace"))
 
 (c-lang-defconst c-typeless-decl-kwds
   php (append (c-lang-const c-class-decl-kwds) '("function")))
@@ -479,12 +482,10 @@ declaration level that should not be considered a class."
   php '("private" "protected" "public"))
 
 (c-lang-defconst c-postfix-decl-spec-kwds
-  php (append (remove "throws" (c-lang-const c-postfix-decl-spec-kwds))
-              '("extends" "implements")))
+  php '("implements" "extends"))
 
 (c-lang-defconst c-type-list-kwds
-  php (append (remove "import" (c-lang-const c-type-list-kwds))
-              '("use" "as")))
+  php '("new" "use" "as" "implements" "extends" "namespace"))
 
 (c-lang-defconst c-ref-list-kwds
   php nil)
@@ -494,7 +495,7 @@ declaration level that should not be considered a class."
               (remove "synchronized" (c-lang-const c-block-stmt-2-kwds))))
 
 (c-lang-defconst c-simple-stmt-kwds
-  php (append '("include" "include_once" "require" "require_once" "echo")
+  php (append '("include" "include_once" "require" "require_once" "echo" "print")
               (c-lang-const c-simple-stmt-kwds)))
 
 (c-lang-defconst c-constant-kwds
@@ -542,8 +543,6 @@ declaration level that should not be considered a class."
     "if"
     "include"
     "include_once"
-    "instanceof"
-    "insteadof"
     "isset"
     "list"
     "or"
@@ -572,13 +571,16 @@ declaration level that should not be considered a class."
  "php"
  '((c-basic-offset . 4)
    (c-doc-comment-style . javadoc)
-   (c-offsets-alist . ((block-open . -)
-                       (block-close . 0)
+   (c-offsets-alist . ((inline-open . 0)
                        (inlambda . 0)
+                       (class-open . -)
                        (statement-cont . (first c-lineup-cascaded-calls +))
                        (topmost-intro-cont . (first c-lineup-cascaded-calls +))
-                       (brace-list-entry . c-lineup-cascaded-calls)
                        (arglist-cont . (first c-lineup-cascaded-calls 0))
+                       (statement-block-intro . +)
+                       (substatement-open . 0)
+                       (case-label . +)
+                       (label . +)
                        (arglist-cont-nonempty . (first c-lineup-cascaded-calls c-lineup-arglist))
                        (arglist-intro . php-lineup-arglist-intro)
                        (arglist-close . php-lineup-arglist-close)))))
@@ -589,8 +591,7 @@ declaration level that should not be considered a class."
  "pear"
  '("php"
    (c-basic-offset . 4)
-   (c-offsets-alist . ((block-open . -)
-                       (block-close . 0)))))
+   (c-offsets-alist . ((case-label . 0)))))
 
 (defun php-enable-pear-coding-style ()
   "Sets up php-mode to use the coding styles preferred for PEAR
@@ -608,11 +609,11 @@ code and modules."
  "drupal"
  '("php"
    (c-basic-offset . 2)
-   (c-offsets-alist . ((case-label . +)
-                       (arglist-close . 0)
+   (c-offsets-alist . ((arglist-close . 0)
                        (arglist-intro . +)
                        (arglist-cont-nonempty . c-lineup-math)
-                       (statement-cont . +)))))
+                       (statement-cont . +)
+                       (topmost-intro-cont . +)))))
 
 (defun php-enable-drupal-coding-style ()
   "Makes php-mode use coding styles that are preferable for
@@ -814,9 +815,6 @@ example `html-mode'.  Known such libraries are:\n\t"
         (goto-char here)
         (when doit
           (funcall 'c-indent-line)))))
-
-(defconst php-tags '("<?php" "?>" "<?" "<?="))
-(defconst php-tags-key (regexp-opt php-tags))
 
 (defun php-c-at-vsemi-p (&optional pos)
   "Return t on html lines (including php region border), otherwise nil.
@@ -1175,41 +1173,124 @@ current `tags-file-name'."
         (message "Arglist for %s: %s" tagname arglist)
         (message "Unknown function: %s" tagname))))
 
-(defun php-search-local-documentation ()
-  "Search the local PHP documentation (i.e. in `php-manual-path')
-for the word at point.  The function returns t if the requested
-documentation exists, and nil otherwise."
-  (interactive)
-  (cl-flet ((php-function-file-for (name)
-                                (expand-file-name
-                                 (format "function.%s.html"
-                                         (replace-regexp-in-string "_" "-" name))
-                                 php-manual-path)))
-    (let ((doc-file (php-function-file-for (current-word))))
-      (and (file-exists-p doc-file)
-           ;; Some browsers require the file:// prefix.  Others do not
-           ;; seem to care.  But it should never be incorrect to use
-           ;; the prefix.
-           (browse-url (if (string-prefix-p "file://" doc-file)
-                           doc-file
-                         (concat "file://" doc-file)))
-           t))))
+(defcustom php-search-documentation-browser-function nil
+  "Function to display PHP documentation in a WWW browser.
+
+If non-nil, this shadows the value of `browse-url-browser-function' when
+calling `php-search-documentation' or `php-search-local-documentation'."
+  :type '(choice (const :tag "default" nil) function)
+  :link '(variable-link browse-url-browser-function)
+  :group 'php)
+
+(defun php-browse-documentation-url (url)
+  "Browse a documentation URL using the configured browser function.
+
+See `php-search-documentation-browser-function'."
+  (let ((browse-url-browser-function
+         (or php-search-documentation-browser-function
+             browse-url-browser-function)))
+    (browse-url url)))
+
+(defvar php-search-local-documentation-types
+  (list "function" "control-structures" "class" "book")
+  ;; "intro" and "ref" also look interesting, but for all practical purposes
+  ;; their terms are sub-sets of the "book" terms (with the few exceptions
+  ;; being very unlikely search terms).
+  "The set (and priority sequence) of documentation file prefixes
+under which to search for files in the local documentation directory.")
+
+(defvar php-search-local-documentation-words-cache nil)
+
+(defun php--search-documentation-read-arg ()
+  "Obtain interactive argument for searching documentation."
+  ;; Cache the list of documentation words available for completion,
+  ;; based on the defined types-of-interest.
+  (let ((types-list php-search-local-documentation-types)
+        (words-cache php-search-local-documentation-words-cache)
+        (local-manual (and (stringp php-manual-path)
+                           (not (string= php-manual-path "")))))
+    (when (and local-manual
+               (not (assq types-list words-cache)))
+      ;; Generate the cache on the first run, or if the types changed.
+      ;; We read the filenames matching our types list in the local
+      ;; documention directory, and extract the 'middle' component
+      ;; of each. e.g. "function.array-map.html" => "array_map".
+      (let* ((types-opt (regexp-opt types-list))
+             (pattern (concat "\\`" types-opt "\\.\\(.+\\)\\.html\\'"))
+             (collection
+              (mapcar (lambda (filename) (subst-char-in-string
+                                          ?- ?_ (replace-regexp-in-string
+                                                 pattern "\\1" filename)))
+                      (directory-files php-manual-path nil pattern))))
+        ;; Replace the entire cache. If the types changed, we don't need
+        ;; to retain the collection for the previous value.
+        (setq words-cache (list (cons types-list collection)))
+        (setq php-search-local-documentation-words-cache words-cache)))
+    ;; By default we search for (current-word) immediately, without prompting.
+    ;; With a prefix argument, or if there is no (current-word), we perform a
+    ;; completing read for a word from the cached collection.
+    (let* ((default (current-word))
+           (prompt (if default
+                       (format "Search PHP docs (%s): " default)
+                     "Search PHP docs: "))
+           (collection (and local-manual
+                            (cdr (assq types-list words-cache))))
+           (word (if (or current-prefix-arg (not default))
+                     (completing-read prompt collection nil nil nil nil default)
+                   default)))
+      ;; Return interactive argument list.
+      (list word))))
+
+(defun php-search-local-documentation (word)
+  "Search the local PHP documentation (i.e. in `php-manual-path') for
+the word at point.  The function returns t if the requested documentation
+exists, and nil otherwise.
+
+With a prefix argument, prompt (with completion) for a word to search for."
+  (interactive (php--search-documentation-read-arg))
+  (cl-flet ((php-file-for (type name)
+                          (expand-file-name
+                           (format "%s.%s.html" type
+                                   (replace-regexp-in-string
+                                    "_" "-" (downcase name)))
+                           php-manual-path))
+            (php-file-url (file)
+                          ;; Some browsers require the file:// prefix.
+                          ;; Others do not seem to care.  But it should
+                          ;; never be incorrect to use the prefix.
+                          (if (string-prefix-p "file://" file)
+                              file
+                            (concat "file://" file))))
+    (let ((file (catch 'found
+                  (loop for type in php-search-local-documentation-types do
+                        (let ((file (php-file-for type word)))
+                          (when (file-exists-p file)
+                            (throw 'found file)))))))
+      (when file
+        (php-browse-documentation-url (php-file-url file))
+        t))))
 
 ;; Define function documentation function
-(defun php-search-documentation ()
-  "Search PHP documentation for the word at point.  If
-`php-manual-path' has a non-empty string value then the command
-will first try searching the local documentation.  If the
-requested documentation does not exist it will fallback to
-searching the PHP website."
-  (interactive)
-  (cl-flet ((php-search-web-documentation ()
-                                       (browse-url (concat php-search-url (current-word)))))
+(defun php-search-documentation (word)
+  "Search PHP documentation for the word at point.
+
+If `php-manual-path' has a non-empty string value then the command
+will first try searching the local documentation.  If the requested
+documentation does not exist it will fallback to searching the PHP
+website.
+
+With a prefix argument, prompt for a documentation word to search
+for.  If the local documentation is available, it is used to build
+a completion list."
+  (interactive (php--search-documentation-read-arg))
+  (cl-flet ((php-search-web-documentation (name)
+                                          (php-browse-documentation-url
+                                           (concat php-search-url name))))
     (if (and (stringp php-manual-path)
              (not (string= php-manual-path "")))
-        (or (php-search-local-documentation)
-            (php-search-web-documentation))
-      (php-search-web-documentation))))
+        (or (php-search-local-documentation word)
+            (php-search-web-documentation word))
+      (php-search-web-documentation word))))
 
 ;; Define function for browsing manual
 (defun php-browse-manual ()
@@ -1224,11 +1305,53 @@ searching the PHP website."
   "Medium level highlighting for PHP mode.")
 
 (defconst php-font-lock-keywords-3 (append
-                                     '(
-                                       ("\\<\\$\\([a-zA-Z0-9_]+\\)" 1 font-lock-variable-name-face)
-                                       ("\\<\\([A-Z0-9_]\\{2,\\}\\)\\>" 1 font-lock-constant-face)
-                                       ("\\(\\sw+\\)::" 1 font-lock-constant-face))
-                                     (c-lang-const c-matchers-3 php))
+                                    `(
+                                      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but not
+                                      ;; in $obj->var()
+                                      ("->\\(\\sw+\\)\\s-*(" 1 'default)
+                                      ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 font-lock-variable-name-face)
+
+                                      ;; The dollar sign should not get a variable-name face, below pattern
+                                      ;; resets the face to default in case cc-mode set the variable-name face
+                                      ;; (cc-mode does this for variables prefixed with type, like in arglist)
+                                      ("\\(\\$\\)\\(\\sw+\\)" 1 'default)
+
+                                      ;; Highlight all upper-cased symbols as constant
+                                      ("\\<\\([A-Z0-9_]\\{2,\\}\\)\\>" 1 font-lock-constant-face)
+
+                                      ;; Highlight all statically accessed class names as constant,
+                                      ;; another valid option would be using type-face, but using constant-face
+                                      ;; because this is how it works in c++-mode.
+                                      ("\\(\\sw+\\)::" 1 font-lock-constant-face)
+
+                                      ;; Support the ::class constant in PHP5.6
+                                      ("\\sw+::\\(class\\)" 1 font-lock-constant-face)
+
+                                      ;; Array is a keyword, except when used as cast, so that (int) and (array)
+                                      ;; look the same
+                                      ("(\\(array\\))" 1 font-lock-type-face)
+
+                                      ;; Highlight function/method names
+                                      ("\\<function\\s-+&?\\(\\sw+\\)\\s-*(" 1 font-lock-function-name-face)
+
+                                      ;; Class names are highlighted by cc-mode as defined in c-class-decl-kwds,
+                                      ;; below regexp is a workaround for a bug where the class names are not
+                                      ;; highlighted right after opening a buffer (editing a file corrects it).
+                                      ;;
+                                      ;; This behaviour is caused by the preceding '<?php', which cc-mode cannot
+                                      ;; handle easily. Registering it as a cpp preprocessor works well (i.e. the
+                                      ;; next line is not a statement-cont) but the highlighting glitch remains.
+                                      (,(concat (regexp-opt (c-lang-const c-class-decl-kwds php))
+                                                " \\(\\sw+\\)")
+                                       1 font-lock-type-face)
+
+                                      ;; While c-opt-cpp-* highlights the <?php opening tags, it is not possible
+                                      ;; to make it highlight short open tags and closing tags as well. So we force
+                                      ;; the correct face on all cases that c-opt-cpp-* lacks for this purpose.
+                                      ;; Note that starting a file with <% breaks indentation, a limitation we
+                                      ;; can/should live with.
+                                      (,(regexp-opt '("?>" "<?" "<%" "%>")) 0 font-lock-preprocessor-face))
+                                    (c-lang-const c-matchers-3 php))
   "Detailed highlighting for PHP mode.")
 
 (defvar php-font-lock-keywords php-font-lock-keywords-3
