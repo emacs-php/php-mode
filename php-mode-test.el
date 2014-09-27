@@ -313,7 +313,8 @@ style from Drupal."
   (with-php-mode-test ("constants.php")
     (let ((variables '("no_constant"
                        "no_CONSTANT"
-                       "extraconstant")))
+                       "extraconstant"
+                       "2FOO")))
       (dolist (variable variables)
         (search-forward variable)
         (goto-char (match-beginning 0))
