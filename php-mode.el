@@ -62,7 +62,6 @@
 ;;; Code:
 
 (require 'cc-mode)
-(require 'cl)
 (eval-when-compile
   (require 'cc-langs)
   (require 'cc-fonts))
