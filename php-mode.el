@@ -1317,7 +1317,7 @@ a completion list."
                                       ("\\(\\$\\)\\(\\sw+\\)" 1 'default)
 
                                       ;; Highlight all upper-cased symbols as constant
-                                      ("\\<\\([A-Z0-9_]\\{2,\\}\\)\\>" 1 font-lock-constant-face)
+                                      ("\\<\\([A-Z_][A-Z0-9_]+\\)\\>" 1 font-lock-constant-face)
 
                                       ;; Highlight all statically accessed class names as constant,
                                       ;; another valid option would be using type-face, but using constant-face

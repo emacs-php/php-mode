@@ -384,4 +384,11 @@ style from Drupal."
     (should (eq 'font-lock-type-face
                 (get-text-property (point) 'face)))))
 
+(ert-deftest php-mode-test-issue-175 ()
+  "Not highlight more than 2 digit number"
+  (with-php-mode-test ("issue-175.php")
+    (search-forward "10")
+    (goto-char (match-beginning 0))
+    (should-not (get-text-property (point) 'face))))
+
 ;;; php-mode-test.el ends here
