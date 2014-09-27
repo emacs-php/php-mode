@@ -21,3 +21,6 @@ ClassName::$test;
 
 // Class name resolution is a special case
 stdClass::class;
+
+// Invalid constant name
+2FOO
