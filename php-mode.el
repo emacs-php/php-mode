@@ -439,7 +439,8 @@ This variable can take one of the following symbol values:
 (c-lang-defconst c-symbol-start
   php (concat "[" c-alpha "_$]"))
 
-(c-lang-defconst c-string-escaped-newlines
+;; All string literals can possibly span multiple lines
+(c-lang-defconst c-multiline-string-start-char
   php t)
 
 (c-lang-defconst c-assignment-operators
