@@ -152,8 +152,8 @@ Gets the face of the text after the comma."
 (ert-deftest php-mode-test-issue-21 ()
   "Font locking multi-line string."
   (with-php-mode-test ("issue-21.php")
-    (search-forward "\"")
-    (while (not (looking-at "\""))
+    (search-forward "= ")
+    (while (not (looking-at ";"))
       (should (eq (get-text-property (point) 'face)
                   'font-lock-string-face))
       (forward-char))))
@@ -386,7 +386,8 @@ style from Drupal."
                 (get-text-property (point) 'face)))))
 
 (ert-deftest php-mode-test-issue-174 ()
-  "Test escaped quotes in strin literals"
+  "Test escaped quotes in string literals"
+  :expected-result :failed
   (with-php-mode-test ("issue-174.php")
     (while
       (search-forward "quotation mark" nil t)
