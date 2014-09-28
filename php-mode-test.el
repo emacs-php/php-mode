@@ -385,6 +385,15 @@ style from Drupal."
     (should (eq 'font-lock-type-face
                 (get-text-property (point) 'face)))))
 
+(ert-deftest php-mode-test-issue-174 ()
+  "Test escaped quotes in strin literals"
+  (with-php-mode-test ("issue-174.php")
+    (while
+      (search-forward "quotation mark" nil t)
+      (backward-word)
+      (should (eq 'font-lock-string-face
+        (get-text-property (point) 'face))))))
+
 (ert-deftest php-mode-test-issue-175 ()
   "Not highlight more than 2 digit number"
   (with-php-mode-test ("issue-175.php")
