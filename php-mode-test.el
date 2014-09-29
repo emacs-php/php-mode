@@ -387,7 +387,6 @@ style from Drupal."
 
 (ert-deftest php-mode-test-issue-174 ()
   "Test escaped quotes in string literals"
-  :expected-result :failed
   (with-php-mode-test ("issue-174.php")
     (while
       (search-forward "quotation mark" nil t)
