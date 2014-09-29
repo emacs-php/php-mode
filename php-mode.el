@@ -423,11 +423,6 @@ This variable can take one of the following symbol values:
         (left-assoc "\\" "::" "->")
         (prefix "\\" "::")))
 
-;; Make the namespace separator part of identifiers
-(c-lang-defconst c-identifier-syntax-modifications
-  php (append '((?\\ . "w"))
-              (c-lang-const c-identifier-syntax-modifications)))
-
 ;; Allow '\' when scanning from open brace back to defining
 ;; construct like class
 (c-lang-defconst c-block-prefix-disallowed-chars
@@ -439,7 +434,8 @@ This variable can take one of the following symbol values:
 (c-lang-defconst c-symbol-start
   php (concat "[" c-alpha "_$]"))
 
-(c-lang-defconst c-string-escaped-newlines
+;; All string literals can possibly span multiple lines
+(c-lang-defconst c-multiline-string-start-char
   php t)
 
 (c-lang-defconst c-assignment-operators
@@ -1451,6 +1447,20 @@ The output will appear in the buffer *PHP*."
       (delete-char 1))))
 
 (ad-activate 'fixup-whitespace)
+
+;; Advice `font-lock-fontify-keywords-region' to support namespace
+;; separators in class names. Use word syntax for backslashes when
+;; doing keyword fontification, but not when doing syntactic
+;; fontification because that breaks \ as escape character in strings.
+;;
+;; Special care is taken to restore the original syntax, because we
+;; want \ not to be word for functions like forward-word.
+(defadvice font-lock-fontify-keywords-region (around backslash-as-word activate)
+  "Fontify keywords with backslash as word character"
+  (let ((old-syntax (string (char-syntax ?\\))))
+    (modify-syntax-entry ?\\ "w")
+    ad-do-it
+    (modify-syntax-entry ?\\ old-syntax)))
 
 
 ;;;###autoload
