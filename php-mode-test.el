@@ -388,11 +388,9 @@ style from Drupal."
 (ert-deftest php-mode-test-issue-174 ()
   "Test escaped quotes in string literals"
   (with-php-mode-test ("issue-174.php")
-    (while
-      (search-forward "quotation mark" nil t)
-      (backward-word)
+    (while (search-forward "quotation mark" nil t)
       (should (eq 'font-lock-string-face
-        (get-text-property (point) 'face))))))
+                  (get-text-property (- (point) 1) 'face))))))
 
 (ert-deftest php-mode-test-issue-175 ()
   "Not highlight more than 2 digit number"
@@ -400,6 +398,7 @@ style from Drupal."
     (search-forward "10")
     (goto-char (match-beginning 0))
     (should-not (get-text-property (point) 'face))))
+
 
 (ert-deftest php-mode-test-language-constructs()
   "Test highlighting of language constructs and reserved keywords"
@@ -414,5 +413,24 @@ style from Drupal."
                         (next-line)
                         (should (eq 'font-lock-keyword-face
                                     (get-text-property (point) 'face))))))
+
+(ert-deftest php-mode-test-issue-178 ()
+  "Highligth as keyword and following symbol"
+  (with-php-mode-test ("issue-178.php")
+    (search-forward "use Test as")
+    (should (eq 'font-lock-keyword-face
+                (get-text-property (- (point) 1) 'face)))
+    (should (eq 'font-lock-type-face
+                (get-text-property (+ (point) 1) 'face)))
+    (search-forward "$values as")
+    (should (eq 'font-lock-keyword-face
+                (get-text-property (- (point) 1) 'face)))
+    (should (eq 'font-lock-variable-name-face
+                (get-text-property (+ (point) 2) 'face)))
+    (search-forward "test as")
+    (should (eq 'font-lock-keyword-face
+                (get-text-property (- (point) 1) 'face)))
+    (should (eq 'font-lock-keyword-face
+                (get-text-property (+ (point) 1) 'face)))))
 
 ;;; php-mode-test.el ends here

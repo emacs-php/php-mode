@@ -509,6 +509,10 @@ PHP does not have an \"enum\"-like keyword."
     "and"
     "array"
     "callable"
+    "as"
+    "break"
+    "catch all"
+    "catch"
     "clone"
     "default"
     "empty"
@@ -1277,54 +1281,73 @@ a completion list."
 (defconst php-font-lock-keywords-2 (c-lang-const c-matchers-2 php)
   "Medium level highlighting for PHP mode.")
 
-(defconst php-font-lock-keywords-3 (append
-                                    `(
-                                      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but not
-                                      ;; in $obj->var()
-                                      ("->\\(\\sw+\\)\\s-*(" 1 'default)
-                                      ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 font-lock-variable-name-face)
+(defconst php-font-lock-keywords-3
+  (append
+   ;; php-mode patterns *before* cc-mode:
+   ;;  only add patterns here if you want to prevent cc-mode from applying
+   ;;  a different face.
+   '(
+     ;; The dollar sign should not get a variable-name face, below
+     ;; pattern resets the face to default in case cc-mode sets the
+     ;; variable-name face (cc-mode does this for variables prefixed
+     ;; with type, like in arglist)
+     ("\\(\\$\\)\\(\\sw+\\)" 1 'default)
 
-                                      ;; The dollar sign should not get a variable-name face, below pattern
-                                      ;; resets the face to default in case cc-mode set the variable-name face
-                                      ;; (cc-mode does this for variables prefixed with type, like in arglist)
-                                      ("\\(\\$\\)\\(\\sw+\\)" 1 'default)
+     ;; Array is a keyword, except when used as cast, so that (int)
+     ;; and (array) look the same
+     ("(\\(array\\))" 1 font-lock-type-face)
 
-                                      ;; Highlight all upper-cased symbols as constant
-                                      ("\\<\\([A-Z_][A-Z0-9_]+\\)\\>" 1 font-lock-constant-face)
+     ;; Support the ::class constant in PHP5.6
+     ("\\sw+::\\(class\\)" 1 font-lock-constant-face))
 
-                                      ;; Highlight all statically accessed class names as constant,
-                                      ;; another valid option would be using type-face, but using constant-face
-                                      ;; because this is how it works in c++-mode.
-                                      ("\\(\\sw+\\)::" 1 font-lock-constant-face)
+   ;; cc-mode patterns
+   (c-lang-const c-matchers-3 php)
 
-                                      ;; Support the ::class constant in PHP5.6
-                                      ("\\sw+::\\(class\\)" 1 font-lock-constant-face)
+   ;; php-mode patterns *after* cc-mode:
+   ;;   most patterns should go here, faces will only be applied if not
+   ;;   already fontified by another pattern. Note that using OVERRIDE
+   ;;   is usually overkill.
+   `(
+     ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
+     ;; not in $obj->var()
+     ("->\\(\\sw+\\)\\s-*(" 1 'default)
+     ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 font-lock-variable-name-face)
 
-                                      ;; Array is a keyword, except when used as cast, so that (int) and (array)
-                                      ;; look the same
-                                      ("(\\(array\\))" 1 font-lock-type-face)
+     ;; Highlight all upper-cased symbols as constant
+     ("\\<\\([A-Z_][A-Z0-9_]+\\)\\>" 1 font-lock-constant-face)
 
-                                      ;; Highlight function/method names
-                                      ("\\<function\\s-+&?\\(\\sw+\\)\\s-*(" 1 font-lock-function-name-face)
+     ;; Highlight all statically accessed class names as constant,
+     ;; another valid option would be using type-face, but using
+     ;; constant-face because this is how it works in c++-mode.
+     ("\\(\\sw+\\)::" 1 font-lock-constant-face)
 
-                                      ;; Class names are highlighted by cc-mode as defined in c-class-decl-kwds,
-                                      ;; below regexp is a workaround for a bug where the class names are not
-                                      ;; highlighted right after opening a buffer (editing a file corrects it).
-                                      ;;
-                                      ;; This behaviour is caused by the preceding '<?php', which cc-mode cannot
-                                      ;; handle easily. Registering it as a cpp preprocessor works well (i.e. the
-                                      ;; next line is not a statement-cont) but the highlighting glitch remains.
-                                      (,(concat (regexp-opt (c-lang-const c-class-decl-kwds php))
-                                                " \\(\\sw+\\)")
-                                       1 font-lock-type-face)
+     ;; Highlight function/method names
+     ("\\<function\\s-+&?\\(\\sw+\\)\\s-*(" 1 font-lock-function-name-face)
 
-                                      ;; While c-opt-cpp-* highlights the <?php opening tags, it is not possible
-                                      ;; to make it highlight short open tags and closing tags as well. So we force
-                                      ;; the correct face on all cases that c-opt-cpp-* lacks for this purpose.
-                                      ;; Note that starting a file with <% breaks indentation, a limitation we
-                                      ;; can/should live with.
-                                      (,(regexp-opt '("?>" "<?" "<%" "%>")) 0 font-lock-preprocessor-face))
-                                    (c-lang-const c-matchers-3 php))
+     ;; Highlight class name after "use .. as"
+     ("\\<as\\s-+\\(\\sw+\\)" 1 font-lock-type-face)
+
+     ;; Class names are highlighted by cc-mode as defined in
+     ;; c-class-decl-kwds, below regexp is a workaround for a bug
+     ;; where the class names are not highlighted right after opening
+     ;; a buffer (editing a file corrects it).
+     ;;
+     ;; This behaviour is caused by the preceding '<?php', which
+     ;; cc-mode cannot handle easily. Registering it as a cpp
+     ;; preprocessor works well (i.e. the next line is not a
+     ;; statement-cont) but the highlighting glitch remains.
+     (,(concat (regexp-opt (c-lang-const c-class-decl-kwds php))
+               " \\(\\sw+\\)")
+      1 font-lock-type-face)
+
+     ;; While c-opt-cpp-* highlights the <?php opening tags, it is not
+     ;; possible to make it highlight short open tags and closing tags
+     ;; as well. So we force the correct face on all cases that
+     ;; c-opt-cpp-* lacks for this purpose.
+     ;;
+     ;; Note that starting a file with <% breaks indentation, a
+     ;; limitation we can/should live with.
+     (,(regexp-opt '("?>" "<?" "<%" "%>")) 0 font-lock-preprocessor-face)))
   "Detailed highlighting for PHP mode.")
 
 (defvar php-font-lock-keywords php-font-lock-keywords-3
