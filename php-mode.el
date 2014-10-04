@@ -442,7 +442,7 @@ This variable can take one of the following symbol values:
   ;; falls back to java, so no need to specify the language
   php (append (remove ">>>=" (c-lang-const c-assignment-operators))
               '(".=")))
- 
+
 (c-lang-defconst beginning-of-defun-function
   php 'php-beginning-of-defun)
 
@@ -548,19 +548,18 @@ PHP does not have an \"enum\"-like keyword."
  "php"
  '((c-basic-offset . 4)
    (c-doc-comment-style . javadoc)
-   (c-offsets-alist . ((inline-open . 0)
-                       (inlambda . 0)
-                       (class-open . -)
-                       (statement-cont . (first c-lineup-cascaded-calls +))
-                       (topmost-intro-cont . (first c-lineup-cascaded-calls +))
+   (c-offsets-alist . ((arglist-close . php-lineup-arglist-close)
                        (arglist-cont . (first c-lineup-cascaded-calls 0))
-                       (statement-block-intro . +)
-                       (substatement-open . 0)
-                       (case-label . +)
-                       (label . +)
                        (arglist-cont-nonempty . (first c-lineup-cascaded-calls c-lineup-arglist))
                        (arglist-intro . php-lineup-arglist-intro)
-                       (arglist-close . php-lineup-arglist-close)))))
+                       (case-label . +)
+                       (class-open . -)
+                       (inlambda . 0)
+                       (inline-open . 0)
+                       (label . +)
+                       (statement-cont . (first c-lineup-cascaded-calls +))
+                       (substatement-open . 0)
+                       (topmost-intro-cont . (first c-lineup-cascaded-calls +))))))
 
 (add-to-list 'c-default-style '(php-mode . "php"))
 
@@ -585,12 +584,7 @@ code and modules."
 (c-add-style
  "drupal"
  '("php"
-   (c-basic-offset . 2)
-   (c-offsets-alist . ((arglist-close . 0)
-                       (arglist-intro . +)
-                       (arglist-cont-nonempty . c-lineup-math)
-                       (statement-cont . +)
-                       (topmost-intro-cont . +)))))
+   (c-basic-offset . 2)))
 
 (defun php-enable-drupal-coding-style ()
   "Makes php-mode use coding styles that are preferable for
@@ -606,14 +600,7 @@ working with Drupal."
 (c-add-style
   "wordpress"
   '("php"
-    (c-basic-offset . 4)
-    (c-offsets-alist . ((arglist-cont . 0)
-                        (arglist-intro . +)
-                        (case-label . 2)
-                        (arglist-close . 0)
-                        (defun-close . 0)
-                        (defun-block-intro . +)
-                        (statement-cont . +)))))
+    (c-basic-offset . 4)))
 
 (defun php-enable-wordpress-coding-style ()
   "Makes php-mode use coding styles that are preferable for
