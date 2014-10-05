@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.13.5"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2014-09-27"
+(defconst php-mode-modified "2014-10-05"
   "PHP Mode build date.")
 
 ;;; License
@@ -600,6 +600,7 @@ but only if the setting is enabled"
                        (arglist-intro . php-lineup-arglist-intro)
                        (case-label . +)
                        (class-open . -)
+                       (comment-intro . 0)
                        (inlambda . 0)
                        (inline-open . 0)
                        (label . +)
