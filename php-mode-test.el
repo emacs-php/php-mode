@@ -221,8 +221,10 @@ style from Drupal."
    (search-forward "return $this->bar;")
    ;; the file written to has no significance, only the buffer
    (let ((tmp-filename (make-temp-name temporary-file-directory)))
-     (dolist (mode '(pear wordpress symfony2 psr2))
+     (dolist (mode '(pear wordpress symfony2))
        (php-mode-custom-coding-style-set 'php-mode-coding-style 'drupal)
+       (php-mode-custom-coding-style-set 'php-mode-coding-style mode)
+       (php-mode-custom-coding-style-set 'php-mode-coding-style 'psr2)
        (php-mode-custom-coding-style-set 'php-mode-coding-style mode)
        (should-not show-trailing-whitespace)
        (write-file tmp-filename)
