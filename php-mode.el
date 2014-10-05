@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.13.5"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2014-09-27"
+(defconst php-mode-modified "2014-10-05"
   "PHP Mode build date.")
 
 ;;; License
@@ -442,7 +442,7 @@ This variable can take one of the following symbol values:
   ;; falls back to java, so no need to specify the language
   php (append (remove ">>>=" (c-lang-const c-assignment-operators))
               '(".=")))
- 
+
 (c-lang-defconst beginning-of-defun-function
   php 'php-beginning-of-defun)
 
@@ -578,7 +578,8 @@ PHP does not have an \"enum\"-like keyword."
                        (label . +)
                        (arglist-cont-nonempty . (first c-lineup-cascaded-calls c-lineup-arglist))
                        (arglist-intro . php-lineup-arglist-intro)
-                       (arglist-close . php-lineup-arglist-close)))))
+                       (arglist-close . php-lineup-arglist-close)
+                       (comment-intro . 0)))))
 
 (add-to-list 'c-default-style '(php-mode . "php"))
 
