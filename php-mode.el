@@ -625,8 +625,8 @@ code and modules."
         indent-tabs-mode nil)
   (c-set-style "pear")
 
-  ;; Undo drupal coding style whitespace effects
-  (setq show-trailing-whitespace nil)
+  ;; Undo drupal/PSR-2 coding style whitespace effects
+  (set (make-local-variable 'show-trailing-whitespace) nil)
   (remove-hook 'before-save-hook 'delete-trailing-whitespace))
 
 (c-add-style
