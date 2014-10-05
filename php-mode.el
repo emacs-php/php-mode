@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.13.5"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2014-09-27"
+(defconst php-mode-modified "2014-10-05"
   "PHP Mode build date.")
 
 ;;; License
@@ -442,7 +442,7 @@ This variable can take one of the following symbol values:
   ;; falls back to java, so no need to specify the language
   php (append (remove ">>>=" (c-lang-const c-assignment-operators))
               '(".=")))
- 
+
 (c-lang-defconst beginning-of-defun-function
   php 'php-beginning-of-defun)
 
@@ -578,7 +578,8 @@ PHP does not have an \"enum\"-like keyword."
                        (label . +)
                        (arglist-cont-nonempty . (first c-lineup-cascaded-calls c-lineup-arglist))
                        (arglist-intro . php-lineup-arglist-intro)
-                       (arglist-close . php-lineup-arglist-close)))))
+                       (arglist-close . php-lineup-arglist-close)
+                       (comment-intro . 0)))))
 
 (add-to-list 'c-default-style '(php-mode . "php"))
 
@@ -596,8 +597,8 @@ code and modules."
         indent-tabs-mode nil)
   (c-set-style "pear")
 
-  ;; Undo drupal coding style whitespace effects
-  (setq show-trailing-whitespace nil)
+  ;; Undo drupal/PSR-2 coding style whitespace effects
+  (set (make-local-variable 'show-trailing-whitespace) nil)
   (remove-hook 'before-save-hook 'delete-trailing-whitespace))
 
 (c-add-style
@@ -616,8 +617,8 @@ working with Drupal."
   (interactive)
   (setq tab-width 2
         indent-tabs-mode nil
-        fill-column 78
-        show-trailing-whitespace t)
+        fill-column 78)
+  (set (make-local-variable 'show-trailing-whitespace) t)
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   (c-set-style "drupal"))
 
@@ -643,8 +644,8 @@ working with Wordpress."
         c-indent-comments-syntactically-p t)
   (c-set-style "wordpress")
 
-  ;; Undo drupal coding style whitespace effects
-  (setq show-trailing-whitespace nil)
+  ;; Undo drupal/PSR-2 coding style whitespace effects
+  (set (make-local-variable 'show-trailing-whitespace) nil)
   (remove-hook 'before-save-hook 'delete-trailing-whitespace))
 
 (c-add-style
@@ -662,13 +663,14 @@ working with Symfony2."
         require-final-newline t)
   (c-set-style "symfony2")
 
-  ;; Undo drupal coding style whitespace effects
-  (setq show-trailing-whitespace nil)
+  ;; Undo drupal/PSR-2 coding style whitespace effects
+  (set (make-local-variable 'show-trailing-whitespace) nil)
   (remove-hook 'before-save-hook 'delete-trailing-whitespace))
 
 (c-add-style
   "psr2"
-  '("php"))
+  '("php"
+     (c-offsets-alist . ((statement-cont . +)))))
 
 (defun php-enable-psr2-coding-style ()
   "Makes php-mode comply to the PSR-2 coding style"
@@ -679,9 +681,10 @@ working with Symfony2."
         require-final-newline t)
   (c-set-style "psr2")
 
-  ;; Undo drupal coding style whitespace effects
-  (setq show-trailing-whitespace nil)
-  (remove-hook 'before-save-hook 'delete-trailing-whitespace))
+  ;; Apply drupal-like coding style whitespace effects
+  (set (make-local-variable 'require-final-newline) t)
+  (set (make-local-variable 'show-trailing-whitespace) t)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 (defconst php-beginning-of-defun-regexp
   "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("
