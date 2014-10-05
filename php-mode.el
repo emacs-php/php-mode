@@ -594,8 +594,8 @@ code and modules."
         indent-tabs-mode nil)
   (c-set-style "pear")
 
-  ;; Undo drupal coding style whitespace effects
-  (setq show-trailing-whitespace nil)
+  ;; Undo drupal/PSR-2 coding style whitespace effects
+  (set (make-local-variable 'show-trailing-whitespace) nil)
   (remove-hook 'before-save-hook 'delete-trailing-whitespace))
 
 (c-add-style
@@ -609,8 +609,8 @@ working with Drupal."
   (interactive)
   (setq tab-width 2
         indent-tabs-mode nil
-        fill-column 78
-        show-trailing-whitespace t)
+        fill-column 78)
+  (set (make-local-variable 'show-trailing-whitespace) t)
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   (c-set-style "drupal"))
 
@@ -629,8 +629,8 @@ working with Wordpress."
         c-indent-comments-syntactically-p t)
   (c-set-style "wordpress")
 
-  ;; Undo drupal coding style whitespace effects
-  (setq show-trailing-whitespace nil)
+  ;; Undo drupal/PSR-2 coding style whitespace effects
+  (set (make-local-variable 'show-trailing-whitespace) nil)
   (remove-hook 'before-save-hook 'delete-trailing-whitespace))
 
 (c-add-style
@@ -648,8 +648,8 @@ working with Symfony2."
         require-final-newline t)
   (c-set-style "symfony2")
 
-  ;; Undo drupal coding style whitespace effects
-  (setq show-trailing-whitespace nil)
+  ;; Undo drupal/PSR-2 coding style whitespace effects
+  (set (make-local-variable 'show-trailing-whitespace) nil)
   (remove-hook 'before-save-hook 'delete-trailing-whitespace))
 
 (c-add-style
@@ -665,9 +665,10 @@ working with Symfony2."
         require-final-newline t)
   (c-set-style "psr2")
 
-  ;; Undo drupal coding style whitespace effects
-  (setq show-trailing-whitespace nil)
-  (remove-hook 'before-save-hook 'delete-trailing-whitespace))
+  ;; Apply drupal-like coding style whitespace effects
+  (set (make-local-variable 'require-final-newline) t)
+  (set (make-local-variable 'show-trailing-whitespace) t)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 (defconst php-beginning-of-defun-regexp
   "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("
