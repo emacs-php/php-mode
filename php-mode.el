@@ -570,6 +570,7 @@ might be to handle switch and goto labels differently."
                        (arglist-intro . php-lineup-arglist-intro)
                        (case-label . +)
                        (class-open . -)
+                       (comment-intro . 0)
                        (inlambda . 0)
                        (inline-open . 0)
                        (label . +)
