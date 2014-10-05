@@ -205,6 +205,7 @@ style from Drupal."
      (dolist (mode '(pear wordpress symfony2))
        (php-mode-custom-coding-style-set 'php-mode-coding-style 'drupal)
        (php-mode-custom-coding-style-set 'php-mode-coding-style mode)
+       (should-not show-trailing-whitespace)
        (php-mode-custom-coding-style-set 'php-mode-coding-style 'psr2)
        (php-mode-custom-coding-style-set 'php-mode-coding-style mode)
        (should-not show-trailing-whitespace)
