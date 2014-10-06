@@ -159,6 +159,11 @@ of constants when set."
      'php-mode `((,(php-mode-extra-constants-create-regexp value) 1 font-lock-constant-face))))
   (set sym value))
 
+(defcustom php-lineup-cascaded-calls nil
+  "Indent chained method calls to the previous line"
+  :type 'boolean
+  :group 'php)
+
 ;;;###autoload
 (defcustom php-extra-constants '()
   "A list of additional strings to treat as PHP constants."
@@ -562,6 +567,12 @@ PHP does not have an \"enum\"-like keyword."
 (c-lang-defconst c-enums-contain-decls
   php nil)
 
+(defun php-lineup-cascaded-calls (langelem)
+  "Line up chained methods using `c-lineup-cascaded-calls',
+but only if the setting is enabled"
+  (if php-lineup-cascaded-calls
+    (c-lineup-cascaded-calls langelem)))
+
 (c-add-style
  "php"
  '((c-basic-offset . 4)
@@ -569,14 +580,14 @@ PHP does not have an \"enum\"-like keyword."
    (c-offsets-alist . ((inline-open . 0)
                        (inlambda . 0)
                        (class-open . -)
-                       (statement-cont . (first c-lineup-cascaded-calls +))
-                       (topmost-intro-cont . (first c-lineup-cascaded-calls +))
-                       (arglist-cont . (first c-lineup-cascaded-calls 0))
+                       (statement-cont . (first php-lineup-cascaded-calls +))
+                       (topmost-intro-cont . (first php-lineup-cascaded-calls +))
+                       (arglist-cont . (first php-lineup-cascaded-calls 0))
                        (statement-block-intro . +)
                        (substatement-open . 0)
                        (case-label . +)
                        (label . +)
-                       (arglist-cont-nonempty . (first c-lineup-cascaded-calls c-lineup-arglist))
+                       (arglist-cont-nonempty . (first php-lineup-cascaded-calls c-lineup-arglist))
                        (arglist-intro . php-lineup-arglist-intro)
                        (arglist-close . php-lineup-arglist-close)))))
 
