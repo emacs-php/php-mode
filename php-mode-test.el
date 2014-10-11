@@ -418,4 +418,14 @@ style from Drupal."
                       (search-forward "return")
                       (should (eq (current-indentation) (* 2 c-basic-offset)))))
 
+(ert-deftest php-mode-test-issue-184()
+  "Test indent-line for statements and heredoc end at beginning of lines"
+  (with-php-mode-test ("issue-184.php")
+                      (search-forward "html;")
+                      (php-cautious-indent-line)
+                      (should (eq (current-indentation) 0))
+                      (search-forward "return;")
+                      (php-cautious-indent-line)
+                      (should (eq (current-indentation) c-basic-offset))))
+
 ;;; php-mode-test.el ends here
