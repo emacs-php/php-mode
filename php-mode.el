@@ -774,7 +774,8 @@ example `html-mode'.  Known such libraries are:\n\t"
         (move-beginning-of-line nil)
         ;; Don't indent heredoc end mark
         (save-match-data
-          (unless (looking-at "[a-zA-Z0-9_]+;\n")
+          (unless (and (looking-at "[a-zA-Z0-9_]+;\n")
+                       (php-in-string-p))
             (setq doit t)))
         (goto-char here)
         (when doit
