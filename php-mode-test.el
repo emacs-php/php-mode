@@ -80,6 +80,7 @@ the coding style to one of the following:
 2. `drupal'
 3. `wordpress'
 4. `symfony2'
+5. `psr2'
 
 Using any other symbol for STYLE results in undefined behavior.
 The test will use the PEAR style by default."
@@ -93,6 +94,7 @@ The test will use the PEAR style by default."
         (drupal '(php-enable-drupal-coding-style))
         (wordpress '(php-enable-wordpress-coding-style))
         (symfony2 '(php-enable-symfony2-coding-style))
+        (psr2 '(php-enable-psr2-coding-style))
         (t '(php-enable-pear-coding-style)))
      ,(if indent
           '(indent-region (point-min) (point-max)))
@@ -400,5 +402,20 @@ style from Drupal."
     (search-forward "10")
     (goto-char (match-beginning 0))
     (should-not (get-text-property (point) 'face))))
+
+(ert-deftest php-mode-test-switch-statements()
+  "Test indentation inside switch statements"
+  (with-php-mode-test ("switch-statements.php" :indent t :style pear)
+                      (search-forward "case true:")
+                      (should (eq (current-indentation) 0))
+                      (search-forward "break")
+                      (should (eq (current-indentation) c-basic-offset)))
+  (with-php-mode-test ("switch-statements.php" :indent t :style psr2)
+                      (search-forward "case true:")
+                      (should (eq (current-indentation) c-basic-offset))
+                      (search-forward "break")
+                      (should (eq (current-indentation) (* 2 c-basic-offset)))
+                      (search-forward "return")
+                      (should (eq (current-indentation) (* 2 c-basic-offset)))))
 
 ;;; php-mode-test.el ends here
