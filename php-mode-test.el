@@ -80,6 +80,7 @@ the coding style to one of the following:
 2. `drupal'
 3. `wordpress'
 4. `symfony2'
+5. `psr2'
 
 Using any other symbol for STYLE results in undefined behavior.
 The test will use the PHP style by default.
@@ -97,6 +98,7 @@ run with specific customizations set."
         (drupal '(php-enable-drupal-coding-style))
         (wordpress '(php-enable-wordpress-coding-style))
         (symfony2 '(php-enable-symfony2-coding-style))
+        (psr2 '(php-enable-psr2-coding-style))
         (t '(php-enable-default-coding-style)))
 
      ,(unless custom '(custom-set-variables '(php-lineup-cascaded-calls nil)))
@@ -474,7 +476,6 @@ style from Drupal."
   "Indentation of switch case body preceeded by multiple case statements"
   (with-php-mode-test ("issue-186.php" :indent t :magic t)))
 
-
 (ert-deftest php-mode-test-issue-197 ()
   "Test highlighting of member and function names (should not have type face)"
   (with-php-mode-test ("issue-197.php")
@@ -534,5 +535,20 @@ style from Drupal."
     (search-forward "return;")
     (php-cautious-indent-line)
     (should (= (current-indentation) c-basic-offset))))
+
+(ert-deftest php-mode-test-switch-statements()
+  "Test indentation inside switch statements"
+  (with-php-mode-test ("switch-statements.php" :indent t :style pear)
+    (search-forward "case true:")
+    (should (eq (current-indentation) 0))
+    (search-forward "break")
+    (should (eq (current-indentation) c-basic-offset)))
+  (with-php-mode-test ("switch-statements.php" :indent t :style psr2)
+    (search-forward "case true:")
+    (should (eq (current-indentation) c-basic-offset))
+    (search-forward "break")
+    (should (eq (current-indentation) (* 2 c-basic-offset)))
+    (search-forward "return")
+    (should (eq (current-indentation) (* 2 c-basic-offset)))))
 
 ;;; php-mode-test.el ends here
