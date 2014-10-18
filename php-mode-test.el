@@ -471,4 +471,18 @@ style from Drupal."
   "Indentation of switch case body preceeded by multiple case statements"
   (with-php-mode-test ("issue-186.php" :indent t :magic t)))
 
+(ert-deftest php-mode-test-language-constructs()
+  "Test highlighting of language constructs and reserved keywords"
+  (with-php-mode-test ("language-constructs.php")
+                      (while (search-forward "ClassName" nil t)
+                        (backward-char)
+                        (should (eq 'font-lock-type-face
+                                    (get-text-property (point) 'face)))))
+  (with-php-mode-test ("language-constructs.php")
+                      (search-forward "Start:")
+                      (while (not (= (line-number-at-pos) (count-lines (point-min) (point-max))))
+                        (next-line)
+                        (should (eq 'font-lock-keyword-face
+                                    (get-text-property (point) 'face))))))
+
 ;;; php-mode-test.el ends here

@@ -485,7 +485,7 @@ PHP does not have an \"enum\"-like keyword."
   php '("implements" "extends"))
 
 (c-lang-defconst c-type-list-kwds
-  php '("new" "use" "implements" "extends" "namespace"))
+  php '("new" "use" "implements" "extends" "namespace" "instanceof" "insteadof"))
 
 (c-lang-defconst c-ref-list-kwds
   php nil)
@@ -495,7 +495,8 @@ PHP does not have an \"enum\"-like keyword."
               (remove "synchronized" (c-lang-const c-block-stmt-2-kwds))))
 
 (c-lang-defconst c-simple-stmt-kwds
-  php (append '("include" "include_once" "require" "require_once" "echo" "print")
+  php (append '("include" "include_once" "require" "require_once"
+                "echo" "print" "die" "exit")
               (c-lang-const c-simple-stmt-kwds)))
 
 (c-lang-defconst c-constant-kwds
@@ -508,25 +509,15 @@ PHP does not have an \"enum\"-like keyword."
 
 (c-lang-defconst c-other-kwds
   "Keywords not accounted for by any other `*-kwds' language constant."
-  php '("abstract"
+  php '(
+    "__halt_compiler"
     "and"
     "array"
     "as"
-    "break"
-    "catch all"
-    "catch"
+    "callable"
     "clone"
-    "const"
-    "continue"
-    "declare"
     "default"
-    "die"
-    "do"
-    "echo"
-    "else"
-    "elseif"
     "empty"
-    "encoding"
     "enddeclare"
     "endfor"
     "endforeach"
@@ -534,32 +525,19 @@ PHP does not have an \"enum\"-like keyword."
     "endswitch"
     "endwhile"
     "eval"
-    "exit"
-    "final"
-    "finally"
-    "for"
-    "foreach"
-    "function"
     "global"
-    "if"
-    "include"
-    "include_once"
     "isset"
     "list"
     "or"
-    "require"
-    "require_once"
-    "return"
     "static"
-    "switch"
-    "throw"
-    "ticks"
-    "try"
     "unset"
     "var"
-    "while"
     "xor"
-    "yield"))
+    "yield"
+
+    ;; technically not reserved keywords, but "declare directives"
+    "encoding"
+    "ticks"))
 
 ;; PHP does not have <> templates/generics
 (c-lang-defconst c-recognize-<>-arglists
