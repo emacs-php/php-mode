@@ -59,7 +59,7 @@ PHP Mode treats underscores as ‘symbol constituents’ (in Emacs terminology) 
 
 ### Chained Method Calls ###
 
-PHP Mode will align method calls over multiple lines anchored around the `->` operator, e.g.:
+PHP Mode can align method calls over multiple lines anchored around the `->` operator, e.g.:
 
 ```php
 $object->foo()
@@ -67,7 +67,9 @@ $object->foo()
        ->baz();
 ```
 
-**Note:** Alignment will only work if you use one of the coding styles described below.  PHP Mode uses [CC mode][] for indentation.  If you use any indentation style other than those described under the *Coding Styles* section then the method alignment above is not guaranteed to work.
+This behaviour is off by default, but you can customize the variable `php-lineup-cascaded-calls` to enable this.
+
+**Note:** Alignment will only work if you use one of the php-mode coding styles or inherit one of the styles.
 
 ### Nested Array Formatting ###
 
