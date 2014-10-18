@@ -445,4 +445,8 @@ style from Drupal."
                       (php-cautious-indent-line)
                       (should (eq (current-indentation) c-basic-offset))))
 
+(ert-deftest php-mode-test-issue-186 ()
+  "Indentation of switch case body preceeded by multiple case statements"
+  (with-php-mode-test ("issue-186.php" :indent t :magic t)))
+
 ;;; php-mode-test.el ends here
