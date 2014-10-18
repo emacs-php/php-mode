@@ -401,4 +401,8 @@ style from Drupal."
     (goto-char (match-beginning 0))
     (should-not (get-text-property (point) 'face))))
 
+(ert-deftest php-mode-test-issue-186 ()
+  "Indentation of switch case body preceeded by multiple case statements"
+  (with-php-mode-test ("issue-186.php" :indent t :magic t)))
+
 ;;; php-mode-test.el ends here
