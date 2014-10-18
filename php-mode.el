@@ -553,12 +553,11 @@ double quoted strings and true/false/null.
 Note: this regexp is also applied to goto-labels, a future improvement
 might be to handle switch and goto labels differently."
   php (concat
-     ;; All keywords except `c-label-kwds', `c-constant-kwds' and `c-protection-kwds'.
+     ;; All keywords except `c-label-kwds' and `c-constant-kwds'.
      (c-make-keywords-re t
        (set-difference (c-lang-const c-keywords)
                        (append (c-lang-const c-label-kwds)
-                               (c-lang-const c-constant-kwds)
-                               (c-lang-const c-protection-kwds))
+                               (c-lang-const c-constant-kwds))
                        :test 'string-equal))))
 
 (c-add-style
