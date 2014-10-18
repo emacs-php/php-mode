@@ -59,7 +59,7 @@ PHP Mode treats underscores as ‘symbol constituents’ (in Emacs terminology) 
 
 ### Chained Method Calls ###
 
-PHP Mode will align method calls over multiple lines anchored around the `->` operator, e.g.:
+PHP Mode can align method calls over multiple lines anchored around the `->` operator, e.g.:
 
 ```php
 $object->foo()
@@ -67,7 +67,9 @@ $object->foo()
        ->baz();
 ```
 
-**Note:** Alignment will only work if you use one of the coding styles described below.  PHP Mode uses [CC mode][] for indentation.  If you use any indentation style other than those described under the *Coding Styles* section then the method alignment above is not guaranteed to work.
+This behaviour is off by default, but you can customize the variable `php-lineup-cascaded-calls` to enable this.
+
+**Note:** Alignment will only work if you use one of the php-mode coding styles or inherit one of the styles.
 
 ### Nested Array Formatting ###
 
@@ -150,8 +152,9 @@ By default PHP Mode tries to provide a reasonable style for indentation and form
 2. `php-enable-drupal-coding-style`
 3. `php-enable-wordpress-coding-style`
 4. `php-enable-symfony2-coding-style`
+5. `php-enable-psr2-coding-style`
 
-They will help format your code for PEAR projects, or work on Drupal, WordPress, and Symfony2 software, respectively.  You may enable any of them by default by running `M-x customize-group <RET> php` and looking for the ‘PHP Mode Coding Style’ option.
+They will help format your code for PEAR/PSR-2 projects, or work on Drupal, WordPress, and Symfony2 software, respectively.  You may enable any of them by default by running `M-x customize-group <RET> php` and looking for the ‘PHP Mode Coding Style’ option.
 
 #### Symfony2 Style ####
 

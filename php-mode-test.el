@@ -70,7 +70,7 @@ be processed."
                        answers))))
      answers)))
 
-(defmacro* with-php-mode-test ((file &key style indent magic) &rest body)
+(defmacro* with-php-mode-test ((file &key style indent magic custom) &rest body)
   "Set up environment for testing `php-mode'.
 Execute BODY in a temporary buffer containing the contents of
 FILE, in `php-mode'. Optional keyword `:style' can be used to set
@@ -80,9 +80,14 @@ the coding style to one of the following:
 2. `drupal'
 3. `wordpress'
 4. `symfony2'
+5. `psr2'
 
 Using any other symbol for STYLE results in undefined behavior.
-The test will use the PEAR style by default."
+The test will use the PEAR style by default.
+
+If the `:custom' keyword is set, customized variables are not reset to
+their default state prior to starting the test. Use this if the test should
+run with specific customizations set."
   (declare (indent 1))
   `(with-temp-buffer
      (insert-file-contents (expand-file-name ,file php-mode-test-dir))
@@ -93,7 +98,11 @@ The test will use the PEAR style by default."
         (drupal '(php-enable-drupal-coding-style))
         (wordpress '(php-enable-wordpress-coding-style))
         (symfony2 '(php-enable-symfony2-coding-style))
+        (psr2 '(php-enable-psr2-coding-style))
         (t '(php-enable-pear-coding-style)))
+
+     ,(unless custom '(custom-set-variables '(php-lineup-cascaded-calls nil)))
+
      ,(if indent
           '(indent-region (point-min) (point-max)))
      ,(if magic
@@ -142,12 +151,22 @@ Gets the face of the text after the comma."
 
 (ert-deftest php-mode-test-issue-19 ()
   "Alignment of arrow operators."
-  (with-php-mode-test ("issue-19.php" :indent t)
+  (custom-set-variables '(php-lineup-cascaded-calls t))
+  (with-php-mode-test ("issue-19.php" :indent t :custom t)
     (while (search-forward "$object->" (point-max) t)
       ;; Point is just after `->'
       (let ((col (current-column)))
         (search-forward "->")
-        (should (= (current-column) col))))))
+        (should (= (current-column) col)))))
+
+  ;; Test indentation again, but without php-lineup-cascaded-calls enabled
+  (with-php-mode-test ("issue-19.php" :indent t)
+    (while (search-forward "\\($object->\\)" (point-max) t)
+      (match-beginning 0)
+      ;; Point is just on `$'
+      (let ((col (current-column)))
+        (search-forward "->")
+        (should (= (current-column) (+ col c-basic-offset)))))))
 
 (ert-deftest php-mode-test-issue-21 ()
   "Font locking multi-line string."
@@ -202,8 +221,11 @@ style from Drupal."
    (search-forward "return $this->bar;")
    ;; the file written to has no significance, only the buffer
    (let ((tmp-filename (make-temp-name temporary-file-directory)))
-     (dolist (mode '(pear wordpress symfony2 psr2))
+     (dolist (mode '(pear wordpress symfony2))
        (php-mode-custom-coding-style-set 'php-mode-coding-style 'drupal)
+       (php-mode-custom-coding-style-set 'php-mode-coding-style mode)
+       (should-not show-trailing-whitespace)
+       (php-mode-custom-coding-style-set 'php-mode-coding-style 'psr2)
        (php-mode-custom-coding-style-set 'php-mode-coding-style mode)
        (should-not show-trailing-whitespace)
        (write-file tmp-filename)
@@ -237,11 +259,13 @@ style from Drupal."
 
 (ert-deftest php-mode-test-issue-115 ()
   "Proper alignment for chained method calls inside arrays."
-  (with-php-mode-test ("issue-115.php" :indent t :magic t)))
+  (custom-set-variables '(php-lineup-cascaded-calls t))
+  (with-php-mode-test ("issue-115.php" :indent t :magic t :custom t)))
 
 (ert-deftest php-mode-test-issue-135 ()
   "Proper alignment multiline statements."
-  (with-php-mode-test ("issue-135.php" :indent t :magic t)))
+  (custom-set-variables '(php-lineup-cascaded-calls t))
+  (with-php-mode-test ("issue-135.php" :indent t :magic t :custom t)))
 
 (ert-deftest php-mode-test-issue-130 ()
   "Proper alignment array elements."
@@ -388,11 +412,9 @@ style from Drupal."
 (ert-deftest php-mode-test-issue-174 ()
   "Test escaped quotes in string literals"
   (with-php-mode-test ("issue-174.php")
-    (while
-      (search-forward "quotation mark" nil t)
-      (backward-word)
+    (while (search-forward "quotation mark" nil t)
       (should (eq 'font-lock-string-face
-        (get-text-property (point) 'face))))))
+                  (get-text-property (- (point) 1) 'face))))))
 
 (ert-deftest php-mode-test-issue-175 ()
   "Not highlight more than 2 digit number"
@@ -400,5 +422,67 @@ style from Drupal."
     (search-forward "10")
     (goto-char (match-beginning 0))
     (should-not (get-text-property (point) 'face))))
+
+(ert-deftest php-mode-test-issue-178 ()
+  "Highligth as keyword and following symbol"
+  (with-php-mode-test ("issue-178.php")
+    (search-forward "use Test as")
+    (should (eq 'font-lock-keyword-face
+                (get-text-property (- (point) 1) 'face)))
+    (should (eq 'font-lock-type-face
+                (get-text-property (+ (point) 1) 'face)))
+    (search-forward "$values as")
+    (should (eq 'font-lock-keyword-face
+                (get-text-property (- (point) 1) 'face)))
+    (should (eq 'font-lock-variable-name-face
+                (get-text-property (+ (point) 2) 'face)))
+    (search-forward "test as")
+    (should (eq 'font-lock-keyword-face
+                (get-text-property (- (point) 1) 'face)))
+    (should (eq 'font-lock-keyword-face
+                (get-text-property (+ (point) 1) 'face)))))
+
+(ert-deftest php-mode-test-switch-statements()
+  "Test indentation inside switch statements"
+  (with-php-mode-test ("switch-statements.php" :indent t :style pear)
+                      (search-forward "case true:")
+                      (should (eq (current-indentation) 0))
+                      (search-forward "break")
+                      (should (eq (current-indentation) c-basic-offset)))
+  (with-php-mode-test ("switch-statements.php" :indent t :style psr2)
+                      (search-forward "case true:")
+                      (should (eq (current-indentation) c-basic-offset))
+                      (search-forward "break")
+                      (should (eq (current-indentation) (* 2 c-basic-offset)))
+                      (search-forward "return")
+                      (should (eq (current-indentation) (* 2 c-basic-offset)))))
+
+(ert-deftest php-mode-test-issue-184()
+  "Test indent-line for statements and heredoc end at beginning of lines"
+  (with-php-mode-test ("issue-184.php")
+                      (search-forward "html;")
+                      (php-cautious-indent-line)
+                      (should (eq (current-indentation) 0))
+                      (search-forward "return;")
+                      (php-cautious-indent-line)
+                      (should (eq (current-indentation) c-basic-offset))))
+
+(ert-deftest php-mode-test-issue-186 ()
+  "Indentation of switch case body preceeded by multiple case statements"
+  (with-php-mode-test ("issue-186.php" :indent t :magic t)))
+
+(ert-deftest php-mode-test-language-constructs()
+  "Test highlighting of language constructs and reserved keywords"
+  (with-php-mode-test ("language-constructs.php")
+                      (while (search-forward "ClassName" nil t)
+                        (backward-char)
+                        (should (eq 'font-lock-type-face
+                                    (get-text-property (point) 'face)))))
+  (with-php-mode-test ("language-constructs.php")
+                      (search-forward "Start:")
+                      (while (not (= (line-number-at-pos) (count-lines (point-min) (point-max))))
+                        (next-line)
+                        (should (eq 'font-lock-keyword-face
+                                    (get-text-property (point) 'face))))))
 
 ;;; php-mode-test.el ends here
