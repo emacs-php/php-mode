@@ -544,6 +544,22 @@ PHP does not have an \"enum\"-like keyword."
 (c-lang-defconst c-enums-contain-decls
   php nil)
 
+(c-lang-defconst c-nonlabel-token-key
+  "Regexp matching things that can't occur in generic colon labels.
+
+This overrides cc-mode `c-nonlabel-token-key' to support switching on
+double quoted strings and true/false/null.
+
+Note: this regexp is also applied to goto-labels, a future improvement
+might be to handle switch and goto labels differently."
+  php (concat
+     ;; All keywords except `c-label-kwds' and `c-constant-kwds'.
+     (c-make-keywords-re t
+       (set-difference (c-lang-const c-keywords)
+                       (append (c-lang-const c-label-kwds)
+                               (c-lang-const c-constant-kwds))
+                       :test 'string-equal))))
+
 (c-add-style
  "php"
  '((c-basic-offset . 4)
