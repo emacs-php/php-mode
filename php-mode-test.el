@@ -437,4 +437,12 @@ style from Drupal."
   "Indentation of switch case body preceeded by multiple case statements"
   (with-php-mode-test ("issue-186.php" :indent t :magic t)))
 
+(ert-deftest php-mode-test-issue-197 ()
+  "Test highlighting of member and function names (should not have type face)"
+  (with-php-mode-test ("issue-197.php")
+                      (while
+                          (search-forward "$test->" nil t)
+                        (should-not (eq 'font-lock-type-face
+                                        (get-text-property (point) 'face))))))
+
 ;;; php-mode-test.el ends here
