@@ -483,6 +483,13 @@ style from Drupal."
       (should-not (eq 'font-lock-type-face
                       (get-text-property (point) 'face))))))
 
+(ert-deftest php-mode-test-issue-199 ()
+  "Test indentation of function inside block constructs"
+  (with-php-mode-test ("issue-199.php" :indent t :magic t)
+    (search-forward "function boolval")
+    (should (eq 'font-lock-function-name-face
+                (get-text-property (- (point) 1) 'face)))))
+
 (ert-deftest php-mode-test-issue-200 ()
   "Test highlighting and elimination of extraneous whitespace in PSR-2 mode"
   (with-php-mode-test ("issue-200.php")
