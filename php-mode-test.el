@@ -437,4 +437,17 @@ style from Drupal."
   "Indentation of switch case body preceeded by multiple case statements"
   (with-php-mode-test ("issue-186.php" :indent t :magic t)))
 
+(ert-deftest php-mode-test-issue-201 ()
+  "Test highlighting of special variables"
+  (with-php-mode-test ("issue-201.php")
+    (search-forward "Start:")
+    (search-forward "$this")
+    (should (eq 'font-lock-constant-face (get-text-property (- (point) 1) 'face)))
+    (search-forward "$that")
+    (should (eq 'font-lock-constant-face (get-text-property (- (point) 1) 'face)))
+    (search-forward "self")
+    (should (eq 'font-lock-keyword-face (get-text-property (- (point) 1) 'face)))
+    (search-forward "static")
+    (should (eq 'font-lock-keyword-face (get-text-property (- (point) 1) 'face)))))
+
 ;;; php-mode-test.el ends here
