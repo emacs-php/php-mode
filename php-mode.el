@@ -85,10 +85,21 @@
   (defvar c-vsemi-status-unknown-p)
   (defvar syntax-propertize-via-font-lock))
 
-;;; Emacs 24.3 obsoletes flet in favor of cl-flet.  So if we are not
-;;; using that version then we revert to using flet.
-(unless (fboundp 'cl-flet)
-  (defalias 'cl-flet 'flet))
+;; Work around emacs bug#18845, cc-mode expects cl to be loaded
+;; while php-mode only uses cl-lib (without compatibility aliases)
+(eval-when-compile
+  (if (and (= emacs-major-version 24) (= emacs-minor-version 4))
+    (require 'cl)))
+
+;; Use the recommended cl functions in php-mode but alias them to the
+;; old names when we detect emacs < 24.3
+(if (and (= emacs-major-version 24) (< emacs-minor-version 3))
+    (progn
+      (unless (fboundp 'cl-flet)
+        (defalias 'cl-flet 'flet))
+      (unless (fboundp 'cl-set-difference)
+        (defalias 'cl-set-difference 'set-difference))))
+
 
 ;; Local variables
 ;;;###autoload
@@ -426,7 +437,7 @@ This variable can take one of the following symbol values:
 ;; Allow '\' when scanning from open brace back to defining
 ;; construct like class
 (c-lang-defconst c-block-prefix-disallowed-chars
-  php (set-difference (c-lang-const c-block-prefix-disallowed-chars)
+  php (cl-set-difference (c-lang-const c-block-prefix-disallowed-chars)
                       '(?\\)))
 
 ;; Allow $ so variables are recognized in cc-mode and remove @. This
@@ -555,7 +566,7 @@ might be to handle switch and goto labels differently."
   php (concat
      ;; All keywords except `c-label-kwds' and `c-constant-kwds'.
      (c-make-keywords-re t
-       (set-difference (c-lang-const c-keywords)
+       (cl-set-difference (c-lang-const c-keywords)
                        (append (c-lang-const c-label-kwds)
                                (c-lang-const c-constant-kwds))
                        :test 'string-equal))))
