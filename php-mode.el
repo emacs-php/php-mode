@@ -552,9 +552,17 @@ PHP does not have an \"enum\"-like keyword."
     "xor"
     "yield"
 
-    ;; technically not reserved keywords, but "declare directives"
+    ;; Below keywords are technically not reserved keywords, but
+    ;; threated no differently by php-mode from actual reserved
+    ;; keywords
+    ;;
+    ;;; declare directives:
     "encoding"
-    "ticks"))
+    "ticks"
+
+    ;;; self for static references:
+    "self"
+    ))
 
 ;; PHP does not have <> templates/generics
 (c-lang-defconst c-recognize-<>-arglists
@@ -1366,6 +1374,16 @@ a completion list."
    ;;   already fontified by another pattern. Note that using OVERRIDE
    ;;   is usually overkill.
    `(
+     
+     ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
+     ;; not in $obj->var()
+     ("->\\(\\sw+\\)\\s-*(" 1 'default)
+
+     ;; Highlight special variables
+     ("\\$\\(this\\|that\\)" 1 font-lock-constant-face)
+
+     ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 font-lock-variable-name-face)
+
      ;; Highlight all upper-cased symbols as constant
      ("\\<\\([A-Z_][A-Z0-9_]+\\)\\>" 1 font-lock-constant-face)
 
