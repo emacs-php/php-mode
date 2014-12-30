@@ -144,7 +144,7 @@ The annotations are the lines that begin with the `@` character, and PHP Mode wi
 
 ### Coding Styles ###
 
-By default PHP Mode tries to provide a reasonable style for indentation and formatting.  However, it provides other options suited for particular projects which you may find useful.  These coding styles are available through these functions:
+By default PHP Mode tries to provide a reasonable style for indentation and formatting, which you can use via the function `php-enable-default-coding-style`.  However, it provides other options suited for particular projects which you may find useful.  Other coding styles are available through these functions:
 
 1. `php-enable-pear-coding-style`
 2. `php-enable-drupal-coding-style`
@@ -152,7 +152,11 @@ By default PHP Mode tries to provide a reasonable style for indentation and form
 4. `php-enable-symfony2-coding-style`
 5. `php-enable-psr2-coding-style`
 
-They will help format your code for PEAR/PSR-2 projects, or work on Drupal, WordPress, and Symfony2 software, respectively.  You may enable any of them by default by running `M-x customize-group <RET> php` and looking for the ‘PHP Mode Coding Style’ option.
+They will help format your code for PEAR/PSR-2 projects, or work on Drupal, WordPress, and Symfony2 software, respectively.  You may enable any of them by default by running `M-x customize-group <RET> php` and looking for the ‘PHP Mode Coding Style’ option.  You may also enable any of these via a hook, e.g.
+
+```lisp
+(add-hook 'php-mode-hook 'php-enable-default-coding-style)
+```
 
 #### Symfony2 Style ####
 

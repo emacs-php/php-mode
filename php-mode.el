@@ -2,16 +2,16 @@
 
 ;; Copyright (C) 1999, 2000, 2001, 2003, 2004 Turadg Aleahmad
 ;;               2008 Aaron S. Hawley
-;;               2011, 2012, 2013, 2014 Eric James Michael Ritz
+;;               2011, 2012, 2013, 2014, 2015 Eric James Michael Ritz
 
 ;;; Author: Eric James Michael Ritz
 ;;; URL: https://github.com/ejmr/php-mode
-;;; Version: 1.15.0
+;;; Version: 1.15.1
 
-(defconst php-mode-version-number "1.15.0"
+(defconst php-mode-version-number "1.15.1"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2014-10-27"
+(defconst php-mode-modified "2014-12-29"
   "PHP Mode build date.")
 
 ;;; License
@@ -312,6 +312,8 @@ have any tags inside a PHP string, it will be fooled."
   "Select default coding style to use with php-mode.
 This variable can take one of the following symbol values:
 
+`Default' - use a reasonable default style for PHP.
+
 `PEAR' - use coding styles preferred for PEAR code and modules.
 
 `Drupal' - use coding styles preferred for working with Drupal projects.
@@ -321,7 +323,8 @@ This variable can take one of the following symbol values:
 `Symfony2' - use coding styles preferred for working with Symfony2 projects.
 
 `PSR-2' - use coding styles preferred for working with projects using PSR-2 standards."
-  :type '(choice (const :tag "PEAR" pear)
+  :type '(choice (const :tag "Default" default)
+                 (const :tag "PEAR" pear)
                  (const :tag "Drupal" drupal)
                  (const :tag "WordPress" wordpress)
                  (const :tag "Symfony2" symfony2)
@@ -336,6 +339,8 @@ This variable can take one of the following symbol values:
     (set-default sym value)
     (cond ((eq value 'pear)
            (php-enable-pear-coding-style))
+          ((eq value 'default)
+           (php-enable-default-coding-style))
           ((eq value 'drupal)
            (php-enable-drupal-coding-style))
           ((eq value 'wordpress)
@@ -589,7 +594,10 @@ might be to handle switch and goto labels differently."
                        (substatement-open . 0)
                        (topmost-intro-cont . (first c-lineup-cascaded-calls +))))))
 
-(add-to-list 'c-default-style '(php-mode . "php"))
+(defun php-enable-default-coding-style ()
+  "Set PHP Mode to use reasonable default formatting."
+  (interactive)
+  (c-set-style "php"))
 
 (c-add-style
  "pear"
