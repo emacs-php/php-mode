@@ -234,6 +234,19 @@ style from Drupal."
             (beginning-of-line)
             (should (string= (thing-at-point 'line) correct-line))))))))
 
+(ert-deftest php-mode-test-issue-83 ()
+  "All static method should appear on imenu whether 'static' keyword is placed before or after visibility"
+  (with-php-mode-test
+   ("issue-83.php")
+   (require 'imenu)
+   (let* ((index-alist (imenu--make-index-alist))
+          (public-methods (mapcar 'car (cdr (assoc "Public Methods" index-alist))))
+          (all-methods (mapcar 'car (cdr (assoc "All Methods" index-alist)))))
+     (should (member "staticBeforeVisibility" public-methods))
+     (should (member "staticBeforeVisibility" all-methods))
+     (should (member "staticAfterVisibility" public-methods))
+     (should (member "staticAfterVisibility" all-methods)))))
+
 (ert-deftest php-mode-test-issue-99 ()
   "Proper indentation for 'foreach' statements without braces."
   (with-php-mode-test ("issue-99.php" :indent t :magic t)))
