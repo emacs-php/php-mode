@@ -170,6 +170,11 @@ of constants when set."
      'php-mode `((,(php-mode-extra-constants-create-regexp value) 1 font-lock-constant-face))))
   (set sym value))
 
+(defcustom php-lineup-cascaded-calls nil
+  "Indent chained method calls to the previous line"
+  :type 'boolean
+  :group 'php)
+
 ;;;###autoload
 (defcustom php-extra-constants '()
   "A list of additional strings to treat as PHP constants."
@@ -574,13 +579,19 @@ might be to handle switch and goto labels differently."
                                (c-lang-const c-constant-kwds))
                        :test 'string-equal))))
 
+(defun php-lineup-cascaded-calls (langelem)
+  "Line up chained methods using `c-lineup-cascaded-calls',
+but only if the setting is enabled"
+  (if php-lineup-cascaded-calls
+    (c-lineup-cascaded-calls langelem)))
+
 (c-add-style
  "php"
  '((c-basic-offset . 4)
    (c-doc-comment-style . javadoc)
    (c-offsets-alist . ((arglist-close . php-lineup-arglist-close)
-                       (arglist-cont . (first c-lineup-cascaded-calls 0))
-                       (arglist-cont-nonempty . (first c-lineup-cascaded-calls c-lineup-arglist))
+                       (arglist-cont . (first php-lineup-cascaded-calls 0))
+                       (arglist-cont-nonempty . (first php-lineup-cascaded-calls c-lineup-arglist))
                        (arglist-intro . php-lineup-arglist-intro)
                        (case-label . +)
                        (class-open . -)
@@ -588,9 +599,9 @@ might be to handle switch and goto labels differently."
                        (inlambda . 0)
                        (inline-open . 0)
                        (label . +)
-                       (statement-cont . (first c-lineup-cascaded-calls +))
+                       (statement-cont . (first php-lineup-cascaded-calls +))
                        (substatement-open . 0)
-                       (topmost-intro-cont . (first c-lineup-cascaded-calls +))))))
+                       (topmost-intro-cont . (first php-lineup-cascaded-calls +))))))
 
 (defun php-enable-default-coding-style ()
   "Set PHP Mode to use reasonable default formatting."

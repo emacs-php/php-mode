@@ -70,7 +70,7 @@ be processed."
                        answers))))
      answers)))
 
-(defmacro* with-php-mode-test ((file &key style indent magic) &rest body)
+(defmacro* with-php-mode-test ((file &key style indent magic custom) &rest body)
   "Set up environment for testing `php-mode'.
 Execute BODY in a temporary buffer containing the contents of
 FILE, in `php-mode'. Optional keyword `:style' can be used to set
@@ -82,7 +82,11 @@ the coding style to one of the following:
 4. `symfony2'
 
 Using any other symbol for STYLE results in undefined behavior.
-The test will use the PEAR style by default."
+The test will use the PEAR style by default.
+
+If the `:custom' keyword is set, customized variables are not reset to
+their default state prior to starting the test. Use this if the test should
+run with specific customizations set."
   (declare (indent 1))
   `(with-temp-buffer
      (insert-file-contents (expand-file-name ,file php-mode-test-dir))
@@ -94,6 +98,9 @@ The test will use the PEAR style by default."
         (wordpress '(php-enable-wordpress-coding-style))
         (symfony2 '(php-enable-symfony2-coding-style))
         (t '(php-enable-pear-coding-style)))
+
+     ,(unless custom '(custom-set-variables '(php-lineup-cascaded-calls nil)))
+
      ,(if indent
           '(indent-region (point-min) (point-max)))
      ,(if magic
@@ -142,12 +149,22 @@ Gets the face of the text after the comma."
 
 (ert-deftest php-mode-test-issue-19 ()
   "Alignment of arrow operators."
-  (with-php-mode-test ("issue-19.php" :indent t)
+  (custom-set-variables '(php-lineup-cascaded-calls t))
+  (with-php-mode-test ("issue-19.php" :indent t :custom t)
     (while (search-forward "$object->" (point-max) t)
       ;; Point is just after `->'
       (let ((col (current-column)))
         (search-forward "->")
-        (should (= (current-column) col))))))
+        (should (= (current-column) col)))))
+
+  ;; Test indentation again, but without php-lineup-cascaded-calls enabled
+  (with-php-mode-test ("issue-19.php" :indent t)
+    (while (search-forward "\\($object->\\)" (point-max) t)
+      (match-beginning 0)
+      ;; Point is just on `$'
+      (let ((col (current-column)))
+        (search-forward "->")
+        (should (= (current-column) (+ col c-basic-offset)))))))
 
 (ert-deftest php-mode-test-issue-21 ()
   "Font locking multi-line string."
@@ -253,11 +270,13 @@ style from Drupal."
 
 (ert-deftest php-mode-test-issue-115 ()
   "Proper alignment for chained method calls inside arrays."
-  (with-php-mode-test ("issue-115.php" :indent t :magic t)))
+  (custom-set-variables '(php-lineup-cascaded-calls t))
+  (with-php-mode-test ("issue-115.php" :indent t :magic t :custom t)))
 
 (ert-deftest php-mode-test-issue-135 ()
   "Proper alignment multiline statements."
-  (with-php-mode-test ("issue-135.php" :indent t :magic t)))
+  (custom-set-variables '(php-lineup-cascaded-calls t))
+  (with-php-mode-test ("issue-135.php" :indent t :magic t :custom t)))
 
 (ert-deftest php-mode-test-issue-130 ()
   "Proper alignment array elements."
