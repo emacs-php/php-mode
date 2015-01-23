@@ -599,7 +599,7 @@ but only if the setting is enabled"
                        (inlambda . 0)
                        (inline-open . 0)
                        (label . +)
-                       (statement-cont . (first php-lineup-cascaded-calls +))
+                       (statement-cont . (first php-lineup-cascaded-calls php-lineup-string-cont +))
                        (substatement-open . 0)
                        (topmost-intro-cont . (first php-lineup-cascaded-calls +))))))
 
@@ -860,6 +860,23 @@ This is was done due to the problem reported here:
 (defun php-c-vsemi-status-unknown-p ()
   "See `php-c-at-vsemi-p'."
   )
+
+(defun php-lineup-string-cont (langelem)
+  "Line up string toward equal sign or dot
+e.g.
+$str = 'some'
+     . 'string';
+this ^ lineup"
+  (save-excursion
+    (goto-char (cdr langelem))
+    (setq anchor 0)
+    ;; Find equal sign
+    (if (not (<= (setq anchor (re-search-forward "=")) (line-end-position)))
+        ;; Or find dot sign
+        (if (<= (setq anchor (re-search-forward ".")) (line-end-position))))
+    (setq anchor (- anchor (line-beginning-position)))
+    (setq anchor (1- anchor))
+    (vector anchor)))
 
 (defun php-lineup-arglist-intro (langelem)
   (save-excursion
