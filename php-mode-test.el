@@ -82,7 +82,7 @@ the coding style to one of the following:
 4. `symfony2'
 
 Using any other symbol for STYLE results in undefined behavior.
-The test will use the PEAR style by default.
+The test will use the PHP style by default.
 
 If the `:custom' keyword is set, customized variables are not reset to
 their default state prior to starting the test. Use this if the test should
@@ -97,7 +97,7 @@ run with specific customizations set."
         (drupal '(php-enable-drupal-coding-style))
         (wordpress '(php-enable-wordpress-coding-style))
         (symfony2 '(php-enable-symfony2-coding-style))
-        (t '(php-enable-pear-coding-style)))
+        (t '(php-enable-default-coding-style)))
 
      ,(unless custom '(custom-set-variables '(php-lineup-cascaded-calls nil)))
 
