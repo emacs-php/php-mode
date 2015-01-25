@@ -1440,7 +1440,7 @@ The output will appear in the buffer *PHP*."
       (call-process "php" nil php-buffer nil "-r" (clean-php-code code)))))
 
 
-(defface php-annotations-annotation-face '((t . (:inherit 'font-lock-constant-face)))
+(defface php-annotations-annotation-face '((t . (:inherit font-lock-constant-face)))
   "Face used to highlight annotations.")
 
 (defconst php-annotations-re "\\(\\s-\\|{\\)\\(@[[:alpha:]]+\\)")
