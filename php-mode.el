@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.15.2"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2015-01-23"
+(defconst php-mode-modified "2015-01-26"
   "PHP Mode build date.")
 
 ;;; License
@@ -1440,7 +1440,7 @@ The output will appear in the buffer *PHP*."
       (call-process "php" nil php-buffer nil "-r" (clean-php-code code)))))
 
 
-(defface php-annotations-annotation-face '((t . (:inherit 'font-lock-constant-face)))
+(defface php-annotations-annotation-face '((t . (:inherit font-lock-constant-face)))
   "Face used to highlight annotations.")
 
 (defconst php-annotations-re "\\(\\s-\\|{\\)\\(@[[:alpha:]]+\\)")
