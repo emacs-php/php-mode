@@ -305,6 +305,7 @@ In chronological order:
 63. Joris Steyn
 64. l3msh0
 65. [Hernawan Fa'iz Abdillah](https://github.com/Abdillah)
+66. [Sebastian Wiesner](https://github.com/lunaryorn)
 
 
 
