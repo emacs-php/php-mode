@@ -494,4 +494,25 @@ style from Drupal."
     (search-forward "static")
     (should (eq 'font-lock-keyword-face (get-text-property (- (point) 1) 'face)))))
 
+(ert-deftest php-mode-test-issue-211 ()
+  "Test indentation of string concatination"
+  (with-php-mode-test ("issue-211.php")
+    (search-forward "\$str =")
+    (let ((equal-indentation (1- (current-column)))) ;; because cursor is after '='
+      (forward-line 1)
+      (call-interactively 'indent-for-tab-command)
+      (should (= (current-column) equal-indentation)))
+
+    (search-forward "\$str_long_name =")
+    (let ((equal-indentation (1- (current-column))))
+      (forward-line 1)
+      (call-interactively 'indent-for-tab-command)
+      (should (= (current-column) equal-indentation)))
+
+    (search-forward "\$sql =")
+    (let ((equal-indentation (1- (current-column))))
+      (forward-line 2)
+      (call-interactively 'indent-for-tab-command)
+      (should (= (current-column) equal-indentation)))))
+
 ;;; php-mode-test.el ends here
