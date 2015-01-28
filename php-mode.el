@@ -877,14 +877,9 @@ $str = 'some'
 this ^ lineup"
   (save-excursion
     (goto-char (cdr langelem))
-    (setq anchor 0)
-    ;; Find equal sign
-    (if (not (<= (setq anchor (re-search-forward "=")) (line-end-position)))
-        ;; Or find dot sign
-        (if (<= (setq anchor (re-search-forward ".")) (line-end-position))))
-    (setq anchor (- anchor (line-beginning-position)))
-    (setq anchor (1- anchor))
-    (vector anchor)))
+    (when (or (search-forward "=" (line-end-position) t)
+              (search-forward "." (line-end-position) t))
+      (vector (1- (current-column))))))
 
 (defun php-lineup-arglist-intro (langelem)
   (save-excursion
