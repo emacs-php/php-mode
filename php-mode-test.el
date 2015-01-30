@@ -226,8 +226,10 @@ style from Drupal."
        (php-mode-custom-coding-style-set 'php-mode-coding-style 'psr2)
        (php-mode-custom-coding-style-set 'php-mode-coding-style mode)
        (should-not show-trailing-whitespace)
+
+       (php-mode-custom-coding-style-set 'php-mode-coding-style 'drupal)
        (write-file tmp-filename)
-       (should (char-equal (char-after) ?\s))))))
+       (should (looking-at-p "$"))))))
 
 (ert-deftest php-mode-test-issue-73 ()
   "The `delete-indentation' function should work properly for PHP.

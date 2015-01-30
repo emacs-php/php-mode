@@ -631,8 +631,7 @@ code and modules."
   (c-set-style "pear")
 
   ;; Undo drupal/PSR-2 coding style whitespace effects
-  (set (make-local-variable 'show-trailing-whitespace) nil)
-  (remove-hook 'before-save-hook 'delete-trailing-whitespace))
+  (set (make-local-variable 'show-trailing-whitespace) nil))
 
 (c-add-style
  "drupal"
@@ -647,7 +646,7 @@ working with Drupal."
         indent-tabs-mode nil
         fill-column 78)
   (set (make-local-variable 'show-trailing-whitespace) t)
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)
   (c-set-style "drupal"))
 
 (c-add-style
@@ -666,8 +665,7 @@ working with Wordpress."
   (c-set-style "wordpress")
 
   ;; Undo drupal/PSR-2 coding style whitespace effects
-  (set (make-local-variable 'show-trailing-whitespace) nil)
-  (remove-hook 'before-save-hook 'delete-trailing-whitespace))
+  (set (make-local-variable 'show-trailing-whitespace) nil))
 
 (c-add-style
   "symfony2"
@@ -685,8 +683,7 @@ working with Symfony2."
   (c-set-style "symfony2")
 
   ;; Undo drupal/PSR-2 coding style whitespace effects
-  (set (make-local-variable 'show-trailing-whitespace) nil)
-  (remove-hook 'before-save-hook 'delete-trailing-whitespace))
+  (set (make-local-variable 'show-trailing-whitespace) nil))
 
 (c-add-style
   "psr2"
@@ -704,7 +701,7 @@ working with Symfony2."
   ;; Apply drupal-like coding style whitespace effects
   (set (make-local-variable 'require-final-newline) t)
   (set (make-local-variable 'show-trailing-whitespace) t)
-  (add-hook 'before-save-hook 'delete-trailing-whitespace))
+  (add-hook 'before-save-hook 'delete-trailing-whitespace nil t))
 
 (defconst php-beginning-of-defun-regexp
   "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("
