@@ -13,27 +13,27 @@
 
 switch (true) {
 case true:
-    echo 'test'; // ###php-mode-test### ((indent c-basic-offset))
-    echo 'test'; // ###php-mode-test### ((indent c-basic-offset))
+    echo 'test'; // ###php-mode-test### ((indent (* c-basic-offset 2)))
+    echo 'test'; // ###php-mode-test### ((indent (* c-basic-offset 2)))
 }
 
 switch (true) {
 case null:
 case false:
-    echo 'test'; // ###php-mode-test### ((indent c-basic-offset))
-    echo 'test'; // ###php-mode-test### ((indent c-basic-offset))
+    echo 'test'; // ###php-mode-test### ((indent (* c-basic-offset 2)))
+    echo 'test'; // ###php-mode-test### ((indent (* c-basic-offset 2)))
 }
 
 switch (true) {
 case "test":
 case "test":
-    echo 'test'; // ###php-mode-test### ((indent c-basic-offset))
-    echo 'test'; // ###php-mode-test### ((indent c-basic-offset))
+    echo 'test'; // ###php-mode-test### ((indent (* c-basic-offset 2)))
+    echo 'test'; // ###php-mode-test### ((indent (* c-basic-offset 2)))
 }
 
 switch (true) {
 case $test:
 case $test:
-    echo 'test'; // ###php-mode-test### ((indent c-basic-offset))
-    echo 'test'; // ###php-mode-test### ((indent c-basic-offset))
+    echo 'test'; // ###php-mode-test### ((indent (* c-basic-offset 2)))
+    echo 'test'; // ###php-mode-test### ((indent (* c-basic-offset 2)))
 }
