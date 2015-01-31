@@ -1,7 +1,7 @@
 ;;; php-mode-test.el --- Tests for php-mode
 
 ;; Copyright (C) 2013 Daniel Hackney
-;;               2014 Eric James Michael Ritz
+;;               2014, 2015 Eric James Michael Ritz
 
 ;; Author: Daniel Hackney <dan@haxney.org>
 ;; URL: https://github.com/ejmr/php-mode
