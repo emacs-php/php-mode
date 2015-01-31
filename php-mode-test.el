@@ -494,6 +494,8 @@ style from Drupal."
     (search-forward "self")
     (should (eq 'font-lock-keyword-face (get-text-property (- (point) 1) 'face)))
     (search-forward "static")
+    (should (eq 'font-lock-keyword-face (get-text-property (- (point) 1) 'face)))
+    (search-forward "parent")
     (should (eq 'font-lock-keyword-face (get-text-property (- (point) 1) 'face)))))
 
 (ert-deftest php-mode-test-issue-211 ()

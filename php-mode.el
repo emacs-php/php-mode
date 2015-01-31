@@ -546,6 +546,7 @@ PHP does not have an \"enum\"-like keyword."
     "isset"
     "list"
     "or"
+    "parent"
     "static"
     "unset"
     "var"
@@ -1340,6 +1341,9 @@ a completion list."
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
      ("->\\(\\sw+\\)\\s-*(" 1 'default)
+
+     ;; Highlight special variables
+     ("\\$\\(this\\|that\\)" 1 font-lock-constant-face)
      ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 font-lock-variable-name-face)
 
      ;; Highlight function/method names
@@ -1366,13 +1370,9 @@ a completion list."
    ;;   already fontified by another pattern. Note that using OVERRIDE
    ;;   is usually overkill.
    `(
-     
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
      ("->\\(\\sw+\\)\\s-*(" 1 'default)
-
-     ;; Highlight special variables
-     ("\\$\\(this\\|that\\)" 1 font-lock-constant-face)
 
      ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 font-lock-variable-name-face)
 
