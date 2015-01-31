@@ -11,3 +11,4 @@ $this;
 $that;
 self::test();
 static::test();
+parent::test();
