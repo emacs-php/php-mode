@@ -447,7 +447,7 @@ style from Drupal."
   (with-php-mode-test ("language-constructs.php")
                       (search-forward "Start:")
                       (while (not (= (line-number-at-pos) (count-lines (point-min) (point-max))))
-                        (next-line)
+                        (forward-line 1)
                         (should (eq 'font-lock-keyword-face
                                     (get-text-property (point) 'face))))))
 
