@@ -6,12 +6,12 @@
 
 ;;; Author: Eric James Michael Ritz
 ;;; URL: https://github.com/ejmr/php-mode
-;;; Version: 1.15.2
+;;; Version: 1.15.3
 
-(defconst php-mode-version-number "1.15.2"
+(defconst php-mode-version-number "1.15.3"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2015-01-26"
+(defconst php-mode-modified "2015-01-31"
   "PHP Mode build date.")
 
 ;;; License
