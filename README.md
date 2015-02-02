@@ -306,7 +306,7 @@ In chronological order:
 64. l3msh0
 65. [Hernawan Fa'iz Abdillah](https://github.com/Abdillah)
 66. [Sebastian Wiesner](https://github.com/lunaryorn)
-
+67. [Michael Stolovitzsky](https://github.com/emestee)
 
 
 [wiki]: https://github.com/ejmr/php-mode/wiki

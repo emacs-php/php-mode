@@ -483,6 +483,13 @@ style from Drupal."
                         (should-not (eq 'font-lock-type-face
                                         (get-text-property (point) 'face))))))
 
+(ert-deftest php-mode-test-issue-200 ()
+  "Test highlighting and elimination of extraneous whitespace in PSR-2 mode"
+  (with-php-mode-test ("issue-200.php")
+		      (php-mode-custom-coding-style-set 'php-mode-coding-style 'psr2)
+		      (should show-trailing-whitespace)
+		      (should (and (listp before-save-hook) (member 'delete-trailing-whitespace before-save-hook)))))
+
 (ert-deftest php-mode-test-issue-201 ()
   "Test highlighting of special variables"
   (with-php-mode-test ("issue-201.php")
