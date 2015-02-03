@@ -632,7 +632,8 @@ code and modules."
   (c-set-style "pear")
 
   ;; Undo drupal/PSR-2 coding style whitespace effects
-  (set (make-local-variable 'show-trailing-whitespace) nil))
+  (set (make-local-variable 'show-trailing-whitespace)
+       (default-value 'show-trailing-whitespace)))
 
 (c-add-style
  "drupal"
@@ -666,7 +667,8 @@ working with Wordpress."
   (c-set-style "wordpress")
 
   ;; Undo drupal/PSR-2 coding style whitespace effects
-  (set (make-local-variable 'show-trailing-whitespace) nil))
+  (set (make-local-variable 'show-trailing-whitespace)
+       (default-value 'show-trailing-whitespace)))
 
 (c-add-style
   "symfony2"
@@ -684,7 +686,8 @@ working with Symfony2."
   (c-set-style "symfony2")
 
   ;; Undo drupal/PSR-2 coding style whitespace effects
-  (set (make-local-variable 'show-trailing-whitespace) nil))
+  (set (make-local-variable 'show-trailing-whitespace)
+       (default-value 'show-trailing-whitespace)))
 
 (c-add-style
   "psr2"
