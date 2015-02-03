@@ -27,7 +27,7 @@ If you are using an older version of Emacs, or if you simply do not wish to use 
 Status
 ------
 
-I am currently looking for someone willing to take over as the maintainer of PHP Mode, ideally before the end of 2014.  **From this point forward I will only address bug fixes and add features from other developers.** Please read [my short blog post on the matter](http://ericjmritz.name/2014/08/22/emacs-no-more-of-my-own-code-for-php-mode/).  **PHP Mode is not dead.**  However, I will no longer be contributing my own features because my time is taken up my game development that I am doing.  Nonetheless, I still welcome all contributions and will try to review and merge them as best as possible, so please continue to improve the mode all you great Emacs Lisp developers.
+**PHP Mode is not dead.**  However, I will no longer be contributing my own features because my time is taken up my game development that I am doing.  Nonetheless, I still welcome all contributions and will try to review and merge them as best as possible, so please continue to improve the mode all you great Emacs Lisp developers.
 
 
 Experimental and In-Progress Features
@@ -208,11 +208,11 @@ How to Contribute
 
 All contributions to PHP Mode are welcome.  But please try to do the following when sending improvements or bug fixes:
 
-1. Add your name to the list of ‘Contributors’ in this `README.md` file if it is not there already.  If you have a GitHub page then please link your name to it, so people can see your other work.
+1. Add your name to the list of ‘Contributors’ in this `README.md` file if it is not there already.  If you have a GitHub page and/or personal site then please link your name to it, so people can see your other work.
 
 2. If your contribution addresses an issue on the GitHub project page then include a single line like `GitHub-Issue: 16` with the appropriate issue number.
 
-3. Make sure to update the constant `php-mode-modified`.
+3. Make sure to update the constant `php-mode-modified` *only if you patch affects `php-mode.el`,* which means this step is unnecessary for patches related to unit tests.
 
 4. However, please do not modify `php-mode-version-number`.  I will decide what constitutes a bump in the version number.
 
