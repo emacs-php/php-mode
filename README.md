@@ -1,4 +1,4 @@
-PHP Mode for GNU Emacs
+PHP Mode for GNU Emacs [![travis badge][travis-badge]][travis-link]
 ======================
 
 This updates PHP Mode with features to make it more friendly to use with PHP 5.4 and later.  This fork builds on the work of:
@@ -318,3 +318,5 @@ In chronological order:
 [MELPA]: http://melpa.milkbox.net/
 [Marmalade]: http://marmalade-repo.org/
 [Web Mode]: http://web-mode.org/
+[travis-badge]: https://travis-ci.org/ejmr/php-mode.svg
+[travis-link]: https://travis-ci.org/ejmr/php-mode
