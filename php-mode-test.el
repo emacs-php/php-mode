@@ -80,6 +80,7 @@ the coding style to one of the following:
 2. `drupal'
 3. `wordpress'
 4. `symfony2'
+5. `psr2'
 
 Using any other symbol for STYLE results in undefined behavior.
 The test will use the PHP style by default.
@@ -97,6 +98,7 @@ run with specific customizations set."
         (drupal '(php-enable-drupal-coding-style))
         (wordpress '(php-enable-wordpress-coding-style))
         (symfony2 '(php-enable-symfony2-coding-style))
+        (psr2 '(php-enable-psr2-coding-style))
         (t '(php-enable-default-coding-style)))
 
      ,(unless custom '(custom-set-variables '(php-lineup-cascaded-calls nil)))
@@ -440,16 +442,16 @@ style from Drupal."
 (ert-deftest php-mode-test-language-constructs()
   "Test highlighting of language constructs and reserved keywords"
   (with-php-mode-test ("language-constructs.php")
-                      (while (search-forward "ClassName" nil t)
-                        (backward-char)
-                        (should (eq 'font-lock-type-face
-                                    (get-text-property (point) 'face)))))
+    (while (search-forward "ClassName" nil t)
+      (backward-char)
+      (should (eq 'font-lock-type-face
+                  (get-text-property (point) 'face)))))
   (with-php-mode-test ("language-constructs.php")
-                      (search-forward "Start:")
-                      (while (not (= (line-number-at-pos) (count-lines (point-min) (point-max))))
-                        (forward-line 1)
-                        (should (eq 'font-lock-keyword-face
-                                    (get-text-property (point) 'face))))))
+    (search-forward "Start:")
+    (while (not (= (line-number-at-pos) (count-lines (point-min) (point-max))))
+      (forward-line 1)
+      (should (eq 'font-lock-keyword-face
+                  (get-text-property (point) 'face))))))
 
 (ert-deftest php-mode-test-issue-178 ()
   "Highligth as keyword and following symbol"
@@ -474,21 +476,19 @@ style from Drupal."
   "Indentation of switch case body preceeded by multiple case statements"
   (with-php-mode-test ("issue-186.php" :indent t :magic t)))
 
-
 (ert-deftest php-mode-test-issue-197 ()
   "Test highlighting of member and function names (should not have type face)"
   (with-php-mode-test ("issue-197.php")
-                      (while
-                          (search-forward "$test->" nil t)
-                        (should-not (eq 'font-lock-type-face
-                                        (get-text-property (point) 'face))))))
+    (while (search-forward "$test->" nil t)
+      (should-not (eq 'font-lock-type-face
+                      (get-text-property (point) 'face))))))
 
 (ert-deftest php-mode-test-issue-200 ()
   "Test highlighting and elimination of extraneous whitespace in PSR-2 mode"
   (with-php-mode-test ("issue-200.php")
-		      (php-mode-custom-coding-style-set 'php-mode-coding-style 'psr2)
-		      (should show-trailing-whitespace)
-		      (should (and (listp before-save-hook) (member 'delete-trailing-whitespace before-save-hook)))))
+    (php-mode-custom-coding-style-set 'php-mode-coding-style 'psr2)
+    (should show-trailing-whitespace)
+    (should (and (listp before-save-hook) (member 'delete-trailing-whitespace before-save-hook)))))
 
 (ert-deftest php-mode-test-issue-201 ()
   "Test highlighting of special variables"
@@ -529,11 +529,26 @@ style from Drupal."
 (ert-deftest php-mode-test-issue-184()
   "Test indent-line for statements and heredoc end at beginning of lines"
   (with-php-mode-test ("issue-184.php")
-                      (search-forward "html;")
-                      (php-cautious-indent-line)
-                      (should (eq (current-indentation) 0))
-                      (search-forward "return;")
-                      (php-cautious-indent-line)
-                      (should (eq (current-indentation) c-basic-offset))))
+    (search-forward "html;")
+    (php-cautious-indent-line)
+    (should (= (current-indentation) 0))
+    (search-forward "return;")
+    (php-cautious-indent-line)
+    (should (= (current-indentation) c-basic-offset))))
+
+(ert-deftest php-mode-test-switch-statements()
+  "Test indentation inside switch statements"
+  (with-php-mode-test ("switch-statements.php" :indent t :style pear)
+    (search-forward "case true:")
+    (should (eq (current-indentation) 0))
+    (search-forward "break")
+    (should (eq (current-indentation) c-basic-offset)))
+  (with-php-mode-test ("switch-statements.php" :indent t :style psr2)
+    (search-forward "case true:")
+    (should (eq (current-indentation) c-basic-offset))
+    (search-forward "break")
+    (should (eq (current-indentation) (* 2 c-basic-offset)))
+    (search-forward "return")
+    (should (eq (current-indentation) (* 2 c-basic-offset)))))
 
 ;;; php-mode-test.el ends here
