@@ -440,16 +440,16 @@ style from Drupal."
 (ert-deftest php-mode-test-language-constructs()
   "Test highlighting of language constructs and reserved keywords"
   (with-php-mode-test ("language-constructs.php")
-                      (while (search-forward "ClassName" nil t)
-                        (backward-char)
-                        (should (eq 'font-lock-type-face
-                                    (get-text-property (point) 'face)))))
+    (while (search-forward "ClassName" nil t)
+      (backward-char)
+      (should (eq 'font-lock-type-face
+                  (get-text-property (point) 'face)))))
   (with-php-mode-test ("language-constructs.php")
-                      (search-forward "Start:")
-                      (while (not (= (line-number-at-pos) (count-lines (point-min) (point-max))))
-                        (forward-line 1)
-                        (should (eq 'font-lock-keyword-face
-                                    (get-text-property (point) 'face))))))
+    (search-forward "Start:")
+    (while (not (= (line-number-at-pos) (count-lines (point-min) (point-max))))
+      (forward-line 1)
+      (should (eq 'font-lock-keyword-face
+                  (get-text-property (point) 'face))))))
 
 (ert-deftest php-mode-test-issue-178 ()
   "Highligth as keyword and following symbol"
@@ -478,17 +478,16 @@ style from Drupal."
 (ert-deftest php-mode-test-issue-197 ()
   "Test highlighting of member and function names (should not have type face)"
   (with-php-mode-test ("issue-197.php")
-                      (while
-                          (search-forward "$test->" nil t)
-                        (should-not (eq 'font-lock-type-face
-                                        (get-text-property (point) 'face))))))
+    (while (search-forward "$test->" nil t)
+      (should-not (eq 'font-lock-type-face
+                      (get-text-property (point) 'face))))))
 
 (ert-deftest php-mode-test-issue-200 ()
   "Test highlighting and elimination of extraneous whitespace in PSR-2 mode"
   (with-php-mode-test ("issue-200.php")
-		      (php-mode-custom-coding-style-set 'php-mode-coding-style 'psr2)
-		      (should show-trailing-whitespace)
-		      (should (and (listp before-save-hook) (member 'delete-trailing-whitespace before-save-hook)))))
+    (php-mode-custom-coding-style-set 'php-mode-coding-style 'psr2)
+    (should show-trailing-whitespace)
+    (should (and (listp before-save-hook) (member 'delete-trailing-whitespace before-save-hook)))))
 
 (ert-deftest php-mode-test-issue-201 ()
   "Test highlighting of special variables"
@@ -529,11 +528,11 @@ style from Drupal."
 (ert-deftest php-mode-test-issue-184()
   "Test indent-line for statements and heredoc end at beginning of lines"
   (with-php-mode-test ("issue-184.php")
-                      (search-forward "html;")
-                      (php-cautious-indent-line)
-                      (should (eq (current-indentation) 0))
-                      (search-forward "return;")
-                      (php-cautious-indent-line)
-                      (should (eq (current-indentation) c-basic-offset))))
+    (search-forward "html;")
+    (php-cautious-indent-line)
+    (should (= (current-indentation) 0))
+    (search-forward "return;")
+    (php-cautious-indent-line)
+    (should (= (current-indentation) c-basic-offset))))
 
 ;;; php-mode-test.el ends here
