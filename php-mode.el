@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.15.3"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2015-01-31"
+(defconst php-mode-modified "2015-02-16"
   "PHP Mode build date.")
 
 ;;; License
@@ -94,11 +94,8 @@
 ;; Use the recommended cl functions in php-mode but alias them to the
 ;; old names when we detect emacs < 24.3
 (if (and (= emacs-major-version 24) (< emacs-minor-version 3))
-    (progn
-      (unless (fboundp 'cl-flet)
-        (defalias 'cl-flet 'flet))
-      (unless (fboundp 'cl-set-difference)
-        (defalias 'cl-set-difference 'set-difference))))
+    (unless (fboundp 'cl-set-difference)
+      (defalias 'cl-set-difference 'set-difference)))
 
 
 ;; Local variables
@@ -1280,27 +1277,24 @@ exists, and nil otherwise.
 
 With a prefix argument, prompt (with completion) for a word to search for."
   (interactive (php--search-documentation-read-arg))
-  (cl-flet ((php-file-for (type name)
-                          (expand-file-name
-                           (format "%s.%s.html" type
-                                   (replace-regexp-in-string
-                                    "_" "-" (downcase name)))
-                           php-manual-path))
-            (php-file-url (file)
-                          ;; Some browsers require the file:// prefix.
-                          ;; Others do not seem to care.  But it should
-                          ;; never be incorrect to use the prefix.
-                          (if (string-prefix-p "file://" file)
-                              file
-                            (concat "file://" file))))
-    (let ((file (catch 'found
-                  (loop for type in php-search-local-documentation-types do
-                        (let ((file (php-file-for type word)))
-                          (when (file-exists-p file)
-                            (throw 'found file)))))))
-      (when file
-        (php-browse-documentation-url (php-file-url file))
-        t))))
+  (let ((file (catch 'found
+                (loop for type in php-search-local-documentation-types do
+                      (let* ((doc-html (format "%s.%s.html"
+                                               type
+                                               (replace-regexp-in-string
+                                                "_" "-" (downcase word))))
+                             (file (expand-file-name doc-html  php-manual-path)))
+                        (when (file-exists-p file)
+                          (throw 'found file)))))))
+    (when file
+      (let ((file-url (if (string-prefix-p "file://" file)
+                          file
+                        (concat "file://" file))))
+        (php-browse-documentation-url file-url))
+      t)))
+
+(defsubst php-search-web-documentation (word)
+  (php-browse-documentation-url (concat php-search-url word)))
 
 ;; Define function documentation function
 (defun php-search-documentation (word)
@@ -1315,14 +1309,11 @@ With a prefix argument, prompt for a documentation word to search
 for.  If the local documentation is available, it is used to build
 a completion list."
   (interactive (php--search-documentation-read-arg))
-  (cl-flet ((php-search-web-documentation (name)
-                                          (php-browse-documentation-url
-                                           (concat php-search-url name))))
-    (if (and (stringp php-manual-path)
-             (not (string= php-manual-path "")))
-        (or (php-search-local-documentation word)
-            (php-search-web-documentation word))
-      (php-search-web-documentation word))))
+  (if (and (stringp php-manual-path)
+           (not (string= php-manual-path "")))
+      (or (php-search-local-documentation word)
+          (php-search-web-documentation word))
+    (php-search-web-documentation word)))
 
 ;; Define function for browsing manual
 (defun php-browse-manual ()
@@ -1447,11 +1438,10 @@ The output will appear in the buffer *PHP*."
     ;; Calling 'php -r' will fail if we send it code that starts with
     ;; '<?php', which is likely.  So we run the code through this
     ;; function to check for that prefix and remove it.
-    (cl-flet ((clean-php-code (code)
-                           (if (string-prefix-p "<?php" code t)
-                               (substring code 5)
-                             code)))
-      (call-process "php" nil php-buffer nil "-r" (clean-php-code code)))))
+    (let ((cleaned-php-code (if (string-prefix-p "<?php" code t)
+                                (substring code 5)
+                              code)))
+      (call-process "php" nil php-buffer nil "-r" cleaned-php-code))))
 
 
 (defface php-annotations-annotation-face '((t . (:inherit font-lock-constant-face)))
