@@ -1447,7 +1447,7 @@ The output will appear in the buffer *PHP*."
     (let ((cleaned-php-code (if (string-prefix-p "<?php" code t)
                                 (substring code 5)
                               code)))
-      (call-process "php" nil php-buffer nil "-r" cleaned-php-code))))
+      (call-process php-executable nil php-buffer nil "-r" cleaned-php-code))))
 
 
 (defface php-annotations-annotation-face '((t . (:inherit font-lock-constant-face)))
