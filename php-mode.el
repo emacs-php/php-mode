@@ -107,7 +107,8 @@
   :link '(url-link :tag "Official Site" "https://github.com/ejmr/php-mode")
   :link '(url-link :tag "PHP Mode Wiki" "https://github.com/ejmr/php-mode/wiki"))
 
-(defcustom php-executable "/usr/bin/php"
+(defcustom php-executable (or (executable-find "php")
+                              "/usr/bin/php")
   "The location of the PHP executable."
   :type 'string
   :group 'php)
@@ -1447,7 +1448,7 @@ The output will appear in the buffer *PHP*."
     (let ((cleaned-php-code (if (string-prefix-p "<?php" code t)
                                 (substring code 5)
                               code)))
-      (call-process "php" nil php-buffer nil "-r" cleaned-php-code))))
+      (call-process php-executable nil php-buffer nil "-r" cleaned-php-code))))
 
 
 (defface php-annotations-annotation-face '((t . (:inherit font-lock-constant-face)))
