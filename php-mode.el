@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.15.3"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2015-02-16"
+(defconst php-mode-modified "2015-03-04"
   "PHP Mode build date.")
 
 ;;; License
@@ -868,6 +868,15 @@ This is was done due to the problem reported here:
   "See `php-c-at-vsemi-p'."
   )
 
+(defsubst php-in-string-p ()
+  (nth 3 (syntax-ppss)))
+
+(defsubst php-in-comment-p ()
+  (nth 4 (syntax-ppss)))
+
+(defsubst php-in-string-or-comment-p ()
+  (nth 8 (syntax-ppss)))
+
 (defun php-lineup-string-cont (langelem)
   "Line up string toward equal sign or dot
 e.g.
@@ -876,9 +885,12 @@ $str = 'some'
 this ^ lineup"
   (save-excursion
     (goto-char (cdr langelem))
-    (when (or (search-forward "=" (line-end-position) t)
-              (search-forward "." (line-end-position) t))
-      (vector (1- (current-column))))))
+    (let (ret finish)
+      (while (and (not finish) (re-search-forward "[=.]" (line-end-position) t))
+        (unless (php-in-string-or-comment-p)
+          (setq finish t
+                ret (vector (1- (current-column))))))
+      ret)))
 
 (defun php-lineup-arglist-intro (langelem)
   (save-excursion
@@ -910,12 +922,6 @@ the string HEREDOC-START."
   ;; Extract just the identifier without <<< and quotes.
   (string-match "\\w+" heredoc-start)
   (concat "^\\(" (match-string 0 heredoc-start) "\\)\\W"))
-
-(defsubst php-in-string-p ()
-  (nth 3 (syntax-ppss)))
-
-(defsubst php-in-comment-p ()
-  (nth 4 (syntax-ppss)))
 
 (defun php-syntax-propertize-function (start end)
   "Apply propertize rules from START to END."

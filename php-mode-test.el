@@ -551,4 +551,9 @@ style from Drupal."
     (search-forward "return")
     (should (eq (current-indentation) (* 2 c-basic-offset)))))
 
+(ert-deftest php-mode-test-issue-227 ()
+  "multi-line strings indents "
+  (custom-set-variables '(php-lineup-cascaded-calls t))
+  (with-php-mode-test ("issue-227.php" :indent t :style pear)))
+
 ;;; php-mode-test.el ends here
