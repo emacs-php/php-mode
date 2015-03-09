@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.15.3"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2015-03-04"
+(defconst php-mode-modified "2015-03-09"
   "PHP Mode build date.")
 
 ;;; License
@@ -87,7 +87,7 @@
 
 ;; Work around emacs bug#18845, cc-mode expects cl to be loaded
 ;; while php-mode only uses cl-lib (without compatibility aliases)
-(eval-when-compile
+(eval-and-compile
   (if (and (= emacs-major-version 24) (= emacs-minor-version 4))
     (require 'cl)))
 
