@@ -1,5 +1,6 @@
-PHP Mode for GNU Emacs [![travis badge][travis-badge]][travis-link]
+PHP Mode for GNU Emacs
 ======================
+[![travis badge][travis-badge]][travis-link] [![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
 
 This updates PHP Mode with features to make it more friendly to use with PHP 5.4 and later.  This fork builds on the work of:
 
@@ -320,3 +321,7 @@ In chronological order:
 [Web Mode]: http://web-mode.org/
 [travis-badge]: https://travis-ci.org/ejmr/php-mode.svg
 [travis-link]: https://travis-ci.org/ejmr/php-mode
+[melpa-link]: http://melpa.org/#/php-mode
+[melpa-stable-link]: http://stable.melpa.org/#/php-mode
+[melpa-badge]: http://melpa.org/packages/php-mode-badge.svg
+[melpa-stable-badge]: http://stable.melpa.org/packages/php-mode-badge.svg
