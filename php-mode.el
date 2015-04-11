@@ -88,7 +88,7 @@
 ;; Work around emacs bug#18845, cc-mode expects cl to be loaded
 ;; while php-mode only uses cl-lib (without compatibility aliases)
 (eval-and-compile
-  (if (and (= emacs-major-version 24) (= emacs-minor-version 4))
+  (if (and (= emacs-major-version 24) (>= emacs-minor-version 4))
     (require 'cl)))
 
 ;; Use the recommended cl functions in php-mode but alias them to the
