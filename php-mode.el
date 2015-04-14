@@ -689,7 +689,8 @@ working with Symfony2."
 
 (c-add-style
   "psr2"
-  '("php"))
+  '("php"
+    (c-offsets-alist . ((statement-cont . +)))))
 
 (defun php-enable-psr2-coding-style ()
   "Makes php-mode comply to the PSR-2 coding style"
