@@ -175,6 +175,62 @@ With this style method call chains can be formatted with indented continuation a
 
 This style is used widely throughout Symfony2 source code even if it is not explicitly mentioned in their conventions documents.
 
+#### Customizing Indentation Styles ####
+
+We create the styles above by using [CC Mode][cc mode].  It can be a complex beast.  But in this section we will show you how to tweak the existing styles to match your own preferences.  First, an example: originally we defined the PSR-2 style like so:
+
+```elisp
+(c-set-style "psr2" '("php"))
+```
+
+This tells it to inherit everything from the default PHP style.  However, [issue 237](https://github.com/ejmr/php-mode/issues/237) raised a problem with how the PSR-2 style aligns chained method calls.  If we look at the definition of the PHP style we see this:
+
+```elisp
+(c-add-style
+ "php"
+ '((c-basic-offset . 4)
+   (c-doc-comment-style . javadoc)
+   (c-offsets-alist . ((arglist-close . php-lineup-arglist-close)
+                       (arglist-cont . (first php-lineup-cascaded-calls 0))
+                       (arglist-cont-nonempty . (first php-lineup-cascaded-calls c-lineup-arglist))
+                       (arglist-intro . php-lineup-arglist-intro)
+                       (case-label . +)
+                       (class-open . -)
+                       (comment-intro . 0)
+                       (inlambda . 0)
+                       (inline-open . 0)
+                       (label . +)
+                       (statement-cont . (first php-lineup-cascaded-calls php-lineup-string-cont +))
+                       (substatement-open . 0)
+                       (topmost-intro-cont . (first php-lineup-cascaded-calls +))))))
+```
+
+A little daunting, but what is important here is `statement-cont`.  It tells PHP Mode how to align statements that continue across multiple lines, which is what happens when we chain method calls like this:
+
+```php
+$provider = $this->di->get('provider')
+          ->filterByLanguage('en');
+```
+
+The second line is indented according to the value of `statement-cont`.  The definition for `statement-cont` is `(first php-lineup-cascaded-calls php-lineup-string-cont +)`, which means to try those indentation functions in order and use the first one which “works.”  In this case it is `php-lineup-cascaded-calls` that causes the alignment of the `=` and `->` symbols in the example above.
+
+The issue was that the user felt PSR-2 mode should indent chained method calls by four spaces (or whatever indentation is appropriate for the given level of nesting).  To achieve this we can define the PSR-2 style in a way that overwrites the `statement-cont` value it inherits from the PHP style.  It looks like this:
+
+```elisp
+(c-add-style "psr2"
+  '("php"
+    (c-offsets-alist . ((statement-cont . +)))))
+```
+
+The PSR-2 style still inherits everything else from the default PHP style, but now `statement-cont` uses only `+` for indentation, which tells CC Mode it indent such lines by the appropriate amount based on the level of nesting.  In this case, four spaces per level.  With this change in place our example from above looks like so:
+
+```php
+$provider = $this->di->get('provider')
+    ->filterByLanguage('en');
+```
+
+This is a simple and effective way of how to tweak the existing PHP Mode styles.
+
 ### Extra Constants ###
 
 If you commonly use a framework or library that defines a set of constants then you may wish to customize the value of `php-extra-constants`.  It is a list of strings that PHP Mode will treat as additional constants, i.e. providing them the same level syntax highlighting that PHP Mode uses for built-in constants.
