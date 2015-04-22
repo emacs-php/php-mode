@@ -31,6 +31,12 @@ Status
 **PHP Mode is not dead.**  However, I will no longer be contributing my own features because my time is taken up my game development that I am doing.  Nonetheless, I still welcome all contributions and will try to review and merge them as best as possible, so please continue to improve the mode all you great Emacs Lisp developers.
 
 
+Reporting Bugs
+--------------
+
+When reporting a bug please run the function `php-mode-version` and include its output in your bug report.  This helps up reproduce any problem you may have.
+
+
 Experimental and In-Progress Features
 -------------------------------------
 
