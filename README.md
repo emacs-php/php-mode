@@ -314,6 +314,8 @@ In chronological order:
 65. [Hernawan Fa'iz Abdillah](https://github.com/Abdillah)
 66. [Sebastian Wiesner](https://github.com/lunaryorn)
 67. [Michael Stolovitzsky](https://github.com/emestee)
+68. [David Arroyo Menéndez](https://github.com/davidam)
+
 
 
 [wiki]: https://github.com/ejmr/php-mode/wiki
