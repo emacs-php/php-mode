@@ -44,12 +44,14 @@
 
 (define-skeleton php__autoload 
   "Insert a __autoload statement. Attempt to load undefined class"
+  ""
   '(setq class (skeleton-read "Class: "))
   > "__autoload(" class ");" \n
 )
 
 (define-skeleton php-class_alias
   "Insert a class_alias statement. Creates an alias for a class"
+  ""
   '(setq original (skeleton-read "Original: "))
   '(setq alias (skeleton-read "Alias: "))
   '(setq autoload (skeleton-read "Autoload: "))
@@ -58,6 +60,7 @@
 
 (define-skeleton php-class_exists
   "Insert a class_exists statement. Checks if the class has been defined"
+  ""
   '(setq class_name (skeleton-read "Class name: "))
   '(setq autoload (skeleton-read "Autoload: "))
   > "class_exists(" class_name ", " autoload ");" \n
@@ -128,6 +131,7 @@
 
 (define-skeleton php-is_a
   "Insert an is_a statement. Checks if the object is of this class or has this class as one of its parents"
+  ""
   '(setq object (skeleton-read "Object: "))
   '(setq class_name (skeleton-read "Class name: "))
   '(setq allow_string (skeleton-read "Allow string: "))
@@ -145,6 +149,7 @@
 
 (define-skeleton php-method_exists
   "Insert a method_exists statement."
+  ""
   '(setq obj (skeleton-read "Object: "))
   '(setq method (skeleton-read "Method: "))
   > "method_exists(" object ", " method ");" \n
@@ -152,6 +157,7 @@
 
 (define-skeleton php-property_exists
   "Insert a property_exists statement."
+  ""
   '(setq class (skeleton-read "Class: "))
   '(setq property (skeleton-read "Property: "))
   > "property_exists(" class ", " property ");" \n
@@ -159,6 +165,7 @@
   
 (define-skeleton php-trait_exists
   "Insert a trait_exists statement."
+  ""
   '(setq trait (skeleton-read "Trait: "))
   '(setq autoload (skeleton-read "Autoload (TRUE | FALSE): "))
   > "trait_exists(" trait ", " autoload ");" \n
