@@ -58,6 +58,7 @@
 
 (define-skeleton php-split
   "Insert a split statement"
+  ""
   '(setq pattern (skeleton-read "Pattern: "))
   '(setq string (skeleton-read "String: "))
   '(setq limit (skeleton-read "Limit: "))
@@ -66,6 +67,7 @@
 
 (define-skeleton php-spliti
   "Insert a split statement"
+  ""
   '(setq pattern (skeleton-read "Pattern: "))
   '(setq string (skeleton-read "String: "))
   '(setq limit (skeleton-read "Limit: "))
@@ -74,6 +76,7 @@
 
 (define-skeleton php-sql_regcase
   "Insert a DEPRECATED sql_regcase statement. Creates a regular expression for a case insensitive match"
+  ""
   '(setq string (skeleton-read "String: "))
   > "sql_regcase(" string ");" \n
 )
