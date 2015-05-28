@@ -76,6 +76,7 @@
 
 (define-skeleton php-dio_tcsetattr
   "Insert a dio_tcsetattr statement"
+  ""
   '(setq fd (skeleton-read "File Descriptor: "))
   '(setq options (skeleton-read "Options: "))
   > "dio_tcsetattr(" fd ", " options ");" \n
@@ -83,6 +84,7 @@
 
 (define-skeleton php-dio_truncate
   "Insert a dio_truncate statement"
+  ""
   '(setq fd (skeleton-read "File Descriptor: "))
   '(setq offset (skeleton-read "Offset: "))
   > "dio_truncate(" fd ", " offset ");" \n
@@ -90,6 +92,7 @@
 
 (define-skeleton php-dio_write
   "Insert a dio_write statement"
+  ""
   '(setq fd (skeleton-read "File Descriptor: "))
   '(setq data (skeleton-read "Data: "))
   '(setq len (skeleton-read "Length: "))

@@ -18,7 +18,10 @@
   - State "DONE"       from "TODO"       [2015-05-15 vie 11:49]
 * DONE php-filesystem.el
 * TODO php-gd.el
-* TODO php-exif.el
+file:///usr/share/doc/php-doc/html/ref.image.html
+* DONE php-exif.el
+  CLOSED: [2015-05-24 dom 18:27]
+  - State "DONE"       from "INPROGRESS" [2015-05-24 dom 18:27]
 * DONE php-math.el
   CLOSED: [2015-05-15 vie 12:13]
   - State "DONE"       from "TODO"       [2015-05-15 vie 12:13]
@@ -26,7 +29,9 @@
 * DONE php-regex.el
   CLOSED: [2015-05-17 dom 16:47]
   - State "DONE"       from "INPROGRESS" [2015-05-17 dom 16:47]
-* INPROGRESS php-strings.el
+* DONE php-strings.el
+  CLOSED: [2015-05-24 dom 15:33]
+  - State "DONE"       from "INPROGRESS" [2015-05-24 dom 15:33]
 * DONE php-var.el
   CLOSED: [2015-05-16 sáb 17:10]
   - State "DONE"       from "INPROGRESS" [2015-05-16 sáb 17:10]
