@@ -560,3 +560,7 @@ style from Drupal."
   (with-php-mode-test ("issue-237.php" :indent t :style psr2 :magic t)))
 
 ;;; php-mode-test.el ends here
+
+;; Local Variables:
+;; firestarter: ert-run-tests-interactively
+;; End:

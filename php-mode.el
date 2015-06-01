@@ -1533,3 +1533,7 @@ The output will appear in the buffer *PHP*."
 (provide 'php-mode)
 
 ;;; php-mode.el ends here
+
+;; Local Variables:
+;; firestarter: ert-run-tests-interactively
+;; End:
