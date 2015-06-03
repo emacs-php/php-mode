@@ -559,6 +559,18 @@ style from Drupal."
   "Indent chaining method for PSR2."
   (with-php-mode-test ("issue-237.php" :indent t :style psr2 :magic t)))
 
+(ert-deftest php-mode-test-issue-253 ()
+  "Test highlight after string literal which contains many escaped quotes."
+  (with-php-mode-test ("issue-253.php")
+    (search-forward "$x" nil nil 3)
+    (should (eq 'font-lock-variable-name-face (get-text-property (1- (point)) 'face)))
+
+    (search-forward "$this")
+    (should (eq 'font-lock-constant-face (get-text-property (1- (point)) 'face)))
+
+    (search-forward "$x")
+    (should (eq 'font-lock-variable-name-face (get-text-property (1- (point)) 'face)))))
+
 ;;; php-mode-test.el ends here
 
 ;; Local Variables:

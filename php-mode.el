@@ -1479,9 +1479,10 @@ The output will appear in the buffer *PHP*."
 
 (defun php-string-intepolated-variable-font-lock-find (limit)
   (while (re-search-forward php-string-interpolated-variable-regexp limit t)
-    (when (php-in-string-p)
-      (put-text-property (match-beginning 0) (match-end 0)
-                         'face 'font-lock-variable-name-face)))
+    (let ((quoted-stuff (nth 3 (syntax-ppss))))
+      (when (and quoted-stuff (member quoted-stuff '(?\" ?`)))
+        (put-text-property (match-beginning 0) (match-end 0)
+                           'face 'font-lock-variable-name-face))))
   nil)
 
 (eval-after-load 'php-mode
