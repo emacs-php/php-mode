@@ -550,6 +550,7 @@ PHP does not have an \"enum\"-like keyword."
     "var"
     "xor"
     "yield"
+    "yield from"
 
     ;; Below keywords are technically not reserved keywords, but
     ;; threated no differently by php-mode from actual reserved
