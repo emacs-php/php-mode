@@ -559,6 +559,7 @@ PHP does not have an \"enum\"-like keyword."
     ;;; declare directives:
     "encoding"
     "ticks"
+    "strict_types"
 
     ;;; self for static references:
     "self"
