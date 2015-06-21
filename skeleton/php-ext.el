@@ -57,7 +57,6 @@
  
 (load (concat php-ext-path "php-var.el"))
 
-
 ;; DOM 
 ;; More see file:///usr/share/doc/php-doc/html/book.dom.html
 
@@ -86,6 +85,20 @@
 
 (load (concat php-ext-path "php-filesystem.el"))
 
+;; Graphic functions
+
+;; GD functions
+;; file:///usr/share/doc/php-doc/html/ref.image.html
+;; http://php.net/manual/en/ref.image.php
+
+(load (concat php-ext-path "php-gd.el"))
+
+;; Exif functions
+;; http://php.net/manual/en/ref.exif.php
+;; file:///usr/share/doc/php-doc/html/ref.exif.html
+
+(load (concat php-ext-path "php-exif.el"))
+
 ;; Another functions
 
 (define-skeleton php-function
@@ -108,9 +121,3 @@
   '(setq value (skeleton-read "Value? "))
   "define(\"" variable "\",\"" value "\");")
 
-(define-skeleton php-chr
-  "Insert a chr statement"
-  ""
-  '(setq chr (skeleton-read "Char? "))
-  "chr(" chr ");"
-)

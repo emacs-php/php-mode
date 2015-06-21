@@ -17,7 +17,9 @@
   CLOSED: [2015-05-15 vie 11:49]
   - State "DONE"       from "TODO"       [2015-05-15 vie 11:49]
 * DONE php-filesystem.el
-* TODO php-gd.el
+* DONE php-gd.el
+  CLOSED: [2015-06-19 vie 16:32]
+  - State "DONE"       from "TODO"       [2015-06-19 vie 16:32]
 file:///usr/share/doc/php-doc/html/ref.image.html
 * DONE php-exif.el
   CLOSED: [2015-05-24 dom 18:27]
