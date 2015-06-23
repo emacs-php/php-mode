@@ -18,13 +18,11 @@ Please email any bugs or feature requests to `ejmr at plutono dot com` or submit
 Installation
 ------------
 
-If you are using GNU Emacs 24 or later then you can use its [package][] feature to install PHP Mode from [MELPA][].  *The [Marmalade][] package repository only has the original PHP Mode from 2004.*
+**PHP Mode requires Emacs 24 or later.**  PHP Mode may work with older versions of Emacs but this is not guaranteed.  Bug reports for problems related to using PHP Mode with older versions of Emacs will most like *not* be addressed.
 
-If you are using an older version of Emacs, or if you simply do not wish to use the package manager, then all you need to do is download the `php-mode.el` file, place it inside your `load-path`, and optionally add `(require 'php-mode)` to your Emacs configuration to automatically enable PHP Mode whenever you open a PHP file.
+With GNU Emacs 24 or later then you can use its [package][] feature to install PHP Mode from [MELPA][].  *The [Marmalade][] package repository only has the original PHP Mode from 2004.*  Therefore we recommend you use MELPA to install PHP Mode.  If you simply do not wish to use the package manager, then all you need to do is download the `php-mode.el` file, place it inside your `load-path`, and optionally add `(require 'php-mode)` to your Emacs configuration to automatically enable PHP Mode whenever you open a PHP file.
 
-Additionally, you can add skeleton/php-ext.el to your `load-path` to [enable the templates](https://www.gnu.org/software/emacs/manual/html_node/autotype/index.html#Top).
-
-**Note:** PHP Mode requires Emacs 23.1 or later.
+Additionally, you can add `skeleton/php-ext.el` to your `load-path` to [enable the templates](https://www.gnu.org/software/emacs/manual/html_node/autotype/index.html#Top).
 
 
 Status
