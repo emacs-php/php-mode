@@ -25,12 +25,6 @@ With GNU Emacs 24 or later then you can use its [package][] feature to install P
 Additionally, you can add `skeleton/php-ext.el` to your `load-path` to [enable the templates](https://www.gnu.org/software/emacs/manual/html_node/autotype/index.html#Top).
 
 
-Status
-------
-
-**PHP Mode is not dead.**  However, I will no longer be contributing my own features because my time is taken up my game development that I am doing.  Nonetheless, I still welcome all contributions and will try to review and merge them as best as possible, so please continue to improve the mode all you great Emacs Lisp developers.
-
-
 Reporting Bugs
 --------------
 
@@ -234,6 +228,17 @@ The Wiki
 --------
 
 The GitHub project page has a [wiki][] that you should feel free to edit.  The wiki lists the features and bugs that are on plan to include in upcoming versions of PHP Mode.  It is also a place to add any tips to make the mode more useful.
+
+
+The Mailing List
+----------------
+
+The “emacs-php” mailing list is a place to discuss PHP Mode as well as all other PHP-related packages for Emacs.  You can find the mailing list at:
+
+1. [emacs-php at Google Groups](https://groups.google.com/forum/#!forum/emacs-php)
+2. [Gmane](http://dir.gmane.org/gmane.emacs.php)
+
+We encourage all users of PHP Mode *and* developers of any PHP-related packages to feel free to post anything there regarding PHP and Emacs.
 
 
 License
