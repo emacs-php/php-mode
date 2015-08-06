@@ -74,6 +74,16 @@
  )
   "}")
 
+(define-skeleton php-switch-case
+  "Insert a switch statement."
+  ""
+  ( "Some case? %s: "
+    > "case " str ":" \n
+    > _ \n
+    > -2 "break;" \n
+ )
+)
+
 
 (define-skeleton php-include
   "Insert a include statement."
