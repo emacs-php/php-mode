@@ -732,7 +732,7 @@ Implements PHP version of `beginning-of-defun-function'."
 
 (defun php-end-of-defun (&optional arg)
   "Move the end of the ARGth PHP function from point.
-Implements PHP befsion of `end-of-defun-function'
+Implements PHP version of `end-of-defun-function'
 
 See `php-beginning-of-defun'."
   (interactive "p")
@@ -1250,7 +1250,7 @@ under which to search for files in the local documentation directory.")
                (not (assq types-list words-cache)))
       ;; Generate the cache on the first run, or if the types changed.
       ;; We read the filenames matching our types list in the local
-      ;; documention directory, and extract the 'middle' component
+      ;; documentation directory, and extract the 'middle' component
       ;; of each. e.g. "function.array-map.html" => "array_map".
       (let* ((types-opt (regexp-opt types-list))
              (pattern (concat "\\`" types-opt "\\.\\(.+\\)\\.html\\'"))
