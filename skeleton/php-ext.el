@@ -28,6 +28,11 @@
 
 ;; Math functions
 
+(defvar php-ext-path
+  (if load-file-name
+      (file-name-directory load-file-name)
+    default-directory))
+
 (load (concat php-ext-path "php-math.el"))
 
 ;; Control Structures
