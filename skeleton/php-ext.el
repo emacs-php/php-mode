@@ -1,3 +1,5 @@
+;;; php-ext.el --- PHP skeleton templates
+
 ;; Copyright (C) 2015  David Arroyo Menéndez
 
 ;; Author: David Arroyo Menéndez <davidam@gnu.org>
@@ -126,3 +128,6 @@
   '(setq value (skeleton-read "Value? "))
   "define(\"" variable "\",\"" value "\");")
 
+(provide 'php-ext)
+
+;;; php-ext.el ends here
