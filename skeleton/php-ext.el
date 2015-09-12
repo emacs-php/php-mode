@@ -21,9 +21,8 @@
 ;; Boston, MA 02110-1301 USA,
 
 ;; To install php-ext.el:
-;; You can adapt the next lines in your .emacs
-;; (setq php-ext-path "~/git/php-ext-el")
-;; (load (concat php-ext-path "php-ext.el"))
+
+;; (require 'php-ext)
 
 ;; Description:
 ;; Php ext is some skeleton templates for extend php-mode
