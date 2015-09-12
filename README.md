@@ -24,6 +24,10 @@ With GNU Emacs 24 or later then you can use its [package][] feature to install P
 
 Additionally, you can add `skeleton/php-ext.el` to your `load-path` to [enable the templates](https://www.gnu.org/software/emacs/manual/html_node/autotype/index.html#Top).
 
+```lisp
+(eval-after-load 'php-mode
+  '(require 'php-ext))
+```
 
 Reporting Bugs
 --------------
