@@ -5,6 +5,39 @@ Changes for PHP Mode by Version
 because when I (Eric James Michael Ritz) took over the project I did
 not have a record of all changes available.
 
+1.13
+----
+
+* Update version to 1.13
+* Merge branch 'ejmr/highlight-variables-in-strings'
+* Merge commit '38e1940e950d47737fed30a5bd5d4e75e0faf103'
+* Append file patterns to auto-mode-alist
+* Guard propertize functions for Emacs that don't support it.
+* Add more tests for highlighting variable interpolation
+* Create a unit test for highlighting interpolated variables
+* Avoid calling syntax-propertize-rules as may be unavailable.
+* README: Explicitly mention the oldest supported Emacs
+* Merge branch 'heredoc-support'
+* README: Replace mention of ‘run-tests.sh’ with ‘make tests’
+* Explain the expected behavior of the test for GitHub issue 124
+* Added unit test for GitHub issue 124
+* Replaced run-tests.sh with a Makefile
+* Replaced `put-text-property' with macro `c-put-char-property'
+* Added initial support for propertizing a heredoc as a string
+* Merge branch 'fix-highlighting-final-keyword'
+* Update php-mode-modified
+* Add a simple script to test syntax highlighting for ‘final’
+* Add a template script for creating test cases
+* Fix ‘final’ not highlighted as a keyword in some methods
+* Merge branch 'github/pr/127'
+* Update php-mode-modified
+* Removed unused defconst.
+* Added PREG constants to the list of predefined constants.
+* Fix byte compile error again; resurfaced in after a merge.
+* Add Andrei Chițu to the list of contributors
+* fix inclusion of `web-mode-extra-php-keywords` in `php-keywords`
+* Update Changelog for version 1.12
+
 1.12
 ----
 

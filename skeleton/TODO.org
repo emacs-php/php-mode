@@ -1,0 +1,41 @@
+#+STARTUP: logdone
+#+TODO: TODO(t) INPROGRESS(i) FUTURE(f) | DONE(d!) CANCELED(c!) 
+
+* DONE php-classobj.el
+  CLOSED: [2015-05-17 dom 14:52]
+  - State "DONE"       from "INPROGRESS" [2015-05-17 dom 14:52]
+* DONE php-control-structures.el
+
+* DONE php-crack.el
+  CLOSED: [2015-05-15 vie 11:42]
+  - State "DONE"       from "TODO"       [2015-05-15 vie 11:42]
+* DONE php-dio.el 
+  CLOSED: [2015-05-15 vie 18:04]
+  - State "DONE"       from "INPROGRESS" [2015-05-15 vie 18:04]
+* INPROGRESS php-dom.el
+* DONE php-exceptions.el
+  CLOSED: [2015-05-15 vie 11:49]
+  - State "DONE"       from "TODO"       [2015-05-15 vie 11:49]
+* DONE php-filesystem.el
+* DONE php-gd.el
+  CLOSED: [2015-06-19 vie 16:32]
+  - State "DONE"       from "TODO"       [2015-06-19 vie 16:32]
+file:///usr/share/doc/php-doc/html/ref.image.html
+* DONE php-exif.el
+  CLOSED: [2015-05-24 dom 18:27]
+  - State "DONE"       from "INPROGRESS" [2015-05-24 dom 18:27]
+* DONE php-math.el
+  CLOSED: [2015-05-15 vie 12:13]
+  - State "DONE"       from "TODO"       [2015-05-15 vie 12:13]
+* DONE php-pcre.el
+* DONE php-regex.el
+  CLOSED: [2015-05-17 dom 16:47]
+  - State "DONE"       from "INPROGRESS" [2015-05-17 dom 16:47]
+* DONE php-strings.el
+  CLOSED: [2015-05-24 dom 15:33]
+  - State "DONE"       from "INPROGRESS" [2015-05-24 dom 15:33]
+* DONE php-var.el
+  CLOSED: [2015-05-16 sáb 17:10]
+  - State "DONE"       from "INPROGRESS" [2015-05-16 sáb 17:10]
+* INPROGRESS php-xmlparser.el
+* INPROGRESS php-xmlreader.el

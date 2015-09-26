@@ -1,5 +1,6 @@
 PHP Mode for GNU Emacs
 ======================
+[![travis badge][travis-badge]][travis-link] [![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
 
 This updates PHP Mode with features to make it more friendly to use with PHP 5.4 and later.  This fork builds on the work of:
 
@@ -11,23 +12,35 @@ This updates PHP Mode with features to make it more friendly to use with PHP 5.4
 
 All contributors listed below improved PHP Mode as well.
 
-Please email any bugs or feature requests to `lobbyjones at gmail dot com` or submit them as Issues on the [GitHub page](https://github.com/ejmr/php-mode).  Also please include the output of `php-mode-version` in bug reports.  [There is a changelog for previous versions.](./Changelog.md)
+Please email any bugs or feature requests to `ejmr at plutono dot com` or submit them as Issues on the [GitHub page](https://github.com/ejmr/php-mode).  Also please include the output of `php-mode-version` in bug reports.  [There is a changelog for previous versions.](./Changelog.md)
 
 
 Installation
 ------------
 
-If you are using GNU Emacs 24 or later then you can use its [package][] feature to install PHP Mode from [MELPA][].  *The [Marmalade][] package repository only has the original PHP Mode from 2004.*
+**PHP Mode requires Emacs 24 or later.**  PHP Mode may work with older versions of Emacs but this is not guaranteed.  Bug reports for problems related to using PHP Mode with older versions of Emacs will most like *not* be addressed.
 
-If you are using an older version of Emacs, or if you simply do not wish to use the package manager, then all you need to do is download the `php-mode.el` file, place it inside your `load-path`, and optionally add `(require 'php-mode)` to your Emacs configuration to automatically enable PHP Mode whenever you open a PHP file.
+With GNU Emacs 24 or later then you can use its [package][] feature to install PHP Mode from [MELPA][].  *The [Marmalade][] package repository only has the original PHP Mode from 2004.*  Therefore we recommend you use MELPA to install PHP Mode.  If you simply do not wish to use the package manager, then all you need to do is download the `php-mode.el` file, place it inside your `load-path`, and optionally add `(require 'php-mode)` to your Emacs configuration to automatically enable PHP Mode whenever you open a PHP file.
+
+Additionally, you can add `skeleton/php-ext.el` to your `load-path` to [enable the templates](https://www.gnu.org/software/emacs/manual/html_node/autotype/index.html#Top).
+
+```lisp
+(eval-after-load 'php-mode
+  '(require 'php-ext))
+```
+
+Reporting Bugs
+--------------
+
+When reporting a bug please run the function `php-mode-version` and include its output in your bug report.  This helps up reproduce any problem you may have.
 
 
-Status
-------
+Experimental and In-Progress Features
+-------------------------------------
 
-[The PHP Mode wiki][wiki] describes the plan for the next release and I update it to mark off issues when they are complete.  Serious bugs I try to resolve as soon as possibe.  But feature requests tend to take more time, so my apologies.
+### CC Mode ###
 
-I am currently looking for someone willing to take over as the maintainer of PHP Mode starting in 2014.  Please see [this discussion](https://github.com/ejmr/php-mode/issues/109) for details.
+Daniel Haxney began incorporating CC Mode, and now the task is carried on by Jorys Steyn.  The features are not complete but are usable.  To test this out you can switch to the `cc-mode-conversion` branch.  Please report all feedback [on this thread](https://github.com/ejmr/php-mode/issues/66#issuecomment-53677111)
 
 
 Features
@@ -51,7 +64,7 @@ PHP Mode treats underscores as ‘symbol constituents’ (in Emacs terminology) 
 
 ### Chained Method Calls ###
 
-PHP Mode will align method calls over multiple lines anchored around the `->` operator, e.g.:
+PHP Mode can align method calls over multiple lines anchored around the `->` operator, e.g.:
 
 ```php
 $object->foo()
@@ -59,7 +72,9 @@ $object->foo()
        ->baz();
 ```
 
-**Note:** Alignment will only work if you use one of the coding styles described below.  PHP Mode uses [CC mode][] for indentation.  If you use any indentation style other than those described under the *Coding Styles* section then the method alignment above is not guaranteed to work.
+This behaviour is off by default, but you can customize the variable `php-lineup-cascaded-calls` to enable this.
+
+**Note:** Alignment will only work if you use one of the php-mode coding styles or inherit one of the styles.
 
 ### Nested Array Formatting ###
 
@@ -136,14 +151,19 @@ The annotations are the lines that begin with the `@` character, and PHP Mode wi
 
 ### Coding Styles ###
 
-By default PHP Mode tries to provide a reasonable style for indentation and formatting.  However, it provides other options suited for particular projects which you may find useful.  These coding styles are available through these functions:
+By default PHP Mode tries to provide a reasonable style for indentation and formatting, which you can use via the function `php-enable-default-coding-style`.  However, it provides other options suited for particular projects which you may find useful.  Other coding styles are available through these functions:
 
 1. `php-enable-pear-coding-style`
 2. `php-enable-drupal-coding-style`
 3. `php-enable-wordpress-coding-style`
 4. `php-enable-symfony2-coding-style`
+5. `php-enable-psr2-coding-style`
 
-They will help format your code for PEAR projects, or work on Drupal, WordPress, and Symfony2 software, respectively.  You may enable any of them by default by running `M-x customize-group <RET> php` and looking for the ‘PHP Mode Coding Style’ option.
+They will help format your code for PEAR/PSR-2 projects, or work on Drupal, WordPress, and Symfony2 software, respectively.  You may enable any of them by default by running `M-x customize-group <RET> php` and looking for the ‘PHP Mode Coding Style’ option.  You may also enable any of these via a hook, e.g.
+
+```lisp
+(add-hook 'php-mode-hook 'php-enable-default-coding-style)
+```
 
 #### Symfony2 Style ####
 
@@ -193,17 +213,17 @@ How to Contribute
 
 All contributions to PHP Mode are welcome.  But please try to do the following when sending improvements or bug fixes:
 
-1. Add your name to the list of ‘Contributors’ in this `README.md` file if it is not there already.  If you have a GitHub page then please link your name to it, so people can see your other work.
+1. Add your name to the list of ‘Contributors’ in this `README.md` file if it is not there already.  If you have a GitHub page and/or personal site then please link your name to it, so people can see your other work.
 
 2. If your contribution addresses an issue on the GitHub project page then include a single line like `GitHub-Issue: 16` with the appropriate issue number.
 
-3. Make sure to update the constant `php-mode-modified`.
+3. Make sure to update the constant `php-mode-modified` *only if you patch affects `php-mode.el`,* which means this step is unnecessary for patches related to unit tests.
 
 4. However, please do not modify `php-mode-version-number`.  I will decide what constitutes a bump in the version number.
 
-5. Open the `php-mode-test.el` file and [run all of the tests](http://www.gnu.org/software/emacs/manual/html_node/ert/Running-Tests-Interactively.html#Running-Tests-Interactively) to ensure they still pass as expected.  Sometimes we expect for a test to fail, and those unit tests have the appropriate configuration so their failure will not raise any warnings.  You can use the `run-tests.sh` script to run all tests from a terminal, which is also useful in conjunction with [`git bisect run`](http://git-scm.com/book/en/Git-Tools-Debugging-with-Git).
+5. Open the `php-mode-test.el` file and [run all of the tests](http://www.gnu.org/software/emacs/manual/html_node/ert/Running-Tests-Interactively.html#Running-Tests-Interactively) to ensure they still pass as expected.  Sometimes we expect for a test to fail, and those unit tests have the appropriate configuration so their failure will not raise any warnings.  You can use `make test` script to run all tests from a terminal, which is also useful in conjunction with [`git bisect run`](http://git-scm.com/book/en/Git-Tools-Debugging-with-Git).
 
-6. Send me a pull request here on GitHub.  Or if you do not have a GitHub account then email the patches to me at `lobbyjones at gmail dot com`.  Please try to make sure the patches are acceptable input to the comand `git am`.  Please note that even if you send a pull request it is very likely that I will *not* simply merge your branch through GitHub; I prefer to go through commits and cherry-pick them so I can review the commit messages and sign-off on them.  You can see which commits I did or did not merge by using the [`git-cherry`](http://www.kernel.org/pub/software/scm/git/docs/git-cherry.html) command.
+6. Send me a pull request here on GitHub.  Or if you do not have a GitHub account then email the patches to me at `ejmr at plutono dot com`.  Please try to make sure the patches are acceptable input to the command `git am`.  Please note that even if you send a pull request it is very likely that I will *not* simply merge your branch through GitHub; I prefer to go through commits and cherry-pick them so I can review the commit messages and sign-off on them.  You can see which commits I did or did not merge by using the [`git-cherry`](http://www.kernel.org/pub/software/scm/git/docs/git-cherry.html) command.
 
 If you are fixing a bug related to a GitHub issue, then first of all, thank you for the help improving PHP Mode.  Second, there is a `tests/` directory which contains PHP scripts for issues (although not all of them).  Please consider adding a test script to that directory that documents the expected behavior and provides code that allows others to see if said behavior works properly.  Then create a unit test within `php-mode-test.el` using [ERT][]. Please try to follow the format of the existing tests.
 
@@ -212,6 +232,17 @@ The Wiki
 --------
 
 The GitHub project page has a [wiki][] that you should feel free to edit.  The wiki lists the features and bugs that are on plan to include in upcoming versions of PHP Mode.  It is also a place to add any tips to make the mode more useful.
+
+
+The Mailing List
+----------------
+
+The “emacs-php” mailing list is a place to discuss PHP Mode as well as all other PHP-related packages for Emacs.  You can find the mailing list at:
+
+1. [emacs-php at Google Groups](https://groups.google.com/forum/#!forum/emacs-php)
+2. [Gmane](http://dir.gmane.org/gmane.emacs.php)
+
+We encourage all users of PHP Mode *and* developers of any PHP-related packages to feel free to post anything there regarding PHP and Emacs.
 
 
 License
@@ -251,34 +282,48 @@ In chronological order:
 24. Eric Mc Sween
 25. Ville Skytta
 26. Giacomo Tesio
-27. Lennart Borgman
-28. Stefan Monnier
-29. Aaron S. Hawley
-30. [Ian Eure](https://github.com/ieure)
-31. [Bill Lovett](https://github.com/lovett)
-32. Dias Badekas
-33. David House
-34. [Tom Willemse](https://github.com/ryuslash)
-35. [Olaf the Viking](https://github.com/olavTHEviking)
-36. [Maël Nison](https://github.com/arcanis)
-37. [flack](https://github.com/flack)
-38. [Michele Bini](https://github.com/rev22)
-39. Emanuele Tomasi
-40. [David Maus](https://github.com/dmj)
-41. [Jakub Jankiewicz](https://github.com/jcubic)
-42. [Marcin Antczak](https://github.com/marcinant)
-43. [顾伟刚](https://github.com/cnwggu)
-44. [zapad](https://github.com/zargener)
-45. [Carl Groner](https://github.com/cgroner)
-46. [Michael Dwyer](https://github.com/kalifg)
-47. [Daniel Hackney](https://github.com/haxney)
-48. [Nate Eagleson](https://github.com/NateEag)
-49. [Steve Purcell](https://github.com/purcell)
-50. TatriX
-51. [François-Xavier Bois](https://github.com/fxbois)
-52. [James Laver](https://github.com/jjl)
-52. [Jacek Wysocki](https://github.com/exu)
-53. [Jon Dufrense](https://github.com/jdufresne)
+27. Urban Müller
+28. [Engelke Eschner](https://github.com/tekai)
+29. Lennart Borgman
+30. Stefan Monnier
+31. Aaron S. Hawley
+32. [Ian Eure](https://github.com/ieure)
+33. [Bill Lovett](https://github.com/lovett)
+34. Dias Badekas
+35. David House
+36. [Tom Willemse](https://github.com/ryuslash)
+37. [Olaf the Viking](https://github.com/olavTHEviking)
+38. [Maël Nison](https://github.com/arcanis)
+39. [flack](https://github.com/flack)
+40. [Michele Bini](https://github.com/rev22)
+41. Emanuele Tomasi
+42. [David Maus](https://github.com/dmj)
+43. [Jakub Jankiewicz](https://github.com/jcubic)
+44. [Marcin Antczak](https://github.com/marcinant)
+45. [顾伟刚](https://github.com/guweigang)
+46. [zapad](https://github.com/zargener)
+47. [Carl Groner](https://github.com/cgroner)
+48. [Michael Dwyer](https://github.com/kalifg)
+49. [Daniel Hackney](https://github.com/haxney)
+50. [Nate Eagleson](https://github.com/NateEag)
+51. [Steve Purcell](https://github.com/purcell)
+52. TatriX
+53. [François-Xavier Bois](https://github.com/fxbois)
+54. [James Laver](https://github.com/jjl)
+55. [Jacek Wysocki](https://github.com/exu)
+56. [Jon Dufrense](https://github.com/jdufresne)
+57. [Andrei Chițu](https://github.com/achitu)
+58. [phil-s](https://github.com/phil-s)
+59. [Bence Kalmar](https://github.com/brkalmar)
+60. [Elis Axelsson](https://github.com/etu)
+61. [Alan Pearce](https://github.com/alanpearce)
+62. Syohei Yoshida
+63. Joris Steyn
+64. l3msh0
+65. [Hernawan Fa'iz Abdillah](https://github.com/Abdillah)
+66. [Sebastian Wiesner](https://github.com/lunaryorn)
+67. [Michael Stolovitzsky](https://github.com/emestee)
+68. [David Arroyo Menéndez](https://github.com/davidam)
 
 
 
@@ -291,3 +336,9 @@ In chronological order:
 [MELPA]: http://melpa.milkbox.net/
 [Marmalade]: http://marmalade-repo.org/
 [Web Mode]: http://web-mode.org/
+[travis-badge]: https://travis-ci.org/ejmr/php-mode.svg
+[travis-link]: https://travis-ci.org/ejmr/php-mode
+[melpa-link]: http://melpa.org/#/php-mode
+[melpa-stable-link]: http://stable.melpa.org/#/php-mode
+[melpa-badge]: http://melpa.org/packages/php-mode-badge.svg
+[melpa-stable-badge]: http://stable.melpa.org/packages/php-mode-badge.svg
