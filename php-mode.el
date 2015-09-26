@@ -1303,7 +1303,8 @@ With a prefix argument, prompt (with completion) for a word to search for."
       t)))
 
 (defsubst php-search-web-documentation (word)
-  (php-browse-documentation-url (concat php-search-url word)))
+  (php-browse-documentation-url (concat php-search-url
+                                        (replace-regexp-in-string "_" "-" (downcase word)))))
 
 ;; Define function documentation function
 (defun php-search-documentation (word)
