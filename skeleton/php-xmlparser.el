@@ -71,8 +71,124 @@
   > (skeleton-read "Data? ") 
   > ("Is final? " ", " str) _ ");")  
 
-(define-skeleton php-simplexml_load_file
-  "Insert a new simple xml file object"
+(define-skeleton php-xml_parser_create_ns
+  "Insert a xml_parser_create_ns statement. Create an XML parser with namespace support."
   ""
-  > "$" (skeleton-read "Var? ") " = simplexml_load_file('" (skeleton-read "File path? ")  "');" \n
+  '(setq encoding (skeleton-read "encoding: "))
+  '(setq separator (skeleton-read "separator: "))
+  > "xml_parser_create_ns(" encoding ", " separator ");" \n
+)
+
+(define-skeleton php-xml_parser_create
+  "Insert a xml_parser_create statement."
+  ""
+  '(setq encoding (skeleton-read "encoding: "))
+  > "xml_parser_create(" encoding ");" \n
+)
+
+(define-skeleton php-xml_parser_free
+  "Insert a xml_parser_free statement."
+  ""
+  '(setq parser (skeleton-read "parser: "))
+  > "xml_parser_free(" parser ");" \n
+)
+
+(define-skeleton php-xml_parser_get_option
+  "Insert a xml_parser_get_option statement."
+  ""
+  '(setq parser (skeleton-read "parser: "))
+  '(setq option (skeleton-read "option: "))
+  > "xml_parser_get_option(" parser ", " option ");" \n
+)
+
+(define-skeleton php-xml_parser_set_option
+  "Insert a xml_parser_set_option statement."
+  ""
+  '(setq parser (skeleton-read "parser: "))
+  '(setq option (skeleton-read "option: "))
+  '(setq value (skeleton-read "value: "))
+  > "xml_parser_set_option(" parser ", " option ", " value ");" \n
+)
+
+(define-skeleton php-xml_set_character_data_handler
+  "Insert a xml_set_character_data_handler statement."
+  ""
+  '(setq parser (skeleton-read "parser: "))
+  '(setq handler (skeleton-read "handler: "))
+  > "xml_set_character_data_handler(" parser ", " handler ");" \n
+)
+
+(define-skeleton php-xml_set_default_handler
+  "Insert a xml_set_default_handler statement."
+  ""
+  '(setq parser (skeleton-read "parser: "))
+  '(setq handler (skeleton-read "handler: "))  
+  > "xml_set_default_handler(" parser ", " handler ");" \n
+)
+
+(define-skeleton php-xml_set_element_handler
+  "Insert a xml_set_element_handler statement."
+  ""
+  '(setq parser (skeleton-read "parser: "))
+  '(setq start_element_handler (skeleton-read "start_element_handler: "))
+  '(setq end_element_handler (skeleton-read "end_element_handler: "))
+  > "xml_set_element_handler(" parser ", " start_element_handler ", " end_element_handler ");" \n
+)
+
+(define-skeleton php-xml_set_end_namespace_decl_handler
+  "Insert a xml_set_end_namespace_decl_handler statement. Set up end namespace declaration handler "
+  ""
+  '(setq parser (skeleton-read "parser: "))
+  '(setq handler (skeleton-read "handler: "))
+  > "xml_set_end_namespace_decl_handler(" parser ", " handler ");" \n
+)
+
+
+(define-skeleton php-xml_set_external_entity_ref_handler
+  "Insert a xml_set_external_entity_ref_handler statement."
+  ""
+  '(setq parser (skeleton-read "parser: "))
+  '(setq handler (skeleton-read "handler: "))  
+  > "xml_set_external_entity_ref_handler(" parser ", " handler ");" \n
+)
+
+(define-skeleton php-xml_set_notation_decl_handler
+  "Insert a xml_set_notation_decl_handler statement."
+  ""
+  '(setq parser (skeleton-read "parser: "))
+  '(setq handler (skeleton-read "handler: "))  
+  > "xml_set_notation_decl_handler(" parser ", " handler ");" \n
+)
+
+
+(define-skeleton php-xml_set_object
+  "Insert a xml_set_object statement. Use XML Parser within an object"
+  ""
+  '(setq parser (skeleton-read "parser: "))
+  '(setq object (skeleton-read "object: "))
+  > "xml_set_object(" parser ", " object ");" \n
+)
+
+(define-skeleton php-xml_set_processing_instruction_handler
+  "Insert a xml_set_processing_instruction_handler statement. Set up processing instruction (PI) handler  "
+  ""
+  '(setq parser (skeleton-read "parser: "))
+  '(setq handler (skeleton-read "handler: "))
+  > "xml_set_processing_instruction_handler(" parser ", " handler ");" \n
+)
+
+(define-skeleton php-xml_set_start_namespace_decl_handler
+  "Insert a xml_set_start_namespace_decl_handler statement.  Set up start namespace declaration handler "
+  ""
+  '(setq parser (skeleton-read "parser: "))
+  '(setq handler (skeleton-read "handler: "))  
+  > "xml_set_start_namespace_decl_handler(" parser ", " handler ");" \n
+)
+
+(define-skeleton php-xml_set_unparsed_entity_decl_handler
+  "Insert a xml_set_unparsed_entity_decl_handler statement. Set up unparsed entity declaration handler  "
+  ""
+  '(setq parser (skeleton-read "parser: "))
+  '(setq handler (skeleton-read "handler: "))    
+  > "xml_set_unparsed_entity_decl_handler(" parser ", " handler ");" \n
 )

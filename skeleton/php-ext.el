@@ -1,3 +1,5 @@
+;;; php-ext.el --- PHP skeleton templates
+
 ;; Copyright (C) 2015  David Arroyo Menéndez
 
 ;; Author: David Arroyo Menéndez <davidam@gnu.org>
@@ -15,18 +17,22 @@
 
 ;; You should have received a copy of the GNU General Public License
 ;; along with GNU Emacs; see the file COPYING.  If not, write to
-;; the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, 
+;; the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 ;; Boston, MA 02110-1301 USA,
 
 ;; To install php-ext.el:
-;; You can adapt the next lines in your .emacs
-;; (setq php-ext-path "~/git/php-ext-el")
-;; (load (concat php-ext-path "php-ext.el"))
+
+;; (require 'php-ext)
 
 ;; Description:
 ;; Php ext is some skeleton templates for extend php-mode
 
 ;; Math functions
+
+(defvar php-ext-path
+  (if load-file-name
+      (file-name-directory load-file-name)
+    default-directory))
 
 (load (concat php-ext-path "php-math.el"))
 
@@ -54,11 +60,10 @@
 ;; Handling Variables
 ;; http://php.net/manual/en/ref.var.php
 ;; file:///usr/share/doc/php-doc/html/ref.var.html
- 
+
 (load (concat php-ext-path "php-var.el"))
 
-
-;; DOM 
+;; DOM
 ;; More see file:///usr/share/doc/php-doc/html/book.dom.html
 
 (load (concat php-ext-path "php-dom.el"))
@@ -86,6 +91,20 @@
 
 (load (concat php-ext-path "php-filesystem.el"))
 
+;; Graphic functions
+
+;; GD functions
+;; file:///usr/share/doc/php-doc/html/ref.image.html
+;; http://php.net/manual/en/ref.image.php
+
+(load (concat php-ext-path "php-gd.el"))
+
+;; Exif functions
+;; http://php.net/manual/en/ref.exif.php
+;; file:///usr/share/doc/php-doc/html/ref.exif.html
+
+(load (concat php-ext-path "php-exif.el"))
+
 ;; Another functions
 
 (define-skeleton php-function
@@ -93,7 +112,7 @@
   ""
   '(setq function (skeleton-read "Function name? ")) \n
   '(setq argument (skeleton-read "Argument? ")) \n
-  > "function " function "(" argument 
+  > "function " function "(" argument
   ( "Another argument? %s: "
     > ", " str )
   > ") {" \n
@@ -108,9 +127,6 @@
   '(setq value (skeleton-read "Value? "))
   "define(\"" variable "\",\"" value "\");")
 
-(define-skeleton php-chr
-  "Insert a chr statement"
-  ""
-  '(setq chr (skeleton-read "Char? "))
-  "chr(" chr ");"
-)
+(provide 'php-ext)
+
+;;; php-ext.el ends here

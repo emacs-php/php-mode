@@ -6,12 +6,12 @@
 
 ;;; Author: Eric James Michael Ritz
 ;;; URL: https://github.com/ejmr/php-mode
-;;; Version: 1.16.0
+;;; Version: 1.17.0
 
-(defconst php-mode-version-number "1.16.0"
+(defconst php-mode-version-number "1.17.0"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2015-05-28"
+(defconst php-mode-modified "2015-09-17"
   "PHP Mode build date.")
 
 ;;; License
@@ -517,7 +517,8 @@ PHP does not have an \"enum\"-like keyword."
         "null"))
 
 (c-lang-defconst c-lambda-kwds
-  php '("function"))
+  php '("function"
+        "use"))
 
 (c-lang-defconst c-other-kwds
   "Keywords not accounted for by any other `*-kwds' language constant."
@@ -606,6 +607,7 @@ but only if the setting is enabled"
                        (class-open . -)
                        (comment-intro . 0)
                        (inlambda . 0)
+                       (lambda-intro-cont . +)
                        (inline-open . 0)
                        (label . +)
                        (statement-cont . (first php-lineup-cascaded-calls php-lineup-string-cont +))
@@ -734,7 +736,7 @@ Implements PHP version of `beginning-of-defun-function'."
 
 (defun php-end-of-defun (&optional arg)
   "Move the end of the ARGth PHP function from point.
-Implements PHP befsion of `end-of-defun-function'
+Implements PHP version of `end-of-defun-function'
 
 See `php-beginning-of-defun'."
   (interactive "p")
@@ -1003,8 +1005,7 @@ PHP heredoc."
     (set (make-local-variable 'syntax-propertize-function)
          #'php-syntax-propertize-function))
 
-  (setq font-lock-maximum-decoration t
-        imenu-generic-expression php-imenu-generic-expression)
+  (setq imenu-generic-expression php-imenu-generic-expression)
 
   ;; PHP vars are case-sensitive
   (setq case-fold-search t)
@@ -1252,7 +1253,7 @@ under which to search for files in the local documentation directory.")
                (not (assq types-list words-cache)))
       ;; Generate the cache on the first run, or if the types changed.
       ;; We read the filenames matching our types list in the local
-      ;; documention directory, and extract the 'middle' component
+      ;; documentation directory, and extract the 'middle' component
       ;; of each. e.g. "function.array-map.html" => "array_map".
       (let* ((types-opt (regexp-opt types-list))
              (pattern (concat "\\`" types-opt "\\.\\(.+\\)\\.html\\'"))

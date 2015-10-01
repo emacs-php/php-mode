@@ -39,7 +39,10 @@
 ;; <http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14325>.
 (c-after-font-lock-init)
 
-(defvar php-mode-test-dir (expand-file-name "tests" (file-name-directory load-file-name))
+(defvar php-mode-test-dir (expand-file-name "tests"
+                                            (if load-file-name
+                                                (file-name-directory load-file-name)
+                                              default-directory))
   "Directory containing the `php-mode' test files.")
 
 (defvar php-mode-test-valid-magics '(indent)
