@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.17.0"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2015-09-17"
+(defconst php-mode-modified "2015-10-01"
   "PHP Mode build date.")
 
 ;;; License
@@ -1405,6 +1405,9 @@ a completion list."
      (,(concat (regexp-opt (c-lang-const c-class-decl-kwds php))
                " \\(\\sw+\\)")
       1 font-lock-type-face)
+
+     ;; Highlight return types in functions and methods.
+     ("function.+:\\s-?\\(\\sw+\\)" 1 font-lock-type-face)
 
      ;; While c-opt-cpp-* highlights the <?php opening tags, it is not
      ;; possible to make it highlight short open tags and closing tags
