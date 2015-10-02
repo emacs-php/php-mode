@@ -42,6 +42,16 @@ Experimental and In-Progress Features
 
 Daniel Haxney began incorporating CC Mode, and now the task is carried on by Jorys Steyn.  The features are not complete but are usable.  To test this out you can switch to the `cc-mode-conversion` branch.  Please report all feedback [on this thread](https://github.com/ejmr/php-mode/issues/66#issuecomment-53677111)
 
+### PHP 7 Support ###
+
+At this time of writing PHP 7 is currently on its fourth Release Candidate.  PHP Mode supports the following features and changes from PHP 7:
+
+1. Type-hints for return values in functions and methods receive syntax highlighting in the same way as type-hints for function and method parameters.
+
+2. PHP Mode treats `yield from` as keyword in the same way it already does for a sole `yield`.
+
+3. It recognizes `strict_types` as a special declaration in the same way as `ticks`.
+
 
 Features
 --------
