@@ -2,7 +2,7 @@ PHP Mode for GNU Emacs
 ======================
 [![travis badge][travis-badge]][travis-link] [![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
 
-This updates PHP Mode with features to make it more friendly to use with PHP 5.4 and later.  This fork builds on the work of:
+This project updates PHP Mode for GNU Emacs with features to make it more friendly to use with PHP 5.4 and later.  This fork builds on the work of:
 
 1. Turadg Aleahmad (Original Author)
 
@@ -12,7 +12,12 @@ This updates PHP Mode with features to make it more friendly to use with PHP 5.4
 
 All contributors listed below improved PHP Mode as well.
 
-Please email any bugs or feature requests to `ejmr at plutono dot com` or submit them as Issues on the [GitHub page](https://github.com/ejmr/php-mode).  Also please include the output of `php-mode-version` in bug reports.  [There is a changelog for previous versions.](./Changelog.md)
+The current maintainers are:
+
+1. Eric James Michael Ritz
+2. Syohei Yoshida
+
+Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode](https://github.com/ejmr/php-mode).  You can also send email for any bugs or features to `ejmr at plutono dot com`.  However, we prefer GitHub issues because they are easier for all contributors to see.
 
 
 Installation
@@ -38,9 +43,9 @@ When reporting a bug please run the function `php-mode-version` and include its 
 Experimental and In-Progress Features
 -------------------------------------
 
-### CC Mode ###
+### CC Mode, CEDET, EDE, and Semantic ###
 
-Daniel Haxney began incorporating CC Mode, and now the task is carried on by Jorys Steyn.  The features are not complete but are usable.  To test this out you can switch to the `cc-mode-conversion` branch.  Please report all feedback [on this thread](https://github.com/ejmr/php-mode/issues/66#issuecomment-53677111)
+In 2013 Daniel Haxney began rewriting parts of PHP Mode in terms of Emacs' built-in CC Mode.  This laid the foundation for incorporating some of the inherit IDE-ish features of Emacs, such as CEDET, EDE, and Semantic.  Support for these tools continues to improve thanks to the work of Andrea Turso, Steven Rémot, Joris Steyn, and others.  If you wish to test, contribute to, or simply experiment with such features then [this thread is a good place to start](https://github.com/ejmr/php-mode/issues/256).
 
 ### PHP 7 Support ###
 
@@ -233,7 +238,7 @@ All contributions to PHP Mode are welcome.  But please try to do the following w
 
 5. Open the `php-mode-test.el` file and [run all of the tests](http://www.gnu.org/software/emacs/manual/html_node/ert/Running-Tests-Interactively.html#Running-Tests-Interactively) to ensure they still pass as expected.  Sometimes we expect for a test to fail, and those unit tests have the appropriate configuration so their failure will not raise any warnings.  You can use `make test` script to run all tests from a terminal, which is also useful in conjunction with [`git bisect run`](http://git-scm.com/book/en/Git-Tools-Debugging-with-Git).
 
-6. Send me a pull request here on GitHub.  Or if you do not have a GitHub account then email the patches to me at `ejmr at plutono dot com`.  Please try to make sure the patches are acceptable input to the command `git am`.  Please note that even if you send a pull request it is very likely that I will *not* simply merge your branch through GitHub; I prefer to go through commits and cherry-pick them so I can review the commit messages and sign-off on them.  You can see which commits I did or did not merge by using the [`git-cherry`](http://www.kernel.org/pub/software/scm/git/docs/git-cherry.html) command.
+6. Send us a pull request here on GitHub.  Or if you do not have a GitHub account then email the patches to me at `ejmr at plutono dot com`, in which case make sure the patches are acceptable input to the command `git am`.  Please note that even if you send a pull request it is possible that we will *not* simply merge your branch through GitHub, as sometimes we prefer to go through commits and cherry-pick them for review and to maintain a cleaner repository history.  You can see which commits we merge by using the [`git-cherry`](http://www.kernel.org/pub/software/scm/git/docs/git-cherry.html) command.
 
 If you are fixing a bug related to a GitHub issue, then first of all, thank you for the help improving PHP Mode.  Second, there is a `tests/` directory which contains PHP scripts for issues (although not all of them).  Please consider adding a test script to that directory that documents the expected behavior and provides code that allows others to see if said behavior works properly.  Then create a unit test within `php-mode-test.el` using [ERT][]. Please try to follow the format of the existing tests.
 
