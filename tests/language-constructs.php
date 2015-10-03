@@ -77,3 +77,4 @@ var;
 while;
 xor;
 yield;
+yield from;

@@ -11,7 +11,7 @@
 (defconst php-mode-version-number "1.17.0"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2015-09-27"
+(defconst php-mode-modified "2015-10-02"
   "PHP Mode build date.")
 
 ;;; License
@@ -551,6 +551,7 @@ PHP does not have an \"enum\"-like keyword."
     "var"
     "xor"
     "yield"
+    "yield from"
 
     ;; Below keywords are technically not reserved keywords, but
     ;; threated no differently by php-mode from actual reserved
@@ -559,6 +560,7 @@ PHP does not have an \"enum\"-like keyword."
     ;;; declare directives:
     "encoding"
     "ticks"
+    "strict_types"
 
     ;;; self for static references:
     "self"
@@ -1404,6 +1406,9 @@ a completion list."
      (,(concat (regexp-opt (c-lang-const c-class-decl-kwds php))
                " \\(\\sw+\\)")
       1 font-lock-type-face)
+
+     ;; Highlight return types in functions and methods.
+     ("function.+:\\s-?\\(\\sw+\\)" 1 font-lock-type-face)
 
      ;; While c-opt-cpp-* highlights the <?php opening tags, it is not
      ;; possible to make it highlight short open tags and closing tags
