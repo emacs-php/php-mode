@@ -931,9 +931,6 @@ the string HEREDOC-START."
 
 (defun php-syntax-propertize-function (start end)
   "Apply propertize rules from START to END."
-  ;; (defconst php-syntax-propertize-function
-  ;;   (syntax-propertize-rules
-  ;;    (php-heredoc-start-re (0 (ignore (php-heredoc-syntax))))))
   (goto-char start)
   (while (and (< (point) end)
               (re-search-forward php-heredoc-start-re end t))
