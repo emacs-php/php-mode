@@ -1519,20 +1519,6 @@ The output will appear in the buffer *PHP*."
 
 (ad-activate 'fixup-whitespace)
 
-;; Advice `font-lock-fontify-keywords-region' to support namespace
-;; separators in class names. Use word syntax for backslashes when
-;; doing keyword fontification, but not when doing syntactic
-;; fontification because that breaks \ as escape character in strings.
-;;
-;; Special care is taken to restore the original syntax, because we
-;; want \ not to be word for functions like forward-word.
-(defadvice font-lock-fontify-keywords-region (around backslash-as-word activate)
-  "Fontify keywords with backslash as word character"
-  (let ((old-syntax (string (char-syntax ?\\))))
-    (modify-syntax-entry ?\\ "w")
-    ad-do-it
-    (modify-syntax-entry ?\\ old-syntax)))
-
 
 ;;;###autoload
 (dolist (pattern '("\\.php[s345t]?\\'" "\\.phtml\\'" "Amkfile" "\\.amk$"))
