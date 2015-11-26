@@ -1440,7 +1440,7 @@ The output will appear in the buffer *PHP*."
 (defface php-annotations-annotation-face '((t . (:inherit font-lock-constant-face)))
   "Face used to highlight annotations.")
 
-(defconst php-annotations-re "\\(\\s-\\|{\\)\\(@[[:alpha:]]+\\)")
+(defconst php-annotations-re "\\(\\s-\\|{\\)\\(@[-\\[:alpha:]]+\\)")
 
 (defmacro php-annotations-inside-comment-p (pos)
   "Return non-nil if POS is inside a comment."
