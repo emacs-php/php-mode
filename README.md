@@ -49,7 +49,7 @@ In 2013 Daniel Haxney began rewriting parts of PHP Mode in terms of Emacs' built
 
 ### PHP 7 Support ###
 
-At this time of writing PHP 7 is currently on its fourth Release Candidate.  PHP Mode supports the following features and changes from PHP 7:
+PHP 7 has been released.  PHP Mode supports the following features and changes from PHP 7:
 
 1. Type-hints for return values in functions and methods receive syntax highlighting in the same way as type-hints for function and method parameters.
 
