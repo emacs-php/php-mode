@@ -4,9 +4,10 @@
 ;;               2008 Aaron S. Hawley
 ;;               2011, 2012, 2013, 2014, 2015 Eric James Michael Ritz
 
-;;; Author: Eric James Michael Ritz
-;;; URL: https://github.com/ejmr/php-mode
-;;; Version: 1.17.0
+;; Author: Eric James Michael Ritz
+;; URL: https://github.com/ejmr/php-mode
+;; Version: 1.17.0
+;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
 
 (defconst php-mode-version-number "1.17.0"
   "PHP Mode version number.")
@@ -78,9 +79,10 @@
 (require 'flymake)
 (require 'etags)
 (require 'speedbar)
+
+(require 'cl-lib)
+
 (eval-when-compile
-  (unless (require 'cl-lib nil t)
-    (require 'cl))
   (require 'regexp-opt)
   (defvar c-vsemi-status-unknown-p)
   (defvar syntax-propertize-via-font-lock))
@@ -90,12 +92,6 @@
 (eval-and-compile
   (if (and (= emacs-major-version 24) (>= emacs-minor-version 4))
     (require 'cl)))
-
-;; Use the recommended cl functions in php-mode but alias them to the
-;; old names when we detect emacs < 24.3
-(if (and (= emacs-major-version 24) (< emacs-minor-version 3))
-    (unless (fboundp 'cl-set-difference)
-      (defalias 'cl-set-difference 'set-difference)))
 
 
 ;; Local variables
@@ -808,7 +804,7 @@ example `html-mode'.  Known such libraries are:\n\t"
                                            '(available-names . 1)
                                            )))
                        (mode (when name
-                               (caddr (assoc name available-multi-libs)))))
+                               (cl-caddr (assoc name available-multi-libs)))))
                   (when mode
                     ;; Minibuffer window is more than one line, fix that first:
                     (message "")
@@ -908,12 +904,12 @@ this ^ lineup"
     (goto-char (cdr langelem))
     (vector (current-column))))
 
-(defun php-lineup-arglist (langelem)
+(defun php-lineup-arglist (_langelem)
   (save-excursion
     (beginning-of-line)
     (if (looking-at-p "\\s-*->") '+ 0)))
 
-(defun php-lineup-hanging-semicolon (langelem)
+(defun php-lineup-hanging-semicolon (_langelem)
   (save-excursion
     (beginning-of-line)
     (if (looking-at-p "\\s-*;\\s-*$") 0 '+)))
@@ -999,11 +995,10 @@ PHP heredoc."
        '(("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
          ("\\(\'\\)\\(\\\\.\\|[^\'\n\\]\\)*\\(\'\\)" (1 "\"") (3 "\""))))
 
-  (when (boundp 'syntax-propertize-function)
-    (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
-                 #'php-syntax-propertize-extend-region)
-    (set (make-local-variable 'syntax-propertize-function)
-         #'php-syntax-propertize-function))
+  (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
+               #'php-syntax-propertize-extend-region)
+  (set (make-local-variable 'syntax-propertize-function)
+       #'php-syntax-propertize-function)
 
   (setq imenu-generic-expression php-imenu-generic-expression)
 
@@ -1293,14 +1288,14 @@ exists, and nil otherwise.
 With a prefix argument, prompt (with completion) for a word to search for."
   (interactive (php--search-documentation-read-arg))
   (let ((file (catch 'found
-                (loop for type in php-search-local-documentation-types do
-                      (let* ((doc-html (format "%s.%s.html"
-                                               type
-                                               (replace-regexp-in-string
-                                                "_" "-" (downcase word))))
-                             (file (expand-file-name doc-html  php-manual-path)))
-                        (when (file-exists-p file)
-                          (throw 'found file)))))))
+                (cl-loop for type in php-search-local-documentation-types do
+                         (let* ((doc-html (format "%s.%s.html"
+                                                  type
+                                                  (replace-regexp-in-string
+                                                   "_" "-" (downcase word))))
+                                (file (expand-file-name doc-html  php-manual-path)))
+                           (when (file-exists-p file)
+                             (throw 'found file)))))))
     (when file
       (let ((file-url (if (string-prefix-p "file://" file)
                           file
