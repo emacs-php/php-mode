@@ -106,13 +106,11 @@
 (defcustom php-executable (or (executable-find "php")
                               "/usr/bin/php")
   "The location of the PHP executable."
-  :type 'string
-  :group 'php)
+  :type 'string)
 
 (defcustom php-default-face 'default
   "Default face in `php-mode' buffers."
-  :type 'face
-  :group 'php)
+  :type 'face)
 
 (defcustom php-speedbar-config t
   "When set to true automatically configures Speedbar to observe PHP files.
@@ -122,8 +120,7 @@ Ignores php-file patterns option; fixed to expression \"\\.\\(inc\\|php[s345]?\\
          (set-default sym val)
          (when val
              (speedbar-add-supported-extension
-              "\\.\\(inc\\|php[s345]?\\|phtml\\)")))
-  :group 'php)
+              "\\.\\(inc\\|php[s345]?\\|phtml\\)"))))
 
 (defcustom php-mode-speedbar-open nil
   "Normally `php-mode' starts with the speedbar closed.
@@ -132,13 +129,11 @@ Turning this on will open it whenever `php-mode' is loaded."
   :set (lambda (sym val)
          (set-default sym val)
          (when val
-             (speedbar 1)))
-  :group 'php)
+             (speedbar 1))))
 
 (defcustom php-template-compatibility t
   "Should detect presence of html tags."
-  :type 'boolean
-  :group 'php)
+  :type 'boolean)
 
 (defsubst php-in-string-p ()
   (nth 3 (syntax-ppss)))
@@ -175,15 +170,13 @@ of constants when set."
 
 (defcustom php-lineup-cascaded-calls nil
   "Indent chained method calls to the previous line"
-  :type 'boolean
-  :group 'php)
+  :type 'boolean)
 
 ;;;###autoload
 (defcustom php-extra-constants '()
   "A list of additional strings to treat as PHP constants."
   :type 'list
-  :set 'php-mode-extra-constants-set
-  :group 'php)
+  :set 'php-mode-extra-constants-set)
 
 (defun php-create-regexp-for-method (visibility)
   "Make a regular expression for methods with the given VISIBILITY.
@@ -249,70 +242,58 @@ can be used to match against definitions for that classlike."
 (defcustom php-manual-url "http://www.php.net/manual/en/"
   "URL at which to find PHP manual.
 You can replace \"en\" with your ISO language code."
-  :type 'string
-  :group 'php)
+  :type 'string)
 
 (defcustom php-search-url "http://www.php.net/"
   "URL at which to search for documentation on a word."
-  :type 'string
-  :group 'php)
+  :type 'string)
 
 (defcustom php-completion-file ""
   "Path to the file which contains the function names known to PHP."
-  :type 'string
-  :group 'php)
+  :type 'string)
 
 (defcustom php-manual-path ""
   "Path to the directory which contains the PHP manual."
-  :type 'string
-  :group 'php)
+  :type 'string)
 
 ;;;###autoload
 (add-to-list 'interpreter-mode-alist (cons "php" 'php-mode))
 
 (defcustom php-mode-hook nil
   "List of functions to be executed on entry to `php-mode'."
-  :type 'hook
-  :group 'php)
+  :type 'hook)
 
 (defcustom php-mode-pear-hook nil
   "Hook called when a PHP PEAR file is opened with `php-mode'."
-  :type 'hook
-  :group 'php)
+  :type 'hook)
 
 (defcustom php-mode-drupal-hook nil
   "Hook called when a Drupal file is opened with `php-mode'."
-  :type 'hook
-  :group 'php)
+  :type 'hook)
 
 (defcustom php-mode-wordpress-hook nil
   "Hook called when a WordPress file is opened with `php-mode'."
-  :type 'hook
-  :group 'php)
+  :type 'hook)
 
 (defcustom php-mode-symfony2-hook nil
   "Hook called when a Symfony2 file is opened with `php-mode'."
-  :type 'hook
-  :group 'php)
+  :type 'hook)
 
 (defcustom php-mode-psr2-hook nil
   "Hook called when a PSR-2 file is opened with `php-mode'."
-  :type 'hook
-  :group 'php)
+  :type 'hook)
 
 (defcustom php-mode-force-pear nil
   "Normally PEAR coding rules are enforced only when the filename contains \"PEAR.\"
 Turning this on will force PEAR rules on all PHP files."
-  :type 'boolean
-  :group 'php)
+  :type 'boolean)
 
 (defcustom php-mode-warn-if-mumamo-off t
   "Warn once per buffer if you try to indent a buffer without
 mumamo-mode turned on. Detects if there are any HTML tags in the
 buffer before warning, but this is is not very smart; e.g. if you
 have any tags inside a PHP string, it will be fooled."
-  :type '(choice (const :tag "Warg" t) (const "Don't warn" nil))
-  :group 'php)
+  :type '(choice (const :tag "Warg" t) (const "Don't warn" nil)))
 
 (defcustom php-mode-coding-style 'pear
   "Select default coding style to use with php-mode.
@@ -335,7 +316,6 @@ This variable can take one of the following symbol values:
                  (const :tag "WordPress" wordpress)
                  (const :tag "Symfony2" symfony2)
                  (const :tag "PSR-2" psr2))
-  :group 'php
   :set 'php-mode-custom-coding-style-set
   :initialize 'custom-initialize-default)
 
@@ -1218,8 +1198,7 @@ current `tags-file-name'."
 If non-nil, this shadows the value of `browse-url-browser-function' when
 calling `php-search-documentation' or `php-search-local-documentation'."
   :type '(choice (const :tag "default" nil) function)
-  :link '(variable-link browse-url-browser-function)
-  :group 'php)
+  :link '(variable-link browse-url-browser-function))
 
 (defun php-browse-documentation-url (url)
   "Browse a documentation URL using the configured browser function.
