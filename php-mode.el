@@ -140,6 +140,15 @@ Turning this on will open it whenever `php-mode' is loaded."
   :type 'boolean
   :group 'php)
 
+(defsubst php-in-string-p ()
+  (nth 3 (syntax-ppss)))
+
+(defsubst php-in-comment-p ()
+  (nth 4 (syntax-ppss)))
+
+(defsubst php-in-string-or-comment-p ()
+  (nth 8 (syntax-ppss)))
+
 (defun php-mode-extra-constants-create-regexp(kwds)
   "Create regexp for the list of extra constant keywords KWDS."
    (concat "[^_$]?\\<\\("
@@ -869,15 +878,6 @@ This is was done due to the problem reported here:
 (defun php-c-vsemi-status-unknown-p ()
   "See `php-c-at-vsemi-p'."
   )
-
-(defsubst php-in-string-p ()
-  (nth 3 (syntax-ppss)))
-
-(defsubst php-in-comment-p ()
-  (nth 4 (syntax-ppss)))
-
-(defsubst php-in-string-or-comment-p ()
-  (nth 8 (syntax-ppss)))
 
 (defun php-lineup-string-cont (langelem)
   "Line up string toward equal sign or dot
