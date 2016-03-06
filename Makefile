@@ -24,6 +24,8 @@ clean:
 test:
 	make clean
 	make all
-	$(EMACS) -Q -batch -L . -l php-mode-test.el -f ert-run-tests-batch-and-exit
+	$(EMACS) -Q -batch -L . -l php-mode-test.el \
+		--eval "(setq temporary-file-directory \"$$TMPDIR\")" \
+		-f ert-run-tests-batch-and-exit
 
 .PHONY: all clean test
