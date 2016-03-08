@@ -578,6 +578,24 @@ style from Drupal."
     (search-forward "$x")
     (should (eq 'font-lock-variable-name-face (get-text-property (1- (point)) 'face)))))
 
+(ert-deftest psr-5-style-tag-annotation ()
+  "PSR-5 style tag annotation."
+  (with-php-mode-test ("annotation.php")
+    (re-search-forward "@\\([^\\]+\\)\\\\\\([^\\]+\\)\\\\\\([^\r\n]+\\)")
+    (cl-loop for i from 1 to 3
+             do
+             (progn
+               (should (eq (get-text-property (match-beginning i) 'face)
+                           'php-annotations-annotation-face))
+               (should (eq (get-text-property (1- (match-end i)) 'face)
+                           'php-annotations-annotation-face))))
+
+    (search-forward "@property-read")
+    (should (eq (get-text-property (match-beginning 0) 'face)
+                'php-annotations-annotation-face))
+    (should (eq (get-text-property (1- (match-end 0)) 'face)
+                'php-annotations-annotation-face))))
+
 ;;; php-mode-test.el ends here
 
 ;; Local Variables:
