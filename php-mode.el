@@ -1513,7 +1513,7 @@ The output will appear in the buffer *PHP*."
 
 
 ;;;###autoload
-(dolist (pattern '("\\.php[s345t]?\\'" "\\.phtml\\'" "Amkfile" "\\.amk$"))
+(dolist (pattern '("\\.php[s345t]?\\'" "\\.phtml\\'" "/Amkfile\\'" "\\.amk\\'"))
   (add-to-list 'auto-mode-alist `(,pattern . php-mode) t))
 
 (provide 'php-mode)
