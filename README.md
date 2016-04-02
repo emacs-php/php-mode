@@ -223,6 +223,13 @@ The key-binding `C-c C-w` will also toggle Subword Mode on and off.
 Viewing and editing build scripts for [Amaka](http://trashofmasters.github.io/amaka/) will automatically enable PHP Mode.
 
 
+Other Packages for PHP programming
+----------------------------------
+
+- [ac-php](https://github.com/xcwen/ac-php): [company-mode](https://github.com/company-mode/company-mode) and [auto-complete](https://github.com/auto-complete/auto-complete) for PHP
+- [flycheck](https://github.com/flycheck/flycheck/): On the fly syntax checker
+
+
 How to Contribute
 -----------------
 
