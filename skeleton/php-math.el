@@ -58,12 +58,6 @@
   > "asinh(" (skeleton-read "Number? ") ");" \n
 )
 
-(define-skeleton php-atanh
-  "Insert an asinh statement"
-  ""
-  > "atanh(" (skeleton-read "Number? ") ");" \n
-)
-
 (define-skeleton php-atan
   "Insert an atan statement"
   ""
@@ -77,7 +71,7 @@
 )
 
 (define-skeleton php-atanh
-  "Insert an atan statement"
+  "Insert an atanh statement"
   ""
   > "atanh(" (skeleton-read "Number? ") ");" \n
 )
