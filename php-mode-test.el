@@ -596,6 +596,15 @@ style from Drupal."
     (should (eq (get-text-property (1- (match-end 0)) 'face)
                 'php-annotations-annotation-face))))
 
+(ert-deftest php-mode-test-issue-305 ()
+  "Test highlighting variables which contains 'this' or 'that'."
+  (with-php-mode-test ("issue-305.php")
+    (search-forward "Start:")
+    (search-forward "$this")
+    (should-not (eq 'font-lock-constant-face (get-text-property (- (point) 1) 'face)))
+    (search-forward "$that")
+    (should-not (eq 'font-lock-constant-face (get-text-property (- (point) 1) 'face)))))
+
 ;;; php-mode-test.el ends here
 
 ;; Local Variables:
