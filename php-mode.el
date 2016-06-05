@@ -1061,7 +1061,8 @@ PHP heredoc."
        php-beginning-of-defun-regexp)
 
   (when (>= emacs-major-version 25)
-    (php-syntax-propertize-function (point-min) (point-max))))
+    (with-silent-modifications
+      (php-syntax-propertize-function (point-min) (point-max)))))
 
 
 ;; Define function name completion function
