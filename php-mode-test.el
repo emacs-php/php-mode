@@ -605,6 +605,13 @@ style from Drupal."
     (search-forward "$that")
     (should-not (eq 'font-lock-constant-face (get-text-property (- (point) 1) 'face)))))
 
+(ert-deftest php-mode-test-issue-307 ()
+  "Activating php-mode should not mark the buffer as modified."
+  (with-php-mode-test ("issue-307.php")
+    (set-buffer-modified-p nil)
+    (php-mode)
+    (should-not (buffer-modified-p))))
+
 ;;; php-mode-test.el ends here
 
 ;; Local Variables:
