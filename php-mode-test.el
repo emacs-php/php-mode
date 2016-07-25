@@ -227,7 +227,7 @@ style from Drupal."
    ("issue-53.php")
    (search-forward "return $this->bar;")
    ;; the file written to has no significance, only the buffer
-   (let ((tmp-filename (make-temp-name temporary-file-directory)))
+   (let ((tmp-filename (concat (make-temp-name temporary-file-directory) ".php")))
      (dolist (mode '(pear wordpress symfony2))
        (php-mode-custom-coding-style-set 'php-mode-coding-style 'drupal)
        (php-mode-custom-coding-style-set 'php-mode-coding-style mode)
