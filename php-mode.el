@@ -93,6 +93,23 @@
   (if (and (= emacs-major-version 24) (>= emacs-minor-version 4))
     (require 'cl)))
 
+;; Work around https://github.com/ejmr/php-mode/issues/310.
+;;
+;; In emacs 24.4 and 24.5, lines after functions with a return type
+;; are incorrectly analyzed as member-init-cont.
+;;
+;; Before emacs 24.4, c member initializers are not supported this
+;; way. Starting from emacs 25.1, cc-mode only detects member
+;; initializers when the major mode is c++-mode.
+(eval-and-compile
+  (if (and (= emacs-major-version 24) (or (= emacs-minor-version 4)
+                                          (= emacs-minor-version 5)))
+      (defun c-back-over-member-initializers ()
+        ;; Override of cc-engine.el, cc-mode in emacs 24.4 and 24.5 are too
+        ;; optimistic in recognizing c member initializers. Since we don't
+        ;; need it in php-mode, just return nil.
+        nil)))
+
 
 ;; Local variables
 ;;;###autoload
