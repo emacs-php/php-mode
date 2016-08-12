@@ -931,11 +931,12 @@ the string HEREDOC-START."
   (while (and (< (point) end)
               (re-search-forward php-heredoc-start-re end t))
     (php-heredoc-syntax))
-  (goto-char start)
-  (while (re-search-forward "['\"]" end t)
-    (when (php-in-comment-p)
-      (c-put-char-property (match-beginning 0)
-                           'syntax-table (string-to-syntax "_")))))
+  (save-excursion
+    (goto-char start)
+    (while (re-search-forward "['\"]" end t)
+      (when (php-in-comment-p)
+        (c-put-char-property (match-beginning 0)
+                             'syntax-table (string-to-syntax "_"))))))
 
 (defun php-heredoc-syntax ()
   "Mark the boundaries of searched heredoc."
