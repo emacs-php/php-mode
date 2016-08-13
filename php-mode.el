@@ -1079,7 +1079,8 @@ PHP heredoc."
 
   (when (>= emacs-major-version 25)
     (with-silent-modifications
-      (php-syntax-propertize-function (point-min) (point-max)))))
+      (save-excursion
+        (php-syntax-propertize-function (point-min) (point-max))))))
 
 
 ;; Define function name completion function
