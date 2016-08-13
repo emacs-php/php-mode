@@ -612,6 +612,13 @@ style from Drupal."
     (php-mode)
     (should-not (buffer-modified-p))))
 
+(ert-deftest php-mode-test-issue-314 ()
+  "Activating php-mode should not move point."
+  (with-php-mode-test ("issue-314.php")
+    (let ((orig-point (point)))
+      (php-mode)
+      (should (eq (point) orig-point)))))
+
 (ert-deftest php-mode-test-issue-310 ()
   "Proper indentation after function with return type."
   (with-php-mode-test ("issue-310.php" :indent t :magic t)))
