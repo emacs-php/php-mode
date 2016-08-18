@@ -56,6 +56,7 @@ instanceof ClassName;
 insteadof ClassName;
 interface ClassName;
 isset();
+iterable;
 list();
 namespace ClassName;
 new ClassName;
