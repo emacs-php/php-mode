@@ -12,7 +12,7 @@
 (defconst php-mode-version-number "1.17.0"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2016-03-06"
+(defconst php-mode-modified "2016-08-22"
   "PHP Mode build date.")
 
 ;;; License
@@ -115,6 +115,7 @@
 ;;;###autoload
 (defgroup php nil
   "Major mode `php-mode' for editing PHP code."
+  :tag "PHP"
   :prefix "php-"
   :group 'languages
   :link '(url-link :tag "Official Site" "https://github.com/ejmr/php-mode")
