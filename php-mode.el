@@ -990,6 +990,7 @@ PHP heredoc."
   (modify-syntax-entry ?\"   "\"" php-mode-syntax-table)
   (modify-syntax-entry ?#    "< b" php-mode-syntax-table)
   (modify-syntax-entry ?\n   "> b" php-mode-syntax-table)
+  (modify-syntax-entry ?$    "'" php-mode-syntax-table)
 
   (set (make-local-variable 'syntax-propertize-via-font-lock)
        '(("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
