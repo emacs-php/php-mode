@@ -257,7 +257,7 @@ can be used to match against definitions for that classlike."
     "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
  "Imenu generic expression for PHP Mode. See `imenu-generic-expression'.")
 
-(defcustom php-manual-url "http://www.php.net/manual/en/"
+(defcustom php-manual-url "http://www.php.net/manual-lookup.php?pattern="
   "URL at which to find PHP manual.
 You can replace \"en\" with your ISO language code."
   :type 'string)
@@ -1328,11 +1328,20 @@ a completion list."
           (php-search-web-documentation word))
     (php-search-web-documentation word)))
 
+;; Open URL in other window
+(defun browse-url-other-window (url &optional newwin)
+  "Open url in other window"
+  (message "Openning PHP online manual...")
+  (let ((pop-up-windows t))
+    (if (one-window-p)(split-window-sensibly (frame-selected-window)))
+    (other-window 1)
+    (browse-url url newwin)))
+
 ;; Define function for browsing manual
 (defun php-browse-manual ()
   "Bring up manual for PHP."
   (interactive)
-  (browse-url php-manual-url))
+  (browse-url-other-window (concat php-manual-url (current-word))))
 
 (defconst php-font-lock-keywords-1 (c-lang-const c-matchers-1 php)
   "Basic highlighting for PHP mode.")
