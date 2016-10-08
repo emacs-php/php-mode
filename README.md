@@ -225,10 +225,10 @@ Viewing and editing build scripts for [Amaka](http://trashofmasters.github.io/am
 ### Insert current class/namespace ###
 
 ```el
-(add-hook 'php-mode-hook
-          #'(lambda ()
-              (local-set-key (kbd "C-c C--") 'php-insert-current-class)
-              (local-set-key (kbd "C-c C-=") 'php-insert-current-namespace)))
+(with-eval-after-load 'php-mode
+  (require 'php-current)
+  (define-key php-mode-map (kbd "C-c C--") 'php-current-class)
+  (define-key php-mode-map (kbd "C-c C-=") 'php-current-namespace))
 ```
 
 Other Packages for PHP programming
