@@ -222,6 +222,14 @@ The key-binding `C-c C-w` will also toggle Subword Mode on and off.
 
 Viewing and editing build scripts for [Amaka](http://trashofmasters.github.io/amaka/) will automatically enable PHP Mode.
 
+### Insert current class/namespace ###
+
+```el
+(with-eval-after-load 'php-mode
+  (require 'php-current)
+  (define-key php-mode-map (kbd "C-c C--") 'php-current-class)
+  (define-key php-mode-map (kbd "C-c C-=") 'php-current-namespace))
+```
 
 Other Packages for PHP programming
 ----------------------------------
@@ -363,7 +371,7 @@ In chronological order:
 66. [Sebastian Wiesner](https://github.com/lunaryorn)
 67. [Michael Stolovitzsky](https://github.com/emestee)
 68. [David Arroyo Menéndez](https://github.com/davidam)
-
+69. [USAMI Kenta](https://tadsan.github.io/) (@zonuexe)
 
 
 [wiki]: https://github.com/ejmr/php-mode/wiki
