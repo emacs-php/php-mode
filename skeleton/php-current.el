@@ -46,7 +46,7 @@
   "Insert current namespace if cursor in in namespace context."
   > (let ((matched (php-get-current-element php--re-namespace-pattern)))
       (if matched
-          (concat matched php-class-suffix-when-insert)
+          (concat matched php-namespace-suffix-when-insert)
         "")))
 
 (provide 'php-current)
