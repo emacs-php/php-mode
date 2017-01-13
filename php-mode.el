@@ -1342,6 +1342,7 @@ a completion list."
 
 (defconst php-font-lock-keywords-3
   (append
+   javadoc-font-lock-keywords
    ;; php-mode patterns *before* cc-mode:
    ;;  only add patterns here if you want to prevent cc-mode from applying
    ;;  a different face.
