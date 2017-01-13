@@ -99,7 +99,10 @@ run with specific customizations set."
   `(with-temp-buffer
      (insert-file-contents (expand-file-name ,file php-mode-test-dir))
      (php-mode)
-     (font-lock-fontify-buffer)
+     ,(if (fboundp 'font-lock-ensure)
+          '(font-lock-ensure)
+        '(with-no-warnings (font-lock-fontify-buffer)))
+
      ,(cl-case style
         (pear '(php-enable-pear-coding-style))
         (drupal '(php-enable-drupal-coding-style))
