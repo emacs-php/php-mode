@@ -603,7 +603,7 @@ but only if the setting is enabled"
 (c-add-style
  "php"
  '((c-basic-offset . 4)
-   (c-doc-comment-style . javadoc)
+   ;;(c-doc-comment-style . php-phpdoc)
    (c-offsets-alist . ((arglist-close . php-lineup-arglist-close)
                        (arglist-cont . (first php-lineup-cascaded-calls 0))
                        (arglist-cont-nonempty . (first php-lineup-cascaded-calls c-lineup-arglist))
@@ -1346,6 +1346,11 @@ a completion list."
     ("^\\(?:/\\*\\)?\\(?:\\s \\|\\*\\)*\\(@[[:alpha:]][-[:alpha:]\\]*\\)" ; "@foo ..." markup.
      1 'php-annotations-annotation-face prepend nil)))
 
+(defvar php-phpdoc-font-lock-keywords
+  `((,(lambda (limit)
+	(c-font-lock-doc-comments "/\\*\\*" limit
+	  php-phpdoc-font-lock-doc-comments)))))
+
 (defconst php-font-lock-keywords-1 (c-lang-const c-matchers-1 php)
   "Basic highlighting for PHP mode.")
 
@@ -1354,9 +1359,7 @@ a completion list."
 
 (defconst php-font-lock-keywords-3
   (append
-   `((,(lambda (limit)
-	(c-font-lock-doc-comments "/\\*\\*" limit
-	  php-phpdoc-font-lock-doc-comments))))
+   php-phpdoc-font-lock-keywords
    ;; php-mode patterns *before* cc-mode:
    ;;  only add patterns here if you want to prevent cc-mode from applying
    ;;  a different face.
