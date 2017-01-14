@@ -1335,14 +1335,16 @@ a completion list."
   (browse-url php-manual-url))
 
 (defconst php-phpdoc-font-lock-doc-comments
-  `((,(rx "{@" (+ (or "-" alpha)) (syntax whitespace) (* (not (any "}"))) "}") ; "{@foo ...}" markup.
-     0 ,c-doc-markup-face-name prepend nil)
-    (,(concat "\\s-\\(" (regexp-opt (c-lang-const c-primitive-type-kwds php)) "\\(?:\\[]\\)?\\)\\s-")
+  `(("{@[-[:alpha:]]\\s-[^}]*}" ; "{@foo ...}" markup.
+     0 'php-annotations-annotation-face prepend nil)
+    (,(concat "\\s-\\("
+              (regexp-opt (c-lang-const c-primitive-type-kwds php))
+              "\\(?:\\[]\\)?\\)\\s-")
      1 font-lock-type-face prepend nil)
     (,(rx "$" (in "A-Za-z_") (* (in "0-9A-Za-z_")))
      0 font-lock-variable-name-face prepend nil)
-    ("^\\(?:/\\*\\)?\\(?:\\s \\|\\*\\)*\\(@[A-Za-z][-A-Za-z\\]*\\)" ; "@foo ..." markup.
-     1 ,c-doc-markup-face-name prepend nil)))
+    ("^\\(?:/\\*\\)?\\(?:\\s \\|\\*\\)*\\(@[[:alpha:]][-[:alpha:]\\]*\\)" ; "@foo ..." markup.
+     1 'php-annotations-annotation-face prepend nil)))
 
 (defconst php-font-lock-keywords-1 (c-lang-const c-matchers-1 php)
   "Basic highlighting for PHP mode.")
