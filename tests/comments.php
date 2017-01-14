@@ -10,16 +10,18 @@
  */
 
 // one-line comment
-// @annotation This is NOT annotation.
+// @annotation This is NOT annotation. 1
 
 /*------------------------------------------------
   Multi-line comment
 
- * @annotation This is NOT annotation.
+ * @annotation This is NOT annotation. 2
  -------------------------------------------------*/
 
 // /**
 //  * Comment outed class implementation
+//  *
+//  * @annotation This is NOT annotation. 3
 //  */
 // class CommentOuted
 // {
@@ -46,9 +48,9 @@ final class SampleClass
      */
     public function __construct($name)
     {
-        $this->name = $name; // comment
+        $this->name = $name; // comment in after code
 
         // one-line comment
-        // @annotation This is NOT annotation.
+        // @annotation This is NOT annotation. 4
     }
 }

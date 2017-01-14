@@ -339,6 +339,85 @@ style from Drupal."
   "Closure indentation."
   (with-php-mode-test ("issue-145.php" :indent t)))
 
+(ert-deftest php-mode-test-comments ()
+  "Proper highlighting for comments and doc-blocks."
+  (with-php-mode-test ("comments.php")
+    (search-forward "/**")
+    (should (eq (get-text-property (match-beginning 0) 'face)
+                'font-lock-doc-face))
+
+    (search-forward "@copyright")
+    (should (equal (get-text-property (match-beginning 0) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+
+    (search-forward-regexp "// \\(@annotation This is NOT annotation. 1\\)")
+    (should (eq (get-text-property (match-beginning 0) 'face)
+                'font-lock-comment-delimiter-face))
+    (should (eq (get-text-property (match-beginning 1) 'face)
+                'font-lock-comment-face))
+
+    (search-forward-regexp "\\* \\(@annotation This is NOT annotation. 2\\)")
+    (should (eq (get-text-property (match-beginning 0) 'face)
+                'font-lock-comment-face))
+    (should (eq (get-text-property (match-beginning 1) 'face)
+                'font-lock-comment-face))
+
+    ;; Comment outed doc-block
+    (search-forward "/**")
+    (should (eq (get-text-property (match-beginning 0) 'face)
+                'font-lock-comment-face))
+
+    (search-forward-regexp "\\* \\(@annotation This is NOT annotation. 3\\)")
+    (should (equal (get-text-property (match-beginning 0) 'face)
+                   'font-lock-comment-face))
+
+    (should (equal (get-text-property (match-beginning 1) 'face)
+                   'font-lock-comment-face))
+
+    (search-forward "class CommentOuted")
+    (should (eq (get-text-property (match-beginning 0) 'face)
+                'font-lock-comment-face))
+
+    ;; Class level doc-comment
+    (search-forward-regexp "@property\\(-read\\)")
+    (should (equal (get-text-property (match-beginning 0) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+
+    (should (equal (get-text-property (match-beginning 1) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+
+    (search-forward-regexp "@ORM\\(\\\\Table\\)")
+    (should (equal (get-text-property (match-beginning 0) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 1) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+
+    (search-forward-regexp "@var \\(string\\) \\(sample property doc-comment\\)")
+    (should (equal (get-text-property (match-beginning 0) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 1) 'face)
+                   '(font-lock-type-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 2) 'face)
+                   'font-lock-doc-face))
+
+    (search-forward-regexp "// \\(comment in after code\\)")
+    (should (eq (get-text-property (match-beginning 0) 'face)
+                'font-lock-comment-delimiter-face))
+    (should (eq (get-text-property (match-beginning 1) 'face)
+                'font-lock-comment-face))
+
+    (search-forward-regexp "// \\(one-line comment\\)")
+    (should (eq (get-text-property (match-beginning 0) 'face)
+                'font-lock-comment-delimiter-face))
+    (should (eq (get-text-property (match-beginning 1) 'face)
+                'font-lock-comment-face))
+
+    (search-forward-regexp "// \\(@annotation This is NOT annotation. 4\\)")
+    (should (eq (get-text-property (match-beginning 0) 'face)
+                'font-lock-comment-delimiter-face))
+    (should (eq (get-text-property (match-beginning 1) 'face)
+                'font-lock-comment-face))))
+
 (ert-deftest php-mode-test-constants ()
   "Proper highlighting for constants."
   (custom-set-variables '(php-extra-constants (quote ("extraconstant"))))
