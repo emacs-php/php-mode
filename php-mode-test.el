@@ -126,9 +126,9 @@ run with specific customizations set."
   "Annotation highlighting."
   (with-php-mode-test ("issue-8.php")
     (search-forward "@ORM")
-    (should (eq
+    (should (equal
              (get-text-property (match-beginning 0) 'face)
-             'php-annotations-annotation-face))))
+             '(php-annotations-annotation-face font-lock-doc-face)))))
 
 (ert-deftest php-mode-test-issue-9 ()
   "Single quote in text in HTML misinterpreted.
@@ -588,16 +588,16 @@ style from Drupal."
     (cl-loop for i from 1 to 3
              do
              (progn
-               (should (eq (get-text-property (match-beginning i) 'face)
-                           'php-annotations-annotation-face))
-               (should (eq (get-text-property (1- (match-end i)) 'face)
-                           'php-annotations-annotation-face))))
+               (should (equal (get-text-property (match-beginning i) 'face)
+                              '(php-annotations-annotation-face font-lock-doc-face)))
+               (should (equal (get-text-property (1- (match-end i)) 'face)
+                              '(php-annotations-annotation-face font-lock-doc-face)))))
 
     (search-forward "@property-read")
-    (should (eq (get-text-property (match-beginning 0) 'face)
-                'php-annotations-annotation-face))
-    (should (eq (get-text-property (1- (match-end 0)) 'face)
-                'php-annotations-annotation-face))))
+    (should (equal (get-text-property (match-beginning 0) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+    (should (equal (get-text-property (1- (match-end 0)) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))))
 
 (ert-deftest php-mode-test-issue-305 ()
   "Test highlighting variables which contains 'this' or 'that'."
