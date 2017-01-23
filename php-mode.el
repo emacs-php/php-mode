@@ -1339,7 +1339,7 @@ a completion list."
      0 'php-annotations-annotation-face prepend nil)
     (,(concat "\\s-\\("
               (regexp-opt (c-lang-const c-primitive-type-kwds php))
-              "\\(?:\\[]\\)?\\)\\s-")
+              "\\(?:\\[]\\)?\\)\\(\\s-\\|$\\)")
      1 font-lock-type-face prepend nil)
     (,(rx "$" (in "A-Za-z_") (* (in "0-9A-Za-z_")))
      0 font-lock-variable-name-face prepend nil)
