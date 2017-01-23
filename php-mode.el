@@ -1334,15 +1334,20 @@ a completion list."
   (interactive)
   (browse-url php-manual-url))
 
+(defconst php-phpdoc-type-keywords
+  (list "string" "integer" "int" "boolean" "bool" "float"
+        "double" "object" "mixed" "array" "resource" "$this"
+        "void" "null" "callback" "false" "true" "self"))
+
 (defconst php-phpdoc-font-lock-doc-comments
   `(("{@[-[:alpha:]]\\s-[^}]*}" ; "{@foo ...}" markup.
      0 'php-annotations-annotation-face prepend nil)
-    (,(concat "\\s-\\("
-              (regexp-opt (c-lang-const c-primitive-type-kwds php))
-              "\\(?:\\[]\\)?\\)\\(\\s-\\|$\\)")
-     1 font-lock-type-face prepend nil)
     (,(rx "$" (in "A-Za-z_") (* (in "0-9A-Za-z_")))
      0 font-lock-variable-name-face prepend nil)
+    (,(concat "\\s-\\("
+              (regexp-opt php-phpdoc-type-keywords)
+              "\\)\\(?:\\s-\\|$\\)")
+     1 font-lock-type-face prepend nil)
     ("^\\(?:/\\*\\)?\\(?:\\s \\|\\*\\)*\\(@[[:alpha:]][-[:alpha:]\\]*\\)" ; "@foo ..." markup.
      1 'php-annotations-annotation-face prepend nil)))
 
