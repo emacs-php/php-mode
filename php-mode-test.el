@@ -396,7 +396,7 @@ style from Drupal."
     (should (equal (get-text-property (match-beginning 0) 'face)
                    '(php-annotations-annotation-face font-lock-doc-face)))
     (should (equal (get-text-property (match-beginning 1) 'face)
-                   '(font-lock-type-face font-lock-doc-face)))
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
     (should (equal (get-text-property (match-beginning 2) 'face)
                    'font-lock-doc-face))
 

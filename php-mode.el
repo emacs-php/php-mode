@@ -1339,14 +1339,21 @@ a completion list."
         "double" "object" "mixed" "array" "resource" "$this"
         "void" "null" "callback" "false" "true" "self"))
 
+(defconst php-phpdoc-type-tags
+  (list "param" "property" "property-read" "property-write" "return" "var"))
+
 (defconst php-phpdoc-font-lock-doc-comments
   `(("{@[-[:alpha:]]\\s-[^}]*}" ; "{@foo ...}" markup.
      0 'php-annotations-annotation-face prepend nil)
     (,(rx "$" (in "A-Za-z_") (* (in "0-9A-Za-z_")))
      0 font-lock-variable-name-face prepend nil)
-    (,(concat "\\s-\\("
+    (,(concat "\\s-@" (regexp-opt php-phpdoc-type-tags) "\\s-+"
+              "\\(" (rx (+ (? "\\") (+ (in "0-9A-Za-z")) (? "[]") (? "|"))) "\\)+"
+              "\\(?:\\s-\\|$\\)")
+     1 font-lock-string-face prepend nil)
+    (,(concat "\\(?:|\\|\\s-\\)\\("
               (regexp-opt php-phpdoc-type-keywords)
-              "\\)\\(?:\\s-\\|$\\)")
+              "\\)\\(?:|\\|\\s-\\|\\[]\\|$\\)")
      1 font-lock-type-face prepend nil)
     ("^\\(?:/\\*\\)?\\(?:\\s \\|\\*\\)*\\(@[[:alpha:]][-[:alpha:]\\]*\\)" ; "@foo ..." markup.
      1 'php-annotations-annotation-face prepend nil)))
