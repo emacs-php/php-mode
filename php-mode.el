@@ -1337,7 +1337,8 @@ a completion list."
 (defconst php-phpdoc-type-keywords
   (list "string" "integer" "int" "boolean" "bool" "float"
         "double" "object" "mixed" "array" "resource" "$this"
-        "void" "null" "callback" "false" "true" "self"))
+        "void" "null" "callback" "false" "true" "self"
+        "callable" "iterable" "number"))
 
 (defconst php-phpdoc-type-tags
   (list "param" "property" "property-read" "property-write" "return" "var"))
