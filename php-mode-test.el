@@ -379,6 +379,17 @@ style from Drupal."
                 'font-lock-comment-face))
 
     ;; Class level doc-comment
+    (search-forward-regexp "{@internal \\(Description\\)}")
+    (should (equal (get-text-property (match-beginning 0) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 1) 'face)
+                   '(font-lock-string-face php-annotations-annotation-face font-lock-doc-face)))
+
+    (should (equal (get-text-property (1- (match-end 0)) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-end 0) 'face)
+                   'font-lock-doc-face))
+
     (search-forward-regexp "@property\\(-read\\)")
     (should (equal (get-text-property (match-beginning 0) 'face)
                    '(php-annotations-annotation-face font-lock-doc-face)))

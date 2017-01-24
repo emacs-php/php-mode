@@ -1343,8 +1343,9 @@ a completion list."
   (list "param" "property" "property-read" "property-write" "return" "var"))
 
 (defconst php-phpdoc-font-lock-doc-comments
-  `(("{@[-[:alpha:]]+\\s-[^}]*}" ; "{@foo ...}" markup.
-     0 'php-annotations-annotation-face prepend nil)
+  `(("{@[-[:alpha:]]+\\s-\\([^}]*\\)}" ; "{@foo ...}" markup.
+     (0 'php-annotations-annotation-face prepend nil)
+     (1 'font-lock-string-face prepend nil))
     (,(rx "$" (in "A-Za-z_") (* (in "0-9A-Za-z_")))
      0 font-lock-variable-name-face prepend nil)
     (,(concat "\\s-@" (regexp-opt php-phpdoc-type-tags) "\\s-+"
