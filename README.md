@@ -127,12 +127,22 @@ The key command `C-c C-f` will search the PHP website for documentation on the w
 
 The command `php-send-region`, which is bound to `C-c C-r` by default, will execute the selected region of PHP code.  In conjunction with the Emacs command `C-x h` you can use this to execute an entire file.  Any output will appear in a buffer called `*PHP*`.
 
-### Annotation Highlighting ###
+### PHPDoc Tag / Annotation Highlighting ###
 
-Projects like [Symfony](http://symfony.com/) use annotations in comments.  For example, here is code from their website:
+PHPDoc is a documentation format similar to [JavaDoc](https://en.wikipedia.org/wiki/Javadoc).
+
+There are `@param`, `@return`, `@var`... etc in the notation called **tag**, look at [list of tags defined by phpDocumentor2](https://phpdoc.org/docs/latest/references/phpdoc/tags/index.html).  (These tags are compatible with static type checkers like PhpStorm and [Phan](https://github.com/etsy/phan).)
+
+In addition, it also partially supports notation called **annotation**.  Annotation has a slightly different grammar from tag, and the example is `@Annotation(attr1="vvv", attr2="zzz")`.
+
+[Symfony](http://symfony.com/) project and [Go! AOP](https://github.com/goaop/framework) and some projects/frameworks use annotation grammer based on [Doctrine Annotations](http://docs.doctrine-project.org/projects/doctrine-common/en/latest/reference/annotations.html).
 
 ```php
 /**
+ * Summary of Product class
+ *
+ * @copyright 2112 John Doe
+ * @license https://spdx.org/licenses/Apache-2.0.html Apache License 2.0
  * @ORM\Entity
  * @ORM\Table(name="product")
  */
@@ -163,6 +173,8 @@ class Product
 ```
 
 The annotations are the lines that begin with the `@` character, and PHP Mode will give these special highlighting to help them stand out.
+
+PHP Mode has not fully supported [PSR-5: PHPDoc (Draft)](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md) yet.
 
 ### Coding Styles ###
 
