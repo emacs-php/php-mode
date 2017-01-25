@@ -50,6 +50,9 @@ final class SampleClass
     {
         $this->name = $name; // comment in after code
 
+        /** @var string|bool|array[]|ArrayObject */
+        $foo = hoge();
+
         // one-line comment
         // @annotation This is NOT annotation. 4
     }

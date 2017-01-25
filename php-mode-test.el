@@ -417,6 +417,28 @@ style from Drupal."
     (should (eq (get-text-property (match-beginning 1) 'face)
                 'font-lock-comment-face))
 
+    (search-forward-regexp "@var \\(string\\)|\\(bool\\)|\\(array\\)\\([[]]\\)|\\(ArrayObject\\) \\*/$")
+    (should (equal (get-text-property (match-beginning 0) 'face) ;; matches `@'
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `s'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-end 1) 'face)       ;; matches `|'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 2) 'face) ;; matches `b'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-end 2) 'face)       ;; matches `|'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 3) 'face) ;; matches `a'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 4) 'face) ;; matches `['
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-end 4) 'face)       ;; matches `|'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 5) 'face) ;; matches `A'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-end 5) 'face)       ;; matches ` '
+                   ' font-lock-doc-face))
+
     (search-forward-regexp "// \\(one-line comment\\)")
     (should (eq (get-text-property (match-beginning 0) 'face)
                 'font-lock-comment-delimiter-face))
