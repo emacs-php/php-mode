@@ -1357,6 +1357,8 @@ a completion list."
               (regexp-opt php-phpdoc-type-keywords)
               "\\)")
      1 font-lock-type-face prepend nil)
+    ("https?://[^\\S\n]+"
+     0 'link prepend nil)
     ("^\\(?:/\\*\\)?\\(?:\\s \\|\\*\\)*\\(@[[:alpha:]][-[:alpha:]\\]*\\)" ; "@foo ..." markup.
      1 'php-annotations-annotation-face prepend nil)))
 

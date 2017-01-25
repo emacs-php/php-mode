@@ -7,6 +7,7 @@
  * @copyright 2008 Aaron S. Hawley
  * @copyright 2011, 2012, 2013, 2014, 2015, 2016 Eric James Michael Ritz
  * @author    USAMI Kenta <tadsan@pixiv.com>
+ * @link      https://github.com/ejmr/php-mode
  */
 
 // one-line comment

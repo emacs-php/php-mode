@@ -349,6 +349,10 @@ style from Drupal."
     (search-forward "@copyright")
     (should (equal (get-text-property (match-beginning 0) 'face)
                    '(php-annotations-annotation-face font-lock-doc-face)))
+    (search-forward-regexp "@link +\\(https://github.com/ejmr/php-mode\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face)
+                   '(link font-lock-doc-face)))
+
 
     (search-forward-regexp "// \\(@annotation This is NOT annotation. 1\\)")
     (should (eq (get-text-property (match-beginning 0) 'face)
