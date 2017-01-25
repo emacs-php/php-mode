@@ -1355,7 +1355,7 @@ a completion list."
      1 font-lock-string-face prepend nil)
     (,(concat "\\(?:|\\|\\s-\\)\\("
               (regexp-opt php-phpdoc-type-keywords)
-              "\\)\\(?:|\\|\\s-\\|\\[]\\|$\\)")
+              "\\)")
      1 font-lock-type-face prepend nil)
     ("^\\(?:/\\*\\)?\\(?:\\s \\|\\*\\)*\\(@[[:alpha:]][-[:alpha:]\\]*\\)" ; "@foo ..." markup.
      1 'php-annotations-annotation-face prepend nil)))
