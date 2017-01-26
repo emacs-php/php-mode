@@ -603,7 +603,6 @@ but only if the setting is enabled"
 (c-add-style
  "php"
  '((c-basic-offset . 4)
-   ;;(c-doc-comment-style . php-phpdoc)
    (c-offsets-alist . ((arglist-close . php-lineup-arglist-close)
                        (arglist-cont . (first php-lineup-cascaded-calls 0))
                        (arglist-cont-nonempty . (first php-lineup-cascaded-calls c-lineup-arglist))
