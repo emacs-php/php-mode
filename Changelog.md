@@ -5,6 +5,20 @@ Changes for PHP Mode by Version
 because when I (Eric James Michael Ritz) took over the project I did
 not have a record of all changes available.
 
+1.18.0
+----
+
+* Improve PHPDoc highlighting
+* Fix this, that highlighting
+* Drop Emacs 23 support
+* Improve Emacs 25 support
+* Support PHP 7 syntax highlighting
+* Fix closure indentation issue
+* Improve php-xmlparser.el
+* Support 'strict_types'
+* Support 'yield from' keyword
+
+
 1.13
 ----
 
