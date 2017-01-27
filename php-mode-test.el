@@ -126,9 +126,9 @@ run with specific customizations set."
   "Annotation highlighting."
   (with-php-mode-test ("issue-8.php")
     (search-forward "@ORM")
-    (should (eq
+    (should (equal
              (get-text-property (match-beginning 0) 'face)
-             'php-annotations-annotation-face))))
+             '(php-annotations-annotation-face font-lock-doc-face)))))
 
 (ert-deftest php-mode-test-issue-9 ()
   "Single quote in text in HTML misinterpreted.
@@ -338,6 +338,122 @@ style from Drupal."
 (ert-deftest php-mode-test-issue-145 ()
   "Closure indentation."
   (with-php-mode-test ("issue-145.php" :indent t)))
+
+(ert-deftest php-mode-test-comments ()
+  "Proper highlighting for comments and doc-blocks."
+  (with-php-mode-test ("comments.php")
+    (search-forward "/**")
+    (should (eq (get-text-property (match-beginning 0) 'face)
+                'font-lock-doc-face))
+
+    (search-forward "@copyright")
+    (should (equal (get-text-property (match-beginning 0) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+    (search-forward-regexp "@link +\\(https://github.com/ejmr/php-mode\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face)
+                   '(link font-lock-doc-face)))
+
+
+    (search-forward-regexp "// \\(@annotation This is NOT annotation. 1\\)")
+    (should (eq (get-text-property (match-beginning 0) 'face)
+                'font-lock-comment-delimiter-face))
+    (should (eq (get-text-property (match-beginning 1) 'face)
+                'font-lock-comment-face))
+
+    (search-forward-regexp "\\* \\(@annotation This is NOT annotation. 2\\)")
+    (should (eq (get-text-property (match-beginning 0) 'face)
+                'font-lock-comment-face))
+    (should (eq (get-text-property (match-beginning 1) 'face)
+                'font-lock-comment-face))
+
+    ;; Comment outed doc-block
+    (search-forward "/**")
+    (should (eq (get-text-property (match-beginning 0) 'face)
+                'font-lock-comment-face))
+
+    (search-forward-regexp "\\* \\(@annotation This is NOT annotation. 3\\)")
+    (should (equal (get-text-property (match-beginning 0) 'face)
+                   'font-lock-comment-face))
+
+    (should (equal (get-text-property (match-beginning 1) 'face)
+                   'font-lock-comment-face))
+
+    (search-forward "class CommentOuted")
+    (should (eq (get-text-property (match-beginning 0) 'face)
+                'font-lock-comment-face))
+
+    ;; Class level doc-comment
+    (search-forward-regexp "{@internal \\(Description\\)}")
+    (should (equal (get-text-property (match-beginning 0) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 1) 'face)
+                   '(font-lock-string-face php-annotations-annotation-face font-lock-doc-face)))
+
+    (should (equal (get-text-property (1- (match-end 0)) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-end 0) 'face)
+                   'font-lock-doc-face))
+
+    (search-forward-regexp "@property\\(-read\\)")
+    (should (equal (get-text-property (match-beginning 0) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+
+    (should (equal (get-text-property (match-beginning 1) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+
+    (search-forward-regexp "@ORM\\(\\\\Table\\)")
+    (should (equal (get-text-property (match-beginning 0) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 1) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+
+    (search-forward-regexp "@var \\(string\\) \\(sample property doc-comment\\)")
+    (should (equal (get-text-property (match-beginning 0) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 1) 'face)
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 2) 'face)
+                   'font-lock-doc-face))
+
+    (search-forward-regexp "// \\(comment in after code\\)")
+    (should (eq (get-text-property (match-beginning 0) 'face)
+                'font-lock-comment-delimiter-face))
+    (should (eq (get-text-property (match-beginning 1) 'face)
+                'font-lock-comment-face))
+
+    (search-forward-regexp "@var \\(string\\)|\\(bool\\)|\\(array\\)\\([[]]\\)|\\(ArrayObject\\) \\*/$")
+    (should (equal (get-text-property (match-beginning 0) 'face) ;; matches `@'
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `s'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-end 1) 'face)       ;; matches `|'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 2) 'face) ;; matches `b'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-end 2) 'face)       ;; matches `|'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 3) 'face) ;; matches `a'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 4) 'face) ;; matches `['
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-end 4) 'face)       ;; matches `|'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 5) 'face) ;; matches `A'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-end 5) 'face)       ;; matches ` '
+                   ' font-lock-doc-face))
+
+    (search-forward-regexp "// \\(one-line comment\\)")
+    (should (eq (get-text-property (match-beginning 0) 'face)
+                'font-lock-comment-delimiter-face))
+    (should (eq (get-text-property (match-beginning 1) 'face)
+                'font-lock-comment-face))
+
+    (search-forward-regexp "// \\(@annotation This is NOT annotation. 4\\)")
+    (should (eq (get-text-property (match-beginning 0) 'face)
+                'font-lock-comment-delimiter-face))
+    (should (eq (get-text-property (match-beginning 1) 'face)
+                'font-lock-comment-face))))
 
 (ert-deftest php-mode-test-constants ()
   "Proper highlighting for constants."
@@ -588,16 +704,16 @@ style from Drupal."
     (cl-loop for i from 1 to 3
              do
              (progn
-               (should (eq (get-text-property (match-beginning i) 'face)
-                           'php-annotations-annotation-face))
-               (should (eq (get-text-property (1- (match-end i)) 'face)
-                           'php-annotations-annotation-face))))
+               (should (equal (get-text-property (match-beginning i) 'face)
+                              '(php-annotations-annotation-face font-lock-doc-face)))
+               (should (equal (get-text-property (1- (match-end i)) 'face)
+                              '(php-annotations-annotation-face font-lock-doc-face)))))
 
     (search-forward "@property-read")
-    (should (eq (get-text-property (match-beginning 0) 'face)
-                'php-annotations-annotation-face))
-    (should (eq (get-text-property (1- (match-end 0)) 'face)
-                'php-annotations-annotation-face))))
+    (should (equal (get-text-property (match-beginning 0) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+    (should (equal (get-text-property (1- (match-end 0)) 'face)
+                   '(php-annotations-annotation-face font-lock-doc-face)))))
 
 (ert-deftest php-mode-test-issue-305 ()
   "Test highlighting variables which contains 'this' or 'that'."

@@ -603,7 +603,6 @@ but only if the setting is enabled"
 (c-add-style
  "php"
  '((c-basic-offset . 4)
-   (c-doc-comment-style . javadoc)
    (c-offsets-alist . ((arglist-close . php-lineup-arglist-close)
                        (arglist-cont . (first php-lineup-cascaded-calls 0))
                        (arglist-cont-nonempty . (first php-lineup-cascaded-calls c-lineup-arglist))
@@ -1334,6 +1333,39 @@ a completion list."
   (interactive)
   (browse-url php-manual-url))
 
+(defconst php-phpdoc-type-keywords
+  (list "string" "integer" "int" "boolean" "bool" "float"
+        "double" "object" "mixed" "array" "resource" "$this"
+        "void" "null" "false" "true" "self" "static"
+        "callable" "iterable" "number"))
+
+(defconst php-phpdoc-type-tags
+  (list "param" "property" "property-read" "property-write" "return" "var"))
+
+(defconst php-phpdoc-font-lock-doc-comments
+  `(("{@[-[:alpha:]]+\\s-\\([^}]*\\)}" ; "{@foo ...}" markup.
+     (0 'php-annotations-annotation-face prepend nil)
+     (1 'font-lock-string-face prepend nil))
+    (,(rx "$" (in "A-Za-z_") (* (in "0-9A-Za-z_")))
+     0 font-lock-variable-name-face prepend nil)
+    (,(concat "\\s-@" (regexp-opt php-phpdoc-type-tags) "\\s-+"
+              "\\(" (rx (+ (? "\\") (+ (in "0-9A-Za-z")) (? "[]") (? "|"))) "\\)+"
+              "\\(?:\\s-\\|$\\)")
+     1 font-lock-string-face prepend nil)
+    (,(concat "\\(?:|\\|\\s-\\)\\("
+              (regexp-opt php-phpdoc-type-keywords)
+              "\\)")
+     1 font-lock-type-face prepend nil)
+    ("https?://[^\n\t ]+"
+     0 'link prepend nil)
+    ("^\\(?:/\\*\\)?\\(?:\\s \\|\\*\\)*\\(@[[:alpha:]][-[:alpha:]\\]*\\)" ; "@foo ..." markup.
+     1 'php-annotations-annotation-face prepend nil)))
+
+(defvar php-phpdoc-font-lock-keywords
+  `((,(lambda (limit)
+	(c-font-lock-doc-comments "/\\*\\*" limit
+	  php-phpdoc-font-lock-doc-comments)))))
+
 (defconst php-font-lock-keywords-1 (c-lang-const c-matchers-1 php)
   "Basic highlighting for PHP mode.")
 
@@ -1342,6 +1374,7 @@ a completion list."
 
 (defconst php-font-lock-keywords-3
   (append
+   php-phpdoc-font-lock-keywords
    ;; php-mode patterns *before* cc-mode:
    ;;  only add patterns here if you want to prevent cc-mode from applying
    ;;  a different face.
@@ -1463,25 +1496,6 @@ The output will appear in the buffer *PHP*."
 (defface php-annotations-annotation-face '((t . (:inherit font-lock-constant-face)))
   "Face used to highlight annotations.")
 
-(defconst php-annotations-re "\\(\\s-\\|{\\)\\(@[-\\[:alpha:]]+\\)")
-
-(defmacro php-annotations-inside-comment-p (pos)
-  "Return non-nil if POS is inside a comment."
-  `(or (eq (get-char-property ,pos 'face) 'font-lock-comment-face)
-       (eq (get-char-property ,pos 'face) 'font-lock-comment-delimiter-face)))
-
-(defun php-annotations-font-lock-find-annotation (limit)
-  (let ((match
-         (catch 'match
-           (save-match-data
-             (while (re-search-forward php-annotations-re limit t)
-               (when (php-annotations-inside-comment-p (match-beginning 0))
-                 (goto-char (match-end 0))
-                 (throw 'match (match-data))))))))
-    (when match
-      (set-match-data match)
-      t)))
-
 (defconst php-string-interpolated-variable-regexp
   "{\\$[^}\n\\\\]*\\(?:\\\\.[^}\n\\\\]*\\)*}\\|\\${\\sw+}\\|\\$\\sw+")
 
@@ -1495,9 +1509,6 @@ The output will appear in the buffer *PHP*."
 
 (eval-after-load 'php-mode
   '(progn
-     (font-lock-add-keywords
-      'php-mode
-      '((php-annotations-font-lock-find-annotation (2 'php-annotations-annotation-face t))))
      (font-lock-add-keywords
       'php-mode
       `((php-string-intepolated-variable-font-lock-find))
