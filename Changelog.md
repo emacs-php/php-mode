@@ -5,8 +5,13 @@ Changes for PHP Mode by Version
 because when I (Eric James Michael Ritz) took over the project I did
 not have a record of all changes available.
 
+1.18.1
+------
+
+* Fix hung up issue(#333)
+
 1.18.0
-----
+------
 
 * Improve PHPDoc highlighting
 * Fix this, that highlighting
