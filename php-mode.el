@@ -1349,8 +1349,7 @@ a completion list."
     (,(rx "$" (in "A-Za-z_") (* (in "0-9A-Za-z_")))
      0 font-lock-variable-name-face prepend nil)
     (,(concat "\\s-@" (regexp-opt php-phpdoc-type-tags) "\\s-+"
-              "\\(" (rx (+ (? "\\") (+ (in "0-9A-Za-z")) (? "[]") (? "|"))) "\\)+"
-              "\\(?:\\s-\\|$\\)")
+              "\\(" (rx (+ (? "\\") (+ (in "0-9A-Z_a-z")) (? "[]") (? "|"))) "\\)+")
      1 font-lock-string-face prepend nil)
     (,(concat "\\(?:|\\|\\s-\\)\\("
               (regexp-opt php-phpdoc-type-keywords)

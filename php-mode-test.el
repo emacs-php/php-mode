@@ -742,6 +742,10 @@ style from Drupal."
   "Proper indentation after function with return type."
   (with-php-mode-test ("issue-310.php" :indent t :magic t)))
 
+(ert-deftest php-mode-test-issue-333 ()
+  "Do not freeze Emacs by font-lock regexp pattern."
+  (with-php-mode-test ("issue-333.php")))
+
 ;;; php-mode-test.el ends here
 
 ;; Local Variables:
