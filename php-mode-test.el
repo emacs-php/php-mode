@@ -122,6 +122,10 @@ run with specific customizations set."
      (let ((case-fold-search nil))
        ,@body)))
 
+(ert-deftest php-mode-test-namespace-block ()
+  "Proper indentation for classs and functions in namespace block."
+  (with-php-mode-test ("namespace-block.php" :indent t :magic t)))
+
 (ert-deftest php-mode-test-issue-8 ()
   "Annotation highlighting."
   (with-php-mode-test ("issue-8.php")
