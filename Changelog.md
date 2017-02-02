@@ -5,6 +5,11 @@ Changes for PHP Mode by Version
 because when I (Eric James Michael Ritz) took over the project I did
 not have a record of all changes available.
 
+1.18.2
+------
+
+* Fix namespace indentation issue(#335)
+
 1.18.1
 ------
 
