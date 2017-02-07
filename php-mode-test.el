@@ -33,6 +33,7 @@
 (require 'php-mode)
 (require 'ert)
 (require 'cl-lib)
+(require 'imenu)
 
 ;; Work around bug #14325
 ;; <http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14325>.
@@ -273,7 +274,6 @@ style from Drupal."
   "All static method should appear on imenu whether 'static' keyword is placed before or after visibility"
   (with-php-mode-test
    ("issue-83.php")
-   (require 'imenu)
    (let* ((index-alist (imenu--make-index-alist))
           (public-methods (mapcar 'car (cdr (assoc "Public Methods" index-alist))))
           (all-methods (mapcar 'car (cdr (assoc "All Methods" index-alist)))))
