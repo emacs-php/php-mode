@@ -1149,8 +1149,10 @@ PHP heredoc."
   (setq c-at-vsemi-p-fn 'php-c-at-vsemi-p)
   (setq c-vsemi-status-unknown-p 'php-c-vsemi-status-unknown-p)
 
-  (set (make-local-variable 'syntax-begin-function)
-       'c-beginning-of-syntax)
+  ;; syntax-begin-function is obsolete in Emacs 25.1
+  (with-no-warnings
+    (set (make-local-variable 'syntax-begin-function)
+         'c-beginning-of-syntax))
 
   ;; We map the php-{beginning,end}-of-defun functions so that they
   ;; replace the similar commands that we inherit from CC Mode.
