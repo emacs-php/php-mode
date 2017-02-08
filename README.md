@@ -384,6 +384,7 @@ In chronological order:
 67. [Michael Stolovitzsky](https://github.com/emestee)
 68. [David Arroyo Menéndez](https://github.com/davidam)
 69. [USAMI Kenta](https://tadsan.github.io/) (@zonuexe)
+70. [Tim Landscheidt](http://www.tim-landscheidt.de)
 
 
 [wiki]: https://github.com/ejmr/php-mode/wiki
