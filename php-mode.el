@@ -1495,6 +1495,8 @@ The output will appear in the buffer *PHP*."
   "Just send the code and output display in buffer *PHP*"
   (let ((php-buffer (get-buffer-create "*PHP*"))
         )
+	(set-buffer php-buffer)
+	(delete-region (point-min) (point-max))
     ;; Calling 'php -r' will fail if we send it code that starts with
     ;; '<?php', which is likely.  So we run the code through this
     ;; function to check for that prefix and remove it.
@@ -1502,9 +1504,8 @@ The output will appear in the buffer *PHP*."
                                 (substring code 5)
                               code)))
       (call-process php-executable nil php-buffer nil "-r" cleaned-php-code))
-	(display-buffer-in-side-window php-buffer ()
-								   )
-	)  
+	(pop-to-buffer (current-buffer))
+	)
   )
 
 
