@@ -385,6 +385,7 @@ In chronological order:
 68. [David Arroyo Menéndez](https://github.com/davidam)
 69. [USAMI Kenta](https://tadsan.github.io/) (@zonuexe)
 70. [Tim Landscheidt](http://www.tim-landscheidt.de)
+71. [Fabian Wiget](https://github.com/fabacino)
 
 
 [wiki]: https://github.com/ejmr/php-mode/wiki
