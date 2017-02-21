@@ -56,5 +56,8 @@ final class SampleClass
 
         // one-line comment
         // @annotation This is NOT annotation. 4
+
+        /** @var int internal linter variable */
+        $offset = 0;
     }
 }

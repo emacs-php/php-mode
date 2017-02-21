@@ -12,7 +12,7 @@
 (defconst php-mode-version-number "1.18.2"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2017-02-02"
+(defconst php-mode-modified "2017-02-20"
   "PHP Mode build date.")
 
 ;;; License
@@ -1356,7 +1356,7 @@ a completion list."
               "\\(" (rx (+ (? "\\") (+ (in "0-9A-Z_a-z")) (? "[]") (? "|"))) "\\)+")
      1 font-lock-string-face prepend nil)
     (,(concat "\\(?:|\\|\\s-\\)\\("
-              (regexp-opt php-phpdoc-type-keywords)
+              (regexp-opt php-phpdoc-type-keywords 'words)
               "\\)")
      1 font-lock-type-face prepend nil)
     ("https?://[^\n\t ]+"

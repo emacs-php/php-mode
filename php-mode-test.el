@@ -457,7 +457,19 @@ style from Drupal."
     (should (eq (get-text-property (match-beginning 0) 'face)
                 'font-lock-comment-delimiter-face))
     (should (eq (get-text-property (match-beginning 1) 'face)
-                'font-lock-comment-face))))
+                'font-lock-comment-face))
+
+    (search-forward-regexp "@var \\(int\\) \\(internal linter variable\\) \\*/$")
+    (should (equal (get-text-property (match-beginning 0) 'face) ;; matches `@'
+                   '(php-annotations-annotation-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `i'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-end 1) 'face)       ;; matches ` '
+                   'font-lock-doc-face))
+    (should (equal (get-text-property (match-beginning 2) 'face) ;; matches `i'
+                   'font-lock-doc-face))
+    (should (equal (get-text-property (match-end 2) 'face)       ;; matches ` '
+                   'font-lock-doc-face))))
 
 (ert-deftest php-mode-test-constants ()
   "Proper highlighting for constants."
