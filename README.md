@@ -14,10 +14,10 @@ All contributors listed below improved PHP Mode as well.
 
 The current maintainers are:
 
-1. Eric James Michael Ritz
-2. Syohei Yoshida
+1. Syohei Yoshida
+2. Eric James Michael Ritz
 
-Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode](https://github.com/ejmr/php-mode).  You can also send email for any bugs or features to `ejmr at plutono dot com`.  However, we prefer GitHub issues because they are easier for all contributors to see.
+Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode](https://github.com/ejmr/php-mode).
 
 
 Installation
@@ -282,7 +282,7 @@ All contributions to PHP Mode are welcome.  But please try to do the following w
 
 5. Open the `php-mode-test.el` file and [run all of the tests](http://www.gnu.org/software/emacs/manual/html_node/ert/Running-Tests-Interactively.html#Running-Tests-Interactively) to ensure they still pass as expected.  Sometimes we expect for a test to fail, and those unit tests have the appropriate configuration so their failure will not raise any warnings.  You can use `make test` script to run all tests from a terminal, which is also useful in conjunction with [`git bisect run`](http://git-scm.com/book/en/Git-Tools-Debugging-with-Git).
 
-6. Send us a pull request here on GitHub.  Or if you do not have a GitHub account then email the patches to me at `ejmr at plutono dot com`, in which case make sure the patches are acceptable input to the command `git am`.  Please note that even if you send a pull request it is possible that we will *not* simply merge your branch through GitHub, as sometimes we prefer to go through commits and cherry-pick them for review and to maintain a cleaner repository history.  You can see which commits we merge by using the [`git-cherry`](http://www.kernel.org/pub/software/scm/git/docs/git-cherry.html) command.
+6. Send us a pull request here on GitHub.
 
 If you are fixing a bug related to a GitHub issue, then first of all, thank you for the help improving PHP Mode.  Second, there is a `tests/` directory which contains PHP scripts for issues (although not all of them).  Please consider adding a test script to that directory that documents the expected behavior and provides code that allows others to see if said behavior works properly.  Then create a unit test within `php-mode-test.el` using [ERT][]. Please try to follow the format of the existing tests.
 
