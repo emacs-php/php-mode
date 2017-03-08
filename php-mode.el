@@ -257,14 +257,33 @@ can be used to match against definitions for that classlike."
     "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
  "Imenu generic expression for PHP Mode. See `imenu-generic-expression'.")
 
-(defcustom php-manual-url "http://www.php.net/manual/en/"
+(defcustom php-site-url "http://php.net/"
+  "Default PHP.net site URL.
+
+The URL to use open PHP manual and search word.
+You can find a mirror site closer to you."
+  :type 'string
+  :link '(url-link :tag "List of Mirror Sites" "http://php.net/mirrors.php"))
+
+(defcustom php-manual-url 'en
   "URL at which to find PHP manual.
 You can replace \"en\" with your ISO language code."
-  :type 'string)
+  :type '(choice (const  :tag "English" 'en)
+                 (const  :tag "Brazilian Portuguese" 'pt_BR)
+                 (const  :tag "Chinese (Simplified)" 'zh)
+                 (const  :tag "French" 'fr)
+                 (const  :tag "German" 'de)
+                 (const  :tag "Japanese" 'ja)
+                 (const  :tag "Romanian" 'ro)
+                 (const  :tag "Russian" 'ru)
+                 (const  :tag "Spanish" 'es)
+                 (const  :tag "Turkish" 'tr)
+                 (string :tag "PHP manual URL")))
 
-(defcustom php-search-url "http://www.php.net/"
+(defcustom php-search-url nil
   "URL at which to search for documentation on a word."
-  :type 'string)
+  :type '(choice (string :tag "URL to search PHP documentation")
+                 (const  :tag "Use `php-site-url' variable" nil)))
 
 (defcustom php-completion-file ""
   "Path to the file which contains the function names known to PHP."
@@ -1309,12 +1328,12 @@ With a prefix argument, prompt (with completion) for a word to search for."
       t)))
 
 (defsubst php-search-web-documentation (word)
-  (php-browse-documentation-url (concat php-search-url
-                                        (replace-regexp-in-string "_" "-" (downcase word)))))
+  "Return URL to search PHP manual search by `WORD'."
+  (php-browse-documentation-url (concat (or php-search-url php-site-url) word)))
 
 ;; Define function documentation function
 (defun php-search-documentation (word)
-  "Search PHP documentation for the word at point.
+  "Search PHP documentation for the `WORD' at point.
 
 If `php-manual-path' has a non-empty string value then the command
 will first try searching the local documentation.  If the requested
@@ -1335,7 +1354,9 @@ a completion list."
 (defun php-browse-manual ()
   "Bring up manual for PHP."
   (interactive)
-  (browse-url php-manual-url))
+  (browse-url (if (stringp php-manual-url)
+                  php-manual-url
+                (format "%smanual/%s/" php-site-url php-manual-url))))
 
 (defconst php-phpdoc-type-keywords
   (list "string" "integer" "int" "boolean" "bool" "float"
