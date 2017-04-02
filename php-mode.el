@@ -508,8 +508,7 @@ PHP does not have an \"enum\"-like keyword."
   php (append (c-lang-const c-class-decl-kwds) '("function")))
 
 (c-lang-defconst c-modifier-kwds
-  php '("abstract" "const" "final" "native" "static" "strictfp"
-        "synchronized" "transient" "volatile"))
+  php '("abstract" "const" "final" "static"))
 
 (c-lang-defconst c-protection-kwds
   "Access protection label keywords in classes."
