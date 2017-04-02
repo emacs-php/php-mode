@@ -471,6 +471,168 @@ style from Drupal."
     (should (equal (get-text-property (match-end 2) 'face)       ;; matches ` '
                    'font-lock-doc-face))))
 
+(ert-deftest php-mode-test-comment-return-type ()
+  "Proper highlighting for type annotation in doc-block."
+  (with-php-mode-test ("doc-comment-return-type.php")
+    ;; Test for premitive type (int)
+    (search-forward-regexp "@return \\(int\\) +\\(A integer value\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `i'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 2) 'face) ;; matches `A'
+                'font-lock-doc-face))
+
+    (search-forward-regexp "@return \\(\\?int\\) +\\(A nullable integer value\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `?'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (1+ (match-beginning 1)) 'face) ;; matches `i'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 2) 'face) ;; matches `A'
+                'font-lock-doc-face))
+
+    (search-forward-regexp "@return \\(\\int\\[\\]\\) +\\(A list of integer values\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `i'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (1- (match-end 1)) 'face) ;; matches `]'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 2) 'face) ;; matches `A'
+                'font-lock-doc-face))
+
+    ;; Test for class type (DateTime)
+    (search-forward-regexp "@return \\(DateTime\\) +\\(A DateTime object value\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `D'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 2) 'face) ;; matches `A'
+                'font-lock-doc-face))
+
+    (search-forward-regexp "@return \\(\\?DateTime\\) +\\(A nullable DateTime object value\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `?'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (1+ (match-beginning 1)) 'face) ;; matches `D'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 2) 'face) ;; matches `A'
+                'font-lock-doc-face))
+
+    (search-forward-regexp "@return \\(\\DateTime\\[]\\) +\\(A list of DateTime object values\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `D'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (1- (match-end 1)) 'face) ;; matches `]'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 2) 'face) ;; matches `A'
+                'font-lock-doc-face))
+
+    ;; Test for class type (stdClass)
+    (search-forward-regexp "@return \\(stdClass\\) +\\(A stdClass object value\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `s'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 2) 'face) ;; matches `A'
+                'font-lock-doc-face))
+
+    (search-forward-regexp "@return \\(\\?stdClass\\) +\\(A nullable stdClass object value\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `?'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (1+ (match-beginning 1)) 'face) ;; matches `s'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 2) 'face) ;; matches `A'
+                'font-lock-doc-face))
+
+    (search-forward-regexp "@return \\(stdClass\\[]\\) +\\(A list of stdClass object values\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `s'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (1- (match-end 1)) 'face) ;; matches `]'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 2) 'face) ;; matches `A'
+                'font-lock-doc-face))
+
+    ;; Test for class type (\App\User)
+    (search-forward-regexp "@return \\(\\\\App\\\\User\\) +\\(A \\\\App\\\\User object value\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `\'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (1+ (match-beginning 1)) 'face) ;; matches `A'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 2) 'face) ;; matches `A'
+                'font-lock-doc-face))
+
+    (search-forward-regexp "@return \\(\\?\\\\App\\\\User\\) +\\(A nullable \\\\App\\\\User object value\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `?'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (1+ (match-beginning 1)) 'face) ;; matches `\\'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 2) 'face) ;; matches `A'
+                'font-lock-doc-face))
+
+    (search-forward-regexp "@return \\(\\\\App\\\\User\\[]\\) +\\(A list of \\\\App\\\\User object values\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `\'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (1- (match-end 1)) 'face) ;; matches `]'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 2) 'face) ;; matches `A'
+                'font-lock-doc-face))
+
+    ;; Test for multiple types
+    (search-forward-regexp "@return \\(int\\)\\(|\\)\\(string\\) +\\(Multiple types by int and string\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `i'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 2) 'face) ;; matches `|'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 3) 'face) ;; matches `s'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 4) 'face) ;; matches `M'
+                'font-lock-doc-face))
+
+    (search-forward-regexp "@return \\(int\\[]\\)\\(|\\)\\(string\\) +\\(Multiple types by list of int and string\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `i'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (1- (match-end 1)) 'face) ;; matches `]'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 2) 'face) ;; matches `|'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 3) 'face) ;; matches `s'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 4) 'face) ;; matches `M'
+                'font-lock-doc-face))
+
+    (search-forward-regexp "@return \\(int\\)\\(|\\)\\(stdClass\\) +\\(Multiple types by int and stdClass\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `i'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 2) 'face) ;; matches `|'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 3) 'face) ;; matches `s'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 4) 'face) ;; matches `M'
+                'font-lock-doc-face))
+
+    (search-forward-regexp "@return \\(int\\)\\(|\\)\\(\\\\App\\\\User\\) +\\(Multiple types by int and \\\\App\\\\User\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `i'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 2) 'face) ;; matches `|'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 3) 'face) ;; matches `\'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 4) 'face) ;; matches `M'
+                'font-lock-doc-face))
+
+    (search-forward-regexp "@return \\(DateTime\\)\\(|\\)\\(int\\) +\\(Multiple types by DateTime and int\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `D'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 2) 'face) ;; matches `|'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 3) 'face) ;; matches `i'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 4) 'face) ;; matches `M'
+                'font-lock-doc-face))
+
+    (search-forward-regexp "@return \\(\\\\App\\\\User\\)\\(|\\)\\(int\\) +\\(Multiple types by \\\\App\\\\User and int\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `\'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (1+ (match-beginning 1)) 'face) ;; matches `A'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 2) 'face) ;; matches `|'
+                   '(font-lock-string-face font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 3) 'face) ;; matches `i'
+                   '(font-lock-type-face font-lock-string-face font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 4) 'face) ;; matches `M'
+                'font-lock-doc-face))))
+
 (ert-deftest php-mode-test-constants ()
   "Proper highlighting for constants."
   (custom-set-variables '(php-extra-constants (quote ("extraconstant"))))
