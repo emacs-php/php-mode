@@ -115,7 +115,7 @@ run with specific customizations set."
      ,(unless custom '(custom-set-variables '(php-lineup-cascaded-calls nil)))
 
      ,(if indent
-          '(indent-region (point-min) (point-max)))
+          '(let ((inhibit-message t)) (indent-region (point-min) (point-max))))
      ,(if magic
           '(should (cl-reduce (lambda (l r) (and l r))
                               (php-mode-test-process-magics))))
