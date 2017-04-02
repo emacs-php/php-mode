@@ -14,6 +14,6 @@ class User
 /**
  * @property-read string $myProperty
  */
-class Child extends Parent
+class Child extends Parent_
 {
 }
