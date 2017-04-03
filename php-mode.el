@@ -996,6 +996,67 @@ PHP heredoc."
 (easy-menu-define php-mode-menu php-mode-map "PHP Mode Commands"
   (cons "PHP" (c-lang-const c-mode-menu php)))
 
+
+;;; Faces
+(defgroup php-faces nil
+  "Faces used in PHP Mode"
+  :group 'php
+  :group 'faces)
+
+(defvar php-string-face 'php-string-face)
+(defvar php-keyword-face 'php-keyword-face)
+(defvar php-builtin-face 'php-builtin-face)
+(defvar php-function-name-face 'php-function-name-face)
+(defvar php-variable-name-face 'php-variable-name-face)
+(defvar php-type-face 'php-type-face)
+(defvar php-constant-face 'php-constant-face)
+(defvar php-php-tag-face 'php-php-tag-face)
+(defvar php-doc-annotation-tag-face 'php-doc-annotation-tag-face)
+(defvar php-doc-class-name-face 'php-doc-class-name-face)
+
+(defface php-string-face '((t (:inherit font-lock-string-face)))
+  "PHP Mode face used to highlight string literals."
+  :group 'php-faces)
+
+(defface php-keyword-face '((t (:inherit font-lock-keyword-face)))
+  "PHP Mode face used to highlight keywords."
+  :group 'php-faces)
+
+(defface php-builtin-face '((t (:inherit font-lock-builtin-face)))
+  "PHP Mode face used to highlight builtins."
+  :group 'php-faces)
+
+(defface php-function-name-face '((t (:inherit font-lock-function-name-face)))
+  "PHP Mode face used to highlight function names."
+  :group 'php-faces)
+
+(defface php-variable-name-face '((t (:inherit font-lock-variable-name-face)))
+  "PHP Mode face used to highlight variable names."
+  :group 'php-faces)
+
+(defface php-type-face '((t (:inherit font-lock-type-face)))
+  "PHP Mode face used to highlight types."
+  :group 'php-faces)
+
+(defface php-constant-face '((t (:inherit font-lock-constant-face)))
+  "PHP Mode face used to highlight constants."
+  :group 'php-faces)
+
+(defface php-php-tag-face '((t (:inherit font-lock-constant-face)))
+  "PHP Mode face used to highlight PHP tags."
+  :group 'php-faces)
+
+(defface php-doc-annotation-tag-face '((t . (:inherit font-lock-constant-face)))
+  "Face used to highlight annotation tags in doc-comment."
+  :group 'php-faces)
+
+(defface php-doc-class-name-face '((t (:inherit php-string-face)))
+  "Face used to class names in doc-comment."
+  :group 'php-faces)
+
+(define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag-face "1.19.0")
+
+
 ;;;###autoload
 (define-derived-mode php-mode c-mode "PHP"
   "Major mode for editing PHP code.
@@ -1357,6 +1418,8 @@ a completion list."
                   php-manual-url
                 (format "%smanual/%s/" php-site-url php-manual-url))))
 
+
+;;; Font Lock
 (defconst php-phpdoc-type-keywords
   (list "string" "integer" "int" "boolean" "bool" "float"
         "double" "object" "mixed" "array" "resource" "$this"
@@ -1516,9 +1579,6 @@ The output will appear in the buffer *PHP*."
       (call-process php-executable nil php-buffer nil "-r" cleaned-php-code))))
 
 
-(defface php-annotations-annotation-face '((t . (:inherit font-lock-constant-face)))
-  "Face used to highlight annotations.")
-
 (defconst php-string-interpolated-variable-regexp
   "{\\$[^}\n\\\\]*\\(?:\\\\.[^}\n\\\\]*\\)*}\\|\\${\\sw+}\\|\\$\\sw+")
 
