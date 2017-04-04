@@ -247,24 +247,24 @@ Other Packages for PHP programming
 ----------------------------------
 
 - Completions
- - [ac-php](https://github.com/xcwen/ac-php): [company-mode](https://github.com/company-mode/company-mode) and [auto-complete](https://github.com/auto-complete/auto-complete) for PHP
+  - [ac-php](https://github.com/xcwen/ac-php): [company-mode](https://github.com/company-mode/company-mode) and [auto-complete](https://github.com/auto-complete/auto-complete) for PHP
 - Syntax checking
- - [flycheck](https://github.com/flycheck/flycheck/): On the fly syntax checker
- - [flymake-php](https://github.com/purcell/flymake-php): flymake for PHP files
+  - [flycheck](https://github.com/flycheck/flycheck/): On the fly syntax checker
+  - [flymake-php](https://github.com/purcell/flymake-php): flymake for PHP files
 - Snippet
- - [php-auto-yasnippets](https://github.com/ejmr/php-auto-yasnippets): Dynamically Generated YASnippets for PHP Code
+  - [php-auto-yasnippets](https://github.com/ejmr/php-auto-yasnippets): Dynamically Generated YASnippets for PHP Code
 - Documentation
- - [ggtags](https://github.com/leoliu/ggtags): eldoc by using GNU global tags
- - [php-eldoc](https://github.com/sabof/php-eldoc): eldoc backend for PHP
+  - [ggtags](https://github.com/leoliu/ggtags): eldoc by using GNU global tags
+  - [php-eldoc](https://github.com/sabof/php-eldoc): eldoc backend for PHP
 - Testing
- - [phpunit](https://github.com/nlamirault/phpunit.el): phpunit test command tool
+  - [phpunit](https://github.com/nlamirault/phpunit.el): phpunit test command tool
 - Style
- - [phpcbf](https://github.com/nishimaki10/emacs-phpcbf): PHP_CodeSniffer for Emacs
+  - [phpcbf](https://github.com/nishimaki10/emacs-phpcbf): PHP_CodeSniffer for Emacs
 - Semantic
- - [ede-php-autoload](https://github.com/stevenremot/ede-php-autoload): Semantic for PHP
+  - [ede-php-autoload](https://github.com/stevenremot/ede-php-autoload): Semantic for PHP
 - Framework
- - [cake](https://github.com/k1LoW/emacs-cake): minor-mode for CakePHP
- - [cake2](https://github.com/k1LoW/emacs-cake2): minor-mode for CakePHP2
+  - [cake](https://github.com/k1LoW/emacs-cake): minor-mode for CakePHP
+  - [cake2](https://github.com/k1LoW/emacs-cake2): minor-mode for CakePHP2
 
 
 How to Contribute
