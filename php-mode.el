@@ -356,6 +356,22 @@ This variable can take one of the following symbol values:
   :set 'php-mode-custom-coding-style-set
   :initialize 'custom-initialize-default)
 
+(defcustom php-search-documentation-browser-function nil
+  "Function to display PHP documentation in a WWW browser.
+
+If non-nil, this shadows the value of `browse-url-browser-function' when
+calling `php-search-documentation' or `php-search-local-documentation'."
+  :type '(choice (const :tag "default" nil) function)
+  :link '(variable-link browse-url-browser-function))
+
+(defcustom php-class-suffix-when-insert "::"
+  "Suffix for inserted class."
+  :type 'string)
+
+(defcustom php-namespace-suffix-when-insert "\\"
+  "Suffix for inserted namespace."
+  :type 'string)
+
 (defun php-mode-custom-coding-style-set (sym value)
   (when (eq major-mode 'php-mode)
     (set         sym value)
@@ -1309,14 +1325,7 @@ current `tags-file-name'."
         (message "Arglist for %s: %s" tagname arglist)
         (message "Unknown function: %s" tagname))))
 
-(defcustom php-search-documentation-browser-function nil
-  "Function to display PHP documentation in a WWW browser.
-
-If non-nil, this shadows the value of `browse-url-browser-function' when
-calling `php-search-documentation' or `php-search-local-documentation'."
-  :type '(choice (const :tag "default" nil) function)
-  :link '(variable-link browse-url-browser-function))
-
+;; Functions for documentation
 (defun php-browse-documentation-url (url)
   "Browse a documentation URL using the configured browser function.
 
@@ -1640,14 +1649,6 @@ The output will appear in the buffer *PHP*."
     ad-do-it
     (modify-syntax-entry ?\\ old-syntax)))
 
-
-(defcustom php-class-suffix-when-insert "::"
-  "Suffix for inserted class."
-  :type 'string)
-
-(defcustom php-namespace-suffix-when-insert "\\"
-  "Suffix for inserted namespace."
-  :type 'string)
 
 (defvar php--re-namespace-pattern
   (php-create-regexp-for-classlike "namespace"))
