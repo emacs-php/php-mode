@@ -9,10 +9,10 @@
 ;; Version: 1.18.2
 ;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
 
-(defconst php-mode-version-number "1.18.2"
+(defconst php-mode-version-number "1.18.3"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2017-02-20"
+(defconst php-mode-modified "2017-04-04"
   "PHP Mode build date.")
 
 ;;; License
