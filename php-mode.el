@@ -997,9 +997,12 @@ PHP heredoc."
   (cons "PHP" (c-lang-const c-mode-menu php)))
 
 
-;;; Faces
+;; Faces
+
+;;;###autoload
 (defgroup php-faces nil
   "Faces used in PHP Mode"
+  :tag "PHP Faces"
   :group 'php
   :group 'faces)
 
@@ -1428,7 +1431,7 @@ a completion list."
                 (format "%smanual/%s/" php-site-url php-manual-url))))
 
 
-;;; Font Lock
+;; Font Lock
 (defconst php-phpdoc-type-keywords
   (list "string" "integer" "int" "boolean" "bool" "float"
         "double" "object" "mixed" "array" "resource" "$this"
