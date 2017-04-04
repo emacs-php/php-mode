@@ -1314,6 +1314,7 @@ current `tags-file-name'."
 
 If non-nil, this shadows the value of `browse-url-browser-function' when
 calling `php-search-documentation' or `php-search-local-documentation'."
+  :group 'php
   :type '(choice (const :tag "default" nil) function)
   :link '(variable-link browse-url-browser-function))
 
@@ -1643,10 +1644,12 @@ The output will appear in the buffer *PHP*."
 
 (defcustom php-class-suffix-when-insert "::"
   "Suffix for inserted class."
+  :group 'php
   :type 'string)
 
 (defcustom php-namespace-suffix-when-insert "\\"
   "Suffix for inserted namespace."
+  :group 'php
   :type 'string)
 
 (defvar php--re-namespace-pattern
