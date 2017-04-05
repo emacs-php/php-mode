@@ -997,9 +997,12 @@ PHP heredoc."
   (cons "PHP" (c-lang-const c-mode-menu php)))
 
 
-;;; Faces
+;; Faces
+
+;;;###autoload
 (defgroup php-faces nil
   "Faces used in PHP Mode"
+  :tag "PHP Faces"
   :group 'php
   :group 'faces)
 
@@ -1311,6 +1314,7 @@ current `tags-file-name'."
 
 If non-nil, this shadows the value of `browse-url-browser-function' when
 calling `php-search-documentation' or `php-search-local-documentation'."
+  :group 'php
   :type '(choice (const :tag "default" nil) function)
   :link '(variable-link browse-url-browser-function))
 
@@ -1428,7 +1432,7 @@ a completion list."
                 (format "%smanual/%s/" php-site-url php-manual-url))))
 
 
-;;; Font Lock
+;; Font Lock
 (defconst php-phpdoc-type-keywords
   (list "string" "integer" "int" "boolean" "bool" "float"
         "double" "object" "mixed" "array" "resource" "$this"
@@ -1640,10 +1644,12 @@ The output will appear in the buffer *PHP*."
 
 (defcustom php-class-suffix-when-insert "::"
   "Suffix for inserted class."
+  :group 'php
   :type 'string)
 
 (defcustom php-namespace-suffix-when-insert "\\"
   "Suffix for inserted namespace."
+  :group 'php
   :type 'string)
 
 (defvar php--re-namespace-pattern
