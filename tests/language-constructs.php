@@ -75,7 +75,6 @@ try;
 unset();
 use ClassName;
 var;
-void;
 while;
 xor;
 yield;

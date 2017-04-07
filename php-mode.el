@@ -12,7 +12,7 @@
 (defconst php-mode-version-number "1.18.3"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2017-04-04"
+(defconst php-mode-modified "2017-04-07"
   "PHP Mode build date.")
 
 ;;; License
@@ -490,7 +490,7 @@ This variable can take one of the following symbol values:
 
 (c-lang-defconst c-primitive-type-kwds
   php '("int" "integer" "bool" "boolean" "float" "double" "real"
-        "string" "object"))
+        "string" "object" "void"))
 
 (c-lang-defconst c-class-decl-kwds
   "Keywords introducing declarations where the following block (if any)
@@ -552,7 +552,6 @@ PHP does not have an \"enum\"-like keyword."
     "array"
     "callable"
     "iterable"
-    "void"
     "as"
     "break"
     "catch all"
@@ -1535,9 +1534,13 @@ a completion list."
      ;; with type, like in arglist)
      ("\\(\\$\\)\\(\\sw+\\)" 1 'php-variable-sigil)
 
-     ;; Array is a keyword, except when used as cast, so that (int)
-     ;; and (array) look the same
+     ;; Array is a keyword, except in the following situations:
+     ;; - when used as cast, so that (int) and (array) look the same
+     ;; - when used as a type hint
+     ;; - when used as a return type
      ("(\\(array\\))" 1 font-lock-type-face)
+     ("\\b\\(array\\)\\s-+\\$" 1 font-lock-type-face)
+     (")\\s-*:\\s-*\\??\\(array\\)\\b" 1 font-lock-type-face)
 
      ;; Support the ::class constant in PHP5.6
      ("\\sw+\\(::\\)\\(class\\)" (1 'php-paamayim-nekudotayim) (2 'php-constant)))
@@ -1581,7 +1584,10 @@ a completion list."
       1 font-lock-type-face)
 
      ;; Highlight return types in functions and methods.
-     ("function.+:\\s-?\\(\\(?:\\sw\\|\\s_\\)+\\)" 1 font-lock-type-face)
+     ("function.+:\\s-?\\??\\(\\(?:\\sw\\|\\s_\\)+\\)" 1 font-lock-type-face)
+
+     ;; Highlight class names used as nullable type hints
+     ("\\?\\(\\(:?\\sw\\|\\s_\\)+\\)\\s-+\\$" 1 font-lock-type-face)
 
      ;; While c-opt-cpp-* highlights the <?php opening tags, it is not
      ;; possible to make it highlight short open tags and closing tags

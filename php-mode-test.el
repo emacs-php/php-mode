@@ -733,20 +733,23 @@ style from Drupal."
 (ert-deftest php-mode-test-arrays()
   "Proper highlighting for array keyword."
   (with-php-mode-test ("arrays.php")
+    ;; Keyword situations
     (let ((variables '("array();"
-                       "array $test"
                        "array()")))
       (dolist (variable variables)
         (search-forward variable)
         (goto-char (match-beginning 0))
         (should (eq 'php-keyword
                     (get-text-property (point) 'face)))))
-    ;; when used as a cast, array should behave like other casts
-    (search-forward "(array)")
-    (goto-char (match-beginning 0))
-    (right-char)
-    (should (eq 'font-lock-type-face
-                (get-text-property (point) 'face)))))
+    ;; Type situations
+    (let ((variables '("(array)"
+                       "array $test"
+                       ": array")))
+      (dolist (variable variables)
+        (search-forward variable)
+        (search-backward "array")
+        (should (eq 'font-lock-type-face
+                    (get-text-property (point) 'face)))))))
 
 (ert-deftest php-mode-test-issue-174 ()
   "Test escaped quotes in string literals"
@@ -945,6 +948,33 @@ style from Drupal."
 (ert-deftest php-mode-test-issue-333 ()
   "Do not freeze Emacs by font-lock regexp pattern."
   (with-php-mode-test ("issue-333.php")))
+
+(ert-deftest php-mode-test-type-hints ()
+  "Test highlighting of type hints and return types."
+  (with-php-mode-test ("type-hints.php")
+    (search-forward "void")
+    (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face)))
+    (dotimes (num 4)
+      (search-forward "string")
+      (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))
+    (dotimes (num 4)
+      (search-forward "int")
+      (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))
+    (dotimes (num 4)
+      (search-forward "float")
+      (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))
+    (dotimes (num 4)
+      (search-forward "bool")
+      (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))
+    (dotimes (num 4)
+      (search-forward "array")
+      (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))
+    (dotimes (num 4)
+      (search-forward "stdClass")
+      (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))
+    (dotimes (num 4)
+      (search-forward "\\path\\to\\my\\Object")
+      (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))))
 
 ;;; php-mode-test.el ends here
 
