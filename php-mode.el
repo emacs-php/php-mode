@@ -1675,7 +1675,7 @@ The output will appear in the buffer *PHP*."
 ;; Special care is taken to restore the original syntax, because we
 ;; want \ not to be word for functions like forward-word.
 (defadvice font-lock-fontify-keywords-region (around backslash-as-word activate)
-  "Fontify keywords with backslash as word character"
+  "Fontify keywords with backslash as word character."
   (let ((old-syntax (string (char-syntax ?\\))))
     (modify-syntax-entry ?\\ "w")
     ad-do-it
