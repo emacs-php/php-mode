@@ -1034,6 +1034,14 @@ PHP heredoc."
   "PHP Mode face used to highlight constants."
   :group 'php-faces)
 
+(defface php-$this '((t (:inherit php-constant)))
+  "PHP Mode face used to highlight $this variables."
+  :group 'php-faces)
+
+(defface php-$this-sigil '((t (:inherit php-constant)))
+  "PHP Mode face used to highlight sigils($) of $this variable."
+  :group 'php-faces)
+
 (defface php-php-tag '((t (:inherit font-lock-constant-face)))
   "PHP Mode face used to highlight PHP tags."
   :group 'php-faces)
@@ -1042,11 +1050,23 @@ PHP heredoc."
   "Face used to highlight annotation tags in doc-comment."
   :group 'php-faces)
 
+(defface php-doc-variable-sigil '((t (:inherit font-lock-variable-name-face)))
+  "PHP Mode face used to highlight variable sigils($)."
+  :group 'php-faces)
+
+(defface php-doc-$this '((t (:inherit php-type)))
+  "PHP Mode face used to highlight $this variable in doc-comment."
+  :group 'php-faces)
+
+(defface php-doc-$this-sigil '((t (:inherit php-type)))
+  "PHP Mode face used to highlight sigil of $this variable in doc-comment."
+  :group 'php-faces)
+
 (defface php-doc-class-name '((t (:inherit php-string)))
   "Face used to class names in doc-comment."
   :group 'php-faces)
 
-(define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag-face "1.19.0")
+(define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
 
 ;;;###autoload
@@ -1424,7 +1444,7 @@ a completion list."
 ;; Font Lock
 (defconst php-phpdoc-type-keywords
   (list "string" "integer" "int" "boolean" "bool" "float"
-        "double" "object" "mixed" "array" "resource" "$this"
+        "double" "object" "mixed" "array" "resource"
         "void" "null" "false" "true" "self" "static"
         "callable" "iterable" "number"))
 
@@ -1435,8 +1455,10 @@ a completion list."
   `(("{@[-[:alpha:]]+\\s-\\([^}]*\\)}" ; "{@foo ...}" markup.
      (0 'php-doc-annotation-tag prepend nil)
      (1 'php-string prepend nil))
-    (,(rx "$" (in "A-Za-z_") (* (in "0-9A-Za-z_")))
-     0 'php-variable-name prepend nil)
+    (,(rx (group "$") (group (in "A-Za-z_") (* (in "0-9A-Za-z_"))))
+     (1 'php-doc-variable-sigil prepend nil)
+     (2 'php-variable-name prepend nil))
+    ("\\(\\$\\)\\(this\\)\\>" (1 'php-doc-$this-sigil prepend nil) (2 'php-doc-$this prepend nil))
     (,(concat "\\s-@" (regexp-opt php-phpdoc-type-tags) "\\s-+"
               "\\(" (rx (+ (? "?") (? "\\") (+ (in "0-9A-Z_a-z")) (? "[]") (? "|"))) "\\)+")
      1 'php-string prepend nil)

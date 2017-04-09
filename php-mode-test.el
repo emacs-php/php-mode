@@ -631,7 +631,24 @@ style from Drupal."
     (should (equal (get-text-property (match-beginning 3) 'face) ;; matches `i'
                    '(font-lock-type-face php-string font-lock-doc-face)))
     (should (eq (get-text-property (match-beginning 4) 'face) ;; matches `M'
-                'font-lock-doc-face))))
+                'font-lock-doc-face))
+
+    (search-forward-regexp "@return \\(\\$this\\) +\\(this is special variable\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `$'
+                   '(php-doc-$this-sigil php-doc-variable-sigil font-lock-doc-face)))
+    (should (equal (get-text-property (1+ (match-beginning 1)) 'face) ;; matches `t'
+                   '(php-doc-$this php-variable-name font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 2) 'face) ;; matches `M'
+                'font-lock-doc-face))
+
+    (search-forward-regexp "@return \\(\\$that\\) +\\(that is NOT special variable\\)")
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `$'
+                   '(php-doc-variable-sigil font-lock-doc-face)))
+    (should (equal (get-text-property (1+ (match-beginning 1)) 'face) ;; matches `t'
+                   '(php-variable-name font-lock-doc-face)))
+    (should (eq (get-text-property (match-beginning 2) 'face) ;; matches `M'
+                'font-lock-doc-face))
+    ))
 
 (ert-deftest php-mode-test-constants ()
   "Proper highlighting for constants."
@@ -697,18 +714,21 @@ style from Drupal."
   (with-php-mode-test ("variables.php")
     (let ((variables '("regularVariable"
                        "variableVariable"
-                       "staticVariable"
-                       "memberVariable")))
+                       "staticVariable")))
       (dolist (variable variables)
         (save-excursion
           (search-forward variable)
           (goto-char (match-beginning 0))
           (should (eq 'php-variable-name
                       (get-text-property (point) 'face))))))
+
+    (search-forward "memberVariable")
+    (should (eq 'php-property-name
+                (get-text-property (match-beginning 0) 'face)))
+
     (search-forward "funCall")
-    (goto-char (match-beginning 0))
-    (should-not (eq 'php-variable-name
-                    (get-text-property (point) 'face)))))
+    (should-not (eq 'php-property-name
+                    (get-text-property (match-beginning 0) 'face)))))
 
 (ert-deftest php-mode-test-arrays()
   "Proper highlighting for array keyword."
@@ -799,9 +819,9 @@ style from Drupal."
   (with-php-mode-test ("issue-201.php")
     (search-forward "Start:")
     (search-forward "$this")
-    (should (eq 'php-constant (get-text-property (- (point) 1) 'face)))
+    (should (eq 'php-$this (get-text-property (- (point) 1) 'face)))
     (search-forward "$that")
-    (should (eq 'php-constant (get-text-property (- (point) 1) 'face)))
+    (should (eq 'php-$this (get-text-property (- (point) 1) 'face)))
     (search-forward "self")
     (should (eq 'php-keyword (get-text-property (- (point) 1) 'face)))
     (search-forward "static")
@@ -870,10 +890,12 @@ style from Drupal."
     (should (eq 'php-variable-name (get-text-property (1- (point)) 'face)))
 
     (search-forward "$this")
-    (should (eq 'php-constant (get-text-property (1- (point)) 'face)))
+    (should (eq 'php-$this-sigil (get-text-property (match-beginning 0) 'face)))
+    (should (eq 'php-$this (get-text-property (1+ (match-beginning 0)) 'face)))
 
     (search-forward "$x")
-    (should (eq 'php-variable-name (get-text-property (1- (point)) 'face)))))
+    (should (eq 'php-variable-sigil (get-text-property (match-beginning 0) 'face)))
+    (should (eq 'php-variable-name (get-text-property (1+ (match-beginning 0)) 'face)))))
 
 (ert-deftest psr-5-style-tag-annotation ()
   "PSR-5 style tag annotation."
