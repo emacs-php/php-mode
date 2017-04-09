@@ -1006,17 +1006,6 @@ PHP heredoc."
   :group 'php
   :group 'faces)
 
-(defvar php-string-face 'php-string-face)
-(defvar php-keyword-face 'php-keyword-face)
-(defvar php-builtin-face 'php-builtin-face)
-(defvar php-function-name-face 'php-function-name-face)
-(defvar php-variable-name-face 'php-variable-name-face)
-(defvar php-type-face 'php-type-face)
-(defvar php-constant-face 'php-constant-face)
-(defvar php-php-tag-face 'php-php-tag-face)
-(defvar php-doc-annotation-tag-face 'php-doc-annotation-tag-face)
-(defvar php-doc-class-name-face 'php-doc-class-name-face)
-
 (defface php-string '((t (:inherit font-lock-string-face)))
   "PHP Mode face used to highlight string literals."
   :group 'php-faces)
