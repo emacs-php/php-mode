@@ -1022,8 +1022,36 @@ PHP heredoc."
   "PHP Mode face used to highlight function names."
   :group 'php-faces)
 
+(defface php-function-call '((t (:inherit default)))
+  "PHP Mode face used to highlight function names in calles."
+  :group 'php-faces)
+
+(defface php-method-call '((t (:inherit php-function-call)))
+  "PHP Mode face used to highlight method names in calles."
+  :group 'php-faces)
+
+(defface php-static-method-call '((t (:inherit php-method-call)))
+  "PHP Mode face used to highlight static method names in calles."
+  :group 'php-faces)
+
 (defface php-variable-name '((t (:inherit font-lock-variable-name-face)))
   "PHP Mode face used to highlight variable names."
+  :group 'php-faces)
+
+(defface php-property-name '((t (:inherit php-variable-name-face)))
+  "PHP Mode face used to highlight property names."
+  :group 'php-faces)
+
+(defface php-variable-sigil '((t (:inherit default)))
+  "PHP Mode face used to highlight variable sigils ($)."
+  :group 'php-faces)
+
+(defface php-object-op '((t (:inherit default)))
+  "PHP Mode face used to object operators (->)."
+  :group 'php-faces)
+
+(defface php-paamayim-nekudotayim '((t (:inherit default)))
+  "PHP Mode face used to highlight \"Paamayim Nekudotayim\" scope resolution operators (::)."
   :group 'php-faces)
 
 (defface php-type '((t (:inherit font-lock-type-face)))
@@ -1491,11 +1519,12 @@ a completion list."
    '(
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
-     ("->\\(\\sw+\\)\\s-*(" 1 'default)
+     ("\\(->\\)\\(\\sw+\\)\\s-*(" (1 'php-object-op) (2 'php-method-call))
 
      ;; Highlight special variables
-     ("\\$\\(this\\|that\\)\\_>" 1 'php-constant)
-     ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 'php-variable-name)
+     ("\\(\\$\\)\\(this\\|that\\)\\_>" (1 'php-$this-sigil) (2 'php-$this))
+     ("\\(\\$\\)\\([a-zA-Z0-9_]+\\)" (1 'php-variable-sigil) (2 'php-variable-name))
+     ("\\(->\\)\\([a-zA-Z0-9_]+\\)" (1 'php-object-op) (2 'php-property-name))
 
      ;; Highlight function/method names
      ("\\<function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1 'php-function-name)
@@ -1504,14 +1533,14 @@ a completion list."
      ;; pattern resets the face to default in case cc-mode sets the
      ;; variable-name face (cc-mode does this for variables prefixed
      ;; with type, like in arglist)
-     ("\\(\\$\\)\\(\\sw+\\)" 1 'default)
+     ("\\(\\$\\)\\(\\sw+\\)" 1 'php-variable-sigil)
 
      ;; Array is a keyword, except when used as cast, so that (int)
      ;; and (array) look the same
      ("(\\(array\\))" 1 font-lock-type-face)
 
      ;; Support the ::class constant in PHP5.6
-     ("\\sw+::\\(class\\)" 1 'php-constant))
+     ("\\sw+\\(::\\)\\(class\\)" (1 'php-paamayim-nekudotayim) (2 'php-constant)))
 
    ;; cc-mode patterns
    (c-lang-const c-matchers-3 php)
@@ -1523,9 +1552,9 @@ a completion list."
    `(
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
-     ("->\\(\\sw+\\)\\s-*(" 1 'default)
+     ("->\\(\\sw+\\)\\s-*(" 1 'php-method-call)
 
-     ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 'php-variable-name)
+     ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 'php-property-name)
 
      ;; Highlight all upper-cased symbols as constant
      ("\\<\\([A-Z_][A-Z0-9_]+\\)\\>" 1 'php-constant)
@@ -1533,7 +1562,7 @@ a completion list."
      ;; Highlight all statically accessed class names as constant,
      ;; another valid option would be using type-face, but using
      ;; constant-face because this is how it works in c++-mode.
-     ("\\(\\sw+\\)::" 1 'php-constant)
+     ("\\(\\sw+\\)\\(::\\)" (1 'php-constant) (2 'php-paamayim-nekudotayim))
 
      ;; Highlight class name after "use .. as"
      ("\\<as\\s-+\\(\\sw+\\)" 1 font-lock-type-face)
