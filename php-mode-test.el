@@ -719,7 +719,7 @@ style from Drupal."
       (dolist (variable variables)
         (search-forward variable)
         (goto-char (match-beginning 0))
-        (should (eq 'php-keyword-face
+        (should (eq 'php-keyword
                     (get-text-property (point) 'face)))))
     ;; when used as a cast, array should behave like other casts
     (search-forward "(array)")
@@ -754,26 +754,26 @@ style from Drupal."
     (search-forward "Start:")
     (while (not (= (line-number-at-pos) (count-lines (point-min) (point-max))))
       (forward-line 1)
-      (should (eq 'php-keyword-face
+      (should (eq 'php-keyword
                   (get-text-property (point) 'face))))))
 
 (ert-deftest php-mode-test-issue-178 ()
   "Highligth as keyword and following symbol"
   (with-php-mode-test ("issue-178.php")
     (search-forward "use Test as")
-    (should (eq 'php-keyword-face
+    (should (eq 'php-keyword
                 (get-text-property (- (point) 1) 'face)))
     (should (eq 'font-lock-type-face
                 (get-text-property (+ (point) 1) 'face)))
     (search-forward "$values as")
-    (should (eq 'php-keyword-face
+    (should (eq 'php-keyword
                 (get-text-property (- (point) 1) 'face)))
     (should (eq 'php-variable-name-face
                 (get-text-property (+ (point) 2) 'face)))
     (search-forward "test as")
-    (should (eq 'php-keyword-face
+    (should (eq 'php-keyword
                 (get-text-property (- (point) 1) 'face)))
-    (should (eq 'php-keyword-face
+    (should (eq 'php-keyword
                 (get-text-property (+ (point) 1) 'face)))))
 
 (ert-deftest php-mode-test-issue-186 ()
@@ -803,11 +803,11 @@ style from Drupal."
     (search-forward "$that")
     (should (eq 'php-constant-face (get-text-property (- (point) 1) 'face)))
     (search-forward "self")
-    (should (eq 'php-keyword-face (get-text-property (- (point) 1) 'face)))
+    (should (eq 'php-keyword (get-text-property (- (point) 1) 'face)))
     (search-forward "static")
-    (should (eq 'php-keyword-face (get-text-property (- (point) 1) 'face)))
+    (should (eq 'php-keyword (get-text-property (- (point) 1) 'face)))
     (search-forward "parent")
-    (should (eq 'php-keyword-face (get-text-property (- (point) 1) 'face)))))
+    (should (eq 'php-keyword (get-text-property (- (point) 1) 'face)))))
 
 (ert-deftest php-mode-test-issue-211 ()
   "Test indentation of string concatination"
