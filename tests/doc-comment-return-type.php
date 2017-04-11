@@ -43,3 +43,8 @@
 /** @return int|\App\User    Multiple types by int and \App\User */
 /** @return DateTime|int    Multiple types by DateTime and int */
 /** @return \App\User|int    Multiple types by \App\User and int */
+
+// Test for $this
+
+/** @return $this this is special variable */
+/** @return $that that is NOT special variable */

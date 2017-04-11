@@ -179,11 +179,11 @@ of constants when set."
   ;; remove old keywords
   (when (boundp 'php-extra-constants)
     (font-lock-remove-keywords
-     'php-mode `((,(php-mode-extra-constants-create-regexp php-extra-constants) 1 php-constant-face))))
+     'php-mode `((,(php-mode-extra-constants-create-regexp php-extra-constants) 1 'php-constant))))
   ;; add new keywords
   (when value
     (font-lock-add-keywords
-     'php-mode `((,(php-mode-extra-constants-create-regexp value) 1 php-constant-face))))
+     'php-mode `((,(php-mode-extra-constants-create-regexp value) 1 'php-constant))))
   (set sym value))
 
 (defcustom php-lineup-cascaded-calls nil
@@ -1006,58 +1006,95 @@ PHP heredoc."
   :group 'php
   :group 'faces)
 
-(defvar php-string-face 'php-string-face)
-(defvar php-keyword-face 'php-keyword-face)
-(defvar php-builtin-face 'php-builtin-face)
-(defvar php-function-name-face 'php-function-name-face)
-(defvar php-variable-name-face 'php-variable-name-face)
-(defvar php-type-face 'php-type-face)
-(defvar php-constant-face 'php-constant-face)
-(defvar php-php-tag-face 'php-php-tag-face)
-(defvar php-doc-annotation-tag-face 'php-doc-annotation-tag-face)
-(defvar php-doc-class-name-face 'php-doc-class-name-face)
-
-(defface php-string-face '((t (:inherit font-lock-string-face)))
+(defface php-string '((t (:inherit font-lock-string-face)))
   "PHP Mode face used to highlight string literals."
   :group 'php-faces)
 
-(defface php-keyword-face '((t (:inherit font-lock-keyword-face)))
+(defface php-keyword '((t (:inherit font-lock-keyword-face)))
   "PHP Mode face used to highlight keywords."
   :group 'php-faces)
 
-(defface php-builtin-face '((t (:inherit font-lock-builtin-face)))
+(defface php-builtin '((t (:inherit font-lock-builtin-face)))
   "PHP Mode face used to highlight builtins."
   :group 'php-faces)
 
-(defface php-function-name-face '((t (:inherit font-lock-function-name-face)))
+(defface php-function-name '((t (:inherit font-lock-function-name-face)))
   "PHP Mode face used to highlight function names."
   :group 'php-faces)
 
-(defface php-variable-name-face '((t (:inherit font-lock-variable-name-face)))
+(defface php-function-call '((t (:inherit default)))
+  "PHP Mode face used to highlight function names in calles."
+  :group 'php-faces)
+
+(defface php-method-call '((t (:inherit php-function-call)))
+  "PHP Mode face used to highlight method names in calles."
+  :group 'php-faces)
+
+(defface php-static-method-call '((t (:inherit php-method-call)))
+  "PHP Mode face used to highlight static method names in calles."
+  :group 'php-faces)
+
+(defface php-variable-name '((t (:inherit font-lock-variable-name-face)))
   "PHP Mode face used to highlight variable names."
   :group 'php-faces)
 
-(defface php-type-face '((t (:inherit font-lock-type-face)))
+(defface php-property-name '((t (:inherit php-variable-name-face)))
+  "PHP Mode face used to highlight property names."
+  :group 'php-faces)
+
+(defface php-variable-sigil '((t (:inherit default)))
+  "PHP Mode face used to highlight variable sigils ($)."
+  :group 'php-faces)
+
+(defface php-object-op '((t (:inherit default)))
+  "PHP Mode face used to object operators (->)."
+  :group 'php-faces)
+
+(defface php-paamayim-nekudotayim '((t (:inherit default)))
+  "PHP Mode face used to highlight \"Paamayim Nekudotayim\" scope resolution operators (::)."
+  :group 'php-faces)
+
+(defface php-type '((t (:inherit font-lock-type-face)))
   "PHP Mode face used to highlight types."
   :group 'php-faces)
 
-(defface php-constant-face '((t (:inherit font-lock-constant-face)))
+(defface php-constant '((t (:inherit font-lock-constant-face)))
   "PHP Mode face used to highlight constants."
   :group 'php-faces)
 
-(defface php-php-tag-face '((t (:inherit font-lock-constant-face)))
+(defface php-$this '((t (:inherit php-constant)))
+  "PHP Mode face used to highlight $this variables."
+  :group 'php-faces)
+
+(defface php-$this-sigil '((t (:inherit php-constant)))
+  "PHP Mode face used to highlight sigils($) of $this variable."
+  :group 'php-faces)
+
+(defface php-php-tag '((t (:inherit font-lock-constant-face)))
   "PHP Mode face used to highlight PHP tags."
   :group 'php-faces)
 
-(defface php-doc-annotation-tag-face '((t . (:inherit font-lock-constant-face)))
+(defface php-doc-annotation-tag '((t . (:inherit font-lock-constant-face)))
   "Face used to highlight annotation tags in doc-comment."
   :group 'php-faces)
 
-(defface php-doc-class-name-face '((t (:inherit php-string-face)))
+(defface php-doc-variable-sigil '((t (:inherit font-lock-variable-name-face)))
+  "PHP Mode face used to highlight variable sigils($)."
+  :group 'php-faces)
+
+(defface php-doc-$this '((t (:inherit php-type)))
+  "PHP Mode face used to highlight $this variable in doc-comment."
+  :group 'php-faces)
+
+(defface php-doc-$this-sigil '((t (:inherit php-type)))
+  "PHP Mode face used to highlight sigil of $this variable in doc-comment."
+  :group 'php-faces)
+
+(defface php-doc-class-name '((t (:inherit php-string)))
   "Face used to class names in doc-comment."
   :group 'php-faces)
 
-(define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag-face "1.19.0")
+(define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
 
 ;;;###autoload
@@ -1070,12 +1107,12 @@ PHP heredoc."
   (c-init-language-vars php-mode)
   (c-common-init 'php-mode)
 
-  (set (make-local-variable font-lock-string-face) php-string-face)
-  (set (make-local-variable font-lock-keyword-face) php-keyword-face)
-  (set (make-local-variable font-lock-builtin-face) php-builtin-face)
-  (set (make-local-variable font-lock-function-name-face) php-function-name-face)
-  (set (make-local-variable font-lock-variable-name-face) php-variable-name-face)
-  (set (make-local-variable font-lock-constant-face) php-constant-face)
+  (set (make-local-variable font-lock-string-face) 'php-string)
+  (set (make-local-variable font-lock-keyword-face) 'php-keyword)
+  (set (make-local-variable font-lock-builtin-face) 'php-builtin)
+  (set (make-local-variable font-lock-function-name-face) 'php-function-name)
+  (set (make-local-variable font-lock-variable-name-face) 'php-variable-name)
+  (set (make-local-variable font-lock-constant-face) 'php-constant)
 
   (modify-syntax-entry ?_    "_" php-mode-syntax-table)
   (modify-syntax-entry ?`    "\"" php-mode-syntax-table)
@@ -1435,7 +1472,7 @@ a completion list."
 ;; Font Lock
 (defconst php-phpdoc-type-keywords
   (list "string" "integer" "int" "boolean" "bool" "float"
-        "double" "object" "mixed" "array" "resource" "$this"
+        "double" "object" "mixed" "array" "resource"
         "void" "null" "false" "true" "self" "static"
         "callable" "iterable" "number"))
 
@@ -1444,13 +1481,15 @@ a completion list."
 
 (defconst php-phpdoc-font-lock-doc-comments
   `(("{@[-[:alpha:]]+\\s-\\([^}]*\\)}" ; "{@foo ...}" markup.
-     (0 php-doc-annotation-tag-face prepend nil)
-     (1 php-string-face prepend nil))
-    (,(rx "$" (in "A-Za-z_") (* (in "0-9A-Za-z_")))
-     0 php-variable-name-face prepend nil)
+     (0 'php-doc-annotation-tag prepend nil)
+     (1 'php-string prepend nil))
+    (,(rx (group "$") (group (in "A-Za-z_") (* (in "0-9A-Za-z_"))))
+     (1 'php-doc-variable-sigil prepend nil)
+     (2 'php-variable-name prepend nil))
+    ("\\(\\$\\)\\(this\\)\\>" (1 'php-doc-$this-sigil prepend nil) (2 'php-doc-$this prepend nil))
     (,(concat "\\s-@" (regexp-opt php-phpdoc-type-tags) "\\s-+"
               "\\(" (rx (+ (? "?") (? "\\") (+ (in "0-9A-Z_a-z")) (? "[]") (? "|"))) "\\)+")
-     1 php-string-face prepend nil)
+     1 'php-string prepend nil)
     (,(concat "\\(?:|\\|\\?\\|\\s-\\)\\("
               (regexp-opt php-phpdoc-type-keywords 'words)
               "\\)")
@@ -1458,7 +1497,7 @@ a completion list."
     ("https?://[^\n\t ]+"
      0 'link prepend nil)
     ("^\\(?:/\\*\\)?\\(?:\\s \\|\\*\\)*\\(@[[:alpha:]][-[:alpha:]\\]*\\)" ; "@foo ..." markup.
-     1 php-doc-annotation-tag-face prepend nil)))
+     1 'php-doc-annotation-tag prepend nil)))
 
 (defvar php-phpdoc-font-lock-keywords
   `((,(lambda (limit)
@@ -1480,27 +1519,28 @@ a completion list."
    '(
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
-     ("->\\(\\sw+\\)\\s-*(" 1 'default)
+     ("\\(->\\)\\(\\sw+\\)\\s-*(" (1 'php-object-op) (2 'php-method-call))
 
      ;; Highlight special variables
-     ("\\$\\(this\\|that\\)\\_>" 1 php-constant-face)
-     ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 php-variable-name-face)
+     ("\\(\\$\\)\\(this\\|that\\)\\_>" (1 'php-$this-sigil) (2 'php-$this))
+     ("\\(\\$\\)\\([a-zA-Z0-9_]+\\)" (1 'php-variable-sigil) (2 'php-variable-name))
+     ("\\(->\\)\\([a-zA-Z0-9_]+\\)" (1 'php-object-op) (2 'php-property-name))
 
      ;; Highlight function/method names
-     ("\\<function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1 php-function-name-face)
+     ("\\<function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1 'php-function-name)
 
      ;; The dollar sign should not get a variable-name face, below
      ;; pattern resets the face to default in case cc-mode sets the
      ;; variable-name face (cc-mode does this for variables prefixed
      ;; with type, like in arglist)
-     ("\\(\\$\\)\\(\\sw+\\)" 1 'default)
+     ("\\(\\$\\)\\(\\sw+\\)" 1 'php-variable-sigil)
 
      ;; Array is a keyword, except when used as cast, so that (int)
      ;; and (array) look the same
      ("(\\(array\\))" 1 font-lock-type-face)
 
      ;; Support the ::class constant in PHP5.6
-     ("\\sw+::\\(class\\)" 1 php-constant-face))
+     ("\\sw+\\(::\\)\\(class\\)" (1 'php-paamayim-nekudotayim) (2 'php-constant)))
 
    ;; cc-mode patterns
    (c-lang-const c-matchers-3 php)
@@ -1512,17 +1552,17 @@ a completion list."
    `(
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
-     ("->\\(\\sw+\\)\\s-*(" 1 'default)
+     ("->\\(\\sw+\\)\\s-*(" 1 'php-method-call)
 
-     ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 php-variable-name-face)
+     ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 'php-property-name)
 
      ;; Highlight all upper-cased symbols as constant
-     ("\\<\\([A-Z_][A-Z0-9_]+\\)\\>" 1 php-constant-face)
+     ("\\<\\([A-Z_][A-Z0-9_]+\\)\\>" 1 'php-constant)
 
      ;; Highlight all statically accessed class names as constant,
      ;; another valid option would be using type-face, but using
      ;; constant-face because this is how it works in c++-mode.
-     ("\\(\\sw+\\)::" 1 php-constant-face)
+     ("\\(\\sw+\\)\\(::\\)" (1 'php-constant) (2 'php-paamayim-nekudotayim))
 
      ;; Highlight class name after "use .. as"
      ("\\<as\\s-+\\(\\sw+\\)" 1 font-lock-type-face)
@@ -1550,7 +1590,7 @@ a completion list."
      ;;
      ;; Note that starting a file with <% breaks indentation, a
      ;; limitation we can/should live with.
-     (,(regexp-opt '("?>" "<?" "<%" "%>")) 0 php-php-tag-face)))
+     (,(regexp-opt '("?>" "<?" "<%" "%>")) 0 'php-php-tag)))
   "Detailed highlighting for PHP mode.")
 
 (defvar php-font-lock-keywords php-font-lock-keywords-3
@@ -1600,7 +1640,7 @@ The output will appear in the buffer *PHP*."
     (let ((quoted-stuff (nth 3 (syntax-ppss))))
       (when (and quoted-stuff (member quoted-stuff '(?\" ?`)))
         (put-text-property (match-beginning 0) (match-end 0)
-                           'face 'php-variable-name-face))))
+                           'face 'php-variable-name))))
   nil)
 
 (eval-after-load 'php-mode
@@ -1635,7 +1675,7 @@ The output will appear in the buffer *PHP*."
 ;; Special care is taken to restore the original syntax, because we
 ;; want \ not to be word for functions like forward-word.
 (defadvice font-lock-fontify-keywords-region (around backslash-as-word activate)
-  "Fontify keywords with backslash as word character"
+  "Fontify keywords with backslash as word character."
   (let ((old-syntax (string (char-syntax ?\\))))
     (modify-syntax-entry ?\\ "w")
     ad-do-it
