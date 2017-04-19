@@ -663,7 +663,7 @@ style from Drupal."
                        "IS_CONSTANT99"
                        "extraconstant"
                        "ClassName"
-                       "class")))
+                       "class;")))
       (dolist (variable variables)
         (search-forward variable)
         (goto-char (match-beginning 0))
@@ -674,6 +674,7 @@ style from Drupal."
     (let ((variables '("no_constant"
                        "no_CONSTANT"
                        "extraconstant"
+                       "classIdentifier()"
                        "2FOO")))
       (dolist (variable variables)
         (search-forward variable)
