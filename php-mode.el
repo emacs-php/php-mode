@@ -12,7 +12,7 @@
 (defconst php-mode-version-number "1.18.3"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2017-04-07"
+(defconst php-mode-modified "2017-04-19"
   "PHP Mode build date.")
 
 ;;; License
@@ -1543,7 +1543,7 @@ a completion list."
      (")\\s-*:\\s-*\\??\\(array\\)\\b" 1 font-lock-type-face)
 
      ;; Support the ::class constant in PHP5.6
-     ("\\sw+\\(::\\)\\(class\\)" (1 'php-paamayim-nekudotayim) (2 'php-constant)))
+     ("\\sw+\\(::\\)\\(class\\)\\b" (1 'php-paamayim-nekudotayim) (2 'php-constant)))
 
    ;; cc-mode patterns
    (c-lang-const c-matchers-3 php)
