@@ -975,7 +975,33 @@ style from Drupal."
       (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))
     (dotimes (num 4)
       (search-forward "\\path\\to\\my\\Object")
-      (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))))
+      (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))
+    ;; Parameters on different lines
+    (let ((variables '("string"
+                       "int"
+                       "bool"
+                       "array"
+                       "stdClass"
+                       "\\path\\to\\my\\Object"
+                       "void")))
+      (dolist (variable variables)
+        (search-forward variable)
+        (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face)))))
+    ;; Return types on different lines
+    (search-forward "void")
+    (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face)))
+    (let ((variables '("string"
+                       "int"
+                       "float"
+                       "bool"
+                       "array"
+                       "stdClass"
+                       "\\path\\to\\my\\Object"
+                       )))
+      (dolist (variable variables)
+        (dotimes (num 2)
+          (search-forward variable)
+          (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))))))
 
 ;;; php-mode-test.el ends here
 

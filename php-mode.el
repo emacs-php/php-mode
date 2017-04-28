@@ -1584,7 +1584,8 @@ a completion list."
       1 font-lock-type-face)
 
      ;; Highlight return types in functions and methods.
-     ("function.+:\\s-?\\??\\(\\(?:\\sw\\|\\s_\\)+\\)" 1 font-lock-type-face)
+     ("function.+:\\s-*\\??\\(\\(?:\\sw\\|\\s_\\)+\\)" 1 font-lock-type-face)
+     (")\\s-*:\\s-*\\??\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*\{" 1 font-lock-type-face)
 
      ;; Highlight class names used as nullable type hints
      ("\\?\\(\\(:?\\sw\\|\\s_\\)+\\)\\s-+\\$" 1 font-lock-type-face)
