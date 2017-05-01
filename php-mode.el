@@ -1628,15 +1628,28 @@ a completion list."
   "Send the region between `start' and `end' to PHP for execution.
 The output will appear in the buffer *PHP*."
   (interactive "r")
+  (let ((code (buffer-substring start end))
+		)
+	(php-send-code code)
+	)
+  )
+
+(defun php-send-code (code)
+  "Just send the code and output display in buffer *PHP*"
   (let ((php-buffer (get-buffer-create "*PHP*"))
-        (code (buffer-substring start end)))
+        )
+	(set-buffer php-buffer)
+	(delete-region (point-min) (point-max))
     ;; Calling 'php -r' will fail if we send it code that starts with
     ;; '<?php', which is likely.  So we run the code through this
     ;; function to check for that prefix and remove it.
     (let ((cleaned-php-code (if (string-prefix-p "<?php" code t)
                                 (substring code 5)
                               code)))
-      (call-process php-executable nil php-buffer nil "-r" cleaned-php-code))))
+      (call-process php-executable nil php-buffer nil "-r" cleaned-php-code))
+	(pop-to-buffer (current-buffer))
+	)
+  )
 
 
 (defconst php-string-interpolated-variable-regexp
