@@ -294,7 +294,9 @@ You can replace \"en\" with your ISO language code."
   :type 'string)
 
 ;;;###autoload
-(add-to-list 'interpreter-mode-alist (cons "php" 'php-mode))
+(add-to-list 'interpreter-mode-alist
+             ;; Match php, php5, php7, php5.5, php7.0, etc.
+             (cons "php\\([57]\\(\\.[0-9]+\\)?\\)?" 'php-mode))
 
 (defcustom php-mode-hook nil
   "List of functions to be executed on entry to `php-mode'."
