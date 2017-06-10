@@ -950,6 +950,20 @@ style from Drupal."
   "Do not freeze Emacs by font-lock regexp pattern."
   (with-php-mode-test ("issue-333.php")))
 
+(ert-deftest php-mode-test-issue-357 ()
+  "Match version-specific interpreters."
+  (dolist (on '("php" "php3" "php5" "php7" "php-5" "php-5.5" "php7.0.1"))
+    (with-temp-buffer
+      (insert "#!" on)
+      (set-auto-mode)
+      (should (eq 'php-mode major-mode))))
+
+  (dolist (off '("php2" "xphp5" "foo" "php8" "php7x"))
+    (with-temp-buffer
+      (insert "#!" off)
+      (set-auto-mode)
+      (should (not (eq 'php-mode major-mode))))))
+
 (ert-deftest php-mode-test-type-hints ()
   "Test highlighting of type hints and return types."
   (with-php-mode-test ("type-hints.php")
