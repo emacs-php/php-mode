@@ -238,7 +238,6 @@ Viewing and editing build scripts for [Amaka](http://trashofmasters.github.io/am
 
 ```el
 (with-eval-after-load 'php-mode
-  (require 'php-current)
   (define-key php-mode-map (kbd "C-c C--") 'php-current-class)
   (define-key php-mode-map (kbd "C-c C-=") 'php-current-namespace))
 ```
