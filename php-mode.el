@@ -1713,6 +1713,22 @@ The output will appear in the buffer *PHP*."
     (when (re-search-backward re-pattern nil t)
       (match-string-no-properties 1))))
 
+;;;###autoload
+(defun php-current-class ()
+  "Insert current class name if cursor in class context."
+  (interactive)
+  (let ((matched (php-get-current-element php--re-classlike-pattern)))
+    (when matched
+      (insert (concat matched php-class-suffix-when-insert)))))
+
+;;;###autoload
+(defun php-current-namespace ()
+  "Insert current namespace if cursor in in namespace context."
+  (interactive)
+  (let ((matched (php-get-current-element php--re-namespace-pattern)))
+    (when matched
+      (insert (concat matched php-namespace-suffix-when-insert)))))
+
 
 ;;;###autoload
 (dolist (pattern '("\\.php[s345t]?\\'" "/\\.php_cs\\(\\.dist\\)?\\'" "\\.phtml\\'" "/Amkfile\\'" "\\.amk\\'"))
