@@ -30,7 +30,6 @@
 
 ;;; Code:
 
-(require 'php-mode)
 (require 'skeleton)
 
 ;;;###autoload
