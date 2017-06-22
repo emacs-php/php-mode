@@ -283,6 +283,8 @@ All contributions to PHP Mode are welcome.  But please try to do the following w
 
 6. Send us a pull request here on GitHub.
 
+7. Please make your commit messages as detailed as possible.  It is better to be too verbose than to write too little.  Look at the commits of the maintainers to see many examples of the level of detail that we feel is ideal.  Please never assume that your patch is so simple that future developers will be able to understand the *reason* for the change without comment.  And that is important: your commit message should always strive to answer *"Why"* the patch exists, *"What*" does it accomplish?  The maintainers will sometimes write detailed commit messages for pull-requests by other developers, but please do not rely on us to do this consistently.
+
 If you are fixing a bug related to a GitHub issue, then first of all, thank you for the help improving PHP Mode.  Second, there is a `tests/` directory which contains PHP scripts for issues (although not all of them).  Please consider adding a test script to that directory that documents the expected behavior and provides code that allows others to see if said behavior works properly.  Then create a unit test within `php-mode-test.el` using [ERT][]. Please try to follow the format of the existing tests.
 
 
