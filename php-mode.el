@@ -6,13 +6,13 @@
 
 ;; Author: Eric James Michael Ritz
 ;; URL: https://github.com/ejmr/php-mode
-;; Version: 1.18.2
+;; Version: 1.18.3
 ;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
 
 (defconst php-mode-version-number "1.18.3"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2017-04-19"
+(defconst php-mode-modified "2017-06-22"
   "PHP Mode build date.")
 
 ;;; License
