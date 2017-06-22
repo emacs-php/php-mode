@@ -271,13 +271,13 @@ How to Contribute
 
 All contributions to PHP Mode are welcome.  But please try to do the following when sending improvements or bug fixes:
 
-1. Add your name to the list of ‘Contributors’ in this `README.md` file if it is not there already.  If you have a GitHub page and/or personal site then please link your name to it, so people can see your other work.
+1. Add your name to the list of ‘Contributors’ in this `README.md` file if it is not there already.  If you have a GitHub page and/or personal site then please feel free to link your name to it so people can see your other work.
 
-2. If your contribution addresses an issue on the GitHub project page then include a single line like `GitHub-Issue: 16` with the appropriate issue number.
+2. If your contribution addresses an issue on the GitHub project page then include a single line like `GitHub-Issue: #16` with the appropriate issue number.
 
 3. Make sure to update the constant `php-mode-modified` *only if you patch affects `php-mode.el`,* which means this step is unnecessary for patches related to unit tests.
 
-4. However, please do not modify `php-mode-version-number`.  I will decide what constitutes a bump in the version number.
+4. However, please do not modify `php-mode-version-number`.  The maintainers will decide what constitutes a bump in the version number.
 
 5. Open the `php-mode-test.el` file and [run all of the tests](http://www.gnu.org/software/emacs/manual/html_node/ert/Running-Tests-Interactively.html#Running-Tests-Interactively) to ensure they still pass as expected.  Sometimes we expect for a test to fail, and those unit tests have the appropriate configuration so their failure will not raise any warnings.  You can use `make test` script to run all tests from a terminal, which is also useful in conjunction with [`git bisect run`](http://git-scm.com/book/en/Git-Tools-Debugging-with-Git).
 
