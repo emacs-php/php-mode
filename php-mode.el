@@ -1734,6 +1734,13 @@ The output will appear in the buffer *PHP*."
 (dolist (pattern '("\\.php[s345t]?\\'" "/\\.php_cs\\(\\.dist\\)?\\'" "\\.phtml\\'" "/Amkfile\\'" "\\.amk\\'"))
   (add-to-list 'auto-mode-alist `(,pattern . php-mode) t))
 
+;;;###autoload
+(progn
+  ;; matches `/config.php'
+  ;; refs https://github.com/ejmr/php-mode/pull/362#issuecomment-312404436
+  ;; To avoid conflict with default `conf-maybe-mode' in auto-mode-alist, add it explicitly.
+  (add-to-list 'auto-mode-alist '("[/.]c\\(?:on\\)?f\\(?:i?g\\)?\\(?:\\.[a-zA-Z0-9._-]+\\)?\\.php[s345t]?\\'" . php-mode)))
+
 (provide 'php-mode)
 
 ;;; php-mode.el ends here
