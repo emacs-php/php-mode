@@ -1750,7 +1750,7 @@ The output will appear in the buffer *PHP*."
 
 ;;;###autoload
 (dolist (pattern '("\\.php[s345t]?\\'" "/\\.php_cs\\(\\.dist\\)?\\'" "\\.phtml\\'" "/Amkfile\\'" "\\.amk\\'"))
-  (add-to-list 'auto-mode-alist `(,pattern . php-mode) t))
+  (add-to-list 'auto-mode-alist `(,pattern . php-mode-maybe) t))
 
 (provide 'php-mode)
 
