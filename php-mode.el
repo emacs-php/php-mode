@@ -1874,8 +1874,7 @@ The output will appear in the buffer *PHP*."
                             ".php_cs"
                             ".php_cs.dist")))
                     string-end))
-              'php-mode)
-             t)
+              'php-mode-maybe))
 
 (provide 'php-mode)
 
