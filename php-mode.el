@@ -1039,7 +1039,7 @@ PHP heredoc."
   "PHP Mode face used to highlight variable names."
   :group 'php-faces)
 
-(defface php-property-name '((t (:inherit php-variable-name-face)))
+(defface php-property-name '((t (:inherit php-variable-name)))
   "PHP Mode face used to highlight property names."
   :group 'php-faces)
 
