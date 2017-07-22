@@ -387,6 +387,8 @@ In chronological order:
 69. [USAMI Kenta](https://tadsan.github.io/) (@zonuexe)
 70. [Tim Landscheidt](http://www.tim-landscheidt.de)
 71. [Fabian Wiget](https://github.com/fabacino)
+72. tangxifan
+
 
 
 [wiki]: https://github.com/ejmr/php-mode/wiki
