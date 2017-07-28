@@ -1723,7 +1723,7 @@ The output will appear in the buffer *PHP*."
 
 ;;;###autoload
 (defun php-current-namespace ()
-  "Insert current namespace if cursor in in namespace context."
+  "Insert current namespace if cursor in namespace context."
   (interactive)
   (let ((matched (php-get-current-element php--re-namespace-pattern)))
     (when matched
