@@ -24,7 +24,7 @@
 
 ;; This file is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
@@ -53,10 +53,10 @@
 
 ;;; Commentary:
 
-;; PHP mode is a major mode for editing PHP source code.  It's an
+;; PHP Mode is a major mode for editing PHP source code. It's an
 ;; extension of C mode; thus it inherits all C mode's navigation
-;; functionality.  But it colors according to the PHP grammar and
-;; indents according to the PEAR coding guidelines.  It also includes
+;; functionality. But it colors according to the PHP grammar and
+;; indents according to the PEAR coding guidelines. It also includes
 ;; a couple handy IDE-type features such as documentation search and a
 ;; source and class browser.
 
@@ -110,7 +110,7 @@
         ;; need it in php-mode, just return nil.
         nil)))
 
-
+
 ;; Local variables
 ;;;###autoload
 (defgroup php nil
@@ -200,12 +200,12 @@ of constants when set."
   "Make a regular expression for methods with the given VISIBILITY.
 
 VISIBILITY must be a string that names the visibility for a PHP
-method, e.g. 'public'.  The parameter VISIBILITY can itself also
+method, e.g. 'public'. The parameter VISIBILITY can itself also
 be a regular expression.
 
 The regular expression this function returns will check for other
 keywords that can appear in method signatures, e.g. 'final' and
-'static'.  The regular expression will have one capture group
+'static'. The regular expression will have one capture group
 which will be the name of the method."
   (concat
    ;; Initial space with possible 'abstract' or 'final' keywords
@@ -229,7 +229,7 @@ can be used to match against definitions for that classlike."
    "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?"
    ;; The classlike type
    type
-   ;; Its name, which is the first captured group in the regexp.  We
+   ;; Its name, which is the first captured group in the regexp. We
    ;; allow backslashes in the name to handle namespaces, but again
    ;; this is not necessarily correct for all values of `type'.
    "\\s-+\\(\\(?:\\sw\\|\\\\\\|\\s_\\)+\\)"))
@@ -376,9 +376,9 @@ This variable can take one of the following symbol values:
            (php-enable-psr2-coding-style)))))
 
 (defun php-mode-version ()
-  "Display string describing the version of PHP mode."
+  "Display string describing the version of PHP Mode."
   (interactive)
-  (message "PHP mode %s of %s"
+  (message "PHP Mode %s of %s"
            php-mode-version-number php-mode-modified))
 
 (defvar php-mode-map
@@ -393,9 +393,9 @@ This variable can take one of the following symbol values:
     ;; (define-key map [menu-bar php search-documentation]
     ;;   '("Search documentation" . php-search-documentation))
 
-    ;; By default PHP mode binds C-M-h to c-mark-function, which it
-    ;; inherits from cc-mode.  But there are situations where
-    ;; c-mark-function fails to properly mark a function.  For
+    ;; By default PHP Mode binds C-M-h to c-mark-function, which it
+    ;; inherits from cc-mode. But there are situations where
+    ;; c-mark-function fails to properly mark a function. For
     ;; example, if we use c-mark-function within a method definition
     ;; then the region will expand beyond the method and into the
     ;; class definition itself.
@@ -405,7 +405,7 @@ This variable can take one of the following symbol values:
     (define-key map (kbd "C-M-h") 'mark-defun)
 
     ;; Many packages based on cc-mode provide the 'C-c C-w' binding
-    ;; to toggle Subword Mode.  See the page
+    ;; to toggle Subword Mode. See the page
     ;;
     ;;     https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
     ;;
@@ -416,7 +416,7 @@ This variable can take one of the following symbol values:
           (subword-mode t)))
 
     ;; We inherit c-beginning-of-defun and c-end-of-defun from CC Mode
-    ;; but we have two replacement functions specifically for PHP.  We
+    ;; but we have two replacement functions specifically for PHP. We
     ;; remap the commands themselves and not their default
     ;; key-bindings so that our PHP-specific versions will work even
     ;; if the user has reconfigured their keys, e.g. if they rebind
@@ -769,7 +769,7 @@ See `php-beginning-of-defun'."
   (interactive "p")
   (php-beginning-of-defun (- (or arg 1))))
 
-
+
 (defvar php-warned-bad-indent nil)
 
 ;; Do it but tell it is not good if html tags in buffer.
@@ -801,10 +801,10 @@ See `php-beginning-of-defun'."
              (base-msg
               (concat
                "Indentation fails badly with mixed HTML/PHP in the HTML part in
-plain `php-mode'.  To get indentation to work you must use an
+plain `php-mode'. To get indentation to work you must use an
 Emacs library that supports 'multiple major modes' in a buffer.
 Parts of the buffer will then be in `php-mode' and parts in for
-example `html-mode'.  Known such libraries are:\n\t"
+example `html-mode'. Known such libraries are:\n\t"
                (mapconcat 'identity known-names ", ")
                "\n"
                (if available-multi-libs
@@ -997,7 +997,7 @@ PHP heredoc."
 (easy-menu-define php-mode-menu php-mode-map "PHP Mode Commands"
   (cons "PHP" (c-lang-const c-mode-menu php)))
 
-
+
 ;; Faces
 
 ;;;###autoload
@@ -1136,7 +1136,7 @@ PHP heredoc."
   ;; PHP vars are case-sensitive
   (setq case-fold-search t)
 
-  ;; Do not force newline at end of file.  Such newlines can cause
+  ;; Do not force newline at end of file. Such newlines can cause
   ;; trouble if the PHP file is included in another file before calls
   ;; to header() or cookie().
   (set (make-local-variable 'require-final-newline) nil)
@@ -1218,7 +1218,7 @@ PHP heredoc."
       (save-excursion
         (php-syntax-propertize-function (point-min) (point-max))))))
 
-
+
 ;; Define function name completion function
 (defvar php-completion-table nil
   "Obarray of tag names defined in current tags table and functions known to PHP.")
@@ -1346,7 +1346,7 @@ current `tags-file-name'."
     (if arglist
         (message "Arglist for %s: %s" tagname arglist)
         (message "Unknown function: %s" tagname))))
-
+
 (defcustom php-search-documentation-browser-function nil
   "Function to display PHP documentation in a WWW browser.
 
@@ -1417,7 +1417,7 @@ under which to search for files in the local documentation directory.")
 
 (defun php-search-local-documentation (word)
   "Search the local PHP documentation (i.e. in `php-manual-path') for
-the word at point.  The function returns t if the requested documentation
+the word at point. The function returns t if the requested documentation
 exists, and nil otherwise.
 
 With a prefix argument, prompt (with completion) for a word to search for."
@@ -1428,7 +1428,7 @@ With a prefix argument, prompt (with completion) for a word to search for."
                                                   type
                                                   (replace-regexp-in-string
                                                    "_" "-" (downcase word))))
-                                (file (expand-file-name doc-html  php-manual-path)))
+                                (file (expand-file-name doc-html php-manual-path)))
                            (when (file-exists-p file)
                              (throw 'found file)))))))
     (when file
@@ -1447,12 +1447,12 @@ With a prefix argument, prompt (with completion) for a word to search for."
   "Search PHP documentation for the `WORD' at point.
 
 If `php-manual-path' has a non-empty string value then the command
-will first try searching the local documentation.  If the requested
+will first try searching the local documentation. If the requested
 documentation does not exist it will fallback to searching the PHP
 website.
 
 With a prefix argument, prompt for a documentation word to search
-for.  If the local documentation is available, it is used to build
+for. If the local documentation is available, it is used to build
 a completion list."
   (interactive (php--search-documentation-read-arg))
   (if (and (stringp php-manual-path)
@@ -1469,7 +1469,7 @@ a completion list."
                   php-manual-url
                 (format "%smanual/%s/" php-site-url php-manual-url))))
 
-
+
 ;; Font Lock
 (defconst php-phpdoc-type-keywords
   (list "string" "integer" "int" "boolean" "bool" "float"
@@ -1502,14 +1502,14 @@ a completion list."
 
 (defvar php-phpdoc-font-lock-keywords
   `((,(lambda (limit)
-	(c-font-lock-doc-comments "/\\*\\*" limit
-	  php-phpdoc-font-lock-doc-comments)))))
+    (c-font-lock-doc-comments "/\\*\\*" limit
+      php-phpdoc-font-lock-doc-comments)))))
 
 (defconst php-font-lock-keywords-1 (c-lang-const c-matchers-1 php)
-  "Basic highlighting for PHP mode.")
+  "Basic highlighting for PHP Mode.")
 
 (defconst php-font-lock-keywords-2 (c-lang-const c-matchers-2 php)
-  "Medium level highlighting for PHP mode.")
+  "Medium level highlighting for PHP Mode.")
 
 (defconst php-font-lock-keywords-3
   (append
@@ -1600,10 +1600,10 @@ a completion list."
      ;; Note that starting a file with <% breaks indentation, a
      ;; limitation we can/should live with.
      (,(regexp-opt '("?>" "<?" "<%" "%>")) 0 'php-php-tag)))
-  "Detailed highlighting for PHP mode.")
+  "Detailed highlighting for PHP Mode.")
 
 (defvar php-font-lock-keywords php-font-lock-keywords-3
-  "Default expressions to highlight in PHP mode.")
+  "Default expressions to highlight in PHP Mode.")
 
 ;;; Provide support for Flymake so that users can see warnings and
 ;;; errors in real-time as they write code.
@@ -1624,7 +1624,7 @@ a completion list."
 
 (add-to-list 'flymake-err-line-patterns
              '("\\(Parse\\|Fatal\\) error: \\(.*?\\) in \\(.*?\\) on line \\([0-9]+\\)" 3 4 nil 2))
-
+
 
 (defun php-send-region (start end)
   "Send the region between `start' and `end' to PHP for execution.
@@ -1633,14 +1633,14 @@ The output will appear in the buffer *PHP*."
   (let ((php-buffer (get-buffer-create "*PHP*"))
         (code (buffer-substring start end)))
     ;; Calling 'php -r' will fail if we send it code that starts with
-    ;; '<?php', which is likely.  So we run the code through this
+    ;; '<?php', which is likely. So we run the code through this
     ;; function to check for that prefix and remove it.
     (let ((cleaned-php-code (if (string-prefix-p "<?php" code t)
                                 (substring code 5)
                               code)))
       (call-process php-executable nil php-buffer nil "-r" cleaned-php-code))))
 
-
+
 (defconst php-string-interpolated-variable-regexp
   "{\\$[^}\n\\\\]*\\(?:\\\\.[^}\n\\\\]*\\)*}\\|\\${\\sw+}\\|\\$\\sw+")
 
@@ -1659,12 +1659,12 @@ The output will appear in the buffer *PHP*."
       `((php-string-intepolated-variable-font-lock-find))
       'append)))
 
-
+
 
 ;;; Correct the behavior of `delete-indentation' by modifying the
 ;;; logic of `fixup-whitespace'.
 (defadvice fixup-whitespace (after php-mode-fixup-whitespace)
-  "Remove whitespace before certain characters in PHP mode."
+  "Remove whitespace before certain characters in PHP Mode."
   (let* ((no-behind-space ";\\|,\\|->\\|::")
          (no-front-space "->\\|::"))
     (when (and (eq major-mode 'php-mode)
@@ -1689,7 +1689,7 @@ The output will appear in the buffer *PHP*."
     (modify-syntax-entry ?\\ "w")
     ad-do-it
     (modify-syntax-entry ?\\ old-syntax)))
-
+
 
 (defcustom php-class-suffix-when-insert "::"
   "Suffix for inserted class."
@@ -1729,7 +1729,7 @@ The output will appear in the buffer *PHP*."
     (when matched
       (insert (concat matched php-namespace-suffix-when-insert)))))
 
-
+
 ;;;###autoload
 (dolist (pattern '("\\.php[s345t]?\\'" "/\\.php_cs\\(\\.dist\\)?\\'" "\\.phtml\\'" "/Amkfile\\'" "\\.amk\\'"))
   (add-to-list 'auto-mode-alist `(,pattern . php-mode) t))
