@@ -388,6 +388,7 @@ In chronological order:
 70. [Tim Landscheidt](http://www.tim-landscheidt.de)
 71. [Fabian Wiget](https://github.com/fabacino)
 72. tangxifan
+73. [Serghei Iakovlev](https://github.com/sergeyklay)
 
 
 
