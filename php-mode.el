@@ -53,7 +53,7 @@
 
 ;;; Commentary:
 
-;; PHP mode is a major mode for editing PHP source code.  It's an
+;; PHP Mode is a major mode for editing PHP source code.  It's an
 ;; extension of C mode; thus it inherits all C mode's navigation
 ;; functionality.  But it colors according to the PHP grammar and
 ;; indents according to the PEAR coding guidelines.  It also includes
@@ -376,9 +376,9 @@ This variable can take one of the following symbol values:
            (php-enable-psr2-coding-style)))))
 
 (defun php-mode-version ()
-  "Display string describing the version of PHP mode."
+  "Display string describing the version of PHP Mode."
   (interactive)
-  (message "PHP mode %s of %s"
+  (message "PHP Mode %s of %s"
            php-mode-version-number php-mode-modified))
 
 (defvar php-mode-map
@@ -393,7 +393,7 @@ This variable can take one of the following symbol values:
     ;; (define-key map [menu-bar php search-documentation]
     ;;   '("Search documentation" . php-search-documentation))
 
-    ;; By default PHP mode binds C-M-h to c-mark-function, which it
+    ;; By default PHP Mode binds C-M-h to c-mark-function, which it
     ;; inherits from cc-mode.  But there are situations where
     ;; c-mark-function fails to properly mark a function.  For
     ;; example, if we use c-mark-function within a method definition
@@ -1506,10 +1506,10 @@ a completion list."
 	  php-phpdoc-font-lock-doc-comments)))))
 
 (defconst php-font-lock-keywords-1 (c-lang-const c-matchers-1 php)
-  "Basic highlighting for PHP mode.")
+  "Basic highlighting for PHP Mode.")
 
 (defconst php-font-lock-keywords-2 (c-lang-const c-matchers-2 php)
-  "Medium level highlighting for PHP mode.")
+  "Medium level highlighting for PHP Mode.")
 
 (defconst php-font-lock-keywords-3
   (append
@@ -1600,10 +1600,10 @@ a completion list."
      ;; Note that starting a file with <% breaks indentation, a
      ;; limitation we can/should live with.
      (,(regexp-opt '("?>" "<?" "<%" "%>")) 0 'php-php-tag)))
-  "Detailed highlighting for PHP mode.")
+  "Detailed highlighting for PHP Mode.")
 
 (defvar php-font-lock-keywords php-font-lock-keywords-3
-  "Default expressions to highlight in PHP mode.")
+  "Default expressions to highlight in PHP Mode.")
 
 ;;; Provide support for Flymake so that users can see warnings and
 ;;; errors in real-time as they write code.
@@ -1664,7 +1664,7 @@ The output will appear in the buffer *PHP*."
 ;;; Correct the behavior of `delete-indentation' by modifying the
 ;;; logic of `fixup-whitespace'.
 (defadvice fixup-whitespace (after php-mode-fixup-whitespace)
-  "Remove whitespace before certain characters in PHP mode."
+  "Remove whitespace before certain characters in PHP Mode."
   (let* ((no-behind-space ";\\|,\\|->\\|::")
          (no-front-space "->\\|::"))
     (when (and (eq major-mode 'php-mode)
