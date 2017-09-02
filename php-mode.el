@@ -12,7 +12,7 @@
 (defconst php-mode-version-number "1.18.3"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2017-06-22"
+(defconst php-mode-modified "2017-09-02"
   "PHP Mode build date.")
 
 ;;; License
@@ -700,9 +700,9 @@ working with Wordpress."
        (default-value 'show-trailing-whitespace)))
 
 (c-add-style
-  "symfony2"
-  '("php"
-    (c-offsets-alist . ((statement-cont . php-lineup-hanging-semicolon)))))
+ "symfony2"
+ '("php"
+   (c-offsets-alist . ((statement-cont . php-lineup-hanging-semicolon)))))
 
 (defun php-enable-symfony2-coding-style ()
   "Makes php-mode use coding styles that are preferable for
@@ -719,9 +719,10 @@ working with Symfony2."
        (default-value 'show-trailing-whitespace)))
 
 (c-add-style
-  "psr2"
-  '("php"
-    (c-offsets-alist . ((statement-cont . +)))))
+ "psr2"
+ '("php"
+   (c-offsets-alist . ((statement-cont . +)
+		       (arglist-cont . +)))))
 
 (defun php-enable-psr2-coding-style ()
   "Makes php-mode comply to the PSR-2 coding style"
