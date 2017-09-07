@@ -2,6 +2,7 @@
 
 ;; Copyright (C) 2013 Daniel Hackney
 ;;               2014, 2015 Eric James Michael Ritz
+;;               2017 Tim Landscheidt
 
 ;; Author: Daniel Hackney <dan@haxney.org>
 ;; URL: https://github.com/ejmr/php-mode
@@ -122,6 +123,21 @@ run with specific customizations set."
      (goto-char (point-min))
      (let ((case-fold-search nil))
        ,@body)))
+
+(ert-deftest php-mode-test-emacs-version ()
+  "Emacs version is the requested one."
+  ;; Ideally, we would use skip-unless here, but that is only
+  ;; available in 24.4 and newer.
+  (if (getenv "EMACS_VERSION")
+      (should
+       (string=
+        (getenv "EMACS_VERSION")
+        ;; Testing for a fourth field in emacs-version is somewhat of
+        ;; a kludge to determine if we are running a snapshot version,
+        ;; but it seems to work.
+        (if (= (length (version-to-list emacs-version)) 4)
+            "emacs-snapshot"
+          (format "emacs-%d.%d-bin" emacs-major-version emacs-minor-version))))))
 
 (ert-deftest php-mode-test-namespace-block ()
   "Proper indentation for classs and functions in namespace block."
