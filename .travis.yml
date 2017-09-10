@@ -5,7 +5,6 @@ env:
     - EMACS_VERSION=emacs-24.3-bin
     - EMACS_VERSION=emacs-24.4-bin
     - EMACS_VERSION=emacs-24.5-bin
-    - EMACS_VERSION=emacs-25.1-bin
     - EMACS_VERSION=emacs-snapshot
 
 before_install:
