@@ -11,5 +11,6 @@
  *
  */
 
-foreach ($x as $s)
-        echo $s; // ###php-mode-test### ((indent c-basic-offset))
+foreach ($x as $s) {
+    echo $s;
+} // ###php-mode-test### ((indent c-basic-offset))

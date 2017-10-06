@@ -9,7 +9,6 @@
 
 # This project's homepage is  http://www.website.com
 $a = 1;
-if( $a == 1 ) {
-$a = $a + 1;
+if ($a == 1) {
+    $a = $a + 1;
 }
-?>

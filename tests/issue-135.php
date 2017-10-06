@@ -20,7 +20,8 @@ ClassName::method()
     ->chained(); // ###php-mode-test### ((indent 4))
 
 // Test same behaviour inside a block
-function foo() {
+function foo()
+{
     $variable->method()   // ###php-mode-test### ((indent 4))
 /*           | column 13 */
              ->chained(); // ###php-mode-test### ((indent 13))
@@ -51,8 +52,10 @@ foo(
 );
 
 // Test same behaviour inside method
-class Test {
-    public function test() {
+class Test
+{
+    public function test()
+    {
         $variable->method()   // ###php-mode-test### ((indent 8))
 /*               | column 17 */
                  ->chained(); // ###php-mode-test### ((indent 17))

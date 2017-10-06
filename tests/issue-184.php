@@ -10,10 +10,11 @@
  * heredoc.
  */
 
-function test() {
+function test()
+{
     $html = <<<html
 <a href="#"></a>
 html;
 
-return;
+    return;
 }

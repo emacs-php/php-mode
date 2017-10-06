@@ -11,19 +11,20 @@
  *
  */
 
-class Foo {
-
+class Foo
+{
     private $bar;
 
-    public function __construct($bar) {
+    public function __construct($bar)
+    {
         $this->bar = $bar;
     }
 
-    public function getBar() {
+    public function getBar()
+    {
         // here is the whitespace
-        return $this->bar;    
+        return $this->bar;
     }
-
 }
 
 $foo = new Foo('bar');

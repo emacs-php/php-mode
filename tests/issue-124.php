@@ -7,7 +7,7 @@
  * font-lock-string-face.  The presence of the apostrophe or anything
  * else within the string should not stop the highlighting from
  * leaking out beyond the ending 'EOT' marker.
- * 
+ *
  */
 
 $foo = <<<EOT

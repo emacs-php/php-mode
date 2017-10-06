@@ -5,13 +5,13 @@
  *
  * PHP Mode should use 'font-lock-keyword-face' to highlight 'final'
  * in the method below.
- * 
+ *
  */
 
 class MyClass
 {
-        public final function foo() 
-        {
-                return null;
-        }
+    final public function foo()
+    {
+        return null;
+    }
 }

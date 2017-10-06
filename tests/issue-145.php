@@ -7,10 +7,11 @@
  *
  */
 
-function bar() {
-    return function() {
-        array_filter(function($foo) {
-            return array_map(function() use ($foo) {
+function bar()
+{
+    return function () {
+        array_filter(function ($foo) {
+            return array_map(function () use ($foo) {
                 return "xxx";
             }, "foo");
         });

@@ -35,7 +35,7 @@ class Whatever
     }
 }
 
-$closure = function() {
+$closure = function () {
     $object = new StdClass();
     $object->call()
            ->something();
