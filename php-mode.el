@@ -295,7 +295,7 @@ You can replace \"en\" with your ISO language code."
 
 ;;;###autoload
 (if (version< emacs-version "24.4")
-    (dolist (i '("php" "php3" "php5" "php7" "php-5" "php-5.5" "php7.0.1"))
+    (dolist (i '("php" "php5" "php7"))
       (add-to-list 'interpreter-mode-alist (cons i 'php-mode)))
   (add-to-list 'interpreter-mode-alist
                ;; Match php, php-3, php5, php7, php5.5, php-7.0.1, etc.
