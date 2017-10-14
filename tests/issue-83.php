@@ -10,13 +10,13 @@
 
 class Test
 {
-	static public function staticBeforeVisibility()
-	{
-		// Do nothing
-	}
+    public static function staticBeforeVisibility()
+    {
+        // Do nothing
+    }
 
-	public static function staticAfterVisibility()
-	{
-		// Do nothing
-	}
+    public static function staticAfterVisibility()
+    {
+        // Do nothing
+    }
 }

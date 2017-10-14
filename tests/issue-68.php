@@ -22,11 +22,11 @@
  */
 
 try {
-        $mongo = new \Mongo($dsn, array("replicaSet" => 'mat_replica'));
+    $mongo = new \Mongo($dsn, array("replicaSet" => 'mat_replica'));
 } catch (\MongoConnectionException $e) {
-        throw $e;
+    throw $e;
 } catch (\Exception $e) {
-        throw $e;
+    throw $e;
 }
 
 /* CC Mode uses the indentation syntax for 'topmost-intro' for the
@@ -34,24 +34,17 @@ try {
  */
 
 try {
-        $mongo = new \Mongo($dsn, array("replicaSet" => 'mat_replica'));
-}
-catch (\MongoConnectionException $e) {
-        throw $e;
-}
-catch (\Exception $e) {
-        throw $e;
+    $mongo = new \Mongo($dsn, array("replicaSet" => 'mat_replica'));
+} catch (\MongoConnectionException $e) {
+    throw $e;
+} catch (\Exception $e) {
+    throw $e;
 }
 
-try
-{
-        $mongo = new \Mongo($dsn, array("replicaSet" => 'mat_replica'));
-}
-catch (\MongoConnectionException $e)
-{
-        throw $e;
-}
-catch (\Exception $e)
-{
-        throw $e;
+try {
+    $mongo = new \Mongo($dsn, array("replicaSet" => 'mat_replica'));
+} catch (\MongoConnectionException $e) {
+    throw $e;
+} catch (\Exception $e) {
+    throw $e;
 }

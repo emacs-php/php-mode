@@ -13,7 +13,7 @@ $di->set('config', function () use ($config) {
     return $config;
 });
 
-$di->set('logger', function() use ($config) {
+$di->set('logger', function () use ($config) {
     $filename = date('Ymd');
     $logger = new \Logger($config->application->logger->dir . $filename);
     $logger->setFormat($config->application->logger->format);

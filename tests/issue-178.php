@@ -8,8 +8,10 @@
 
 use Test as Alias;
 
-foreach ($values as $key => $value) {}
+foreach ($values as $key => $value) {
+}
 
-class Test {
+class Test
+{
     use TestTrait { test as protected; }
 }

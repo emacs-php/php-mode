@@ -11,25 +11,25 @@
  *
  * describes all of the variable syntaxes which PHP Mode must
  * recognize and highlight appropriately.
- * 
+ *
  */
 
 $name = "Eric";
 
 class User
 {
-        public $name;
-        public $id = 0;
+    public $name;
+    public $id = 0;
 
-        public function getName()
-        {
-                return $this->name;
-        }
+    public function getName()
+    {
+        return $this->name;
+    }
 
-        public function getID()
-        {
-                return $this->id;
-        }
+    public function getID()
+    {
+        return $this->id;
+    }
 }
 
 $user = new User();

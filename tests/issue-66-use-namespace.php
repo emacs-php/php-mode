@@ -11,25 +11,30 @@
  */
 
 namespace foo\bar;
+
 use my\space\MyClass;
+
 {
   $str = "hi";
-  class TheClass {
-    public function __construct() {
-        $object = new StdClass();
-        $object->call()
+  class TheClass
+  {
+      public function __construct()
+      {
+          $object = new StdClass();
+          $object->call()
                ->something();
-    }
+      }
   }
  // place code here
 
 } // end of namespace foo\bar
 
 namespace another\bar;
+
 use my\space\MyClass;
 use my\space\AnotherClass;
+
 {
   $more = "other";
 
 } // end of namespace another\bar
-?>

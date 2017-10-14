@@ -10,15 +10,19 @@
 namespace MyProject {
 
 const CONNECT_OK = 1;
-class Connection { /* ... */ }
-function connect() { /* ... */  }
+class Connection
+{ /* ... */
+}
+function connect()
+{ /* ... */
+}
 }
 
 namespace { // global code
-  function myfun() {
-    session_start();
-    $a = MyProject\connect();
-    echo MyProject\Connection::start();
+  function myfun()
+  {
+      session_start();
+      $a = MyProject\connect();
+      echo MyProject\Connection::start();
   }
 }
-?>

@@ -10,11 +10,13 @@
  */
 
 // http://www.php.net/manual/en/language.exceptions.php
-function inverse($x) {
+function inverse($x)
+{
     if (!$x) {
         throw new Exception('Division by zero.');
+    } else {
+        return 1/$x;
     }
-    else return 1/$x;
 }
 
 try {
@@ -26,8 +28,7 @@ try {
 
 // http://www.php.net/manual/en/functions.anonymous.php
 
-$greet = function($name)
-{
+$greet = function ($name) {
     printf("Hello %s\r\n", $name);
 };
 

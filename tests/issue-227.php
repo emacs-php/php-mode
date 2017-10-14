@@ -6,7 +6,8 @@
  * Indentation of multi-line strings
  */
 
-function my_func() {
+function my_func()
+{
     return "a really long string with = inside " .
 "some more text";   // ###php-mode-test### ((indent 49))
 }

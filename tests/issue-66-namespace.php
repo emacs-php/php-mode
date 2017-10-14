@@ -10,10 +10,16 @@
  * this is what PHP requires.
  */
 
-namespace my\name; // see "Defining Namespaces" section
+namespace my\name;
 
-class MyClass {}
-function myfunction() {}
+// see "Defining Namespaces" section
+
+class MyClass
+{
+}
+function myfunction()
+{
+}
 const MYCONST = 1;
 
 $a = new MyClass;

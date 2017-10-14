@@ -11,6 +11,6 @@
  *
  */
 
-$app->get("/index", function() {
+$app->get("/index", function () {
     $app->redirect("foo"); // ###php-mode-test### ((indent c-basic-offset))
 });                        // ###php-mode-test### ((indent 0))
