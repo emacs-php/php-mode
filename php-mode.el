@@ -362,18 +362,7 @@ This variable can take one of the following symbol values:
   (when (eq major-mode 'php-mode)
     (set         sym value)
     (set-default sym value)
-    (cond ((eq value 'pear)
-           (php-enable-pear-coding-style))
-          ((eq value 'default)
-           (php-enable-default-coding-style))
-          ((eq value 'drupal)
-           (php-enable-drupal-coding-style))
-          ((eq value 'wordpress)
-           (php-enable-wordpress-coding-style))
-          ((eq value 'symfony2)
-           (php-enable-symfony2-coding-style))
-          ((eq value 'psr2)
-           (php-enable-psr2-coding-style)))))
+    (php-set-style (symbol-name value))))
 
 (defun php-mode-version ()
   "Display string describing the version of PHP Mode."
@@ -423,6 +412,7 @@ This variable can take one of the following symbol values:
     ;; c-end-of-defun to something other than C-M-e.
     (define-key map [remap c-beginning-of-defun] 'php-beginning-of-defun)
     (define-key map [remap c-end-of-defun] 'php-end-of-defun)
+    (define-key map [remap c-set-style] 'php-set-style)
 
     (define-key map [(control c) (control f)] 'php-search-documentation)
     (define-key map [(meta tab)] 'php-complete-function)
@@ -624,7 +614,7 @@ but only if the setting is enabled"
 
 (c-add-style
  "php"
- '((c-basic-offset . 4)
+ `((c-basic-offset . 4)
    (c-offsets-alist . ((arglist-close . php-lineup-arglist-close)
                        (arglist-cont . (first php-lineup-cascaded-calls 0))
                        (arglist-cont-nonempty . (first php-lineup-cascaded-calls c-lineup-arglist))
@@ -639,103 +629,90 @@ but only if the setting is enabled"
                        (label . +)
                        (statement-cont . (first php-lineup-cascaded-calls php-lineup-string-cont +))
                        (substatement-open . 0)
-                       (topmost-intro-cont . (first php-lineup-cascaded-calls +))))))
+                       (topmost-intro-cont . (first php-lineup-cascaded-calls +))))
+   (indent-tabs-mode . nil)
+   (tab-width . ,(default-value 'tab-width))
+   (fill-column . ,(default-value 'fill-column))
+   (require-final-newline . ,(default-value 'require-final-newline))
+   (show-trailing-whitespace . ,(default-value 'show-trailing-whitespace))
+   (php-style-delete-trailing-whitespace . nil)))
 
 (defun php-enable-default-coding-style ()
   "Set PHP Mode to use reasonable default formatting."
   (interactive)
-  (c-set-style "php"))
+  (php-set-style "php"))
 
 (c-add-style
  "pear"
  '("php"
    (c-basic-offset . 4)
-   (c-offsets-alist . ((case-label . 0)))))
+   (c-offsets-alist . ((case-label . 0)))
+   (tab-width . 4)))
 
 (defun php-enable-pear-coding-style ()
   "Sets up php-mode to use the coding styles preferred for PEAR
 code and modules."
   (interactive)
-  (setq tab-width 4
-        indent-tabs-mode nil)
-  (c-set-style "pear")
-
-  ;; Undo drupal/PSR-2 coding style whitespace effects
-  (set (make-local-variable 'show-trailing-whitespace)
-       (default-value 'show-trailing-whitespace)))
+  (php-set-style "pear"))
 
 (c-add-style
  "drupal"
  '("php"
-   (c-basic-offset . 2)))
+   (c-basic-offset . 2)
+   (tab-width . 2)
+   (fill-column . 78)
+   (show-trailing-whitespace . t)
+   (php-style-delete-trailing-whitespace . t)))
 
 (defun php-enable-drupal-coding-style ()
   "Makes php-mode use coding styles that are preferable for
 working with Drupal."
   (interactive)
-  (setq tab-width 2
-        indent-tabs-mode nil
-        fill-column 78)
-  (set (make-local-variable 'show-trailing-whitespace) t)
-  (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)
-  (c-set-style "drupal"))
+  (php-set-style "drupal"))
 
 (c-add-style
   "wordpress"
   '("php"
-    (c-basic-offset . 4)))
+    (c-basic-offset . 4)
+    (c-indent-comments-syntactically-p t)
+    (indent-tabs-mode . t)
+    (tab-width . 4)
+    (fill-column . 78)))
 
 (defun php-enable-wordpress-coding-style ()
   "Makes php-mode use coding styles that are preferable for
 working with Wordpress."
   (interactive)
-  (setq indent-tabs-mode t
-        fill-column 78
-        tab-width 4
-        c-indent-comments-syntactically-p t)
-  (c-set-style "wordpress")
-
-  ;; Undo drupal/PSR-2 coding style whitespace effects
-  (set (make-local-variable 'show-trailing-whitespace)
-       (default-value 'show-trailing-whitespace)))
+  (php-set-style "wordpress"))
 
 (c-add-style
   "symfony2"
   '("php"
-    (c-offsets-alist . ((statement-cont . php-lineup-hanging-semicolon)))))
+    (c-offsets-alist . ((statement-cont . php-lineup-hanging-semicolon)))
+    (c-indent-comments-syntactically-p . t)
+    (fill-column . 78)
+    (require-final-newline . t)))
 
 (defun php-enable-symfony2-coding-style ()
   "Makes php-mode use coding styles that are preferable for
 working with Symfony2."
   (interactive)
-  (setq indent-tabs-mode nil
-        fill-column 78
-        c-indent-comments-syntactically-p t
-        require-final-newline t)
-  (c-set-style "symfony2")
-
-  ;; Undo drupal/PSR-2 coding style whitespace effects
-  (set (make-local-variable 'show-trailing-whitespace)
-       (default-value 'show-trailing-whitespace)))
+  (php-set-style "symfony2"))
 
 (c-add-style
   "psr2"
   '("php"
-    (c-offsets-alist . ((statement-cont . +)))))
+    (c-offsets-alist . ((statement-cont . +)))
+    (c-indent-comments-syntactically-p . t)
+    (fill-column . 78)
+    (require-final-newline . t)
+    (show-trailing-whitespace . t)
+    (php-style-delete-trailing-whitespace . t)))
 
 (defun php-enable-psr2-coding-style ()
   "Makes php-mode comply to the PSR-2 coding style"
   (interactive)
-  (setq indent-tabs-mode nil
-        fill-column 78
-        c-indent-comments-syntactically-p t
-        require-final-newline t)
-  (c-set-style "psr2")
-
-  ;; Apply drupal-like coding style whitespace effects
-  (set (make-local-variable 'require-final-newline) t)
-  (set (make-local-variable 'show-trailing-whitespace) t)
-  (add-hook 'before-save-hook 'delete-trailing-whitespace nil t))
+  (php-set-style "psr2"))
 
 (defconst php-beginning-of-defun-regexp
   "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("
@@ -1097,6 +1074,33 @@ PHP heredoc."
 
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
+(defun php-set-style (stylename &optional dont-override)
+  "Set the current `php-mode' buffer to use the style STYLENAME.
+STYLENAME is one of the names selectable in `php-mode-coding-style'.
+
+Borrow the `interactive-form' from `c-set-style' and use the original
+`c-set-style' function to set all declared stylevars.
+For compatibility with `c-set-style' pass DONT-OVERRIDE to it.
+
+After setting the stylevars run hooks according to STYLENAME
+
+  \"pear\"      `php-mode-pear-hook'
+  \"drupal\"    `php-mode-drupal-hook'
+  \"wordpress\" `php-mode-wordpress-hook'
+  \"symfony2\"  `php-mode-symfony2-hook'
+  \"psr2\"      `php-mode-psr2-hook'"
+  (interactive)
+  (c-set-style stylename dont-override)
+  (if (eq (symbol-value 'php-style-delete-trailing-whitespace) t)
+      (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)
+    (remove-hook 'before-save-hook 'delete-trailing-whitespace t))
+    (cond ((eq stylename "pear")      (run-hooks 'php-mode-pear-hook))
+          ((eq stylename "drupal")    (run-hooks 'php-mode-drupal-hook))
+          ((eq stylename "wordpress") (run-hooks 'php-mode-wordpress-hook))
+          ((eq stylename "symfony2")  (run-hooks 'php-mode-symfony2-hook))
+          ((eq stylename "psr2")      (run-hooks 'php-mode-psr2-hook))))
+
+(put 'php-set-style 'interactive-form (interactive-form 'c-set-style))
 
 ;;;###autoload
 (define-derived-mode php-mode c-mode "PHP"
@@ -1142,48 +1146,14 @@ PHP heredoc."
   (set (make-local-variable 'require-final-newline) nil)
   (set (make-local-variable 'next-line-add-newlines) nil)
 
-  ;; PEAR coding standards
-  (add-hook 'php-mode-pear-hook 'php-enable-pear-coding-style
-             nil t)
-
-  ;; ;; Drupal coding standards
-  (add-hook 'php-mode-drupal-hook 'php-enable-drupal-coding-style
-             nil t)
-
-  ;; ;; WordPress coding standards
-  (add-hook 'php-mode-wordpress-hook 'php-enable-wordpress-coding-style
-             nil t)
-
-  ;; ;; Symfony2 coding standards
-  (add-hook 'php-mode-symfony2-hook 'php-enable-symfony2-coding-style
-             nil t)
-
-  ;; ;; PSR-2 coding standards
-  (add-hook 'php-mode-psr2-hook 'php-enable-psr2-coding-style
-             nil t)
-
-  (cond ((eq php-mode-coding-style 'pear)
-         (php-enable-pear-coding-style)
-         (run-hooks 'php-mode-pear-hook))
-        ((eq php-mode-coding-style 'drupal)
-         (php-enable-drupal-coding-style)
-         (run-hooks 'php-mode-drupal-hook))
-        ((eq php-mode-coding-style 'wordpress)
-         (php-enable-wordpress-coding-style)
-         (run-hooks 'php-mode-wordpress-hook))
-        ((eq php-mode-coding-style 'symfony2)
-         (php-enable-symfony2-coding-style)
-         (run-hooks 'php-mode-symfony2-hook))
-        ((eq php-mode-coding-style 'psr2)
-         (php-enable-psr2-coding-style)
-         (run-hooks 'php-mode-psr2-hook)))
+  (php-set-style (symbol-name php-mode-coding-style))
 
   (if (or php-mode-force-pear
           (and (stringp buffer-file-name)
                (string-match "PEAR\\|pear"
                              (buffer-file-name))
                (string-match "\\.php$" (buffer-file-name))))
-      (run-hooks 'php-mode-pear-hook))
+      (php-set-style "pear"))
 
   (setq indent-line-function 'php-cautious-indent-line)
   (setq indent-region-function 'php-cautious-indent-region)
