@@ -8,6 +8,9 @@ env:
     - EMACS_VERSION=emacs-25.2-travis
     - EMACS_VERSION=emacs-25.3-travis
     - EMACS_VERSION=emacs-git-snapshot-travis
+matrix:
+  allow_failures:
+  - env: EMACS_VERSION=emacs-git-snapshot-travis
 
 before_install:
   - export PATH="/home/travis/.evm/bin:$PATH"
