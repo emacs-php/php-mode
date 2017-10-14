@@ -12,7 +12,7 @@
 (defconst php-mode-version-number "1.18.3"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2017-06-22"
+(defconst php-mode-modified "2017-09-07"
   "PHP Mode build date.")
 
 ;;; License
@@ -294,9 +294,12 @@ You can replace \"en\" with your ISO language code."
   :type 'string)
 
 ;;;###autoload
-(add-to-list 'interpreter-mode-alist
-             ;; Match php, php-3, php5, php7, php5.5, php-7.0.1, etc.
-             (cons "php\\(?:-?[3457]\\(?:\\.[0-9]+\\)*\\)?" 'php-mode))
+(if (version< emacs-version "24.4")
+    (dolist (i '("php" "php3" "php5" "php7" "php-5" "php-5.5" "php7.0.1"))
+      (add-to-list 'interpreter-mode-alist (cons i 'php-mode)))
+  (add-to-list 'interpreter-mode-alist
+               ;; Match php, php-3, php5, php7, php5.5, php-7.0.1, etc.
+               (cons "php\\(?:-?[3457]\\(?:\\.[0-9]+\\)*\\)?" 'php-mode)))
 
 (defcustom php-mode-hook nil
   "List of functions to be executed on entry to `php-mode'."
