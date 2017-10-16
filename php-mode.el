@@ -1590,7 +1590,7 @@ a completion list."
     (list php-executable (list "-f" local-file "-l"))))
 
 (add-to-list 'flymake-allowed-file-name-masks
-             '("\\.php[345s]?$"
+             '("\\.php[345s]?\\'"
                flymake-php-init
                flymake-simple-cleanup
                flymake-get-real-file-name))
