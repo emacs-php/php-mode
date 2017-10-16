@@ -1581,7 +1581,11 @@ a completion list."
 ;;; Provide support for Flymake so that users can see warnings and
 ;;; errors in real-time as they write code.
 
-(defun flymake-php-init ()
+(defun php-flymake-php-init ()
+  "PHP specific init-cleanup routines.
+
+This is an alternative function of `flymake-php-init'.
+Look at the `php-executable' variable instead of the constant \"php\" command."
   (let* ((temp-file (flymake-init-create-temp-buffer-copy
                      'flymake-create-temp-inplace))
          (local-file (file-relative-name
@@ -1591,7 +1595,7 @@ a completion list."
 
 (add-to-list 'flymake-allowed-file-name-masks
              '("\\.php[345s]?\\'"
-               flymake-php-init
+               php-flymake-php-init
                flymake-simple-cleanup
                flymake-get-real-file-name))
 
