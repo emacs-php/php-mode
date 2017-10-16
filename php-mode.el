@@ -1586,8 +1586,13 @@ a completion list."
 
 This is an alternative function of `flymake-php-init'.
 Look at the `php-executable' variable instead of the constant \"php\" command."
-  (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                     'flymake-create-temp-inplace))
+  (let* ((temp-file
+          (funcall
+           (eval-when-compile
+             (if (fboundp 'flymake-proc-init-create-temp-buffer-copy)
+                 'flymake-proc-init-create-temp-buffer-copy
+               'flymake-init-create-temp-buffer-copy))
+           'flymake-create-temp-inplace))
          (local-file (file-relative-name
                       temp-file
                       (file-name-directory buffer-file-name))))
