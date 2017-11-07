@@ -356,6 +356,11 @@ style from Drupal."
     (search-forward-regexp "@link +\\(https://github.com/ejmr/php-mode\\)")
     (should (equal (get-text-property (match-beginning 1) 'face)
                    '(link font-lock-doc-face)))
+    (search-forward-regexp "@package +\\(Emacs\\\\PHPMode\\)")
+    (should (equal (get-text-property (match-beginning 0) 'face)
+                   '(php-doc-annotation-tag font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 1) 'face)
+                   '(php-string font-lock-doc-face)))
 
 
     (search-forward-regexp "// \\(@annotation This is NOT annotation. 1\\)")
@@ -469,7 +474,15 @@ style from Drupal."
     (should (equal (get-text-property (match-beginning 2) 'face) ;; matches `i'
                    'font-lock-doc-face))
     (should (equal (get-text-property (match-end 2) 'face)       ;; matches ` '
-                   'font-lock-doc-face))))
+                   'font-lock-doc-face))
+
+    (search-forward-regexp "@throws \\(\\\\RuntimeException\\)$")
+    (should (equal (get-text-property (match-beginning 0) 'face) ;; matches `@'
+                   '(php-doc-annotation-tag font-lock-doc-face)))
+    (should (equal (get-text-property (match-beginning 1) 'face) ;; matches `\'
+                   '(php-string font-lock-doc-face)))
+    (should (equal (get-text-property (1+ (match-beginning 1)) 'face) ;; matches `R'
+                   '(php-string font-lock-doc-face)))))
 
 (ert-deftest php-mode-test-comment-return-type ()
   "Proper highlighting for type annotation in doc-block."
