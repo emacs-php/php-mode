@@ -1472,7 +1472,8 @@ a completion list."
         "callable" "iterable" "number"))
 
 (defconst php-phpdoc-type-tags
-  (list "param" "property" "property-read" "property-write" "return" "var"))
+  (list "package" "param" "property" "property-read" "property-write"
+        "return" "throws" "var"))
 
 (defconst php-phpdoc-font-lock-doc-comments
   `(("{@[-[:alpha:]]+\\s-\\([^}]*\\)}" ; "{@foo ...}" markup.

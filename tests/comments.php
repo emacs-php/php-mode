@@ -8,6 +8,7 @@
  * @copyright 2011, 2012, 2013, 2014, 2015, 2016 Eric James Michael Ritz
  * @author    USAMI Kenta <tadsan@pixiv.com>
  * @link      https://github.com/ejmr/php-mode
+ * @package   Emacs\PHPMode
  */
 
 // one-line comment
@@ -59,5 +60,15 @@ final class SampleClass
 
         /** @var int internal linter variable */
         $offset = 0;
+    }
+
+    /**
+     * Summary
+     *
+     * @throws \RuntimeException
+     */
+    public function test()
+    {
+        throw new \RuntimeException;
     }
 }
