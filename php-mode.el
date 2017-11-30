@@ -429,26 +429,6 @@ This variable can take one of the following symbol values:
     map)
   "Keymap for `php-mode'")
 
-(defun php-unescape-identifiers (beg end &optional old-len)
-  "Change syntax of backslashes in identifiers between BEG and END, ignore OLD-LEN."
-  (c-save-buffer-state (num-beg num-end)
-    (save-restriction
-      (goto-char c-new-BEG)
-      (while (and (< (point) c-new-END)
-		  (search-forward "\\" c-new-END 'limit))
-        (if (and (not (php-in-string-p))
-                 (looking-at-p c-identifier-key))
-            ;; within function `c-forward-name' when looking at
-            ;; `c-identifier-key' ensure that `c-simple-skip-symbol-backward'
-            ;; skips over backslashes too in making it at word entry.
-	    (c-put-char-property (1- (point)) 'syntax-table '(2)))))))
-
-(c-lang-defconst c-before-font-lock-functions
-  ;; const might be a symbol in older versions
-  php (let ((const (c-lang-const c-before-font-lock-functions)))
-        (append (if (listp const) const (list const))
-         '(php-unescape-identifiers))))
-
 (c-lang-defconst c-mode-menu
   php (append '(["Complete function name" php-complete-function t]
                 ["Browse manual" php-browse-manual t]
@@ -949,8 +929,9 @@ the string HEREDOC-START."
 
 (defun php-syntax-propertize-function (start end)
   "Apply propertize rules from START to END."
-  ;; versions < git-snapshot as of 2017-10 need this here
-  (php-unescape-identifiers start end)
+  ;; (defconst php-syntax-propertize-function
+  ;;   (syntax-propertize-rules
+  ;;    (php-heredoc-start-re (0 (ignore (php-heredoc-syntax))))))
   (goto-char start)
   (while (and (< (point) end)
               (re-search-forward php-heredoc-start-re end t))
@@ -1142,9 +1123,15 @@ After setting the stylevars run hooks according to STYLENAME
   (set (make-local-variable font-lock-constant-face) 'php-constant)
 
   (modify-syntax-entry ?_    "_" php-mode-syntax-table)
+  (modify-syntax-entry ?`    "\"" php-mode-syntax-table)
+  (modify-syntax-entry ?\"   "\"" php-mode-syntax-table)
   (modify-syntax-entry ?#    "< b" php-mode-syntax-table)
   (modify-syntax-entry ?\n   "> b" php-mode-syntax-table)
   (modify-syntax-entry ?$    "'" php-mode-syntax-table)
+
+  (set (make-local-variable 'syntax-propertize-via-font-lock)
+       '(("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
+         ("\\(\'\\)\\(\\\\.\\|[^\'\n\\]\\)*\\(\'\\)" (1 "\"") (3 "\""))))
 
   (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
                #'php-syntax-propertize-extend-region)
@@ -1672,6 +1659,19 @@ The output will appear in the buffer *PHP*."
 
 (ad-activate 'fixup-whitespace)
 
+;; Advice `font-lock-fontify-keywords-region' to support namespace
+;; separators in class names. Use word syntax for backslashes when
+;; doing keyword fontification, but not when doing syntactic
+;; fontification because that breaks \ as escape character in strings.
+;;
+;; Special care is taken to restore the original syntax, because we
+;; want \ not to be word for functions like forward-word.
+(defadvice font-lock-fontify-keywords-region (around backslash-as-word activate)
+  "Fontify keywords with backslash as word character."
+  (let ((old-syntax (string (char-syntax ?\\))))
+    (modify-syntax-entry ?\\ "w")
+    ad-do-it
+    (modify-syntax-entry ?\\ old-syntax)))
 
 
 (defcustom php-class-suffix-when-insert "::"
