@@ -429,12 +429,6 @@ This variable can take one of the following symbol values:
     map)
   "Keymap for `php-mode'")
 
-(c-lang-defconst c-get-state-before-change-functions
-  ;; const might be a symbol in older versions
-  php (let ((const (c-lang-const c-get-state-before-change-functions)))
-        (cl-set-difference (if (listp const) const (list const))
-                           '(c-parse-quotes-before-change))))
-
 (defun php-unescape-identifiers (beg end &optional old-len)
   "Change syntax of backslashes in identifiers between BEG and END, ignore OLD-LEN."
   (c-save-buffer-state (num-beg num-end)
@@ -452,10 +446,8 @@ This variable can take one of the following symbol values:
 (c-lang-defconst c-before-font-lock-functions
   ;; const might be a symbol in older versions
   php (let ((const (c-lang-const c-before-font-lock-functions)))
-        (append (cl-set-difference (if (listp const) const (list const))
-                                   '(c-restore-<>-properties
-                                     c-parse-quotes-after-change))
-                '(php-unescape-identifiers))))
+        (append (if (listp const) const (list const))
+         '(php-unescape-identifiers))))
 
 (c-lang-defconst c-mode-menu
   php (append '(["Complete function name" php-complete-function t]
