@@ -5,9 +5,7 @@ PHP Mode for GNU Emacs
 This project updates PHP Mode for GNU Emacs with features to make it more friendly to use with PHP 5.4 and later.  This fork builds on the work of:
 
 1. Turadg Aleahmad (Original Author)
-
 2. Aaron S. Hawley
-
 3. Lennart Borgman
 
 All contributors listed below improved PHP Mode as well.
@@ -16,6 +14,7 @@ The current maintainers are:
 
 1. Syohei Yoshida
 2. Eric James Michael Ritz
+3. USAMI Kenta (@zonuexe)
 
 Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode](https://github.com/ejmr/php-mode).
 
