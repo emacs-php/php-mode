@@ -187,7 +187,7 @@ of constants when set."
   (set sym value))
 
 (defcustom php-lineup-cascaded-calls nil
-  "Indent chained method calls to the previous line"
+  "Indent chained method calls to the previous line."
   :type 'boolean)
 
 ;;;###autoload
@@ -427,7 +427,7 @@ This variable can take one of the following symbol values:
     ;; choice.
     (define-key map [tab] 'indent-for-tab-command)
     map)
-  "Keymap for `php-mode'")
+  "Keymap for `php-mode'.")
 
 (c-lang-defconst c-mode-menu
   php (append '(["Complete function name" php-complete-function t]
@@ -683,8 +683,7 @@ working with Drupal."
     (fill-column . 78)))
 
 (defun php-enable-wordpress-coding-style ()
-  "Makes php-mode use coding styles that are preferable for
-working with Wordpress."
+  "Make php-mode use coding styles that are preferable for working with Wordpress."
   (interactive)
   (php-set-style "wordpress"))
 
@@ -697,8 +696,7 @@ working with Wordpress."
     (require-final-newline . t)))
 
 (defun php-enable-symfony2-coding-style ()
-  "Makes php-mode use coding styles that are preferable for
-working with Symfony2."
+  "Make php-mode use coding styles that are preferable for working with Symfony2."
   (interactive)
   (php-set-style "symfony2"))
 
@@ -713,7 +711,7 @@ working with Symfony2."
     (php-style-delete-trailing-whitespace . t)))
 
 (defun php-enable-psr2-coding-style ()
-  "Makes php-mode comply to the PSR-2 coding style"
+  "Make php-mode comply to the PSR-2 coding style."
   (interactive)
   (php-set-style "psr2"))
 
@@ -882,7 +880,7 @@ This is was done due to the problem reported here:
   )
 
 (defun php-lineup-string-cont (langelem)
-  "Line up string toward equal sign or dot
+  "Line up string toward equal sign or dot.
 e.g.
 $str = 'some'
      . 'string';
