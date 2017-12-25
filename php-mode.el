@@ -255,7 +255,7 @@ can be used to match against definitions for that classlike."
     "\\<\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*=\\s-*function\\s-*(" 1)
    ("Named Functions"
     "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
- "Imenu generic expression for PHP Mode. See `imenu-generic-expression'.")
+  "Imenu generic expression for PHP Mode.  See `imenu-generic-expression'.")
 
 (defcustom php-site-url "http://php.net/"
   "Default PHP.net site URL.
