@@ -171,7 +171,7 @@ Turning this on will open it whenever `php-mode' is loaded."
            "\\)\\>[^_]?"))
 
 (defun php-mode-extra-constants-set(sym value)
-  "Apply the list of extra constant keywords VALUE.
+  "Apply the list of extra constant keywords `VALUE'.
 
 This function is called when the custom variable php-extra-constants
 is updated. The web-mode-extra-constants list is appended to the list
@@ -678,8 +678,7 @@ but only if the setting is enabled"
    (tab-width . 4)))
 
 (defun php-enable-pear-coding-style ()
-  "Sets up php-mode to use the coding styles preferred for PEAR
-code and modules."
+  "Set up php-mode to use the coding styles preferred for PEAR code and modules."
   (interactive)
   (php-set-style "pear"))
 
@@ -693,8 +692,7 @@ code and modules."
    (php-style-delete-trailing-whitespace . t)))
 
 (defun php-enable-drupal-coding-style ()
-  "Makes php-mode use coding styles that are preferable for
-working with Drupal."
+  "Make php-mode use coding styles that are preferable for working with Drupal."
   (interactive)
   (php-set-style "drupal"))
 
@@ -944,8 +942,7 @@ this ^ lineup"
   "Regular expression for the start of a PHP heredoc.")
 
 (defun php-heredoc-end-re (heredoc-start)
-  "Build a regular expression for the end of a heredoc started by
-the string HEREDOC-START."
+  "Build a regular expression for the end of a heredoc started by the string HEREDOC-START."
   ;; Extract just the identifier without <<< and quotes.
   (string-match "\\w+" heredoc-start)
   (concat "^\\(" (match-string 0 heredoc-start) "\\)\\W"))
@@ -976,8 +973,7 @@ the string HEREDOC-START."
   (c-put-char-property (1- (point)) 'syntax-table (string-to-syntax "|")))
 
 (defun php-syntax-propertize-extend-region (start end)
-  "Extend the propertize region if START or END falls inside a
-PHP heredoc."
+  "Extend the propertize region if START or END falls inside a PHP heredoc."
   (let ((new-start)
         (new-end))
     (goto-char start)
@@ -1633,7 +1629,7 @@ Look at the `php-executable' variable instead of the constant \"php\" command."
 
 
 (defun php-send-region (start end)
-  "Send the region between `start' and `end' to PHP for execution.
+  "Send the region between `START' and `END' to PHP for execution.
 The output will appear in the buffer *PHP*."
   (interactive "r")
   (let ((php-buffer (get-buffer-create "*PHP*"))
