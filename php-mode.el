@@ -373,6 +373,31 @@ This variable can take one of the following symbol values:
   (message "PHP Mode %s of %s"
            php-mode-version-number php-mode-modified))
 
+(defvar php-available-project-root-files
+  '((projectile ".projectile")
+    (composer   "composer.json" "composer.lock")
+    (git        ".git")
+    (mercurial  ".hg")
+    (subversion ".svn")
+    ;; NOTICE: This method does not detect the top level of .editorconfig
+    ;;         However, we can integrate it by adding the editorconfig.el's API.
+    ;;(editorconfig . ".editorconfig")
+    ))
+
+;;;###autoload
+(progn
+  (defvar php-project-root 'auto
+    "Method of searching for the top level directory.
+
+`auto' (default)
+      Try to search file in order of `php-available-project-root-files'.
+
+SYMBOL
+      Key of `php-available-project-root-files'.")
+  (make-variable-buffer-local 'php-project-root)
+  (put 'php-project-root 'safe-local-variable
+       #'(lambda (v) (assq v php-available-project-root-files))))
+
 (defvar php-mode-map
   (let ((map (make-sparse-keymap)))
     ;; (define-key map [menu-bar php]
@@ -1693,6 +1718,18 @@ The output will appear in the buffer *PHP*."
   (save-excursion
     (when (re-search-backward re-pattern nil t)
       (match-string-no-properties 1))))
+
+;;;###autoload
+(defun php-project-get-root-dir ()
+  "Return path to current PHP project."
+  (let ((detect-method (if (stringp php-project-root)
+                           (list php-project-root)
+                         (if (eq php-project-root 'auto)
+                             (cl-loop for m in php-available-project-root-files
+                                      append (cdr m))
+                           (cdr-safe (assq php-project-root php-available-project-root-files))))))
+    (cl-loop for m in detect-method
+             thereis (locate-dominating-file default-directory m))))
 
 ;;;###autoload
 (defun php-current-class ()
