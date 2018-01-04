@@ -219,7 +219,7 @@ which will be the name of the method."
    "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("))
 
 (defun php-create-regexp-for-classlike (type)
-  "Accepts a `type' of a 'classlike' object as a string, such as
+  "Accepts a `TYPE' of a 'classlike' object as a string, such as
 'class' or 'interface', and returns a regexp as a string which
 can be used to match against definitions for that classlike."
   (concat
