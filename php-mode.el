@@ -5,17 +5,18 @@
 ;;               2011, 2012, 2013, 2014, 2015, 2016, 2017 Eric James Michael Ritz
 
 ;; Author: Eric James Michael Ritz
+;; Maintainer: USAMI Kenta <tadsan@zonu.me>
 ;; URL: https://github.com/ejmr/php-mode
+;; Keywords: languages php
 ;; Version: 1.18.4
 ;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
+;; License: GPL-3.0-or-later
 
 (defconst php-mode-version-number "1.18.4"
   "PHP Mode version number.")
 
 (defconst php-mode-modified "2017-12-03"
   "PHP Mode build date.")
-
-;;; License
 
 ;; This file is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
