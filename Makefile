@@ -21,9 +21,7 @@ clean:
 #
 # for an example of using a script like this with the 'git bisect run'
 # command.
-test:
-	make clean
-	make all
+test: clean all
 	$(EMACS) -Q -batch -L . -l php-mode-test.el -f ert-run-tests-batch-and-exit
 
 .PHONY: all clean test
