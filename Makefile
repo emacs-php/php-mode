@@ -13,7 +13,7 @@ php-mode-autoloads.el:
 	$(EMACS) -Q -batch -L . --eval \
 	"(progn \
            (require 'package) \
-           (package-generate-autoloads 'php-mode default-directory))"
+           (package-generate-autoloads \"php-mode\" default-directory))"
 
 clean:
 	rm -f $(ELCS) php-mode-autoloads.el
