@@ -116,7 +116,7 @@
 ;; Local variables
 ;;;###autoload
 (defgroup php nil
-  "Major mode `php-mode' for editing PHP code."
+  "Major mode for editing PHP code."
   :tag "PHP"
   :prefix "php-"
   :group 'languages
