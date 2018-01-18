@@ -83,6 +83,7 @@
 (require 'speedbar)
 
 (require 'cl-lib)
+(require 'mode-local)
 
 (eval-when-compile
   (require 'regexp-opt)
