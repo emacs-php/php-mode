@@ -15,7 +15,7 @@
 (defconst php-mode-version-number "1.18.4"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2017-12-03"
+(defconst php-mode-modified "2018-01-23"
   "PHP Mode build date.")
 
 ;; This file is free software; you can redistribute it and/or
@@ -468,6 +468,9 @@ SYMBOL
 
 (c-lang-defconst c-vsemi-status-unknown-p-fn
   php 'php-c-vsemi-status-unknown-p)
+
+(c-lang-defconst c-get-state-before-change-functions
+  php nil)
 
 ;; Make php-mode recognize opening tags as preprocessor macro's.
 ;;
@@ -951,18 +954,12 @@ this ^ lineup"
 
 (defun php-syntax-propertize-function (start end)
   "Apply propertize rules from START to END."
-  ;; (defconst php-syntax-propertize-function
-  ;;   (syntax-propertize-rules
-  ;;    (php-heredoc-start-re (0 (ignore (php-heredoc-syntax))))))
-  (goto-char start)
-  (while (and (< (point) end)
-              (re-search-forward php-heredoc-start-re end t))
-    (php-heredoc-syntax))
-  (goto-char start)
-  (while (re-search-forward "['\"]" end t)
-    (when (php-in-comment-p)
-      (c-put-char-property (match-beginning 0)
-                           'syntax-table (string-to-syntax "_")))))
+  (funcall
+   (syntax-propertize-rules
+    (php-heredoc-start-re (0 (ignore (php-heredoc-syntax))))
+    ("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
+    ("\\(\'\\)\\(\\\\.\\|[^\'\n\\]\\)*\\(\'\\)" (1 "\"") (3 "\"")))
+   start end))
 
 (defun php-heredoc-syntax ()
   "Mark the boundaries of searched heredoc."
@@ -1146,18 +1143,13 @@ After setting the stylevars run hooks according to STYLENAME
   (modify-syntax-entry ?_    "_" php-mode-syntax-table)
   (modify-syntax-entry ?`    "\"" php-mode-syntax-table)
   (modify-syntax-entry ?\"   "\"" php-mode-syntax-table)
+  (modify-syntax-entry ?'    "\"" php-mode-syntax-table)
   (modify-syntax-entry ?#    "< b" php-mode-syntax-table)
   (modify-syntax-entry ?\n   "> b" php-mode-syntax-table)
-  (modify-syntax-entry ?$    "'" php-mode-syntax-table)
 
-  (set (make-local-variable 'syntax-propertize-via-font-lock)
-       '(("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
-         ("\\(\'\\)\\(\\\\.\\|[^\'\n\\]\\)*\\(\'\\)" (1 "\"") (3 "\""))))
-
+  (setq-local syntax-propertize-function #'php-syntax-propertize-function)
   (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
                #'php-syntax-propertize-extend-region)
-  (set (make-local-variable 'syntax-propertize-function)
-       #'php-syntax-propertize-function)
 
   (setq imenu-generic-expression php-imenu-generic-expression)
 
@@ -1497,8 +1489,8 @@ a completion list."
 
 (defvar php-phpdoc-font-lock-keywords
   `((,(lambda (limit)
-	(c-font-lock-doc-comments "/\\*\\*" limit
-	  php-phpdoc-font-lock-doc-comments)))))
+        (c-font-lock-doc-comments "/\\*\\*" limit
+          php-phpdoc-font-lock-doc-comments)))))
 
 (defconst php-font-lock-keywords-1 (c-lang-const c-matchers-1 php)
   "Basic highlighting for PHP Mode.")
@@ -1538,6 +1530,10 @@ a completion list."
      ("(\\(array\\))" 1 font-lock-type-face)
      ("\\b\\(array\\)\\s-+\\$" 1 font-lock-type-face)
      (")\\s-*:\\s-*\\??\\(array\\)\\b" 1 font-lock-type-face)
+
+     ;; namespaces
+     ("\\(\\([a-zA-Z0-9]+\\\\\\)+[a-zA-Z0-9]+\\|\\(\\\\[a-zA-Z0-9]+\\)+\\)[^:a-zA-Z0-9\\\\]" 1 'font-lock-type-face)
+     ("\\(\\([a-zA-Z0-9]+\\\\\\)+[a-zA-Z0-9]+\\|\\(\\\\[a-zA-Z0-9]+\\)+\\)::" 1 'php-constant)
 
      ;; Support the ::class constant in PHP5.6
      ("\\sw+\\(::\\)\\(class\\)\\b" (1 'php-paamayim-nekudotayim) (2 'php-constant)))
@@ -1679,20 +1675,6 @@ The output will appear in the buffer *PHP*."
       (delete-char 1))))
 
 (ad-activate 'fixup-whitespace)
-
-;; Advice `font-lock-fontify-keywords-region' to support namespace
-;; separators in class names. Use word syntax for backslashes when
-;; doing keyword fontification, but not when doing syntactic
-;; fontification because that breaks \ as escape character in strings.
-;;
-;; Special care is taken to restore the original syntax, because we
-;; want \ not to be word for functions like forward-word.
-(defadvice font-lock-fontify-keywords-region (around backslash-as-word activate)
-  "Fontify keywords with backslash as word character."
-  (let ((old-syntax (string (char-syntax ?\\))))
-    (modify-syntax-entry ?\\ "w")
-    ad-do-it
-    (modify-syntax-entry ?\\ old-syntax)))
 
 
 (defcustom php-class-suffix-when-insert "::"
