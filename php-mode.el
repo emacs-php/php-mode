@@ -472,6 +472,11 @@ SYMBOL
 (c-lang-defconst c-get-state-before-change-functions
   php nil)
 
+(c-lang-defconst c-before-font-lock-functions
+  php (if (fboundp #'c-depropertize-new-text)
+          '(c-depropertize-new-text)
+        nil))
+
 ;; Make php-mode recognize opening tags as preprocessor macro's.
 ;;
 ;; This is a workaround, the tags must be recognized as something
@@ -967,7 +972,7 @@ this ^ lineup"
   (funcall
    (syntax-propertize-rules
     ("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
-    ("\\(\'\\)\\(\\\\.\\|[^\'\n\\]\\)*\\(\'\\)" (1 "\"") (3 "\"")))
+    ("\\('\\)\\(\\\\.\\|[^'\n\\]\\)*\\('\\)" (1 "\"") (3 "\"")))
    start end))
 
 (defun php-heredoc-syntax ()
