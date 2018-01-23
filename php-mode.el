@@ -83,6 +83,7 @@
 (require 'speedbar)
 
 (require 'cl-lib)
+(require 'mode-local)
 
 (eval-when-compile
   (require 'regexp-opt)
@@ -258,6 +259,16 @@ can be used to match against definitions for that classlike."
    ("Named Functions"
     "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
   "Imenu generic expression for PHP Mode.  See `imenu-generic-expression'.")
+
+(defcustom php-do-not-use-semantic-imenu nil
+  "Customize `imenu-create-index-function' for `php-mode'.
+
+If using `semantic-mode' `imenu-create-index-function' will be
+set to `semantic-create-imenu-index' due to `c-mode' being its
+parent.  Set this variable to t if you want to use
+`imenu-default-create-index-function' even with `semantic-mode'
+enabled."
+  :type 'boolean)
 
 (defcustom php-site-url "http://php.net/"
   "Default PHP.net site URL.
@@ -1211,6 +1222,12 @@ After setting the stylevars run hooks according to STYLENAME
     (with-silent-modifications
       (save-excursion
         (php-syntax-propertize-function (point-min) (point-max))))))
+
+(defvar-mode-local php-mode imenu-create-index-function
+  (if php-do-not-use-semantic-imenu
+      #'imenu-default-create-index-function
+    #'semantic-create-imenu-index)
+  "Imenu index function for PHP.")
 
 
 ;; Define function name completion function
