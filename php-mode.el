@@ -955,9 +955,17 @@ this ^ lineup"
 
 (defun php-syntax-propertize-function (start end)
   "Apply propertize rules from START to END."
+  (goto-char start)
+  (while (and (< (point) end)
+              (re-search-forward php-heredoc-start-re end t))
+    (php-heredoc-syntax))
+  (goto-char start)
+  (while (re-search-forward "['\"]" end t)
+    (when (php-in-comment-p)
+      (c-put-char-property (match-beginning 0)
+                           'syntax-table (string-to-syntax "_"))))
   (funcall
    (syntax-propertize-rules
-    (php-heredoc-start-re (0 (ignore (php-heredoc-syntax))))
     ("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
     ("\\(\'\\)\\(\\\\.\\|[^\'\n\\]\\)*\\(\'\\)" (1 "\"") (3 "\"")))
    start end))
@@ -1144,9 +1152,9 @@ After setting the stylevars run hooks according to STYLENAME
   (modify-syntax-entry ?_    "_" php-mode-syntax-table)
   (modify-syntax-entry ?`    "\"" php-mode-syntax-table)
   (modify-syntax-entry ?\"   "\"" php-mode-syntax-table)
-  (modify-syntax-entry ?'    "\"" php-mode-syntax-table)
   (modify-syntax-entry ?#    "< b" php-mode-syntax-table)
   (modify-syntax-entry ?\n   "> b" php-mode-syntax-table)
+  (modify-syntax-entry ?$    "'" php-mode-syntax-table)
 
   (setq-local syntax-propertize-function #'php-syntax-propertize-function)
   (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
