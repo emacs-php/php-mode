@@ -942,9 +942,10 @@ this ^ lineup"
     (beginning-of-line)
     (if (looking-at-p "\\s-*;\\s-*$") 0 '+)))
 
-(defconst php-heredoc-start-re
-  "<<<\\(?:\\w+\\|'\\w+'\\)$"
-  "Regular expression for the start of a PHP heredoc.")
+(eval-and-compile
+  (defconst php-heredoc-start-re
+    "<<<\\(?:\\w+\\|'\\w+'\\)$"
+    "Regular expression for the start of a PHP heredoc."))
 
 (defun php-heredoc-end-re (heredoc-start)
   "Build a regular expression for the end of a heredoc started by the string HEREDOC-START."
