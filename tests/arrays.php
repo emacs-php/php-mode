@@ -12,5 +12,5 @@ $test = function($test = array()) {
 // - return type, should look like `: int`
 $test = (array)$test;
 
-$test = function(array $test): array {
+$test = function(array $byValue, array &$byReference): array {
 };

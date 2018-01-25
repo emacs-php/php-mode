@@ -757,7 +757,8 @@ style from Drupal."
                     (get-text-property (point) 'face)))))
     ;; Type situations
     (let ((variables '("(array)"
-                       "array $test"
+                       "array $byValue"
+                       "array &$byReference"
                        ": array")))
       (dolist (variable variables)
         (search-forward variable)
