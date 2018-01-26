@@ -15,7 +15,7 @@
 (defconst php-mode-version-number "1.18.4"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2017-12-03"
+(defconst php-mode-modified "2018-01-25"
   "PHP Mode build date.")
 
 ;; This file is free software; you can redistribute it and/or
@@ -1553,7 +1553,7 @@ a completion list."
      ;; - when used as a type hint
      ;; - when used as a return type
      ("(\\(array\\))" 1 font-lock-type-face)
-     ("\\b\\(array\\)\\s-+\\$" 1 font-lock-type-face)
+     ("\\b\\(array\\)\\s-+&?\\$" 1 font-lock-type-face)
      (")\\s-*:\\s-*\\??\\(array\\)\\b" 1 font-lock-type-face)
 
      ;; Support the ::class constant in PHP5.6
