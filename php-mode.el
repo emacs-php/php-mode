@@ -81,6 +81,8 @@
 (require 'flymake)
 (require 'etags)
 (require 'speedbar)
+(require 'imenu)
+(require 'semantic/imenu)
 
 (require 'cl-lib)
 (require 'mode-local)
