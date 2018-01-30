@@ -15,7 +15,7 @@
 (defconst php-mode-version-number "1.18.4"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2018-01-29"
+(defconst php-mode-modified "2018-01-30"
   "PHP Mode build date.")
 
 ;; This file is free software; you can redistribute it and/or
@@ -82,7 +82,6 @@
 (require 'etags)
 (require 'speedbar)
 (require 'imenu)
-(require 'semantic/imenu)
 
 (require 'cl-lib)
 (require 'mode-local)
@@ -262,7 +261,7 @@ can be used to match against definitions for that classlike."
     "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
   "Imenu generic expression for PHP Mode.  See `imenu-generic-expression'.")
 
-(defcustom php-do-not-use-semantic-imenu nil
+(defcustom php-do-not-use-semantic-imenu t
   "Customize `imenu-create-index-function' for `php-mode'.
 
 If using `semantic-mode' `imenu-create-index-function' will be
@@ -1234,6 +1233,7 @@ After setting the stylevars run hooks according to STYLENAME
 (defvar-mode-local php-mode imenu-create-index-function
   (if php-do-not-use-semantic-imenu
       #'imenu-default-create-index-function
+    (require 'semantic/imenu)
     #'semantic-create-imenu-index)
   "Imenu index function for PHP.")
 
