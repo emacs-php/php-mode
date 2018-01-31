@@ -81,7 +81,6 @@
 (require 'flymake)
 (require 'etags)
 (require 'speedbar)
-(require 'imenu)
 
 (require 'cl-lib)
 (require 'mode-local)
@@ -260,16 +259,6 @@ can be used to match against definitions for that classlike."
    ("Named Functions"
     "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
   "Imenu generic expression for PHP Mode.  See `imenu-generic-expression'.")
-
-(defcustom php-do-not-use-semantic-imenu t
-  "Customize `imenu-create-index-function' for `php-mode'.
-
-If using `semantic-mode' `imenu-create-index-function' will be
-set to `semantic-create-imenu-index' due to `c-mode' being its
-parent.  Set this variable to t if you want to use
-`imenu-default-create-index-function' even with `semantic-mode'
-enabled."
-  :type 'boolean)
 
 (defcustom php-site-url "https://secure.php.net/"
   "Default PHP.net site URL.
@@ -1150,7 +1139,7 @@ After setting the stylevars run hooks according to STYLENAME
 (put 'php-set-style 'interactive-form (interactive-form 'c-set-style))
 
 ;;;###autoload
-(define-derived-mode php-mode c-mode "PHP"
+(define-derived-mode php-mode prog-mode "PHP"
   "Major mode for editing PHP code.
 
 \\{php-mode-map}"
@@ -1166,6 +1155,7 @@ After setting the stylevars run hooks according to STYLENAME
   (set (make-local-variable font-lock-variable-name-face) 'php-variable-name)
   (set (make-local-variable font-lock-constant-face) 'php-constant)
 
+  (c-populate-syntax-table php-mode-syntax-table)
   (modify-syntax-entry ?_    "_" php-mode-syntax-table)
   (modify-syntax-entry ?`    "\"" php-mode-syntax-table)
   (modify-syntax-entry ?\"   "\"" php-mode-syntax-table)
@@ -1229,13 +1219,6 @@ After setting the stylevars run hooks according to STYLENAME
     (with-silent-modifications
       (save-excursion
         (php-syntax-propertize-function (point-min) (point-max))))))
-
-(defvar-mode-local php-mode imenu-create-index-function
-  (if php-do-not-use-semantic-imenu
-      #'imenu-default-create-index-function
-    (require 'semantic/imenu)
-    #'semantic-create-imenu-index)
-  "Imenu index function for PHP.")
 
 
 ;; Define function name completion function
