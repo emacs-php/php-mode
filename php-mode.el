@@ -1549,10 +1549,10 @@ a completion list."
      ;; Highlight special variables
      ("\\(\\$\\)\\(this\\|that\\)\\_>" (1 'php-$this-sigil) (2 'php-$this))
      ("\\(\\$\\)\\([a-zA-Z0-9_]+\\)" (1 'php-variable-sigil) (2 'php-variable-name))
-     ("\\(->\\)\\([a-zA-Z0-9_]+\\)" (1 'php-object-op) (2 'php-property-name))
+     ("\\(->\\)\\(\\_<.+?\\_>\\)" (1 'php-object-op) (2 'php-property-name))
 
      ;; Highlight function/method names
-     ("\\<function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1 'php-function-name)
+     ("\\<function\\s-+&?\\(\\_<.+?\\_>\\)\\s-*(" 1 'php-function-name)
 
      ;; The dollar sign should not get a variable-name face, below
      ;; pattern resets the face to default in case cc-mode sets the
@@ -1587,7 +1587,7 @@ a completion list."
      ;; not in $obj->var()
      ("->\\(\\sw+\\)\\s-*(" 1 'php-method-call)
 
-     ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 'php-property-name)
+     ("\\(\\$\\|->\\)\\(\\_<.+?\\_>\\)" 2 'php-property-name)
 
      ;; Highlight all upper-cased symbols as constant
      ("\\<\\([A-Z_][A-Z0-9_]+\\)\\>" 1 'php-constant)
@@ -1598,7 +1598,7 @@ a completion list."
      ("\\(\\sw+\\)\\(::\\)" (1 'php-constant) (2 'php-paamayim-nekudotayim))
 
      ;; Highlight class name after "use .. as"
-     ("\\<as\\s-+\\(\\sw+\\)" 1 font-lock-type-face)
+     ("\\<as\\s-+\\(\\_<.+?\\_>\\)" 1 font-lock-type-face)
 
      ;; Class names are highlighted by cc-mode as defined in
      ;; c-class-decl-kwds, below regexp is a workaround for a bug
@@ -1610,15 +1610,15 @@ a completion list."
      ;; preprocessor works well (i.e. the next line is not a
      ;; statement-cont) but the highlighting glitch remains.
      (,(concat (regexp-opt (c-lang-const c-class-decl-kwds php))
-               " \\(\\sw+\\)")
+               " \\(\\_<.+?\\_>\\)")
       1 font-lock-type-face)
 
      ;; Highlight return types in functions and methods.
-     ("function.+:\\s-*\\??\\(\\(?:\\sw\\|\\s_\\)+\\)" 1 font-lock-type-face)
-     (")\\s-*:\\s-*\\??\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*\{" 1 font-lock-type-face)
+     ("function.+:\\s-*\\??\\(\\_<.+?\\_>\\)" 1 font-lock-type-face)
+     (")\\s-*:\\s-*\\??\\(\\_<.+?\\_>\\)\\s-*\{" 1 font-lock-type-face)
 
      ;; Highlight class names used as nullable type hints
-     ("\\?\\(\\(:?\\sw\\|\\s_\\)+\\)\\s-+\\$" 1 font-lock-type-face)
+     ("\\?\\(\\_<.+?\\_>\\)\\s-+\\$" 1 font-lock-type-face)
 
      ;; While c-opt-cpp-* highlights the <?php opening tags, it is not
      ;; possible to make it highlight short open tags and closing tags
