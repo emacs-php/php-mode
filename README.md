@@ -390,7 +390,7 @@ In chronological order:
 73. [Serghei Iakovlev](https://github.com/sergeyklay)
 74. [Christian Albrecht](https://github.com/calbrecht)
 75. [Sebastian Fieber](https://github.com/fallchildren)
-
+76. [Mark A. Hershberger](https://github.com/hexmode)
 
 
 [wiki]: https://github.com/ejmr/php-mode/wiki
