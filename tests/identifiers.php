@@ -13,3 +13,4 @@ $var\syntaxerror;
 // the constant face. Just like c++-mode "NS::Class::method()"
 ClassName::method();
 \SpaceName\ClassName::method();
+\My_Class::method();

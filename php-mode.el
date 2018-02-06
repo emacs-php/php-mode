@@ -1565,8 +1565,8 @@ a completion list."
      (")\\s-*:\\s-*\\??\\(array\\)\\b" 1 font-lock-type-face)
 
      ;; namespaces
-     ("\\(\\([a-zA-Z0-9]+\\\\\\)+[a-zA-Z0-9]+\\|\\(\\\\[a-zA-Z0-9]+\\)+\\)[^:a-zA-Z0-9\\\\]" 1 'font-lock-type-face)
-     ("\\(\\([a-zA-Z0-9]+\\\\\\)+[a-zA-Z0-9]+\\|\\(\\\\[a-zA-Z0-9]+\\)+\\)::" 1 'php-constant)
+     ("\\(\\([a-zA-Z0-9_]+\\\\\\)+[a-zA-Z0-9_]+\\|\\(\\\\[a-zA-Z0-9_]+\\)+\\)[^:a-zA-Z0-9_\\\\]" 1 'font-lock-type-face)
+     ("\\(\\([a-zA-Z0-9_]+\\\\\\)+[a-zA-Z0-9_]+\\|\\(\\\\[a-zA-Z0-9_]+\\)+\\)::" 1 'php-constant)
 
      ;; Support the ::class constant in PHP5.6
      ("\\sw+\\(::\\)\\(class\\)\\b" (1 'php-paamayim-nekudotayim) (2 'php-constant)))

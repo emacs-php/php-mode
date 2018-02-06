@@ -721,7 +721,12 @@ style from Drupal."
     (search-forward "SpaceName")
     (goto-char (match-beginning 0))
     (should (eq 'php-constant
-                (get-text-property (point) 'face)))))
+                (get-text-property (point) 'face)))
+    (search-forward-regexp "\\\\My_\\(Class\\)")
+    (should (eq 'php-constant
+                (get-text-property (match-beginning 0) 'face)))
+    (should (eq 'php-constant
+                (get-text-property (match-beginning 1) 'face)))))
 
 (ert-deftest php-mode-test-variables()
   "Proper highlighting for variables."
