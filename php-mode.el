@@ -44,7 +44,7 @@
 
 ;; ## Usage
 
-;; Put this file in your Emacs lisp path (eg. site-lisp) and add to
+;; Put this file in your Emacs Lisp path (eg. site-lisp) and add to
 ;; your .emacs file:
 
 ;;   (require 'php-mode)
