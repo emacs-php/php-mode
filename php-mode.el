@@ -1192,11 +1192,10 @@ After setting the stylevars run hooks according to STYLENAME
 
   (php-set-style (symbol-name php-mode-coding-style))
 
-  (if (or php-mode-force-pear
-          (and (stringp buffer-file-name)
-               (string-match "PEAR\\|pear"
-                             (buffer-file-name))
-               (string-match "\\.php$" (buffer-file-name))))
+  (when (or php-mode-force-pear
+            (and (stringp buffer-file-name)
+                 (string-match "PEAR\\|pear" buffer-file-name)
+                 (string-match "\\.php\\'" buffer-file-name)))
       (php-set-style "pear"))
 
   (setq indent-line-function 'php-cautious-indent-line)
