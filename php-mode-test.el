@@ -106,7 +106,7 @@ be processed."
     (let ((read-circle t))
       (read (current-buffer)))))
 
-(cl-defmacro with-php-mode-test ((file &key style indent magic custom) &rest body)
+(cl-defmacro with-php-mode-test ((file &key style indent magic custom faces) &rest body)
   "Set up environment for testing `php-mode'.
 Execute BODY in a temporary buffer containing the contents of
 FILE, in `php-mode'. Optional keyword `:style' can be used to set
@@ -123,7 +123,10 @@ The test will use the PHP style by default.
 
 If the `:custom' keyword is set, customized variables are not reset to
 their default state prior to starting the test. Use this if the test should
-run with specific customizations set."
+run with specific customizations set.
+
+If the `:faces' keyword is set, read the file with `.faces' added to that
+file name and check that the faces of the fonts in the buffer match."
   (declare (indent 1))
   `(with-temp-buffer
      (insert-file-contents (expand-file-name ,file php-mode-test-dir))
@@ -147,6 +150,11 @@ run with specific customizations set."
      ,(if magic
           '(should (cl-reduce (lambda (l r) (and l r))
                               (php-mode-test-process-magics))))
+     ,(if faces
+          `(should (equal
+                    (php-mode-test--parse-list-file
+                     (concat (expand-file-name ,file php-mode-test-dir) ".faces"))
+                    (php-mode-test--buffer-face-list (current-buffer)))))
      (goto-char (point-min))
      (let ((case-fold-search nil))
        ,@body)))
