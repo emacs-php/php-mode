@@ -1,3 +1,4 @@
+;; -*- mode: emacs-lisp -*-
 (("<?php" . font-lock-preprocessor-face)
  ("\n\n" . nil)
  ("// " . font-lock-comment-delimiter-face)
