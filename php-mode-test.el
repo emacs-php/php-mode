@@ -99,6 +99,13 @@ be processed."
         (setq str (buffer-substring-no-properties begin-pos (point)))
         (nconc retval (list (cons str last-face)))))))
 
+(defun php-mode-test--parse-list-file (file-path)
+  "Return list from `FILE-PATH'."
+  (with-temp-buffer
+    (insert-file-contents file-path)
+    (let ((read-circle t))
+      (read (current-buffer)))))
+
 (cl-defmacro with-php-mode-test ((file &key style indent magic custom) &rest body)
   "Set up environment for testing `php-mode'.
 Execute BODY in a temporary buffer containing the contents of
