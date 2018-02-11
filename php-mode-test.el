@@ -764,9 +764,9 @@ style from Drupal."
     (should (eq 'php-constant
                 (get-text-property (match-beginning 1) 'face)))))
 
-(ert-deftest php-mode-test-variables()
+(ert-deftest php-mode-test-variables ()
   "Proper highlighting for variables."
-  (with-php-mode-test ("variables.php")
+  (with-php-mode-test ("variables.php" :faces t)
     (let ((variables '("regularVariable"
                        "variableVariable"
                        "staticVariable")))
