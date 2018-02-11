@@ -485,7 +485,7 @@ SYMBOL
   php nil)
 
 (c-lang-defconst c-before-font-lock-functions
-  php (cl-loop for f in '(c-change-expand-fl-region c-depropertize-new-text)
+  php (cl-loop for f in '(c-depropertize-new-text c-change-expand-fl-region)
                if (fboundp f)
                collect f))
 
