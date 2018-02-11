@@ -1,0 +1,4 @@
+#!/usr/bin/env php
+<?php
+
+var_dump(PHP_VERSION);
