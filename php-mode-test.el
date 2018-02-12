@@ -78,7 +78,35 @@ be processed."
                         answers))))
       answers)))
 
-(cl-defmacro with-php-mode-test ((file &key style indent magic custom) &rest body)
+(defun php-mode-test--buffer-face-list (buffer)
+  "Return list of (STRING . FACE) from `BUFFER'."
+  (with-current-buffer buffer
+    (save-excursion
+      (goto-char (point-min))
+      (let (retval begin-pos last-face current-face str)
+        (setq last-face (get-text-property (point) 'face))
+        (setq begin-pos (point))
+        (forward-char 1)
+
+        (while (< (point) (point-max))
+          (setq current-face (get-text-property (point) 'face))
+          (unless (equal current-face last-face)
+            (setq str (buffer-substring-no-properties begin-pos (point)))
+            (setq retval (nconc retval (list (cons str last-face))))
+            (setq begin-pos (point))
+            (setq last-face current-face))
+          (forward-char 1))
+        (setq str (buffer-substring-no-properties begin-pos (point)))
+        (nconc retval (list (cons str last-face)))))))
+
+(defun php-mode-test--parse-list-file (file-path)
+  "Return list from `FILE-PATH'."
+  (with-temp-buffer
+    (insert-file-contents file-path)
+    (let ((read-circle t))
+      (read (current-buffer)))))
+
+(cl-defmacro with-php-mode-test ((file &key style indent magic custom faces) &rest body)
   "Set up environment for testing `php-mode'.
 Execute BODY in a temporary buffer containing the contents of
 FILE, in `php-mode'. Optional keyword `:style' can be used to set
@@ -95,7 +123,10 @@ The test will use the PHP style by default.
 
 If the `:custom' keyword is set, customized variables are not reset to
 their default state prior to starting the test. Use this if the test should
-run with specific customizations set."
+run with specific customizations set.
+
+If the `:faces' keyword is set, read the file with `.faces' added to that
+file name and check that the faces of the fonts in the buffer match."
   (declare (indent 1))
   `(with-temp-buffer
      (insert-file-contents (expand-file-name ,file php-mode-test-dir))
@@ -119,6 +150,11 @@ run with specific customizations set."
      ,(if magic
           '(should (cl-reduce (lambda (l r) (and l r))
                               (php-mode-test-process-magics))))
+     ,(if faces
+          `(should (equal
+                    (php-mode-test--parse-list-file
+                     (concat (expand-file-name ,file php-mode-test-dir) ".faces"))
+                    (php-mode-test--buffer-face-list (current-buffer)))))
      (goto-char (point-min))
      (let ((case-fold-search nil))
        ,@body)))
@@ -728,9 +764,9 @@ style from Drupal."
     (should (eq 'php-constant
                 (get-text-property (match-beginning 1) 'face)))))
 
-(ert-deftest php-mode-test-variables()
+(ert-deftest php-mode-test-variables ()
   "Proper highlighting for variables."
-  (with-php-mode-test ("variables.php")
+  (with-php-mode-test ("variables.php" :faces t)
     (let ((variables '("regularVariable"
                        "variableVariable"
                        "staticVariable")))
