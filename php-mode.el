@@ -1160,6 +1160,9 @@ After setting the stylevars run hooks according to STYLENAME
   (message "minor-modes: %s" (cl-remove-if
                               (lambda (s) (string-match-p "global" (symbol-name s)))
                               minor-mode-list))
+  (message "variables: %s"
+           (cl-loop for v in '(tab-width)
+                    collect (list v (symbol-value v))))
   (message "custom variables: %s"
            (cl-loop for (v type) in (custom-group-members 'php nil)
                     if (eq type 'custom-variable)
