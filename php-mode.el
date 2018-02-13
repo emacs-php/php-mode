@@ -1161,7 +1161,7 @@ After setting the stylevars run hooks according to STYLENAME
                               (lambda (s) (string-match-p "global" (symbol-name s)))
                               minor-mode-list))
   (message "variables: %s"
-           (cl-loop for v in '(tab-width)
+           (cl-loop for v in '(indent-tabs-mode tab-width)
                     collect (list v (symbol-value v))))
   (message "custom variables: %s"
            (cl-loop for (v type) in (custom-group-members 'php nil)
