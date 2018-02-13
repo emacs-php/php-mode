@@ -80,24 +80,25 @@ be processed."
 
 (defun php-mode-test--buffer-face-list (buffer)
   "Return list of (STRING . FACE) from `BUFFER'."
-  (with-current-buffer buffer
-    (save-excursion
-      (goto-char (point-min))
-      (let (retval begin-pos last-face current-face str)
-        (setq last-face (get-text-property (point) 'face))
-        (setq begin-pos (point))
-        (forward-char 1)
+  (with-temp-buffer
+    (jit-lock-mode -1)
+    (insert (with-current-buffer buffer (buffer-substring (point-min) (point-max))))
+    (goto-char (point-min))
+    (let (retval begin-pos last-face current-face str)
+      (setq last-face (get-text-property (point) 'face))
+      (setq begin-pos (point))
+      (forward-char 1)
 
-        (while (< (point) (point-max))
-          (setq current-face (get-text-property (point) 'face))
-          (unless (equal current-face last-face)
-            (setq str (buffer-substring-no-properties begin-pos (point)))
-            (setq retval (nconc retval (list (cons str last-face))))
-            (setq begin-pos (point))
-            (setq last-face current-face))
-          (forward-char 1))
-        (setq str (buffer-substring-no-properties begin-pos (point)))
-        (nconc retval (list (cons str last-face)))))))
+      (while (< (point) (point-max))
+        (setq current-face (get-text-property (point) 'face))
+        (unless (equal current-face last-face)
+          (setq str (buffer-substring-no-properties begin-pos (point)))
+          (setq retval (nconc retval (list (cons str last-face))))
+          (setq begin-pos (point))
+          (setq last-face current-face))
+        (forward-char 1))
+      (setq str (buffer-substring-no-properties begin-pos (point)))
+      (nconc retval (list (cons str last-face))))))
 
 (defun php-mode-test--parse-list-file (file-path)
   "Return list from `FILE-PATH'."
