@@ -1197,7 +1197,7 @@ After setting the stylevars run hooks according to STYLENAME
   (modify-syntax-entry ?\n   "> b" php-mode-syntax-table)
   (modify-syntax-entry ?$    "'" php-mode-syntax-table)
 
-  (setq-local syntax-propertize-function #'php-syntax-propertize-function)
+  (set (make-local-variable 'syntax-propertize-function) #'php-syntax-propertize-function)
   (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
                #'php-syntax-propertize-extend-region)
 
