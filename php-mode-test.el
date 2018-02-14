@@ -160,6 +160,16 @@ file name and check that the faces of the fonts in the buffer match."
      (let ((case-fold-search nil))
        ,@body)))
 
+(ert-deftest php-mode-variables ()
+  "Check variables."
+  (with-php-mode-test ("script")
+    (if (or (fboundp #'c-change-expand-fl-region)
+            (fboundp #'c-depropertize-new-text))
+        (should (not (null (c-lang-const c-before-font-lock-functions)))))
+    (dolist (f (c-lang-const c-before-font-lock-functions))
+      (when (fboundp f)
+        (should (memq f '(c-change-expand-fl-region c-depropertize-new-text)))))))
+
 (ert-deftest php-mode-test-namespace-block ()
   "Proper indentation for classs and functions in namespace block."
   (with-php-mode-test ("namespace-block.php" :indent t :magic t)))
