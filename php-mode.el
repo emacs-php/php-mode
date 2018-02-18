@@ -182,7 +182,7 @@ Turning this on will open it whenever `php-mode' is loaded."
   "Apply the list of extra constant keywords `VALUE'.
 
 This function is called when the custom variable php-extra-constants
-is updated. The web-mode-extra-constants list is appended to the list
+is updated.  The web-mode-extra-constants list is appended to the list
 of constants when set."
   ;; remove old keywords
   (when (boundp 'php-extra-constants)
@@ -350,7 +350,7 @@ Turning this on will force PEAR rules on all PHP files."
 
 (defcustom php-mode-warn-if-mumamo-off t
   "Warn once per buffer if you try to indent a buffer without
-mumamo-mode turned on. Detects if there are any HTML tags in the
+mumamo-mode turned on.  Detects if there are any HTML tags in the
 buffer before warning, but this is is not very smart; e.g. if you
 have any tags inside a PHP string, it will be fooled."
   :type '(choice (const :tag "Warn" t) (const "Don't warn" nil)))
