@@ -65,8 +65,9 @@
 ;;; Code:
 
 (require 'cc-mode)
+(require 'cc-langs)
+
 (eval-when-compile
-  (require 'cc-langs)
   (require 'cc-fonts))
 
 ;; Boilerplate from other `cc-mode' derived modes. See
@@ -485,11 +486,7 @@ SYMBOL
   php nil)
 
 (c-lang-defconst c-before-font-lock-functions
-  php (let (functions)
-        (when (fboundp #'c-change-expand-fl-region)
-          (cl-pushnew 'c-change-expand-fl-region functions))
-        (when (fboundp #'c-depropertize-new-text)
-          (cl-pushnew 'c-depropertize-new-text functions))))
+  php (c-get-lang-constant 'c-before-font-lock-functions nil t))
 
 ;; Make php-mode recognize opening tags as preprocessor macro's.
 ;;
