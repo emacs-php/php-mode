@@ -2,83 +2,78 @@ PHP Mode for GNU Emacs
 ======================
 [![travis badge][travis-badge]][travis-link] [![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
 
-This project updates PHP Mode for GNU Emacs with features to make it more friendly to use with PHP 5.4 and later.  This fork builds on the work of:
+PHP 5.4以降を開発しやすくするための機能をアップデートするプロジェクトです。これは以下の人々の作業をもとにフォークされました。
 
 1. Turadg Aleahmad (Original Author)
 2. Aaron S. Hawley
 3. Lennart Borgman
 
-All contributors listed below improved PHP Mode as well.
+リストアップされたすべての貢献者たちも同様にPHPモードを改善しました。
 
-The current maintainers are:
+現在のメンテナ：
 
 1. Syohei Yoshida
 2. Eric James Michael Ritz
 3. USAMI Kenta (@zonuexe)
 
-Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode](https://github.com/ejmr/php-mode).
+[PHPモードのGitHubプロジェクト](https://github.com/ejmr/php-mode)にissueを作成してバグ報告や機能リクエストを送ってください。
 
-
-Installation
+インストール
 ------------
 
-**PHP Mode requires Emacs 24 or later.**  PHP Mode may work with older versions of Emacs but this is not guaranteed.  Bug reports for problems related to using PHP Mode with older versions of Emacs will most like *not* be addressed.
+**PHPモードはEmacs 24以降が必要です**。古いバージョンのEmacsでも動作するかもしれませんが、保証外です。 古いバージョンのEmacsのPHPモードを使用することによる問題のバグ報告は積極的に対応しません。
 
-With GNU Emacs 24 or later then you can use its [package][] feature to install PHP Mode from [MELPA][].  *The [Marmalade][] package repository only has the original PHP Mode from 2004.*  Therefore we recommend you use MELPA to install PHP Mode.  If you simply do not wish to use the package manager, then all you need to do is download the `php-mode.el` file, place it inside your `load-path`, and optionally add `(require 'php-mode)` to your Emacs configuration to automatically enable PHP Mode whenever you open a PHP file.
+GNU Emacs 24以降では、[package][]機能を使って[MELPA][]からPHPモードをインストールすることができます。 *[Marmalade][]パッケージリポジトリには2004年のオリジナル版PHPモードしか登録されていません*。そのため、MELPAを使用してPHPモードをインストールすることを推奨します。単にパッケージマネージャを使いたくない場合は、`php-mode.el`ファイルをダウンロードして`load-path`の通ったディレクトリに配置し、必要に応じて `(require 'php-mode)` をEmacsの設定に追加すると、PHPファイルを開くたびに自動的にPHPモードが有効になります。
 
-Additionally, you can add `skeleton/php-ext.el` to your `load-path` to [enable the templates](https://www.gnu.org/software/emacs/manual/html_node/autotype/index.html#Top).
+さらに`skeleton/php-ext.el`を`load-path`に追加することで[テンプレートを有効にする](https://www.gnu.org/software/emacs/manual/html_node/autotype/index.html#Top)ことができます。
 
 ```lisp
 (eval-after-load 'php-mode
   '(require 'php-ext))
 ```
 
-Reporting Bugs
+バグを報告する
 --------------
 
-When reporting a bug please run the function `php-mode-version` and include its output in your bug report.  This helps up reproduce any problem you may have.
+報告の際には `php-mode-version` コマンドを実行して、その出力をバグレポートに含めてください。問題を再現するための手がかりになります。
 
-
-Experimental and In-Progress Features
+実験的および作業中の機能
 -------------------------------------
 
 ### CC Mode, CEDET, EDE, and Semantic ###
 
 In 2013 Daniel Haxney began rewriting parts of PHP Mode in terms of Emacs' built-in CC Mode.  This laid the foundation for incorporating some of the inherit IDE-ish features of Emacs, such as CEDET, EDE, and Semantic.  Support for these tools continues to improve thanks to the work of Andrea Turso, Steven Rémot, Joris Steyn, and others.  If you wish to test, contribute to, or simply experiment with such features then [this thread is a good place to start](https://github.com/ejmr/php-mode/issues/256).
 
-### PHP 7 Support ###
+### PHP7サポート
 
-PHP 7 has been released.  PHP Mode supports the following features and changes from PHP 7:
+PHP7がリリースされました。PHPモードはPHP7からの以下の文法をサポートします。
 
-1. Type-hints for return values in functions and methods receive syntax highlighting in the same way as type-hints for function and method parameters.
+ 1. 返り値の型宣言
+ 2. `yield from` キーワード
+ 3. `declare(strict_types=1)` 宣言
 
-2. PHP Mode treats `yield from` as keyword in the same way it already does for a sole `yield`.
-
-3. It recognizes `strict_types` as a special declaration in the same way as `ticks`.
-
-
-Features
+機能
 --------
 
-### New Keywords ###
+### 新しいキーワード
 
-Now PHP Mode supports syntax highlighting for new keywords which PHP 5.4 introduced, e.g. those related to traits, such as `insteadof`.  Also supported are the older keywords `clone` and `default`.
+現在のPHPモードはトレイト関連の`insteadof`などのPHP5.4で導入された新しいキーワードを構文強調表示します。また、従来のキーワード`clone`や`default`などもサポートします。
 
-### Constants ###
+### 定数
 
-Syntax highlighting includes every magic constant and predefined constant listed on the official PHP site.  However, some constants from specific extensions are not currently included.
+強調表示には公式のPHPマニュアルに記載があるすべてのマジック定数と定義済み定数が含まれます。ただし、特定の拡張機能の定数は現在のところ含みません。
 
-### Traits, Interfaces, and Namespaces ###
+### トレイト、インターフェイスと名前空間
 
-Traits, interfaces, and namespaces now appear under Imenu listings. Fontification behaves properly for namespaces as well, so that code like `namespace Foo\Bar\Baz` no longer looks like a warning.  This is also true for namespace aliases, e.g. `use <namespace> as <alias>`; currently the aliased name is not listed in Imenu, but future versions will address this.
+トレイト、インターフェイス、名前空間がImenuリストに表示されるようになりました。フォント表示は名前空間でも正しく動作するようになり、`namespace Foo\Bar\Baz`のようなコードはもはや警告されません。`use <namespace> as <alias>`のような名前空間のエイリアスも同様です。現在のところエイリアス名はImenuのリストには含まれませんが、将来のバージョンでは対応予定です。
 
-### Treatment of Underscores ###
+### アンダースコアの取り扱い
 
-PHP Mode treats underscores as ‘symbol constituents’ (in Emacs terminology) so that you can use keys like `M-f` and `M-b` to move through the individual parts of a variable name like `$foo_bar_baz`.
+PHPモードは`$foo_bar_baz`のような変数名の単語のそれぞれの部分を移動できるように、アンダースコア(`_`)を「シンボル構成要素 (symbol constituents)」(Emacs用語)として取り扱います。
 
-### Chained Method Calls ###
+### メソッドチェーン呼び出し
 
-PHP Mode can align method calls over multiple lines anchored around the `->` operator, e.g.:
+複数行にわたるメソッド呼び出しを`->`の位置に揃えること(アライメント)ができます。
 
 ```php
 $object->foo()
@@ -86,13 +81,13 @@ $object->foo()
        ->baz();
 ```
 
-This behaviour is off by default, but you can customize the variable `php-lineup-cascaded-calls` to enable this.
+この動作はデフォルトでは無効ですが、カスタマイズ変数 `php-lineup-cascaded-calls` セットすることで有効化できます。
 
-**Note:** Alignment will only work if you use one of the php-mode coding styles or inherit one of the styles.
+**注意**: アライメントは、PHPモードのコーディングスタイルのひとつを使用するか、それを継承した場合のみ機能します。
 
-### Nested Array Formatting ###
+### ネストされた配列の整形
 
-Nested function calls and `array()` structures now look better by default (or at least in my opinion).  Here is an example of the style:
+ネストされた関数呼び出しと `array()` 構文は現在デフォルトで(少くとも私の意見では)よく見えるようになりました。例として、このようなスタイルです：
 
 ```php
 $results = Post::model()->find(
@@ -104,37 +99,37 @@ $results = Post::model()->find(
 );
 ```
 
-### Anonymous Functions ###
+### 無名関数
 
-Anonymous functions such as
+以下のような無名関数
 
 ```php
 $greet = function($name) { ... };
 ```
 
-will now appear on Imenu; in this case the name will be `$greet`.
+これは現在、Imenuで`$greet`として表示します。
 
-### Flymake Support ###
+### Flymakeサポート
 
-By customizing the variable `php-executable` you can enable Flymake mode in order to see warnings and errors in real-time as you write code.
+カスタマイズ変数`php-executable`をセットすることで、コーディング中に警告とエラーをリアルタイムで見るためにFlymakeモードを有効にすることができます。
 
-### Search Local Documentation ###
+### ローカルのドキュメントを検索する
 
-The key command `C-c C-f` will search the PHP website for documentation on the word under the cursor.  However, if you have a [local copy of the PHP documentation](http://us2.php.net/download-docs.php) then PHP Mode will try searching that documentation first.  All you need to do is customize the variable `php-manual-path` and give it the path to your copy of the documentation.  If PHP Mode cannot find something locally then it will still fallback on searching the PHP website.
+コマンド`C-c C-f`でカーソル位置のシンボルをPHP公式サイトのドキュメントから検索できます。また、[ローカルにドキュメントをダウンロード](http://us2.php.net/download-docs.php)してあれば、それを優先します。`php-manual-path`をセットするだけです。もしローカルで発見できなければPHPのWebサイトにフォールバックします。
 
-### Executing Regions of PHP ###
+### 選択範囲内のコードを実行する
 
-The command `php-send-region`, which is bound to `C-c C-r` by default, will execute the selected region of PHP code.  In conjunction with the Emacs command `C-x h` you can use this to execute an entire file.  Any output will appear in a buffer called `*PHP*`.
+`php-send-region`コマンド(デフォルトでは`C-c C-r`)はリージョンで選択された範囲のPHPコードを実行します。`C-x h`と組合せてコード全体を実行することもできます。出力は `*PHP*` バッファに現れます。
 
-### PHPDoc Tag / Annotation Highlighting ###
+### PHPDoc タグ／アノテーション
 
-PHPDoc is a documentation format similar to [JavaDoc](https://en.wikipedia.org/wiki/Javadoc).
+PHPDocは[JavaDoc](https://en.wikipedia.org/wiki/Javadoc)に似たドキュメンテーションの形式です。
 
-There are `@param`, `@return`, `@var`... etc in the notation called **tag**, look at [list of tags defined by phpDocumentor2](https://phpdoc.org/docs/latest/references/phpdoc/tags/index.html).  (These tags are compatible with static type checkers like PhpStorm and [Phan](https://github.com/etsy/phan).)
+`@param`, `@return`, `@var`... などの表記は**タグ**と呼ばれ、[list of tags defined by phpDocumentor2](https://phpdoc.org/docs/latest/references/phpdoc/tags/index.html)で定義されます。 (これらのタグはPhpStormや[Phan](https://github.com/etsy/phan)といった型チェッカーと互換性があります。)
 
-In addition, it also partially supports notation called **annotation**.  Annotation has a slightly different grammar from tag, and the example is `@Annotation(attr1="vvv", attr2="zzz")`.
+**アノテーション**と呼ばれる記法は部分的にサポートしています。アノテーションの文法はタグとは少し異なり、`@Annotation(attr1="vvv", attr2="zzz")` のような形式です。
 
-[Symfony](http://symfony.com/) project and [Go! AOP](https://github.com/goaop/framework) and some projects/frameworks use annotation grammer based on [Doctrine Annotations](http://docs.doctrine-project.org/projects/doctrine-common/en/latest/reference/annotations.html).
+[Symfony](http://symfony.com/)プロジェクトや[Go! AOP](https://github.com/goaop/framework)などいくつかのプロジェクト・フレームワークは[Doctrine Annotations](http://docs.doctrine-project.org/projects/doctrine-common/en/latest/reference/annotations.html)の文法を元にしています。
 
 ```php
 /**
@@ -171,13 +166,11 @@ class Product
 }
 ```
 
-The annotations are the lines that begin with the `@` character, and PHP Mode will give these special highlighting to help them stand out.
+アノテーションは `@` から始まる行で、わかりやすく強調表示されます。ただしPHPモードは[PSR-5: PHPDoc (草案)](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md)の完全なサポートは実装していません。
 
-PHP Mode has not fully supported [PSR-5: PHPDoc (Draft)](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md) yet.
+### コーディングスタイル
 
-### Coding Styles ###
-
-By default PHP Mode tries to provide a reasonable style for indentation and formatting, which you can use via the function `php-enable-default-coding-style`.  However, it provides other options suited for particular projects which you may find useful.  Other coding styles are available through these functions:
+PHPモードはデフォルトでは`php-enable-default-coding-style`関数で設定される合理的なインデントと整形スタイルを提供します。また、ほかの有用なコーディングスタイルも提供しているので、以下の関数を通じて設定することができます。
 
 1. `php-enable-pear-coding-style`
 2. `php-enable-drupal-coding-style`
@@ -185,7 +178,7 @@ By default PHP Mode tries to provide a reasonable style for indentation and form
 4. `php-enable-symfony2-coding-style`
 5. `php-enable-psr2-coding-style`
 
-They will help format your code for PEAR/PSR-2 projects, or work on Drupal, WordPress, and Symfony2 software, respectively.  You may enable any of them by default by running `M-x customize-group <RET> php` and looking for the ‘PHP Mode Coding Style’ option.  You may also enable any of these via a hook, e.g.
+`M-x customize-group <RET> php`で‘PHP Mode Coding Style’を探してカスタマイズメニューを探して、デフォルトのコーディングスタイルの設定を有効化することができます。以下のように、コーディングスタイルごとにフックを有効化することもできます。
 
 ```lisp
 (add-hook 'php-mode-hook 'php-enable-default-coding-style)
@@ -193,7 +186,8 @@ They will help format your code for PEAR/PSR-2 projects, or work on Drupal, Word
 
 #### Symfony2 Style ####
 
-With this style method call chains can be formatted with indented continuation and a hanging semi-colon:
+このスタイルではメソッドチェーンのインデントの継続とぶらさがったセミコロンを整形できます。
+
 
 ```php
     $user1
@@ -203,37 +197,37 @@ With this style method call chains can be formatted with indented continuation a
     ;
 ```
 
-This style is used widely throughout Symfony2 source code even if it is not explicitly mentioned in their conventions documents.
+このスタイルはSymfony2のコードベースで広く利用されていますが、慣習についての文書で明示的に言及されているものではありません。
 
-### Extra Constants ###
+### 定数の追加
 
-If you commonly use a framework or library that defines a set of constants then you may wish to customize the value of `php-extra-constants`.  It is a list of strings that PHP Mode will treat as additional constants, i.e. providing them the same level syntax highlighting that PHP Mode uses for built-in constants.
+フレームワークによって一般的な定数群が定義されるならば、変数`php-extra-constants`を値をカスタマイズすることができます。これはPHPモードが追加の定数として扱う定数名の文字列のリストです。これらの定数はPHP組み込みの定数と同じ強調表示を行います。
 
-### Web Mode Constants and Keywords ###
+### Web Mode定数とキーワード
 
-If you use [Web Mode][] then PHP Mode will attempt to use any additional PHP constants and keywords that Web Mode allows you to define.
+もしあなたが[Web Mode]を使用しているなら、Web Modeに設定された追加のPHP定数をとキーワードを追加しようとします。
 
-### Avoid HTML Template Compatibility ###
+### HTMLテンプレートのサポートを無効化する
 
-Many developers use PHP Mode to edit pure PHP scripts (e.g. files with only PHP and no HTML). A basic compatibility layer with HTML has historically been part of PHP Mode but it does not work perfectly and can cause some bad side effects such as slowness and incorrect font locking.  Configuring the `php-template-compatibility` property with a `nil` will cancel any attempt of HTML compatibility.  [Web Mode](http://web-mode.org/) is a great alternative to PHP Mode if you need to work with PHP scripts that do contain HTML and other markup.
+多くの開発者はPHPモードで純粋なPHPスクリプト(HTMLテンプレートを含まないもの)を編集します。HTMLとの互換レイヤーはPHPモードの歴史的な機能ですが、完全には機能していません。速度の低下や強調表示を破壊するおそれがあるなどの副作用があります。変数`php-template-compatibility`を`nil`にセットすると、HTMLとの互換性を無効化することができます。HTMLやその他のマークアップ言語のテンプレートエンジンを含むPHPスクリプトを開発する際は[Web Mode][]は優れた選択肢です。
 
-### Subword Mode ###
+### Subword Mode
 
-GNU Emacs comes with [Subword Mode][], a minor mode that allows you to navigate the parts of a [camelCase][] as if they were separate words.  For example, PHP Mode treats the variable `$fooBarBaz` as a whole name by default.  But if you enable Subword Mode then Emacs will treat the variable name as three separate words, and therefore word-related commands (e.g. `M-f`, `M-b`, `M-d`) will only affect the camelCase part of the name under the cursor.
+GNU Emacsには[Subword Mode][]という機能があり、このマイナーモードは[キャメルケース][camelCase]の部分を別の単語のように移動することができます。たとえば、PHPモードはデフォルトでは変数`$fooBarBaz`を一つの単語として扱います。しかしSubword Modeを有効にすればEmacsはこの変数名を3つの単語として扱い、単語関係のコマンド(`M-f`, `M-b`, `M-d`など)はカーソル位置のキャメルケースの各部分に影響します。
 
-If you want to always use Subword Mode for PHP files then you can add this to your Emacs configuration:
+もしPHPファイルで常にSubword Modeを有効化したいならば、以下のように設定できます。
 
 ```lisp
 (add-hook 'php-mode-hook (lambda () (subword-mode 1)))
 ```
 
-The key-binding `C-c C-w` will also toggle Subword Mode on and off.
+キーバインド `C-c C-w` はSubword Modeのオンとオフを切り替えます。
 
-### Amaka Support ###
+### Amakaサポート
 
 Viewing and editing build scripts for [Amaka](http://trashofmasters.github.io/amaka/) will automatically enable PHP Mode.
 
-### Insert current class/namespace ###
+### 現在のclass/namespaceを挿入する
 
 ```el
 (with-eval-after-load 'php-mode
@@ -241,59 +235,51 @@ Viewing and editing build scripts for [Amaka](http://trashofmasters.github.io/am
   (define-key php-mode-map (kbd "C-c C-=") 'php-current-namespace))
 ```
 
-Other Packages for PHP programming
+PHPプログラミングのためのパッケージ
 ----------------------------------
 
-- Completions
+- 入力補完
   - [ac-php](https://github.com/xcwen/ac-php): [company-mode](https://github.com/company-mode/company-mode) and [auto-complete](https://github.com/auto-complete/auto-complete) for PHP
-- Syntax checking
+- 構文チェック
   - [flycheck](https://github.com/flycheck/flycheck/): On the fly syntax checker
   - [flymake-php](https://github.com/purcell/flymake-php): flymake for PHP files
-- Snippet
+- スニペット
   - [php-auto-yasnippets](https://github.com/ejmr/php-auto-yasnippets): Dynamically Generated YASnippets for PHP Code
-- Documentation
+- ドキュメント
   - [ggtags](https://github.com/leoliu/ggtags): eldoc by using GNU global tags
   - [php-eldoc](https://github.com/sabof/php-eldoc): eldoc backend for PHP
-- Testing
+- テスト
   - [phpunit](https://github.com/nlamirault/phpunit.el): phpunit test command tool
-- Style
+- コーディングスタイル
   - [phpcbf](https://github.com/nishimaki10/emacs-phpcbf): PHP_CodeSniffer for Emacs
 - Semantic
   - [ede-php-autoload](https://github.com/stevenremot/ede-php-autoload): Semantic for PHP
-- Framework
+- フレームワーク
   - [cake](https://github.com/k1LoW/emacs-cake): minor-mode for CakePHP
   - [cake2](https://github.com/k1LoW/emacs-cake2): minor-mode for CakePHP2
 
 
-How to Contribute
+貢献するには
 -----------------
 
-All contributions to PHP Mode are welcome.  But please try to do the following when sending improvements or bug fixes:
+PHPモードはどなたからの貢献も歓迎です。改善やバグ修正を行う前に以下の手順を行ってください。
 
-1. Add your name to the list of ‘Contributors’ in this `README.md` file if it is not there already.  If you have a GitHub page and/or personal site then please feel free to link your name to it so people can see your other work.
+ 1. あなたの名前が`README.md`の“Contributors”のリストになければ追加してください。あなたの名前とGitHubアカウントや個人サイトをリンクして構いません。
+ 2. もし既にissueとして提起された問題に対処するならば、コミットメッセージに`GitHub-Issue: #16`のような行を含めてください。
+ 3. `php-mode.el`に影響する変更をした場合、`php-mode-modified`定数を更新してください。テストやドキュメントのみの修正の場合は不要です。
+ 4. しかし、 `php-mode-version-number` は変更しないでください。メンテナがバージョンを決定します。
+ 5. `php-mode-test.el`を開いて[すべてのテストを実行](http://www.gnu.org/software/emacs/manual/html_node/ert/Running-Tests-Interactively.html#Running-Tests-Interactively)し、期待通りにテストを通過することを確認します。端末から`make test`で確認することもでき、[`git bisect run`](http://git-scm.com/book/en/Git-Tools-Debugging-with-Git)と併用すると便利です。
+ 6. GitHubからプルリクエストを送信します
+ 7. 可能な限り詳細なコミットメッセージを作成してください。不足するよりも冗長すぎる方が良いです。メンテナーのコミットを参照して、私たちが理想的だと期待するコミットメッセージの詳細度として参考にしてください。シンプルすぎるパッチだからと決めつけずにコミットメッセージを書けば、コード中にコメントを書かなくても将来の開発者がコミットの「理由」「経緯」を理解できるようになります。コミットメッセージには「なぜ」コミットを作成したか、「何を」解決するものなのかを記述することが重要です。メンテナーはほかの開発者のプルリクエストに詳細なコミットメッセージを書き込むことがありますが、常に一貫して行われるとは期待しないでください。
 
-2. If your contribution addresses an issue on the GitHub project page then include a single line like `GitHub-Issue: #16` with the appropriate issue number.
+**GitHubのissueに関連するバグを修正する場合**： PHPモードの改善に協力いただきありがとうございます！ `tests/`ディレクトリには(すべてではありませんが)issueに関連のあるPHPスクリプトが配置されています。そこに予期される挙動と他のひとが動作を適切に確認できるテストコードを追加することを検討してください。そして`php-mode-test.el`に既存のテストと同じように[ERT][]を使ったテストコードを追加してください。
 
-3. Make sure to update the constant `php-mode-modified` *only if you patch affects `php-mode.el`,* which means this step is unnecessary for patches related to unit tests.
-
-4. However, please do not modify `php-mode-version-number`.  The maintainers will decide what constitutes a bump in the version number.
-
-5. Open the `php-mode-test.el` file and [run all of the tests](http://www.gnu.org/software/emacs/manual/html_node/ert/Running-Tests-Interactively.html#Running-Tests-Interactively) to ensure they still pass as expected.  Sometimes we expect for a test to fail, and those unit tests have the appropriate configuration so their failure will not raise any warnings.  You can use `make test` script to run all tests from a terminal, which is also useful in conjunction with [`git bisect run`](http://git-scm.com/book/en/Git-Tools-Debugging-with-Git).
-
-6. Send us a pull request here on GitHub.
-
-7. Please make your commit messages as detailed as possible.  It is better to be too verbose than to write too little.  Look at the commits of the maintainers to see many examples of the level of detail that we feel is ideal.  Please never assume that your patch is so simple that future developers will be able to understand the *reason* for the change without comment.  And that is important: your commit message should always strive to answer *"Why"* the patch exists, *"What*" does it accomplish?  The maintainers will sometimes write detailed commit messages for pull-requests by other developers, but please do not rely on us to do this consistently.
-
-If you are fixing a bug related to a GitHub issue, then first of all, thank you for the help improving PHP Mode.  Second, there is a `tests/` directory which contains PHP scripts for issues (although not all of them).  Please consider adding a test script to that directory that documents the expected behavior and provides code that allows others to see if said behavior works properly.  Then create a unit test within `php-mode-test.el` using [ERT][]. Please try to follow the format of the existing tests.
-
-
-The Wiki
+Wiki
 --------
 
-The GitHub project page has a [wiki][] that you should feel free to edit.  The wiki lists the features and bugs that are on plan to include in upcoming versions of PHP Mode.  It is also a place to add any tips to make the mode more useful.
+GitHubのプロジェクトページには[wiki][]があり、自由に編集して構いません。このWikiには今後追加する計画のある機能やバグが掲載されています。また、PHPモードをより使いやすくするためのTipsを追加できます。
 
-
-The Mailing List
+メーリングリスト
 ----------------
 
 The “emacs-php” mailing list is a place to discuss PHP Mode as well as all other PHP-related packages for Emacs.  You can find the mailing list at:
@@ -304,7 +290,7 @@ The “emacs-php” mailing list is a place to discuss PHP Mode as well as all o
 We encourage all users of PHP Mode *and* developers of any PHP-related packages to feel free to post anything there regarding PHP and Emacs.
 
 
-License
+ライセンス
 -------
 
 PHP Mode uses the [GNU General Public License 3](http://www.gnu.org/copyleft/gpl.html).
@@ -313,91 +299,13 @@ PHP Mode uses the [GNU General Public License 3](http://www.gnu.org/copyleft/gpl
 Contributors
 ------------
 
-In chronological order:
-
-1. Juanjo
-2. Torsten Martinsen
-3. Vinai Kopp
-4. Sean Champ
-5. Doug Marcey
-6. Kevin Blake
-7. Rex McMaster
-8. Mathias Meyer
-9. Boris Folgmann
-10. Roland
-11. Rosenfeld
-12. Fred Yankowski
-13. Craig Andrews
-14. John Keller
-15. Ryan
-16. Sammartino
-17. ppercot
-18. Valentin Funk
-19. Stig Bakken
-20. Gregory Stark
-21. Chris Morris
-22. Nils Rennebarth
-23. Gerrit Riessen
-24. Eric Mc Sween
-25. Ville Skytta
-26. Giacomo Tesio
-27. Urban Müller
-28. [Engelke Eschner](https://github.com/tekai)
-29. Lennart Borgman
-30. Stefan Monnier
-31. Aaron S. Hawley
-32. [Ian Eure](https://github.com/ieure)
-33. [Bill Lovett](https://github.com/lovett)
-34. Dias Badekas
-35. David House
-36. [Tom Willemse](https://github.com/ryuslash)
-37. [Olaf the Viking](https://github.com/olavTHEviking)
-38. [Maël Nison](https://github.com/arcanis)
-39. [flack](https://github.com/flack)
-40. [Michele Bini](https://github.com/rev22)
-41. Emanuele Tomasi
-42. [David Maus](https://github.com/dmj)
-43. [Jakub Jankiewicz](https://github.com/jcubic)
-44. [Marcin Antczak](https://github.com/marcinant)
-45. [顾伟刚](https://github.com/guweigang)
-46. [zapad](https://github.com/zargener)
-47. [Carl Groner](https://github.com/cgroner)
-48. [Michael Dwyer](https://github.com/kalifg)
-49. [Daniel Hackney](https://github.com/haxney)
-50. [Nate Eagleson](https://github.com/NateEag)
-51. [Steve Purcell](https://github.com/purcell)
-52. TatriX
-53. [François-Xavier Bois](https://github.com/fxbois)
-54. [James Laver](https://github.com/jjl)
-55. [Jacek Wysocki](https://github.com/exu)
-56. [Jon Dufrense](https://github.com/jdufresne)
-57. [Andrei Chițu](https://github.com/achitu)
-58. [phil-s](https://github.com/phil-s)
-59. [Bence Kalmar](https://github.com/brkalmar)
-60. [Elis Axelsson](https://github.com/etu)
-61. [Alan Pearce](https://github.com/alanpearce)
-62. Syohei Yoshida
-63. Joris Steyn
-64. l3msh0
-65. [Hernawan Fa'iz Abdillah](https://github.com/Abdillah)
-66. [Sebastian Wiesner](https://github.com/lunaryorn)
-67. [Michael Stolovitzsky](https://github.com/emestee)
-68. [David Arroyo Menéndez](https://github.com/davidam)
-69. [USAMI Kenta](https://tadsan.github.io/) (@zonuexe)
-70. [Tim Landscheidt](http://www.tim-landscheidt.de)
-71. [Fabian Wiget](https://github.com/fabacino)
-72. tangxifan
-73. [Serghei Iakovlev](https://github.com/sergeyklay)
-74. [Christian Albrecht](https://github.com/calbrecht)
-75. [Sebastian Fieber](https://github.com/fallchildren)
-76. [Mark A. Hershberger](https://github.com/hexmode)
-
+PHPモードの改善に協力したすべての貢献者のリストは[README.md#contributors](https://github.com/ejmr/php-mode/blob/master/README.md#contributors)に掲載されています。
 
 [wiki]: https://github.com/ejmr/php-mode/wiki
 [ert]: http://www.gnu.org/software/emacs/manual/html_node/ert/index.html
 [cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
 [Subword Mode]: https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
-[camelCase]: http://en.wikipedia.org/wiki/Camel_case
+[camelCase]: https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%A1%E3%83%AB%E3%82%B1%E3%83%BC%E3%82%B9
 [package]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html
 [MELPA]: http://melpa.milkbox.net/
 [Marmalade]: http://marmalade-repo.org/
