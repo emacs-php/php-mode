@@ -682,7 +682,6 @@ but only if the setting is enabled"
    (indent-tabs-mode . nil)
    (tab-width . ,(default-value 'tab-width))
    (fill-column . ,(default-value 'fill-column))
-   (require-final-newline . ,(default-value 'require-final-newline))
    (show-trailing-whitespace . ,(default-value 'show-trailing-whitespace))
    (php-style-delete-trailing-whitespace . nil)))
 
@@ -736,8 +735,7 @@ but only if the setting is enabled"
   '("php"
     (c-offsets-alist . ((statement-cont . php-lineup-hanging-semicolon)))
     (c-indent-comments-syntactically-p . t)
-    (fill-column . 78)
-    (require-final-newline . t)))
+    (fill-column . 78)))
 
 (defun php-enable-symfony2-coding-style ()
   "Make php-mode use coding styles that are preferable for working with Symfony2."
@@ -750,7 +748,6 @@ but only if the setting is enabled"
     (c-offsets-alist . ((statement-cont . +)))
     (c-indent-comments-syntactically-p . t)
     (fill-column . 78)
-    (require-final-newline . t)
     (show-trailing-whitespace . t)
     (php-style-delete-trailing-whitespace . t)))
 
@@ -1202,12 +1199,6 @@ After setting the stylevars run hooks according to STYLENAME
 
   ;; PHP vars are case-sensitive
   (setq case-fold-search t)
-
-  ;; Do not force newline at end of file.  Such newlines can cause
-  ;; trouble if the PHP file is included in another file before calls
-  ;; to header() or cookie().
-  (set (make-local-variable 'require-final-newline) nil)
-  (set (make-local-variable 'next-line-add-newlines) nil)
 
   (php-set-style (symbol-name php-mode-coding-style))
 
