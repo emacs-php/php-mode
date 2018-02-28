@@ -35,6 +35,7 @@
 ;;
 
 ;;; Code:
+(require 'cl-lib)
 
 ;; Variables
 (defvar php-project-available-root-files
