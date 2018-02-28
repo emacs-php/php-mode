@@ -25,19 +25,58 @@
 ;;; Commentary:
 
 ;; Define project specific functions and variables for PHP application.
+;;
+;; ## API
+;;
+;; ### `php-project-get-root-dir()'
+;;
+;; Return root directory of current buffer file.  The root directory is
+;; determined by several marker file or directory.
+;;
 
 ;;; Code:
-
 
 ;; Variables
-
-
+(defvar php-project-available-root-files
+  '((projectile ".projectile")
+    (composer   "composer.json" "composer.lock")
+    (git        ".git")
+    (mercurial  ".hg")
+    (subversion ".svn")
+    ;; NOTICE: This method does not detect the top level of .editorconfig
+    ;;         However, we can integrate it by adding the editorconfig.el's API.
+    ;;(editorconfig . ".editorconfig")
+    ))
 
 ;; Buffer local variables
 
+;;;###autoload
+(progn
+  (defvar php-project-root 'auto
+    "Method of searching for the top level directory.
+
+`auto' (default)
+      Try to search file in order of `php-project-available-root-files'.
+
+SYMBOL
+      Key of `php-project-available-root-files'.")
+  (make-variable-buffer-local 'php-project-root)
+  (put 'php-project-root 'safe-local-variable
+       #'(lambda (v) (assq v php-project-available-root-files))))
 
 ;; Functions
 
+;;;###autoload
+(defun php-project-get-root-dir ()
+  "Return path to current PHP project."
+  (let ((detect-method (if (stringp php-project-root)
+                           (list php-project-root)
+                         (if (eq php-project-root 'auto)
+                             (cl-loop for m in php-project-available-root-files
+                                      append (cdr m))
+                           (cdr-safe (assq php-project-root php-project-available-root-files))))))
+    (cl-loop for m in detect-method
+             thereis (locate-dominating-file default-directory m))))
 
 (provide 'php-project)
 ;;; php-project.el ends here
