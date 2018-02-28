@@ -1200,12 +1200,6 @@ After setting the stylevars run hooks according to STYLENAME
   ;; PHP vars are case-sensitive
   (setq case-fold-search t)
 
-  ;; Do not force newline at end of file.  Such newlines can cause
-  ;; trouble if the PHP file is included in another file before calls
-  ;; to header() or cookie().
-  (set (make-local-variable 'require-final-newline) nil)
-  (set (make-local-variable 'next-line-add-newlines) nil)
-
   (php-set-style (symbol-name php-mode-coding-style))
 
   (when (or php-mode-force-pear
