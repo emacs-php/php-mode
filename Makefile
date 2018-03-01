@@ -1,5 +1,6 @@
 EMACS ?= emacs
-ELS = php-mode.el php-mode-test.el
+ELS = php-project.el php-mode.el php-mode-test.el
+AUTOLOADS = php-project-autoloads.el php-mode-autoloads.el
 ELCS = $(ELS:.el=.elc)
 
 %.elc: %.el
@@ -7,16 +8,16 @@ ELCS = $(ELS:.el=.elc)
 
 all: autoloads $(ELCS)
 
-autoloads: php-mode-autoloads.el
+autoloads: $(AUTOLOADS)
 
-php-mode-autoloads.el:
+$(AUTOLOADS): php-project.el php-mode.el
 	$(EMACS) -Q -batch -L . --eval \
 	"(progn \
-           (require 'package) \
-           (package-generate-autoloads \"php-mode\" default-directory))"
+	   (require 'package) \
+	   (package-generate-autoloads \"php-mode\" default-directory))"
 
 clean:
-	rm -f $(ELCS) php-mode-autoloads.el
+	rm -f $(ELCS) $(AUTOLOADS)
 
 # Runs all unit tests from php-mode-test.el and shows the results. The
 # script will exit with the status code zero if all tests pass. If any

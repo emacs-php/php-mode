@@ -31,6 +31,7 @@
 ;;; Code:
 
 (require 'php-mode)
+(require 'php-project)
 (require 'ert)
 (require 'cl-lib)
 (require 'imenu)
@@ -1074,6 +1075,10 @@ style from Drupal."
         (dotimes (num 2)
           (search-forward variable)
           (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))))))
+
+(ert-deftest php-project-root ()
+  (should (string= (abbreviate-file-name default-directory)
+                   (php-project-get-root-dir))))
 
 ;;; php-mode-test.el ends here
 
