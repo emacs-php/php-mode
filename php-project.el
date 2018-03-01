@@ -33,6 +33,12 @@
 ;; Return root directory of current buffer file.  The root directory is
 ;; determined by several marker file or directory.
 ;;
+;; ## `.dir-locals.el' support
+;;
+;; - `php-project-coding-style'
+;;   - Symbol value of the coding style.  (ex.  `pear', `psr2')
+;;
+;;
 
 ;;; Code:
 (require 'cl-lib)
@@ -64,6 +70,16 @@ SYMBOL
   (make-variable-buffer-local 'php-project-root)
   (put 'php-project-root 'safe-local-variable
        #'(lambda (v) (assq v php-project-available-root-files))))
+
+;;;###autoload
+(progn
+  (defvar php-project-coding-style nil
+    "Symbol value of the coding style of the project that PHP major mode refers to.
+
+Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
+  (make-variable-buffer-local 'php-project-coding-style)
+  (put 'php-project-coding-style 'safe-local-variable #'symbolp))
+
 
 ;; Functions
 
