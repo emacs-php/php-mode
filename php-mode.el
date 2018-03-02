@@ -375,14 +375,8 @@ This variable can take one of the following symbol values:
                  (const :tag "WordPress" wordpress)
                  (const :tag "Symfony2" symfony2)
                  (const :tag "PSR-2" psr2))
-  :set 'php-mode-custom-coding-style-set
   :initialize 'custom-initialize-default)
 
-(defun php-mode-custom-coding-style-set (sym value)
-  (when (eq major-mode 'php-mode)
-    (set         sym value)
-    (set-default sym value)
-    (php-set-style (symbol-name value))))
 
 (defcustom php-mode-enable-project-coding-style t
   "When set to true override php-mode-coding-style by php-project-coding-style.
