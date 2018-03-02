@@ -87,6 +87,7 @@
 
 (require 'cl-lib)
 (require 'mode-local)
+(require 'php-project)
 
 (eval-when-compile
   (require 'regexp-opt)
@@ -1131,6 +1132,13 @@ After setting the stylevars run hooks according to STYLENAME
 
 (put 'php-set-style 'interactive-form (interactive-form 'c-set-style))
 
+(defun php-mode-set-style-delay ()
+  "Set the current `php-mode' buffer to use the style by custom or local variables."
+  (let ((coding-style (or (and (boundp 'php-project-coding-style) php-project-coding-style)
+                          php-mode-coding-style)))
+    (prog1 (php-set-style (symbol-name coding-style))
+      (remove-hook 'hack-local-variables-hook #'php-mode-set-style-delay))))
+
 (defun php-mode-debug ()
   "Display informations useful for debugging PHP Mode."
   (interactive)
@@ -1186,7 +1194,12 @@ After setting the stylevars run hooks according to STYLENAME
   ;; PHP vars are case-sensitive
   (setq case-fold-search t)
 
-  (php-set-style (symbol-name php-mode-coding-style))
+  ;; When php-mode-enable-project-coding-style is set, it is delayed by hook.
+  ;; Since it depends on the timing at which the file local variable is set.
+  ;; File local variables are set after initialization of major mode except `run-hook' is complete.
+  (if php-mode-enable-project-coding-style
+      (add-hook 'hack-local-variables-hook #'php-mode-set-style-delay t t)
+    (php-set-style (symbol-name php-mode-coding-style)))
 
   (when (or php-mode-force-pear
             (and (stringp buffer-file-name)
