@@ -383,6 +383,13 @@ This variable can take one of the following symbol values:
     (set-default sym value)
     (php-set-style (symbol-name value))))
 
+(defcustom php-mode-enable-project-coding-style t
+  "When set to true override php-mode-coding-style by php-project-coding-style.
+
+If you want to suppress styles from being overwritten by directory / file
+local variables, set NIL."
+  :type 'boolean)
+
 (defun php-mode-version ()
   "Display string describing the version of PHP Mode."
   (interactive)
