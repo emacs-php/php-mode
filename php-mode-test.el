@@ -275,14 +275,14 @@ style from Drupal."
    ;; the file written to has no significance, only the buffer
    (let ((tmp-filename (concat (make-temp-name temporary-file-directory) ".php")))
      (dolist (mode '(pear wordpress symfony2))
-       (php-mode-custom-coding-style-set 'php-mode-coding-style 'drupal)
-       (php-mode-custom-coding-style-set 'php-mode-coding-style mode)
+       (php-set-style "drupal")
+       (php-set-style (symbol-name mode))
        (should-not show-trailing-whitespace)
-       (php-mode-custom-coding-style-set 'php-mode-coding-style 'psr2)
-       (php-mode-custom-coding-style-set 'php-mode-coding-style mode)
+       (php-set-style "psr2")
+       (php-set-style (symbol-name mode))
        (should-not show-trailing-whitespace)
 
-       (php-mode-custom-coding-style-set 'php-mode-coding-style 'drupal)
+       (php-set-style "drupal")
        (write-file tmp-filename)
        (should (looking-at-p "$"))))))
 
@@ -871,7 +871,7 @@ style from Drupal."
 (ert-deftest php-mode-test-issue-200 ()
   "Test highlighting and elimination of extraneous whitespace in PSR-2 mode"
   (with-php-mode-test ("issue-200.php")
-    (php-mode-custom-coding-style-set 'php-mode-coding-style 'psr2)
+    (php-set-style "psr2")
     (should show-trailing-whitespace)
     (should (and (listp before-save-hook) (member 'delete-trailing-whitespace before-save-hook)))))
 

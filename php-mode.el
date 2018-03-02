@@ -87,6 +87,7 @@
 
 (require 'cl-lib)
 (require 'mode-local)
+(require 'php-project)
 
 (eval-when-compile
   (require 'regexp-opt)
@@ -374,14 +375,15 @@ This variable can take one of the following symbol values:
                  (const :tag "WordPress" wordpress)
                  (const :tag "Symfony2" symfony2)
                  (const :tag "PSR-2" psr2))
-  :set 'php-mode-custom-coding-style-set
   :initialize 'custom-initialize-default)
 
-(defun php-mode-custom-coding-style-set (sym value)
-  (when (eq major-mode 'php-mode)
-    (set         sym value)
-    (set-default sym value)
-    (php-set-style (symbol-name value))))
+
+(defcustom php-mode-enable-project-coding-style t
+  "When set to true override php-mode-coding-style by php-project-coding-style.
+
+If you want to suppress styles from being overwritten by directory / file
+local variables, set NIL."
+  :type 'boolean)
 
 (defun php-mode-version ()
   "Display string describing the version of PHP Mode."
@@ -1124,6 +1126,13 @@ After setting the stylevars run hooks according to STYLENAME
 
 (put 'php-set-style 'interactive-form (interactive-form 'c-set-style))
 
+(defun php-mode-set-style-delay ()
+  "Set the current `php-mode' buffer to use the style by custom or local variables."
+  (let ((coding-style (or (and (boundp 'php-project-coding-style) php-project-coding-style)
+                          php-mode-coding-style)))
+    (prog1 (php-set-style (symbol-name coding-style))
+      (remove-hook 'hack-local-variables-hook #'php-mode-set-style-delay))))
+
 (defun php-mode-debug ()
   "Display informations useful for debugging PHP Mode."
   (interactive)
@@ -1179,7 +1188,12 @@ After setting the stylevars run hooks according to STYLENAME
   ;; PHP vars are case-sensitive
   (setq case-fold-search t)
 
-  (php-set-style (symbol-name php-mode-coding-style))
+  ;; When php-mode-enable-project-coding-style is set, it is delayed by hook.
+  ;; Since it depends on the timing at which the file local variable is set.
+  ;; File local variables are set after initialization of major mode except `run-hook' is complete.
+  (if php-mode-enable-project-coding-style
+      (add-hook 'hack-local-variables-hook #'php-mode-set-style-delay t t)
+    (php-set-style (symbol-name php-mode-coding-style)))
 
   (when (or php-mode-force-pear
             (and (stringp buffer-file-name)

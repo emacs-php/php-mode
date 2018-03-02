@@ -37,6 +37,37 @@ GNU Emacs 24以降では、[package][]機能を使って[MELPA][]からPHPモー
 
 報告の際には `php-mode-version` コマンドを実行して、その出力をバグレポートに含めてください。問題を再現するための手がかりになります。
 
+Settings
+--------
+
+### 個人設定
+
+.emacsファイル(`~/.emacs.d/init.el`)にPHPモードでの設定を記述できます。
+
+```lisp
+(defun my-php-mode-init ()
+  (setq-local show-trailing-whitespace t)
+  (setq-local ac-disable-faces '(font-lock-comment-face font-lock-string-face))
+  (setq-local page-delimiter "\\_<\\(class\\|function\\|namespace\\)\\_>.+$")
+
+  ;; If you feel phumped and phpcs annoying, invalidate them.
+  (when (boundp 'flycheck-disabled-checkers)
+    (add-to-list 'flycheck-disabled-checkers 'php-phpmd)
+    (add-to-list 'flycheck-disabled-checkers 'php-phpcs)))
+
+(add-hook 'php-mode-hook #'my-php-mode-init)
+```
+
+### プロジェクトローカル設定
+
+プロジェクトのトップディレクトリに`.dir-locals.el`を記述すると、プロジェクト単位の設定を追加することができます。このファイルはユーザー自身のEmacsにインストールされたパッケージに依存するため、バージョン管理の対象に含めないことを推奨します。
+
+```lisp
+((nil
+  (php-project-root . git)
+  (php-project-coding-style . psr2)))
+```
+
 実験的および作業中の機能
 -------------------------------------
 
