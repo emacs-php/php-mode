@@ -1544,7 +1544,7 @@ a completion list."
    '(
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
-     ("\\(->\\)\\(\\sw+\\)\\s-*(" (1 'php-object-op) (2 'php-method-call))
+     ("\\(->\\)\\(\\_<.+?\\_>\\)\\s-*(" (1 'php-object-op) (2 'php-method-call))
 
      ;; Highlight special variables
      ("\\(\\$\\)\\(this\\|that\\)\\_>" (1 'php-$this-sigil) (2 'php-$this))
@@ -1583,12 +1583,6 @@ a completion list."
    ;;   already fontified by another pattern. Note that using OVERRIDE
    ;;   is usually overkill.
    `(
-     ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
-     ;; not in $obj->var()
-     ("->\\(\\sw+\\)\\s-*(" 1 'php-method-call)
-
-     ("\\(\\$\\|->\\)\\(\\_<.+?\\_>\\)" 2 'php-property-name)
-
      ;; Highlight all upper-cased symbols as constant
      ("\\<\\([A-Z_][A-Z0-9_]+\\)\\>" 1 'php-constant)
 
