@@ -1582,12 +1582,6 @@ a completion list."
    ;;   already fontified by another pattern. Note that using OVERRIDE
    ;;   is usually overkill.
    `(
-     ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
-     ;; not in $obj->var()
-     ("->\\(\\sw+\\)\\s-*(" 1 'php-method-call)
-
-     ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 'php-property-name)
-
      ;; Highlight all upper-cased symbols as constant
      ("\\<\\([A-Z_][A-Z0-9_]+\\)\\>" 1 'php-constant)
 
