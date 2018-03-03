@@ -167,11 +167,7 @@ file name and check that the faces of the fonts in the buffer match."
 
 (ert-deftest php-mode-test-issue-8 ()
   "Annotation highlighting."
-  (with-php-mode-test ("issue-8.php")
-    (search-forward "@ORM")
-    (should (equal
-             (get-text-property (match-beginning 0) 'face)
-             '(php-doc-annotation-tag font-lock-doc-face)))))
+  (with-php-mode-test ("issue-8.php" :faces t)))
 
 (ert-deftest php-mode-test-issue-9 ()
   "Single quote in text in HTML misinterpreted.
@@ -352,24 +348,7 @@ style from Drupal."
 
 (ert-deftest php-mode-test-issue-136 ()
   "Proper highlighting for variable interpolation."
-  (with-php-mode-test ("issue-136.php")
-    (let ((variables '("$name"
-                       "${name}"
-                       "{$name}"
-                       "{$user->name}"
-                       "{$user->getName()}"
-                       "{$users[0]->name}"
-                       "{$users[$index]->name}"
-                       "{$users[$user->id]->name}"
-                       "{$users[$user->getID()]->name}")))
-      ;; All of the strings we want to test come after the call to
-      ;; ob_start(), so we jump to there first.
-      (search-forward "ob_start()")
-      (dolist (variable variables)
-        (search-forward variable)
-        (goto-char (match-beginning 0))
-        (should (eq 'php-variable-name
-                    (get-text-property (point) 'face)))))))
+  (with-php-mode-test ("issue-136.php") :faces t))
 
 (ert-deftest php-mode-test-issue-144 ()
   "Indentation test '#' comment line has single quote."
@@ -720,51 +699,14 @@ style from Drupal."
         (goto-char (match-beginning 0))
         (should (eq 'php-constant
                     (get-text-property (point) 'face))))))
+
+  ;; Set default
   (custom-set-variables '(php-extra-constants (quote ())))
-  (with-php-mode-test ("constants.php")
-    (let ((variables '("no_constant"
-                       "no_CONSTANT"
-                       "extraconstant"
-                       "classIdentifier()"
-                       "2FOO")))
-      (dolist (variable variables)
-        (search-forward variable)
-        (goto-char (match-beginning 0))
-        (should (not (eq 'php-constant
-                     (get-text-property (point) 'face))))))))
+  (with-php-mode-test ("constants.php" :faces t)))
 
 (ert-deftest php-mode-test-identifiers()
   "Proper highlighting for identifiers including their namespace."
-  (with-php-mode-test ("identifiers.php")
-    (let ((variables '("UnqualifiedClassName"
-                       "FullyQualifiedClassName"
-                       "SpaceName")))
-      (dolist (variable variables)
-        (search-forward variable)
-        (goto-char (match-beginning 0))
-        (should (eq 'font-lock-type-face
-                    (get-text-property (point) 'face)))))
-    (search-forward "var")
-    (goto-char (match-beginning 0))
-    (should (eq 'php-variable-name
-                (get-text-property (point) 'face)))
-    (search-forward "syntaxerror")
-    (goto-char (match-beginning 0))
-    (should (not (eq 'php-variable-name
-                     (get-text-property (point) 'face))))
-    (search-forward "ClassName")
-    (goto-char (match-beginning 0))
-    (should (eq 'php-constant
-                (get-text-property (point) 'face)))
-    (search-forward "SpaceName")
-    (goto-char (match-beginning 0))
-    (should (eq 'php-constant
-                (get-text-property (point) 'face)))
-    (search-forward-regexp "\\\\My_\\(Class\\)")
-    (should (eq 'php-constant
-                (get-text-property (match-beginning 0) 'face)))
-    (should (eq 'php-constant
-                (get-text-property (match-beginning 1) 'face)))))
+  (with-php-mode-test ("identifiers.php" :faces t)))
 
 (ert-deftest php-mode-test-variables ()
   "Proper highlighting for variables."
@@ -789,25 +731,7 @@ style from Drupal."
 
 (ert-deftest php-mode-test-arrays()
   "Proper highlighting for array keyword."
-  (with-php-mode-test ("arrays.php")
-    ;; Keyword situations
-    (let ((variables '("array();"
-                       "array()")))
-      (dolist (variable variables)
-        (search-forward variable)
-        (goto-char (match-beginning 0))
-        (should (eq 'php-keyword
-                    (get-text-property (point) 'face)))))
-    ;; Type situations
-    (let ((variables '("(array)"
-                       "array $byValue"
-                       "array &$byReference"
-                       ": array")))
-      (dolist (variable variables)
-        (search-forward variable)
-        (search-backward "array")
-        (should (eq 'font-lock-type-face
-                    (get-text-property (point) 'face)))))))
+  (with-php-mode-test ("arrays.php" :faces t)))
 
 (ert-deftest php-mode-test-issue-174 ()
   "Test escaped quotes in string literals"
@@ -863,10 +787,7 @@ style from Drupal."
 
 (ert-deftest php-mode-test-issue-197 ()
   "Test highlighting of member and function names (should not have type face)"
-  (with-php-mode-test ("issue-197.php")
-    (while (search-forward "$test->" nil t)
-      (should-not (eq 'font-lock-type-face
-                      (get-text-property (point) 'face))))))
+  (with-php-mode-test ("issue-197.php" :faces t)))
 
 (ert-deftest php-mode-test-issue-200 ()
   "Test highlighting and elimination of extraneous whitespace in PSR-2 mode"
@@ -877,18 +798,7 @@ style from Drupal."
 
 (ert-deftest php-mode-test-issue-201 ()
   "Test highlighting of special variables"
-  (with-php-mode-test ("issue-201.php")
-    (search-forward "Start:")
-    (search-forward "$this")
-    (should (eq 'php-$this (get-text-property (- (point) 1) 'face)))
-    (search-forward "$that")
-    (should (eq 'php-$this (get-text-property (- (point) 1) 'face)))
-    (search-forward "self")
-    (should (eq 'php-keyword (get-text-property (- (point) 1) 'face)))
-    (search-forward "static")
-    (should (eq 'php-keyword (get-text-property (- (point) 1) 'face)))
-    (search-forward "parent")
-    (should (eq 'php-keyword (get-text-property (- (point) 1) 'face)))))
+  (with-php-mode-test ("issue-201.php" :faces t)))
 
 (ert-deftest php-mode-test-issue-211 ()
   "Test indentation of string concatination"
@@ -960,30 +870,11 @@ style from Drupal."
 
 (ert-deftest psr-5-style-tag-annotation ()
   "PSR-5 style tag annotation."
-  (with-php-mode-test ("annotation.php")
-    (re-search-forward "@\\([^\\]+\\)\\\\\\([^\\]+\\)\\\\\\([^\r\n]+\\)")
-    (cl-loop for i from 1 to 3
-             do
-             (progn
-               (should (equal (get-text-property (match-beginning i) 'face)
-                              '(php-doc-annotation-tag font-lock-doc-face)))
-               (should (equal (get-text-property (1- (match-end i)) 'face)
-                              '(php-doc-annotation-tag font-lock-doc-face)))))
-
-    (search-forward "@property-read")
-    (should (equal (get-text-property (match-beginning 0) 'face)
-                   '(php-doc-annotation-tag font-lock-doc-face)))
-    (should (equal (get-text-property (1- (match-end 0)) 'face)
-                   '(php-doc-annotation-tag font-lock-doc-face)))))
+  (with-php-mode-test ("annotation.php" :faces t)))
 
 (ert-deftest php-mode-test-issue-305 ()
   "Test highlighting variables which contains 'this' or 'that'."
-  (with-php-mode-test ("issue-305.php")
-    (search-forward "Start:")
-    (search-forward "$this")
-    (should-not (eq 'php-constant (get-text-property (- (point) 1) 'face)))
-    (search-forward "$that")
-    (should-not (eq 'php-constant (get-text-property (- (point) 1) 'face)))))
+  (with-php-mode-test ("issue-305.php" :faces t)))
 
 (ert-deftest php-mode-test-issue-307 ()
   "Activating php-mode should not mark the buffer as modified."
@@ -1025,56 +916,7 @@ style from Drupal."
 
 (ert-deftest php-mode-test-type-hints ()
   "Test highlighting of type hints and return types."
-  (with-php-mode-test ("type-hints.php")
-    (search-forward "void")
-    (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face)))
-    (dotimes (num 4)
-      (search-forward "string")
-      (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))
-    (dotimes (num 4)
-      (search-forward "int")
-      (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))
-    (dotimes (num 4)
-      (search-forward "float")
-      (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))
-    (dotimes (num 4)
-      (search-forward "bool")
-      (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))
-    (dotimes (num 4)
-      (search-forward "array")
-      (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))
-    (dotimes (num 4)
-      (search-forward "stdClass")
-      (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))
-    (dotimes (num 4)
-      (search-forward "\\path\\to\\my\\Object")
-      (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))
-    ;; Parameters on different lines
-    (let ((variables '("string"
-                       "int"
-                       "bool"
-                       "array"
-                       "stdClass"
-                       "\\path\\to\\my\\Object"
-                       "void")))
-      (dolist (variable variables)
-        (search-forward variable)
-        (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face)))))
-    ;; Return types on different lines
-    (search-forward "void")
-    (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face)))
-    (let ((variables '("string"
-                       "int"
-                       "float"
-                       "bool"
-                       "array"
-                       "stdClass"
-                       "\\path\\to\\my\\Object"
-                       )))
-      (dolist (variable variables)
-        (dotimes (num 2)
-          (search-forward variable)
-          (should (eq 'font-lock-type-face (get-text-property (- (point) 1) 'face))))))))
+  (with-php-mode-test ("type-hints.php" :faces t)))
 
 (ert-deftest php-project-root ()
   (should (string= (abbreviate-file-name default-directory)
