@@ -23,5 +23,7 @@ ClassName::$test;
 stdClass::class;
 SomeClass::classIdentifier();
 
+__halt_compiler();
+
 // Invalid constant name
-2FOO
+2FOO;
