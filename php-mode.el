@@ -8,14 +8,14 @@
 ;; Maintainer: USAMI Kenta <tadsan@zonu.me>
 ;; URL: https://github.com/ejmr/php-mode
 ;; Keywords: languages php
-;; Version: 1.18.4
+;; Version: 1.19.0
 ;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
 ;; License: GPL-3.0-or-later
 
-(defconst php-mode-version-number "1.18.4"
+(defconst php-mode-version-number "1.19.0"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2018-01-30"
+(defconst php-mode-modified "2018-03-05"
   "PHP Mode build date.")
 
 ;; This file is free software; you can redistribute it and/or

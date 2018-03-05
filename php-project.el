@@ -5,7 +5,7 @@
 ;; Author: USAMI Kenta <tadsan@zonu.me>
 ;; Keywords: tools, files
 ;; URL: https://github.com/ejmr/php-mode
-;; Version: 1.18.4
+;; Version: 1.19.0
 ;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
 ;; License: GPL-3.0-or-later
 
