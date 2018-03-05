@@ -52,6 +52,9 @@
 ;;; Code:
 (require 'cl-lib)
 
+;; Constants
+(defconst php-project-composer-autoloader "vendor/autoload.php")
+
 ;; Variables
 (defvar php-project-available-root-files
   '((projectile ".projectile")
@@ -106,6 +109,9 @@ Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
   "Return T when `VAL' is valid list of safe bootstrap php script."
   (cond
    ((stringp val) (and (file-exists-p val) val))
+   ((eq 'composer val)
+    (let ((path (expand-file-name php-project-composer-autoloader (php-project-get-root-dir))))
+      (and (file-exists-p path) path)))
    ((and (consp val) (eq 'root (car val)) (stringp (cdr val)))
     (let ((path (expand-file-name (cdr val) (php-project-get-root-dir))))
       (and (file-exists-p path) path)))
