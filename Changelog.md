@@ -5,6 +5,15 @@ Changes for PHP Mode by Version
 because when I (Eric James Michael Ritz) took over the project I did
 not have a record of all changes available.
 
+## 1.19.0 (2018-03-05)
+
+* The mechanism of font locking has been rewritten (#401, #413)
+* Fix breaking `semantic-imenu` (#400, #406)
+* The link to [PHP official site](https://secure.php.net/) is now https
+* Add `php-mode-debug` for error reporting (#421)
+* Support for `.dir-locals.el` has been enhanced by new `php-project.el`
+* Clean redundant codes and refactor test codes
+
 ## 1.18.4
 
 * Change face symbols of `php-*-face`s to `php-*`
