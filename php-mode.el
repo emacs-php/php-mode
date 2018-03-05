@@ -1138,9 +1138,11 @@ After setting the stylevars run hooks according to STYLENAME
   (message "--- PHP-MODE DEBUG BEGIN ---")
   (message "versions: %s; %s" (emacs-version) (php-mode-version))
   (message "major-mode: %s" major-mode)
-  (message "minor-modes: %s" (cl-remove-if
-                              (lambda (s) (string-match-p "global" (symbol-name s)))
-                              minor-mode-list))
+  (message "minor-modes: %s"
+           (cl-loop for s in minor-mode-list
+                    unless (string-match-p "global" (symbol-name s))
+                    if (and (boundp s) (symbol-value s))
+                    collect s))
   (message "variables: %s"
            (cl-loop for v in '(indent-tabs-mode tab-width)
                     collect (list v (symbol-value v))))
