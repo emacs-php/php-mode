@@ -37,7 +37,9 @@
 ;;
 ;; - `php-project-coding-style'
 ;;   - Symbol value of the coding style.  (ex.  `pear', `psr2')
-;;
+;; - `php-project-root'
+;;   - Symbol of marker file of project root.  (ex.  `git', `composer')
+;;   - Full path to project root directory.  (ex.  "/path/to/your-project")
 ;;
 
 ;;; Code:
@@ -86,12 +88,13 @@ Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
 ;;;###autoload
 (defun php-project-get-root-dir ()
   "Return path to current PHP project."
-  (let ((detect-method (if (stringp php-project-root)
-                           (list php-project-root)
-                         (if (eq php-project-root 'auto)
-                             (cl-loop for m in php-project-available-root-files
-                                      append (cdr m))
-                           (cdr-safe (assq php-project-root php-project-available-root-files))))))
+  (let ((detect-method
+         (cond
+          ((stringp php-project-root) (list php-project-root))
+          ((eq php-project-root 'auto)
+           (cl-loop for m in php-project-available-root-files
+                    append (cdr m)))
+          (t (cdr-safe (assq php-project-root php-project-available-root-files))))))
     (cl-loop for m in detect-method
              thereis (locate-dominating-file default-directory m))))
 
