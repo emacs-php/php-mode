@@ -33,6 +33,10 @@
 ;; Return root directory of current buffer file.  The root directory is
 ;; determined by several marker file or directory.
 ;;
+;; ### `php-project-get-bootstrap-scripts()'
+;;
+;; Return list of path to bootstrap script file.
+;;
 ;; ## `.dir-locals.el' support
 ;;
 ;; - `php-project-coding-style'
@@ -40,6 +44,9 @@
 ;; - `php-project-root'
 ;;   - Symbol of marker file of project root.  (ex.  `git', `composer')
 ;;   - Full path to project root directory.  (ex.  "/path/to/your-project")
+;; - `php-project-bootstrap-scripts'
+;;   - List of path to bootstrap file of project.
+;;     (ex.  (((root . "vendor/autoload.php") (root . "inc/bootstrap.php")))
 ;;
 
 ;;; Code:
@@ -75,6 +82,16 @@ SYMBOL
 
 ;;;###autoload
 (progn
+  (defvar php-project-bootstrap-scripts nil
+    "List of path to bootstrap php script file.
+
+The ideal bootstrap file is silent, it only includes dependent files,
+defines constants, and sets the class loaders.")
+  (make-variable-buffer-local 'php-project-bootstrap-scripts)
+  (put 'php-project-bootstrap-scripts 'safe-local-variable #'php-project--eval-bootstrap-scripts))
+
+;;;###autoload
+(progn
   (defvar php-project-coding-style nil
     "Symbol value of the coding style of the project that PHP major mode refers to.
 
@@ -84,6 +101,24 @@ Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
 
 
 ;; Functions
+
+(defun php-project--eval-bootstrap-scripts (val)
+  "Return T when `VAL' is valid list of safe bootstrap php script."
+  (cond
+   ((stringp val) (and (file-exists-p val) val))
+   ((and (consp val) (eq 'root (car val)) (stringp (cdr val)))
+    (let ((path (expand-file-name (cdr val) (php-project-get-root-dir))))
+      (and (file-exists-p path) path)))
+   ((null val) nil)
+   ((listp val)
+    (cl-loop for v in val collect (php-project--eval-bootstrap-scripts v)))
+   (t nil)))
+
+;;;###autoload
+(defun php-project-get-bootstrap-scripts ()
+  "Return list of bootstrap script."
+  (let ((scripts (php-project--eval-bootstrap-scripts php-project-bootstrap-scripts)))
+    (if (stringp scripts) (list scripts) scripts)))
 
 ;;;###autoload
 (defun php-project-get-root-dir ()
