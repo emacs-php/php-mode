@@ -422,11 +422,8 @@ local variables, set NIL."
     ;;
     ;;     https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
     ;;
-    ;; for more information about Submode Word.
-    (if (boundp 'subword-mode)
-        (if subword-mode
-            (subword-mode nil)
-          (subword-mode t)))
+    ;; for more information about Subword mode.
+    (define-key map (kbd "C-c C-w") 'subword-mode)
 
     ;; We inherit c-beginning-of-defun and c-end-of-defun from CC Mode
     ;; but we have two replacement functions specifically for PHP.  We
