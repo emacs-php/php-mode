@@ -2,6 +2,7 @@
 (source melpa)
 
 (package-file "php-mode.el")
+(package-file "php-project.el")
 
 (development
  (depends-on "shut-up"))
