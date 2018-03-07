@@ -37,6 +37,16 @@
 ;;
 ;; Return list of path to bootstrap script file.
 ;;
+;; ### `php-project-get-php-executable()'
+;;
+;; Return path to PHP executable file with the project settings overriding.
+;;
+;; ### `php-project-get-phan-executable()'
+;;
+;; Return path to Phan executable file with the project settings overriding.
+;; Phan is a static analyzer and LSP server implementation for PHP.
+;; See https://github.com/phan/phan
+;;
 ;; ## `.dir-locals.el' support
 ;;
 ;; - `php-project-coding-style'
@@ -47,6 +57,13 @@
 ;; - `php-project-bootstrap-scripts'
 ;;   - List of path to bootstrap file of project.
 ;;     (ex.  (((root . "vendor/autoload.php") (root . "inc/bootstrap.php")))
+;; - `php-project-php-executable'
+;;   - Path to project specific PHP executable file.
+;;   - If you want to use a file different from the system wide `php' command.
+;; - `php-project-phan-executable'
+;;   - Path to project specific Phan executable file.
+;;   - When not specified explicitly, it is automatically searched from
+;;     Composer's dependency of the project and `exec-path'.
 ;;
 
 ;;; Code:
@@ -95,6 +112,21 @@ defines constants, and sets the class loaders.")
 
 ;;;###autoload
 (progn
+  (defvar php-project-php-executable nil
+    "Path to php executable file.")
+  (make-variable-buffer-local 'php-project-php-executable)
+  (put 'php-project-php-executable 'safe-local-variable
+       #'(lambda (v) (and (stringp v) (file-executable-p v)))))
+
+;;;###autoload
+(progn
+  (defvar php-project-phan-executable nil
+    "Path to phan executable file.")
+  (make-variable-buffer-local 'php-project-phan-executable)
+  (put 'php-project-phan-executable 'safe-local-variable #'php-project--eval-bootstrap-scripts))
+
+;;;###autoload
+(progn
   (defvar php-project-coding-style nil
     "Symbol value of the coding style of the project that PHP major mode refers to.
 
@@ -119,6 +151,22 @@ Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
    ((listp val)
     (cl-loop for v in val collect (php-project--eval-bootstrap-scripts v)))
    (t nil)))
+
+(defun php-project-get-php-executable ()
+  "Return path to PHP executable file."
+  (cond
+   ((and (stringp php-project-php-executable)
+         (file-executable-p php-project-php-executable))
+    php-project-php-executable)
+   ((boundp 'php-executable) php-executable)
+   (t (executable-find "php"))))
+
+(defun php-project-get-phan-executable ()
+  "Return path to phan executable file."
+  (or (car-safe (php-project--eval-bootstrap-scripts
+                 (list php-project-phan-executable
+                       (cons 'root "vendor/bin/phan"))))
+      (executable-find "phan")))
 
 ;;;###autoload
 (defun php-project-get-bootstrap-scripts ()
