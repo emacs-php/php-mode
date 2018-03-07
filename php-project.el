@@ -134,6 +134,62 @@ Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
   (make-variable-buffer-local 'php-project-coding-style)
   (put 'php-project-coding-style 'safe-local-variable #'symbolp))
 
+;;;###autoload
+(progn
+  (defvar php-project-lsp-root-directory nil
+    "Path to root directory for LSP server.")
+  (make-variable-buffer-local 'php-project-lsp-root-directory)
+  (put 'php-project-lsp-root-directory 'safe-local-variable #'file-directory-p))
+
+;;;###autoload
+(progn
+  (defvar php-project-lsp-language-id "php")
+  (make-variable-buffer-local 'php-project-lsp-language-id)
+  (put 'php-project-lsp-language-id 'safe-local-variable #'stringp))
+
+;;;###autoload
+(progn
+  (defvar php-project-lsp-initialize-function nil)
+  (make-variable-buffer-local 'php-project-lsp-initialize-function)
+  (put 'php-project-lsp-initialize-function 'safe-local-variable #'functionp))
+
+;;;###autoload
+(progn
+  (defvar php-project-lsp-prefix-function nil)
+  (make-variable-buffer-local 'php-project-lsp-prefix-function)
+  (put 'php-project-lsp-prefix-function 'safe-local-variable #'functionp))
+
+;;;###autoload
+(progn
+  (defvar php-project-lsp-command nil
+    "Command to execute LSP Server.
+
+`phan'
+      Auto detect.
+
+STRING
+      Path to executable file.
+      \"/path/to/lsp-server\"
+
+LIST (STRING . (repeat STRING))
+      Path to executable file and command line arguments.
+      (\"php\" \"/path/to/lsp-server\")
+")
+  (make-variable-buffer-local 'php-project-lsp-command)
+  (put 'php-project-lsp-command 'safe-local-variable
+       #'(lambda (v) (or (null v) (eq 'phan v)
+                         (and (listp v)
+                              (file-executable-p (car v))
+                              (cl-loop for s in (cdr v) always (stringp s)))
+                         (and (stringp v) (file-exists-p v))))))
+
+;;;###autoload
+(progn
+  (defvar php-project-lsp-tcp-port nil
+    "TCP port number of PHP LSP server.")
+  (make-variable-buffer-local 'php-project-lsp-tcp-port)
+  (put 'php-project-lsp-tcp-port 'safe-local-variable #'integerp))
+
 
 ;; Functions
 
@@ -167,6 +223,42 @@ Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
                  (list php-project-phan-executable
                        (cons 'root "vendor/bin/phan"))))
       (executable-find "phan")))
+
+(defun php-project-lsp-get-root-directory ()
+  "Return path to root directory for LSP server."
+  (or php-project-lsp-root-directory
+      (php-project-get-root-dir)))
+
+(defun php-project-lsp-get-language-id (buffer)
+  "Return language-id for LSP server by `BUFFER'."
+  (if (functionp php-project-lsp-language-id)
+      (funcall php-project-lsp-language-id buffer)
+    (or php-project-lsp-language-id "php")))
+
+(defun php-project-lsp-get-command ()
+  "Return list of execute LSP server."
+  (cond
+   ((eq 'phan php-project-lsp-command)
+    (list (or (php-project-get-php-executable)
+              (error "Cant find executable `php' command.  Please install PHP"))
+          (or (php-project-get-phan-executable)
+              (error "Cant find executable `phan' command.  Please install Phan"))
+          "--language-server-on-stdin"
+          "--project-root-directory"
+          (php-project-lsp-get-root-directory)))
+   ((stringp php-project-lsp-command) php-project-lsp-command)
+   ((consp php-project-lsp-command) php-project-lsp-command)))
+
+(defun php-project-lsp-initialize (client)
+  "Initialize LSP client `CLIENT' for PHP."
+  (when (functionp php-project-lsp-initialize-function)
+    (funcall php-project-lsp-initialize-function client)))
+
+(defun php-project-lsp-prefix ()
+  "Return a cons (start . end) representing the start and end bounds of the prefix."
+  (if (functionp php-project-lsp-prefix-function)
+      (funcall php-project-lsp-prefix-function))
+  (bounds-of-thing-at-point 'symbol))
 
 ;;;###autoload
 (defun php-project-get-bootstrap-scripts ()
