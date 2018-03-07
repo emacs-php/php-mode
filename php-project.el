@@ -68,6 +68,7 @@
 
 ;;; Code:
 (require 'cl-lib)
+(require 'lsp-mode nil t)
 
 ;; Constants
 (defconst php-project-composer-autoloader "vendor/autoload.php")
@@ -259,6 +260,20 @@ LIST (STRING . (repeat STRING))
   (if (functionp php-project-lsp-prefix-function)
       (funcall php-project-lsp-prefix-function))
   (bounds-of-thing-at-point 'symbol))
+
+;;;###autoload(autoload 'php-project-lsp-client-enable "php-project" "Turn on LSP server for PHP project." t)
+
+;; NOTE: This is a hack to prevent hacking bytecode compile time error.
+;;       And the function generated here is autoloadable!
+(when (featurep 'lsp-mode)
+  (require 'lsp-mode)
+  (eval
+   '(lsp-define-stdio-client php-project-lsp-client "php" #'php-project-lsp-get-root-directory '("dummy")
+                             :docstring "Turn on LSP server for PHP project."
+                             :language-id-fn #'php-project-lsp-get-language-id
+                             :command-fn #'php-project-lsp-get-command
+                             :initialize #'php-project-lsp-initialize
+                             :prefix-function #'php-project-lsp-prefix)))
 
 ;;;###autoload
 (defun php-project-get-bootstrap-scripts ()
