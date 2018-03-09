@@ -934,13 +934,13 @@ this ^ lineup"
 
 (eval-and-compile
   (defconst php-heredoc-start-re
-    "<<<\\(?:\\w+\\|'\\w+'\\)$"
+    "<<<\\(?:\\_<.+?\\_>\\|'\\_<.+?\\_>'\\|\"\\_<.+?\\_>\"\\)$"
     "Regular expression for the start of a PHP heredoc."))
 
 (defun php-heredoc-end-re (heredoc-start)
   "Build a regular expression for the end of a heredoc started by the string HEREDOC-START."
   ;; Extract just the identifier without <<< and quotes.
-  (string-match "\\w+" heredoc-start)
+  (string-match "\\_<.+?\\_>" heredoc-start)
   (concat "^\\(" (match-string 0 heredoc-start) "\\)\\W"))
 
 (defun php-syntax-propertize-function (start end)
