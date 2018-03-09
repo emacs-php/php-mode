@@ -914,6 +914,10 @@ style from Drupal."
       (set-auto-mode)
       (should (not (eq 'php-mode major-mode))))))
 
+(ert-deftest php-mode-test-issue-439 ()
+  "Various heredoc/nowdoc formats are highlighted appropriately."
+  (with-php-mode-test ("issue-439.php" :faces t)))
+
 (ert-deftest php-mode-test-type-hints ()
   "Test highlighting of type hints and return types."
   (with-php-mode-test ("type-hints.php" :faces t)))
