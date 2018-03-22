@@ -1094,6 +1094,9 @@ this ^ lineup"
 
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
+(defvar php-mode--delayed-set-style nil)
+(make-variable-buffer-local 'php-mode--delayed-set-style)
+
 (defun php-set-style (stylename &optional dont-override)
   "Set the current `php-mode' buffer to use the style STYLENAME.
 STYLENAME is one of the names selectable in `php-mode-coding-style'.
@@ -1110,6 +1113,7 @@ After setting the stylevars run hooks according to STYLENAME
   \"symfony2\"  `php-mode-symfony2-hook'
   \"psr2\"      `php-mode-psr2-hook'"
   (interactive)
+  (setq php-mode--delayed-set-style nil)
   (c-set-style stylename dont-override)
   (if (eq (symbol-value 'php-style-delete-trailing-whitespace) t)
       (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)
@@ -1124,10 +1128,11 @@ After setting the stylevars run hooks according to STYLENAME
 
 (defun php-mode-set-style-delay ()
   "Set the current `php-mode' buffer to use the style by custom or local variables."
-  (let ((coding-style (or (and (boundp 'php-project-coding-style) php-project-coding-style)
-                          php-mode-coding-style)))
-    (prog1 (php-set-style (symbol-name coding-style))
-      (remove-hook 'hack-local-variables-hook #'php-mode-set-style-delay))))
+  (when php-mode--delayed-set-style
+    (let ((coding-style (or (and (boundp 'php-project-coding-style) php-project-coding-style)
+                            php-mode-coding-style)))
+      (prog1 (php-set-style (symbol-name coding-style))
+        (remove-hook 'hack-local-variables-hook #'php-mode-set-style-delay)))))
 
 (defun php-mode-debug ()
   "Display informations useful for debugging PHP Mode."
@@ -1191,6 +1196,7 @@ After setting the stylevars run hooks according to STYLENAME
   ;; File local variables are set after initialization of major mode except `run-hook' is complete.
   (if php-mode-enable-project-coding-style
       (add-hook 'hack-local-variables-hook #'php-mode-set-style-delay t t)
+    (setq php-mode--delayed-set-style t)
     (php-set-style (symbol-name php-mode-coding-style)))
 
   (when (or php-mode-force-pear
