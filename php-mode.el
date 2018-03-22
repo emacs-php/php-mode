@@ -83,6 +83,7 @@
 (require 'etags)
 (require 'speedbar)
 (require 'imenu)
+(require 'nadvice nil t)
 (require 'php-project nil t)
 
 (require 'cl-lib)
@@ -1113,7 +1114,7 @@ After setting the stylevars run hooks according to STYLENAME
   \"symfony2\"  `php-mode-symfony2-hook'
   \"psr2\"      `php-mode-psr2-hook'"
   (interactive)
-  (setq php-mode--delayed-set-style nil)
+  (php-mode--disable-delay-set-style)
   (c-set-style stylename dont-override)
   (if (eq (symbol-value 'php-style-delete-trailing-whitespace) t)
       (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)
@@ -1125,6 +1126,12 @@ After setting the stylevars run hooks according to STYLENAME
           ((eq stylename "psr2")      (run-hooks 'php-mode-psr2-hook))))
 
 (put 'php-set-style 'interactive-form (interactive-form 'c-set-style))
+
+(defun php-mode--disable-delay-set-style (&rest args)
+  "Disable php-mode-set-style-delay on after hook.  `ARGS' be ignore."
+  (setq php-mode--delayed-set-style nil)
+  (when (fboundp 'advice-remove)
+    (advice-remove #'php-mode--disable-delay-set-style #'c-set-style)))
 
 (defun php-mode-set-style-delay ()
   "Set the current `php-mode' buffer to use the style by custom or local variables."
@@ -1197,6 +1204,8 @@ After setting the stylevars run hooks according to STYLENAME
   (if php-mode-enable-project-coding-style
       (add-hook 'hack-local-variables-hook #'php-mode-set-style-delay t t)
     (setq php-mode--delayed-set-style t)
+    (when (fboundp 'advice-add)
+      (advice-add #'c-set-style :after #'php-mode--disable-delay-set-style '(local)))
     (php-set-style (symbol-name php-mode-coding-style)))
 
   (when (or php-mode-force-pear
