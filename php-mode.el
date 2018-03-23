@@ -1069,7 +1069,7 @@ this ^ lineup"
   "PHP Mode face used to highlight sigils($) of $this variable."
   :group 'php-faces)
 
-(defface php-php-tag '((t (:inherit font-lock-constant-face)))
+(defface php-php-tag '((t (:inherit font-lock-preprocessor-face)))
   "PHP Mode face used to highlight PHP tags."
   :group 'php-faces)
 
