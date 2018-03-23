@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp -*-
-(("<?php" . font-lock-preprocessor-face)
+(("<?php" . php-php-tag)
  ("\n\n")
  ("$" . php-variable-sigil)
  ("object" . php-variable-name)
