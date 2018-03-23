@@ -1202,10 +1202,11 @@ After setting the stylevars run hooks according to STYLENAME
   ;; Since it depends on the timing at which the file local variable is set.
   ;; File local variables are set after initialization of major mode except `run-hook' is complete.
   (if php-mode-enable-project-coding-style
-      (add-hook 'hack-local-variables-hook #'php-mode-set-style-delay t t)
-    (setq php-mode--delayed-set-style t)
-    (when (fboundp 'advice-add)
-      (advice-add #'c-set-style :after #'php-mode--disable-delay-set-style '(local)))
+      (progn
+        (add-hook 'hack-local-variables-hook #'php-mode-set-style-delay t t)
+        (setq php-mode--delayed-set-style t)
+        (when (fboundp 'advice-add)
+          (advice-add #'c-set-style :after #'php-mode--disable-delay-set-style '(local))))
     (php-set-style (symbol-name php-mode-coding-style)))
 
   (when (or php-mode-force-pear
