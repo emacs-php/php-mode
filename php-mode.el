@@ -1555,7 +1555,7 @@ a completion list."
    ;; php-mode patterns *before* cc-mode:
    ;;  only add patterns here if you want to prevent cc-mode from applying
    ;;  a different face.
-   '(
+   `(
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
      ("\\(->\\)\\(\\sw+\\)\\s-*(" (1 'php-object-op) (2 'php-method-call))
@@ -1587,7 +1587,22 @@ a completion list."
      ("\\(\\([a-zA-Z0-9_]+\\\\\\)+[a-zA-Z0-9_]+\\|\\(\\\\[a-zA-Z0-9_]+\\)+\\)::" 1 'php-constant)
 
      ;; Support the ::class constant in PHP5.6
-     ("\\sw+\\(::\\)\\(class\\)\\b" (1 'php-paamayim-nekudotayim) (2 'php-constant)))
+     ("\\sw+\\(::\\)\\(class\\)\\b" (1 'php-paamayim-nekudotayim) (2 'php-constant))
+
+     ;; While c-opt-cpp-* highlights the <?php opening tags, it is not
+     ;; possible to make it highlight short open tags and closing tags
+     ;; as well. So we force the correct face on all cases that
+     ;; c-opt-cpp-* lacks for this purpose.
+     ;;
+     ;; Note that starting a file with <% breaks indentation, a
+     ;; limitation we can/should live with.
+     (,(regexp-opt '("<?php" "<?=" "?>"
+                     "<?"      ;; obsolete short open tag
+                     "<%" "%>" ;; obsolete ASP tag
+                     ;; Obsoleted tags were deleted in PHP 7.
+                     ;; @see http://php.net/manual/language.basic-syntax.phptags.php
+                     ))
+      0 'php-php-tag))
 
    ;; cc-mode patterns
    (c-lang-const c-matchers-3 php)
@@ -1627,15 +1642,7 @@ a completion list."
 
      ;; Highlight class names used as nullable type hints
      ("\\?\\(\\(:?\\sw\\|\\s_\\)+\\)\\s-+\\$" 1 font-lock-type-face)
-
-     ;; While c-opt-cpp-* highlights the <?php opening tags, it is not
-     ;; possible to make it highlight short open tags and closing tags
-     ;; as well. So we force the correct face on all cases that
-     ;; c-opt-cpp-* lacks for this purpose.
-     ;;
-     ;; Note that starting a file with <% breaks indentation, a
-     ;; limitation we can/should live with.
-     (,(regexp-opt '("?>" "<?" "<%" "%>")) 0 'php-php-tag)))
+     ))
   "Detailed highlighting for PHP Mode.")
 
 (defvar php-font-lock-keywords php-font-lock-keywords-3
