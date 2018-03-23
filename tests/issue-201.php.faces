@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp -*-
-(("<?php" . font-lock-preprocessor-face)
+(("<?php" . php-php-tag)
  ("\n\n")
  ("/**\n * GitHub Issue:    " . font-lock-doc-face)
  ("https://github.com/ejmr/php-mode/issues/201" link font-lock-doc-face)

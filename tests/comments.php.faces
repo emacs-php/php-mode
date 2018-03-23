@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp -*-
-(("<?php" . font-lock-preprocessor-face)
+(("<?php" . php-php-tag)
  ("\n\n")
  ("/**\n * File level doc-comment\n *\n * " . font-lock-doc-face)
  ("@copyright" php-doc-annotation-tag font-lock-doc-face)

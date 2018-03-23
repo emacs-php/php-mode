@@ -1,5 +1,5 @@
 ;; -*- mode: emacs-lisp -*-
-(("<?php" . font-lock-preprocessor-face)
+(("<?php" . php-php-tag)
  ("\n\n")
  ("// " . font-lock-comment-delimiter-face)
  ("Array should be treated like a normal keyword\n" . font-lock-comment-face)
