@@ -1175,12 +1175,12 @@ After setting the stylevars run hooks according to STYLENAME
   (c-init-language-vars php-mode)
   (c-common-init 'php-mode)
 
-  (set (make-local-variable font-lock-string-face) 'php-string)
-  (set (make-local-variable font-lock-keyword-face) 'php-keyword)
-  (set (make-local-variable font-lock-builtin-face) 'php-builtin)
-  (set (make-local-variable font-lock-function-name-face) 'php-function-name)
-  (set (make-local-variable font-lock-variable-name-face) 'php-variable-name)
-  (set (make-local-variable font-lock-constant-face) 'php-constant)
+  (set (make-local-variable 'font-lock-string-face) 'php-string)
+  (set (make-local-variable 'font-lock-keyword-face) 'php-keyword)
+  (set (make-local-variable 'font-lock-builtin-face) 'php-builtin)
+  (set (make-local-variable 'font-lock-function-name-face) 'php-function-name)
+  (set (make-local-variable 'font-lock-variable-name-face) 'php-variable-name)
+  (set (make-local-variable 'font-lock-constant-face) 'php-constant)
 
   (modify-syntax-entry ?_    "_" php-mode-syntax-table)
   (modify-syntax-entry ?`    "\"" php-mode-syntax-table)
