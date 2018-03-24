@@ -1115,7 +1115,17 @@ After setting the stylevars run hooks according to STYLENAME
   \"psr2\"      `php-mode-psr2-hook'"
   (interactive)
   (php-mode--disable-delay-set-style)
-  (c-set-style stylename dont-override)
+
+  ;; Back up manually set variables
+  (let* (value (backup-vars
+                (cl-loop for name in c-style-variables
+                         do (setq value (symbol-value name))
+                         if (and value (not (eq 'set-from-style value)))
+                         collect (cons name value))))
+    (c-set-style stylename dont-override)
+    ;; Restore variables
+    (cl-loop for (name . value) in backup-vars do (set name value)))
+
   (if (eq (symbol-value 'php-style-delete-trailing-whitespace) t)
       (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)
     (remove-hook 'before-save-hook 'delete-trailing-whitespace t))
