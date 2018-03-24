@@ -386,6 +386,13 @@ If you want to suppress styles from being overwritten by directory / file
 local variables, set NIL."
   :type 'boolean)
 
+(defcustom php-mode-enable-backup-style-variables t
+  "When set to `T', back up values set by hook and buffer local variables.
+
+This function may interfere with other hooks and other behaviors.
+In that case set to `NIL'."
+  :type 'boolean)
+
 (defun php-mode-version ()
   "Display string describing the version of PHP Mode."
   (interactive)
@@ -1115,7 +1122,20 @@ After setting the stylevars run hooks according to STYLENAME
   \"psr2\"      `php-mode-psr2-hook'"
   (interactive)
   (php-mode--disable-delay-set-style)
-  (c-set-style stylename dont-override)
+
+  ;; Back up manually set variables
+  (let* (value
+         (backup-vars
+          (and php-mode-enable-backup-style-variables
+               (cl-loop for name in c-style-variables
+                        do (setq value (symbol-value name))
+                        if (and value (not (eq 'set-from-style value)))
+                        collect (cons name value)))))
+    (c-set-style stylename dont-override)
+    ;; Restore variables
+    (cl-loop for (name . value) in backup-vars
+             do (set (make-local-variable name) value)))
+
   (if (eq (symbol-value 'php-style-delete-trailing-whitespace) t)
       (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)
     (remove-hook 'before-save-hook 'delete-trailing-whitespace t))
