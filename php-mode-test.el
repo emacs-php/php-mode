@@ -131,6 +131,7 @@ If the `:faces' keyword is set, read the file with `.faces' added to that
 file name and check that the faces of the fonts in the buffer match."
   (declare (indent 1))
   `(with-temp-buffer
+     (setq php-mode-enable-backup-style-variables nil)
      (insert-file-contents (expand-file-name ,file php-mode-test-dir))
      (php-mode)
      ,(if (fboundp 'font-lock-ensure)
