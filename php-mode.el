@@ -161,11 +161,13 @@ Turning this on will open it whenever `php-mode' is loaded."
   "Should detect presence of html tags."
   :type 'boolean)
 
-(defcustom php-template-integrate-blade #'web-mode
-  "Automatically use another MAJOR-MODE when open Laravel Blade template file."
-  :type '(choice (function-item "web-mode is popular major mode" #'web-mode)
-                 (function :tag "Major mode for editing blade template")
-                 (const :tag "Do not use other major mode"))
+(defcustom php-template-mode-alist
+  '(("\\.blade\\." . web-mode)
+    ;; ("\\.phtml\\'" . web-mode)
+    ;; ("\\.tpl\\." . web-mode)
+    )
+  "Automatically use another MAJOR-MODE when open template file."
+  :type 'alist
   :link '(url-link :tag "web-mode" "http://web-mode.org/"))
 
 (defsubst php-in-string-p ()
@@ -1239,14 +1241,12 @@ After setting the stylevars run hooks according to STYLENAME
 ;;;###autoload
 (defun php-mode-maybe ()
   "Select PHP mode or other major mode."
-  (cond
-   ((and php-template-integrate-blade
-         buffer-file-name (string-match-p "\\.blade\\.php\\'" buffer-file-name))
-    (if (fboundp php-template-integrate-blade)
-        (prog1 t
-          (funcall php-template-integrate-blade))
-      (warn "php-mode is NOT support blade template")))
-   (:else (php-mode))))
+  (let ((mode (assoc-default buffer-file-name php-template-mode-alist #'string-match-p)))
+    (when (and mode (not (fboundp mode)))
+        (cond
+         ((string-match-p "\\.blade\\." buffer-file-name)
+          (warn "php-mode is NOT support blade template"))))
+    (funcall (or mode #'php-mode))))
 
 ;;;###autoload
 (define-derived-mode php-mode c-mode "PHP"
