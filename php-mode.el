@@ -1790,8 +1790,23 @@ The output will appear in the buffer *PHP*."
 
 
 ;;;###autoload
-(dolist (pattern '("\\.php[s345t]?\\'" "/\\.php_cs\\(\\.dist\\)?\\'" "\\.phtml\\'" "/Amkfile\\'" "\\.amk\\'"))
-  (add-to-list 'auto-mode-alist `(,pattern . php-mode) t))
+(add-to-list 'auto-mode-alist
+             (cons
+              (eval-when-compile
+                (rx (or
+                     ;; File name extensions  (ex. "*.php", "*.phtml")
+                     (: "."
+                        (or (: "php" (? (in "s345t")))
+                            "amk"
+                            "phtml"))
+                     ;; Full file names  (ex. "/Makefile", "/Amkfile")
+                     (: "/"
+                        (or "Amkfile"
+                            ".php_cs"
+                            ".php_cs.dist")))
+                    string-end))
+              'php-mode)
+             t)
 
 (provide 'php-mode)
 
