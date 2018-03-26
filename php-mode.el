@@ -15,7 +15,7 @@
 (defconst php-mode-version-number "1.19.0"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2018-03-24"
+(defconst php-mode-modified "2018-03-26"
   "PHP Mode build date.")
 
 ;; This file is free software; you can redistribute it and/or
@@ -1164,6 +1164,7 @@ After setting the stylevars run hooks according to STYLENAME
 (defun php-mode-debug ()
   "Display informations useful for debugging PHP Mode."
   (interactive)
+  (require 'cus-edit)
   (message "--- PHP-MODE DEBUG BEGIN ---")
   (message "versions: %s; %s" (emacs-version) (php-mode-version))
   (message "major-mode: %s" major-mode)
@@ -1180,7 +1181,9 @@ After setting the stylevars run hooks according to STYLENAME
                     if (eq type 'custom-variable)
                     collect (list v (symbol-value v))))
   (message "c-indentation-style: %s" c-indentation-style)
-  (message "c-style-variables: %s" (c-get-style-variables c-indentation-style nil))
+  (message "c-style-variables: %s"
+           (cl-loop for v in c-style-variables
+                    collect (list v (symbol-value v))))
   (message "--- PHP-MODE DEBUG END ---")
   (switch-to-buffer "*Messages*")
   (goto-char (point-max)))
