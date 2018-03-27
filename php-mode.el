@@ -1161,32 +1161,53 @@ After setting the stylevars run hooks according to STYLENAME
       (prog1 (php-set-style (symbol-name coding-style))
         (remove-hook 'hack-local-variables-hook #'php-mode-set-style-delay)))))
 
+(defconst php-mode-debug--buffer-name "*PHP Mode DEBUG*")
+
+(defun php-mode-debug--message (format-string &rest args)
+  "Write message `FORMAT-STRING' and `ARGS' to debug buffer, like `message'."
+  (declare (indent 1))
+  (with-current-buffer php-mode-debug--buffer-name
+    (goto-char (point-max))
+    (insert (apply #'format format-string args) "\n")))
+
 (defun php-mode-debug ()
   "Display informations useful for debugging PHP Mode."
   (interactive)
   (require 'cus-edit)
-  (message "--- PHP-MODE DEBUG BEGIN ---")
-  (message "versions: %s; %s" (emacs-version) (php-mode-version))
-  (message "major-mode: %s" major-mode)
-  (message "minor-modes: %s"
-           (cl-loop for s in minor-mode-list
-                    unless (string-match-p "global" (symbol-name s))
-                    if (and (boundp s) (symbol-value s))
-                    collect s))
-  (message "variables: %s"
-           (cl-loop for v in '(indent-tabs-mode tab-width)
-                    collect (list v (symbol-value v))))
-  (message "custom variables: %s"
-           (cl-loop for (v type) in (custom-group-members 'php nil)
-                    if (eq type 'custom-variable)
-                    collect (list v (symbol-value v))))
-  (message "c-indentation-style: %s" c-indentation-style)
-  (message "c-style-variables: %s"
-           (cl-loop for v in c-style-variables
-                    collect (list v (symbol-value v))))
-  (message "--- PHP-MODE DEBUG END ---")
-  (switch-to-buffer "*Messages*")
-  (goto-char (point-max)))
+  (with-current-buffer (get-buffer-create php-mode-debug--buffer-name)
+    (erase-buffer)
+    (goto-address-mode))
+  (php-mode-debug--message "Feel free to report on GitHub what you noticed!")
+  (php-mode-debug--message "https://github.com/ejmr/php-mode/issues/new")
+  (php-mode-debug--message "")
+  (php-mode-debug--message "Pasting the following information on the issue will help us to investigate the cause.")
+  (php-mode-debug--message "```")
+  (php-mode-debug--message "--- PHP-MODE DEBUG BEGIN ---")
+  (php-mode-debug--message "versions: %s; %s" (emacs-version) (php-mode-version))
+  (php-mode-debug--message "major-mode: %s" major-mode)
+  (php-mode-debug--message "minor-modes: %s"
+    (cl-loop for s in minor-mode-list
+             unless (string-match-p "global" (symbol-name s))
+             if (and (boundp s) (symbol-value s))
+             collect s))
+  (php-mode-debug--message "variables: %s"
+    (cl-loop for v in '(indent-tabs-mode tab-width)
+             collect (list v (symbol-value v))))
+  (php-mode-debug--message "custom variables: %s"
+    (cl-loop for (v type) in (custom-group-members 'php nil)
+             if (eq type 'custom-variable)
+             collect (list v (symbol-value v))))
+  (php-mode-debug--message "c-indentation-style: %s" c-indentation-style)
+  (php-mode-debug--message "c-style-variables: %s"
+    (cl-loop for v in c-style-variables
+             unless (memq v '(c-doc-comment-style c-offsets-alist))
+             collect (list v (symbol-value v))))
+  (php-mode-debug--message "c-doc-comment-style: %s" c-doc-comment-style)
+  (php-mode-debug--message "c-offsets-alist: %s" c-offsets-alist)
+  (php-mode-debug--message "--- PHP-MODE DEBUG END ---")
+  (php-mode-debug--message "```\n")
+  (php-mode-debug--message "Thank you!")
+  (pop-to-buffer php-mode-debug--buffer-name))
 
 ;;;###autoload
 (define-derived-mode php-mode c-mode "PHP"
