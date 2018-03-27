@@ -1161,22 +1161,27 @@ After setting the stylevars run hooks according to STYLENAME
       (prog1 (php-set-style (symbol-name coding-style))
         (remove-hook 'hack-local-variables-hook #'php-mode-set-style-delay)))))
 
-(defconst php-mode-debug--buffer-name "*PHP Mode DEBUG*")
+(defun php-mode-debug--buffer (&optional command &rest args)
+  "Return buffer for php-mode-debug, and execute `COMMAND' with `ARGS'."
+  (with-current-buffer (get-buffer-create "*PHP Mode DEBUG*")
+    (cl-case command
+      (init (erase-buffer)
+            (goto-address-mode))
+      (top (goto-char (point-min)))
+      (insert (goto-char (point-max))
+              (apply #'insert args)))
+    (current-buffer)))
 
 (defun php-mode-debug--message (format-string &rest args)
   "Write message `FORMAT-STRING' and `ARGS' to debug buffer, like `message'."
   (declare (indent 1))
-  (with-current-buffer php-mode-debug--buffer-name
-    (goto-char (point-max))
-    (insert (apply #'format format-string args) "\n")))
+  (php-mode-debug--buffer 'insert (apply #'format format-string args) "\n"))
 
 (defun php-mode-debug ()
   "Display informations useful for debugging PHP Mode."
   (interactive)
   (require 'cus-edit)
-  (with-current-buffer (get-buffer-create php-mode-debug--buffer-name)
-    (erase-buffer)
-    (goto-address-mode))
+  (php-mode-debug--buffer 'init)
   (php-mode-debug--message "Feel free to report on GitHub what you noticed!")
   (php-mode-debug--message "https://github.com/ejmr/php-mode/issues/new")
   (php-mode-debug--message "")
@@ -1207,7 +1212,7 @@ After setting the stylevars run hooks according to STYLENAME
   (php-mode-debug--message "--- PHP-MODE DEBUG END ---")
   (php-mode-debug--message "```\n")
   (php-mode-debug--message "Thank you!")
-  (pop-to-buffer php-mode-debug--buffer-name))
+  (pop-to-buffer (php-mode-debug--buffer 'top)))
 
 ;;;###autoload
 (define-derived-mode php-mode c-mode "PHP"
