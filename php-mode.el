@@ -15,7 +15,7 @@
 (defconst php-mode-version-number "1.19.0"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2018-03-26"
+(defconst php-mode-modified "2018-03-28"
   "PHP Mode build date.")
 
 ;; This file is free software; you can redistribute it and/or
