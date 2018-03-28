@@ -378,8 +378,9 @@ This variable can take one of the following symbol values:
                  (const :tag "PSR-2" psr2))
   :initialize 'custom-initialize-default)
 
-
-(defcustom php-mode-enable-project-coding-style t
+;; Since this function has a bad influence on the environment of many users,
+;; temporarily disable it
+(defcustom php-mode-enable-project-coding-style nil
   "When set to true override php-mode-coding-style by php-project-coding-style.
 
 If you want to suppress styles from being overwritten by directory / file
