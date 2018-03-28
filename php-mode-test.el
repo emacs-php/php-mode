@@ -928,6 +928,18 @@ style from Drupal."
   "Test highlighting of type hints and return types."
   (with-php-mode-test ("type-hints.php" :faces t)))
 
+(ert-deftest php-mode-debug-test ()
+  "Test running php-mode-debug and php-mode-debug--buffer."
+  (with-temp-buffer
+    (php-mode)
+    (php-mode-debug)
+    (should (string= (buffer-name) "*PHP Mode DEBUG*"))
+    (php-mode-debug--buffer 'top)
+    (search-forward "--- PHP-MODE DEBUG BEGIN ---")
+    (search-forward "--- PHP-MODE DEBUG END ---"))
+  (with-current-buffer (php-mode-debug--buffer 'init)
+    (should (eq 0 (- (point-max) (point-min))))))
+
 (ert-deftest php-project-root ()
   (should (string= (abbreviate-file-name default-directory)
                    (php-project-get-root-dir))))
