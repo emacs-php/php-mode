@@ -396,8 +396,9 @@ In that case set to `NIL'."
 (defun php-mode-version ()
   "Display string describing the version of PHP Mode."
   (interactive)
-  (message "PHP Mode %s of %s"
-           php-mode-version-number php-mode-modified))
+  (funcall
+   (if (called-interactively-p 'interactive) #'message #'format)
+   "PHP Mode %s of %s" php-mode-version-number php-mode-modified))
 
 ;;;###autoload
 (define-obsolete-variable-alias 'php-available-project-root-files 'php-project-available-root-files "1.19.0")
