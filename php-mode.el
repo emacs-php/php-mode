@@ -1264,7 +1264,8 @@ After setting the stylevars run hooks according to STYLENAME
         (setq php-mode--delayed-set-style t)
         (when (fboundp 'advice-add)
           (advice-add #'c-set-style :after #'php-mode--disable-delay-set-style '(local))))
-    (php-set-style (symbol-name php-mode-coding-style)))
+    (let ((php-mode-enable-backup-style-variables nil))
+      (php-set-style (symbol-name php-mode-coding-style))))
 
   (when (or php-mode-force-pear
             (and (stringp buffer-file-name)
