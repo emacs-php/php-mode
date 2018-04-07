@@ -486,6 +486,9 @@ In that case set to `NIL'."
 (c-lang-defconst c-opt-cpp-prefix
   php "\\s-*<\\?")
 
+(c-lang-defconst c-anchored-cpp-prefix
+  php "\\s-*\\(<\\?(=\\|\\sw+)\\)")
+
 (c-lang-defconst c-identifier-ops
   php '(
         (left-assoc "\\" "::" "->")
