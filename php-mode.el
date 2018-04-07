@@ -1377,8 +1377,10 @@ current `tags-file-name'."
                    "`php-completion-file' or `php-manual-path' set")))
         (when tags-table
           ;; Combine the tables.
-          (mapatoms (lambda (sym) (intern (symbol-name sym) php-table))
-                    tags-table))
+          (if (obarrayp tags-table)
+              (mapatoms (lambda (sym) (intern (symbol-name sym) php-table))
+                        tags-table)
+            (setq php-table (append tags-table php-table))))
         (setq php-completion-table php-table))))
 
 (defun php-build-table-from-file (filename)
