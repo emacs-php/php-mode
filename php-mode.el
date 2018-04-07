@@ -1367,7 +1367,8 @@ current `tags-file-name'."
              (cond ((and (not (string= "" php-completion-file))
                          (file-readable-p php-completion-file))
                     (php-build-table-from-file php-completion-file))
-                   (php-manual-path
+                   ((and (not (string= "" php-manual-path))
+                         (file-directory-p php-manual-path))
                     (php-build-table-from-path php-manual-path))
                    (t nil))))
         (unless (or php-table tags-table)
