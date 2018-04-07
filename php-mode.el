@@ -1394,19 +1394,11 @@ current `tags-file-name'."
     table))
 
 (defun php-build-table-from-path (path)
-  (let ((table (make-vector 1022 0))
-        (files (directory-files
-                path
-                nil
-                "^function\\..+\\.html$")))
-    (mapc (lambda (file)
-            (string-match "\\.\\([-a-zA-Z_0-9]+\\)\\.html$" file)
-            (intern
-             (replace-regexp-in-string
-              "-" "_" (substring file (match-beginning 1) (match-end 1)) t)
-             table))
-          files)
-    table))
+  "Return list of PHP function name from `PATH' directory."
+  (cl-loop for file in (directory-files path nil "^function\\..+\\.html$")
+           if (string-match "\\.\\([-a-zA-Z_0-9]+\\)\\.html$" file)
+           collect (replace-regexp-in-string
+                    "-" "_" (substring file (match-beginning 1) (match-end 1)) t)))
 
 ;; Find the pattern we want to complete
 ;; find-tag-default from GNU Emacs etags.el
