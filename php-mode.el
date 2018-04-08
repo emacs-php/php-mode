@@ -1346,11 +1346,12 @@ for \\[find-tag] (which see)."
                  (delete-region beg (point))
                  (insert completion))
                 (t
-                 (message "Making completion list...")
-                 (with-output-to-temp-buffer "*Completions*"
-                   (display-completion-list
-                    (all-completions pattern php-functions)))
-                 (message "Making completion list...%s" "done")))))))
+                 (let ((selected (completing-read
+                                  "Select completion: "
+                                  (all-completions pattern php-functions)
+                                  nil t pattern)))
+                   (delete-region beg (point))
+                   (insert selected))))))))
 
 (defun php-completion-table ()
   "Build variable `php-completion-table' on demand.
