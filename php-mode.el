@@ -84,7 +84,7 @@
 (require 'speedbar)
 (require 'imenu)
 (require 'nadvice nil t)
-(require 'php-project nil t)
+(require 'package)
 
 (require 'cl-lib)
 (require 'mode-local)
@@ -1182,6 +1182,8 @@ After setting the stylevars run hooks according to STYLENAME
   (declare (indent 1))
   (php-mode-debug--buffer 'insert (apply #'format format-string args) "\n"))
 
+(declare-function custom-group-members "cus-edit" (symbol groups-only))
+
 (defun php-mode-debug ()
   "Display informations useful for debugging PHP Mode."
   (interactive)
@@ -1308,6 +1310,9 @@ After setting the stylevars run hooks according to STYLENAME
     (with-silent-modifications
       (save-excursion
         (php-syntax-propertize-function (point-min) (point-max))))))
+
+
+(declare-function semantic-create-imenu-index "semantic/imenu" (&optional stream))
 
 (defvar-mode-local php-mode imenu-create-index-function
   (if php-do-not-use-semantic-imenu
