@@ -13,14 +13,14 @@ PHP 5.4以降を開発しやすくするための機能をアップデートす�
 1. Turadg Aleahmad (Original Author)
 2. Aaron S. Hawley
 3. Lennart Borgman
+4. Eric James Michael Ritz
+5. Syohei Yoshida
 
 リストアップされたすべての貢献者たちも同様にPHPモードを改善しました。
 
 現在のメンテナ：
 
-1. Syohei Yoshida
-2. Eric James Michael Ritz
-3. USAMI Kenta (@zonuexe)
+1. USAMI Kenta (@zonuexe)
 
 [PHPモードのGitHubプロジェクト](https://github.com/ejmr/php-mode)にissueを作成してバグ報告や機能リクエストを送ってください。
 
