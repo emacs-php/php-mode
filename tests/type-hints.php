@@ -125,6 +125,12 @@ class SomeClass
     ): ?stdClass {
     }
 
+    abstract public function getOtherObject(
+    ): stdClass;
+
+    abstract public function getOtherNullableObject(
+    ): ?stdClass;
+
     public function getNsObject(
     ): \path\to\my\Object {
     }

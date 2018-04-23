@@ -15,7 +15,7 @@
 (defconst php-mode-version-number "1.19.0"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2018-04-08"
+(defconst php-mode-modified "2018-04-23"
   "PHP Mode build date.")
 
 ;; This file is free software; you can redistribute it and/or
@@ -1700,7 +1700,7 @@ a completion list."
 
      ;; Highlight return types in functions and methods.
      ("function.+:\\s-*\\??\\(\\(?:\\sw\\|\\s_\\)+\\)" 1 font-lock-type-face)
-     (")\\s-*:\\s-*\\??\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*\{" 1 font-lock-type-face)
+     (")\\s-*:\\s-*\\??\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*\\(?:\{\\|;\\)" 1 font-lock-type-face)
 
      ;; Highlight class names used as nullable type hints
      ("\\?\\(\\(:?\\sw\\|\\s_\\)+\\)\\s-+\\$" 1 font-lock-type-face)
