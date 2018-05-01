@@ -15,7 +15,7 @@
 (defconst php-mode-version-number "1.19.0"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2018-04-23"
+(defconst php-mode-modified "2018-05-01"
   "PHP Mode build date.")
 
 ;; This file is free software; you can redistribute it and/or
@@ -1196,11 +1196,8 @@ After setting the stylevars run hooks according to STYLENAME
   (php-mode-debug--message "```")
   (php-mode-debug--message "--- PHP-MODE DEBUG BEGIN ---")
   (php-mode-debug--message "versions: %s; %s" (emacs-version) (php-mode-version))
-  (php-mode-debug--message "package-version: %s"
-    (let ((pkg (and (boundp 'package-alist)
-                    (cadr (assq 'php-mode package-alist)))))
-      (when (and pkg (member (package-desc-status pkg) '("unsigned" "dependency")))
-        (package-version-join (package-desc-version pkg)))))
+  (php-mode-debug--message "package-version: %s" (pkg-info-version-info 'php-mode))
+
   (php-mode-debug--message "major-mode: %s" major-mode)
   (php-mode-debug--message "minor-modes: %s"
     (cl-loop for s in minor-mode-list
