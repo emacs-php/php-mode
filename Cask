@@ -5,4 +5,5 @@
 (package-file "php-project.el")
 
 (development
+ (depends-on "pkg-info")
  (depends-on "shut-up"))

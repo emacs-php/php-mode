@@ -1188,6 +1188,7 @@ After setting the stylevars run hooks according to STYLENAME
   "Display informations useful for debugging PHP Mode."
   (interactive)
   (require 'cus-edit)
+  (require 'pkg-info nil t)
   (php-mode-debug--buffer 'init)
   (php-mode-debug--message "Feel free to report on GitHub what you noticed!")
   (php-mode-debug--message "https://github.com/ejmr/php-mode/issues/new")
@@ -1196,7 +1197,13 @@ After setting the stylevars run hooks according to STYLENAME
   (php-mode-debug--message "```")
   (php-mode-debug--message "--- PHP-MODE DEBUG BEGIN ---")
   (php-mode-debug--message "versions: %s; %s" (emacs-version) (php-mode-version))
-  (php-mode-debug--message "package-version: %s" (pkg-info-version-info 'php-mode))
+  (php-mode-debug--message "package-version: %s"
+    (if (fboundp 'pkg-info)
+        (pkg-info-version-info 'php-mode)
+      (let ((pkg (and (boundp 'package-alist)
+                      (cadr (assq 'php-mode package-alist)))))
+        (when (and pkg (member (package-desc-status pkg) '("unsigned" "dependency")))
+          (package-version-join (package-desc-version pkg))))))
 
   (php-mode-debug--message "major-mode: %s" major-mode)
   (php-mode-debug--message "minor-modes: %s"
