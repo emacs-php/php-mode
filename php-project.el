@@ -134,6 +134,51 @@ defines constants, and sets the class loaders.")
 Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
   (put 'php-project-coding-style 'safe-local-variable #'symbolp))
 
+;;;###autoload
+(progn
+  (defvar php-project-repl nil
+    "Function name or path to REPL (interactive shell) script.")
+  (make-variable-buffer-local 'php-project-repl)
+  (put 'php-project-repl 'safe-local-variable
+       #'(lambda (v) (or (functionp v)
+                         (php-project--eval-bootstrap-scripts v)))))
+
+;;;###autoload
+(progn
+  (defvar php-project-unit-test nil
+    "Function name or path to unit test script.")
+  (make-variable-buffer-local 'php-project-unit-test)
+  (put 'php-project-unit-test 'safe-local-variable
+       #'(lambda (v) (or (functionp v)
+                         (php-project--eval-bootstrap-scripts v)))))
+
+;;;###autoload
+(progn
+  (defvar php-project-deploy nil
+    "Function name or path to deploy script.")
+  (make-variable-buffer-local 'php-project-deploy)
+  (put 'php-project-deploy 'safe-local-variable
+       #'(lambda (v) (or (functionp v)
+                         (php-project--eval-bootstrap-scripts v)))))
+
+;;;###autoload
+(progn
+  (defvar php-project-build nil
+    "Function name or path to build script.")
+  (make-variable-buffer-local 'php-project-build)
+  (put 'php-project-build 'safe-local-variable
+       #'(lambda (v) (or (functionp v)
+                         (php-project--eval-bootstrap-scripts v)))))
+
+;;;###autoload
+(progn
+  (defvar php-project-server-start nil
+    "Function name or path to server-start script.")
+  (make-variable-buffer-local 'php-project-server-start)
+  (put 'php-project-server-start 'safe-local-variable
+       #'(lambda (v) (or (functionp v)
+                         (php-project--eval-bootstrap-scripts v)))))
+
 
 ;; Functions
 
