@@ -1,10 +1,8 @@
 language: emacs-lisp
 env:
   matrix:
-    - EMACS_VERSION=emacs-24.3-travis
     - EMACS_VERSION=emacs-24.4-travis
     - EMACS_VERSION=emacs-24.5-travis
-    - EMACS_VERSION=emacs-25.1-travis
     - EMACS_VERSION=emacs-25.2-travis
     - EMACS_VERSION=emacs-25.3-travis
     - EMACS_VERSION=emacs-git-snapshot-travis
