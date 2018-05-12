@@ -9,7 +9,7 @@
 ;; URL: https://github.com/ejmr/php-mode
 ;; Keywords: languages php
 ;; Version: 1.19.1
-;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
+;; Package-Requires: ((emacs "24.3") (cl-lib "0.5"))
 ;; License: GPL-3.0-or-later
 
 (defconst php-mode-version-number "1.19.1"
@@ -1107,8 +1107,7 @@ this ^ lineup"
 
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
-(defvar php-mode--delayed-set-style nil)
-(make-variable-buffer-local 'php-mode--delayed-set-style)
+(defvar-local php-mode--delayed-set-style nil)
 
 (defun php-set-style (stylename &optional dont-override)
   "Set the current `php-mode' buffer to use the style STYLENAME.
@@ -1240,13 +1239,13 @@ After setting the stylevars run hooks according to STYLENAME
   (c-init-language-vars php-mode)
   (c-common-init 'php-mode)
 
-  (set (make-local-variable 'font-lock-string-face) 'php-string)
-  (set (make-local-variable 'font-lock-keyword-face) 'php-keyword)
-  (set (make-local-variable 'font-lock-builtin-face) 'php-builtin)
-  (set (make-local-variable 'c-preprocessor-face-name) 'php-php-tag)
-  (set (make-local-variable 'font-lock-function-name-face) 'php-function-name)
-  (set (make-local-variable 'font-lock-variable-name-face) 'php-variable-name)
-  (set (make-local-variable 'font-lock-constant-face) 'php-constant)
+  (setq-local font-lock-string-face 'php-string)
+  (setq-local font-lock-keyword-face 'php-keyword)
+  (setq-local font-lock-builtin-face 'php-builtin)
+  (setq-local c-preprocessor-face-name 'php-php-tag)
+  (setq-local font-lock-function-name-face 'php-function-name)
+  (setq-local font-lock-variable-name-face 'php-variable-name)
+  (setq-local font-lock-constant-face 'php-constant)
 
   (modify-syntax-entry ?_    "_" php-mode-syntax-table)
   (modify-syntax-entry ?`    "\"" php-mode-syntax-table)
@@ -1255,7 +1254,7 @@ After setting the stylevars run hooks according to STYLENAME
   (modify-syntax-entry ?\n   "> b" php-mode-syntax-table)
   (modify-syntax-entry ?$    "'" php-mode-syntax-table)
 
-  (set (make-local-variable 'syntax-propertize-function) #'php-syntax-propertize-function)
+  (setq-local syntax-propertize-function #'php-syntax-propertize-function)
   (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
                #'php-syntax-propertize-extend-region)
 
@@ -1289,8 +1288,7 @@ After setting the stylevars run hooks according to STYLENAME
 
   ;; syntax-begin-function is obsolete in Emacs 25.1
   (with-no-warnings
-    (set (make-local-variable 'syntax-begin-function)
-         'c-beginning-of-syntax))
+    (setq-local syntax-begin-function 'c-beginning-of-syntax))
 
   ;; We map the php-{beginning,end}-of-defun functions so that they
   ;; replace the similar commands that we inherit from CC Mode.
@@ -1298,17 +1296,14 @@ After setting the stylevars run hooks according to STYLENAME
   ;; following two local variables, but we keep them for now until we
   ;; are completely sure their removal will not break any current
   ;; behavior or backwards compatibility.
-  (set (make-local-variable 'beginning-of-defun-function)
-       'php-beginning-of-defun)
-  (set (make-local-variable 'end-of-defun-function)
-       'php-end-of-defun)
+  (setq-local beginning-of-defun-function 'php-beginning-of-defun)
+  (setq-local end-of-defun-function 'php-end-of-defun)
 
-  (set (make-local-variable 'open-paren-in-column-0-is-defun-start)
-       nil)
-  (set (make-local-variable 'defun-prompt-regexp)
-       "^\\s-*function\\s-+&?\\s-*\\(\\(\\sw\\|\\s_\\)+\\)\\s-*")
-  (set (make-local-variable 'add-log-current-defun-header-regexp)
-       php-beginning-of-defun-regexp)
+  (setq-local open-paren-in-column-0-is-defun-start nil)
+  (setq-local defun-prompt-regexp
+              "^\\s-*function\\s-+&?\\s-*\\(\\(\\sw\\|\\s_\\)+\\)\\s-*")
+  (setq-local add-log-current-defun-header-regexp
+              php-beginning-of-defun-regexp)
 
   (when (>= emacs-major-version 25)
     (with-silent-modifications
