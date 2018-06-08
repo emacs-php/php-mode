@@ -62,6 +62,14 @@ class SomeClass
     {
     }
 
+    public function callable(callable $callable): callable
+    {
+    }
+
+    public function nullableCallable(?callable $callable): ?callable
+    {
+    }
+
     public function someFunction(
         $any,
         string $name,
@@ -137,5 +145,13 @@ class SomeClass
 
     public function getNullableNsObject(
     ): ?\path\to\my\Object {
+    }
+
+    public function getCallable(
+    ): callable {
+    }
+
+    public function getNullableCallable(
+    ): ?callable {
     }
 }

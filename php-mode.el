@@ -15,7 +15,7 @@
 (defconst php-mode-version-number "1.19.1"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2018-05-12"
+(defconst php-mode-modified "2018-06-08"
   "PHP Mode build date.")
 
 ;; This file is free software; you can redistribute it and/or
@@ -1635,13 +1635,14 @@ a completion list."
      ;; with type, like in arglist)
      ("\\(\\$\\)\\(\\sw+\\)" 1 'php-variable-sigil)
 
-     ;; Array is a keyword, except in the following situations:
-     ;; - when used as cast, so that (int) and (array) look the same
+     ;; 'array' and 'callable' are keywords, except in the following situations:
      ;; - when used as a type hint
      ;; - when used as a return type
+     ("\\b\\(array\\|callable\\)\\s-+&?\\$" 1 font-lock-type-face)
+     (")\\s-*:\\s-*\\??\\(array\\|callable\\)\\b" 1 font-lock-type-face)
+     ;; For 'array', there is an additional situation:
+     ;; - when used as cast, so that (int) and (array) look the same
      ("(\\(array\\))" 1 font-lock-type-face)
-     ("\\b\\(array\\)\\s-+&?\\$" 1 font-lock-type-face)
-     (")\\s-*:\\s-*\\??\\(array\\)\\b" 1 font-lock-type-face)
 
      ;; namespaces
      ("\\(\\([a-zA-Z0-9_]+\\\\\\)+[a-zA-Z0-9_]+\\|\\(\\\\[a-zA-Z0-9_]+\\)+\\)[^:a-zA-Z0-9_\\\\]" 1 'font-lock-type-face)
