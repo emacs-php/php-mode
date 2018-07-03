@@ -29,7 +29,7 @@ Please submit any bug reports or feature requests by creating issues on [the Git
 Installation
 ------------
 
-**PHP Mode requires Emacs 24 or later.**  PHP Mode may work with older versions of Emacs but this is not guaranteed.  Bug reports for problems related to using PHP Mode with older versions of Emacs will most like *not* be addressed.
+**PHP Mode works on Emacs 24.3 or later.**  PHP Mode may work with older versions of Emacs but this is not guaranteed.  Bug reports for problems related to using PHP Mode with older versions of Emacs will most like *not* be addressed.
 
 With GNU Emacs 24 or later then you can use its [package][] feature to install PHP Mode from [MELPA][].  *The [Marmalade][] package repository only has the original PHP Mode from 2004.*  Therefore we recommend you use MELPA to install PHP Mode.  If you simply do not wish to use the package manager, then all you need to do is download the `php-mode.el` file, place it inside your `load-path`, and optionally add `(require 'php-mode)` to your Emacs configuration to automatically enable PHP Mode whenever you open a PHP file.
 
@@ -43,7 +43,7 @@ Additionally, you can add `skeleton/php-ext.el` to your `load-path` to [enable t
 Reporting Bugs
 --------------
 
-When reporting a bug please run the function `php-mode-version` and include its output in your bug report.  This helps up reproduce any problem you may have.
+When reporting a bug please run the function `M-x php-mode-debug` and include its output in your bug report.  This helps up reproduce any problem you may have.
 
 
 Experimental and In-Progress Features
