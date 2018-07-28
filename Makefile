@@ -19,6 +19,12 @@ $(AUTOLOADS): php-project.el php-mode.el
 clean:
 	rm -f $(ELCS) $(AUTOLOADS)
 
+# Perform any operations that will be useful for developers
+# who contribute to PHP Mode.
+dev:
+	cp etc/git/prepare-commit-msg .git/hooks/prepare-commit-msg
+	chmod u+x .git/hooks/prepare-commit-msg
+	
 # Runs all unit tests from php-mode-test.el and shows the results. The
 # script will exit with the status code zero if all tests pass. If any
 # test fails the script exits with a non-zero status and shows
