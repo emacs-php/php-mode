@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Github Issue:    https://github.com/ejmr/php-mode/issues/73
+ * Github Issue:    https://github.com/emacs-php/php-mode/issues/73
  *
  * The `delete-indentation' function should work properly for PHP.
  * This means modifying the logic of `fixup-whitespace' so that it

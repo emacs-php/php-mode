@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/144
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/144
  *
  * Indentation test '#' comment line has single quote.
  *

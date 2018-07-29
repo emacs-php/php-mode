@@ -6,7 +6,7 @@
 
 ;; Author: Eric James Michael Ritz
 ;; Maintainer: USAMI Kenta <tadsan@zonu.me>
-;; URL: https://github.com/ejmr/php-mode
+;; URL: https://github.com/emacs-php/php-mode
 ;; Keywords: languages php
 ;; Version: 1.19.1
 ;; Package-Requires: ((emacs "24.3") (cl-lib "0.5"))
@@ -101,7 +101,7 @@
   (if (and (= emacs-major-version 24) (>= emacs-minor-version 4))
     (require 'cl)))
 
-;; Work around https://github.com/ejmr/php-mode/issues/310.
+;; Work around https://github.com/emacs-php/php-mode/issues/310.
 ;;
 ;; In emacs 24.4 and 24.5, lines after functions with a return type
 ;; are incorrectly analyzed as member-init-cont.
@@ -126,8 +126,8 @@
   :tag "PHP"
   :prefix "php-"
   :group 'languages
-  :link '(url-link :tag "Official Site" "https://github.com/ejmr/php-mode")
-  :link '(url-link :tag "PHP Mode Wiki" "https://github.com/ejmr/php-mode/wiki"))
+  :link '(url-link :tag "Official Site" "https://github.com/emacs-php/php-mode")
+  :link '(url-link :tag "PHP Mode Wiki" "https://github.com/emacs-php/php-mode/wiki"))
 
 (defcustom php-executable (or (executable-find "php")
                               "/usr/bin/php")
@@ -1190,7 +1190,7 @@ After setting the stylevars run hooks according to STYLENAME
   (require 'pkg-info nil t)
   (php-mode-debug--buffer 'init)
   (php-mode-debug--message "Feel free to report on GitHub what you noticed!")
-  (php-mode-debug--message "https://github.com/ejmr/php-mode/issues/new")
+  (php-mode-debug--message "https://github.com/emacs-php/php-mode/issues/new")
   (php-mode-debug--message "")
   (php-mode-debug--message "Pasting the following information on the issue will help us to investigate the cause.")
   (php-mode-debug--message "```")

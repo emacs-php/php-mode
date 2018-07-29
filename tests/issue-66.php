@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Github Issue:    https://github.com/ejmr/php-mode/issues/66
+ * Github Issue:    https://github.com/emacs-php/php-mode/issues/66
  *
  * A large battery of tests to exercise the new cc-mode-based indentation and
  * fontification code.

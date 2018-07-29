@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 
 /**
  * @author Charlie McMackin
- * @see https://github.com/ejmr/php-mode/issues/333
+ * @see https://github.com/emacs-php/php-mode/issues/333
  */
 class Hello
 {

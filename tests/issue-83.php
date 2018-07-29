@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Github Issue:    https://github.com/ejmr/php-mode/issues/83
+ * Github Issue:    https://github.com/emacs-php/php-mode/issues/83
  *
  * All static methods should appear on imenu whether 'static' keyword
  * is placed before or after visibility.

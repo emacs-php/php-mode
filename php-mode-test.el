@@ -4,7 +4,7 @@
 ;;               2014, 2015 Eric James Michael Ritz
 
 ;; Author: Daniel Hackney <dan@haxney.org>
-;; URL: https://github.com/ejmr/php-mode
+;; URL: https://github.com/emacs-php/php-mode
 
 ;;; License
 
@@ -371,7 +371,7 @@ style from Drupal."
     (search-forward "@copyright")
     (should (equal (get-text-property (match-beginning 0) 'face)
                    '(php-doc-annotation-tag font-lock-doc-face)))
-    (search-forward-regexp "@link +\\(https://github.com/ejmr/php-mode\\)")
+    (search-forward-regexp "@link +\\(https://github.com/emacs-php/php-mode\\)")
     (should (equal (get-text-property (match-beginning 1) 'face)
                    '(link font-lock-doc-face)))
     (search-forward-regexp "@package +\\(Emacs\\\\PHPMode\\)")

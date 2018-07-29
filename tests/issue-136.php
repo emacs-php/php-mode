@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/136
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/136
  *
  * The code below contains strings with interpolated variables.  PHP
  * Mode must use font-lock-variable-name-face to highlight all of

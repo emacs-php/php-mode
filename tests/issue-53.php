@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/53
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/53
  *
  * Test if switching from Drupal coding style to other coding styles updates
  * the whitespace effects.

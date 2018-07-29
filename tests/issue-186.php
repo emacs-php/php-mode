@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/186
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/186
  *
  * Test indentation of case body preceeded by multiple case labels
  * that fall through

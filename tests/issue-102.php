@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Github Issue:    https://github.com/ejmr/php-mode/issues/102
+ * Github Issue:    https://github.com/emacs-php/php-mode/issues/102
  *
  * Every line of code in the form of
  *

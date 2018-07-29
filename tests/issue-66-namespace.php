@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Github Issue:    https://github.com/ejmr/php-mode/issues/66
+ * Github Issue:    https://github.com/emacs-php/php-mode/issues/66
  *
  * Namespace examples from
  * http://www.php.net/manual/en/language.namespaces.rationale.php

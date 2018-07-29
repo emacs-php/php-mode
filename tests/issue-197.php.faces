@@ -2,7 +2,7 @@
 (("<?php" . php-php-tag)
  ("\n\n")
  ("/**\n * GitHub Issue:    " . font-lock-doc-face)
- ("https://github.com/ejmr/php-mode/issues/197" link font-lock-doc-face)
+ ("https://github.com/emacs-php/php-mode/issues/197" link font-lock-doc-face)
  ("\n *\n * Test that member highlighting goes before highlighting of cc-mode\n * types\n */" . font-lock-doc-face)
  ("\n")
  ("$" . php-variable-sigil)

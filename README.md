@@ -23,7 +23,7 @@ The current maintainer is:
 
 1. USAMI Kenta (@zonuexe)
 
-Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode](https://github.com/ejmr/php-mode).
+Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode](https://github.com/emacs-php/php-mode).
 
 
 Installation
@@ -51,7 +51,7 @@ Experimental and In-Progress Features
 
 ### CC Mode, CEDET, EDE, and Semantic ###
 
-In 2013 Daniel Haxney began rewriting parts of PHP Mode in terms of Emacs' built-in CC Mode.  This laid the foundation for incorporating some of the inherit IDE-ish features of Emacs, such as CEDET, EDE, and Semantic.  Support for these tools continues to improve thanks to the work of Andrea Turso, Steven Rémot, Joris Steyn, and others.  If you wish to test, contribute to, or simply experiment with such features then [this thread is a good place to start](https://github.com/ejmr/php-mode/issues/256).
+In 2013 Daniel Haxney began rewriting parts of PHP Mode in terms of Emacs' built-in CC Mode.  This laid the foundation for incorporating some of the inherit IDE-ish features of Emacs, such as CEDET, EDE, and Semantic.  Support for these tools continues to improve thanks to the work of Andrea Turso, Steven Rémot, Joris Steyn, and others.  If you wish to test, contribute to, or simply experiment with such features then [this thread is a good place to start](https://github.com/emacs-php/php-mode/issues/256).
 
 ### PHP 7 Support ###
 
@@ -400,7 +400,7 @@ In chronological order:
 76. [Mark A. Hershberger](https://github.com/hexmode)
 
 
-[wiki]: https://github.com/ejmr/php-mode/wiki
+[wiki]: https://github.com/emacs-php/php-mode/wiki
 [ert]: http://www.gnu.org/software/emacs/manual/html_node/ert/index.html
 [cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
 [Subword Mode]: https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
@@ -409,8 +409,8 @@ In chronological order:
 [MELPA]: http://melpa.milkbox.net/
 [Marmalade]: http://marmalade-repo.org/
 [Web Mode]: http://web-mode.org/
-[travis-badge]: https://travis-ci.org/ejmr/php-mode.svg
-[travis-link]: https://travis-ci.org/ejmr/php-mode
+[travis-badge]: https://travis-ci.org/emacs-php/php-mode.svg
+[travis-link]: https://travis-ci.org/emacs-php/php-mode
 [melpa-link]: http://melpa.org/#/php-mode
 [melpa-stable-link]: http://stable.melpa.org/#/php-mode
 [melpa-badge]: http://melpa.org/packages/php-mode-badge.svg

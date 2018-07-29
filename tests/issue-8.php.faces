@@ -2,7 +2,7 @@
 (("<?php" . php-php-tag)
  ("\n\n")
  ("/**\n * Github Issue:    " . font-lock-doc-face)
- ("https://github.com/ejmr/php-mode/issues/8" link font-lock-doc-face)
+ ("https://github.com/emacs-php/php-mode/issues/8" link font-lock-doc-face)
  ("\n *\n * The code below contains annotations in the comments which begin\n * with the '@' character.  The highlighting for these annotations\n * should be different from that used for comments.  At the very least\n * php-mode should highlight the part up to the first backslash.\n */" . font-lock-doc-face)
  ("\n\n")
  ("/**\n * " . font-lock-doc-face)

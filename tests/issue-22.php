@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Github Issue:    https://github.com/ejmr/php-mode/issues/22
+ * Github Issue:    https://github.com/emacs-php/php-mode/issues/22
  *
  * Emacs should highlight all three comments below using
  * font-lock-comment-face.  The first two comments must have the same

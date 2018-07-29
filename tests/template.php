@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/NNN
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/NNN
  *
  * ---------------------------------------------------------------------- 
  * Add the correct issue number to the URL above, replacing the 'NNN',

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/174
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/174
  *
  * Test highlighting of string literals containing escaped quotes
  */

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/227
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/227
  *
  * Indentation of multi-line strings
  */

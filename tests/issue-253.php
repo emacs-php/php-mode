@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/253
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/253
  *
  * Highlighting fails after a string with too many escaped quotes
  */

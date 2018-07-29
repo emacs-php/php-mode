@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Github Issue:    https://github.com/ejmr/php-mode/issues/28
+ * Github Issue:    https://github.com/emacs-php/php-mode/issues/28
  *
  * This is a performance test that (likely) relates to syntax
  * highlighting.  Scrolling up and down this file should produce no

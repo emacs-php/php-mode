@@ -22,7 +22,7 @@ PHP 5.4以降を開発しやすくするための機能をアップデートす�
 
 1. USAMI Kenta (@zonuexe)
 
-[PHPモードのGitHubプロジェクト](https://github.com/ejmr/php-mode)にissueを作成してバグ報告や機能リクエストを送ってください。
+[PHPモードのGitHubプロジェクト](https://github.com/emacs-php/php-mode)にissueを作成してバグ報告や機能リクエストを送ってください。
 
 インストール
 ------------
@@ -79,7 +79,7 @@ Settings
 
 ### CC Mode, CEDET, EDE, and Semantic ###
 
-In 2013 Daniel Haxney began rewriting parts of PHP Mode in terms of Emacs' built-in CC Mode.  This laid the foundation for incorporating some of the inherit IDE-ish features of Emacs, such as CEDET, EDE, and Semantic.  Support for these tools continues to improve thanks to the work of Andrea Turso, Steven Rémot, Joris Steyn, and others.  If you wish to test, contribute to, or simply experiment with such features then [this thread is a good place to start](https://github.com/ejmr/php-mode/issues/256).
+In 2013 Daniel Haxney began rewriting parts of PHP Mode in terms of Emacs' built-in CC Mode.  This laid the foundation for incorporating some of the inherit IDE-ish features of Emacs, such as CEDET, EDE, and Semantic.  Support for these tools continues to improve thanks to the work of Andrea Turso, Steven Rémot, Joris Steyn, and others.  If you wish to test, contribute to, or simply experiment with such features then [this thread is a good place to start](https://github.com/emacs-php/php-mode/issues/256).
 
 ### PHP7サポート
 
@@ -336,9 +336,9 @@ PHP Mode uses the [GNU General Public License 3](http://www.gnu.org/copyleft/gpl
 Contributors
 ------------
 
-PHPモードの改善に協力したすべての貢献者のリストは[README.md#contributors](https://github.com/ejmr/php-mode/blob/master/README.md#contributors)に掲載されています。
+PHPモードの改善に協力したすべての貢献者のリストは[README.md#contributors](https://github.com/emacs-php/php-mode/blob/master/README.md#contributors)に掲載されています。
 
-[wiki]: https://github.com/ejmr/php-mode/wiki
+[wiki]: https://github.com/emacs-php/php-mode/wiki
 [ert]: http://www.gnu.org/software/emacs/manual/html_node/ert/index.html
 [cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
 [Subword Mode]: https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
@@ -347,8 +347,8 @@ PHPモードの改善に協力したすべての貢献者のリストは[README.
 [MELPA]: http://melpa.milkbox.net/
 [Marmalade]: http://marmalade-repo.org/
 [Web Mode]: http://web-mode.org/
-[travis-badge]: https://travis-ci.org/ejmr/php-mode.svg
-[travis-link]: https://travis-ci.org/ejmr/php-mode
+[travis-badge]: https://travis-ci.org/emacs-php/php-mode.svg
+[travis-link]: https://travis-ci.org/emacs-php/php-mode
 [melpa-link]: http://melpa.org/#/php-mode
 [melpa-stable-link]: http://stable.melpa.org/#/php-mode
 [melpa-badge]: http://melpa.org/packages/php-mode-badge.svg

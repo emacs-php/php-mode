@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/100
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/100
  *
  * The code below should appear like so:
  *

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Github Issue:    https://github.com/ejmr/php-mode/issues/19
+ * Github Issue:    https://github.com/emacs-php/php-mode/issues/19
  *
  * If we run indent-region on the code below then it should appear
  * like this with the '->' operators aligned:
