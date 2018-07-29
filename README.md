@@ -49,11 +49,11 @@ When reporting a bug please run the function `M-x php-mode-debug` and include it
 Experimental and In-Progress Features
 -------------------------------------
 
-### CC Mode, CEDET, EDE, and Semantic ###
+### CC Mode, CEDET, EDE, and Semantic
 
 In 2013 Daniel Haxney began rewriting parts of PHP Mode in terms of Emacs' built-in CC Mode.  This laid the foundation for incorporating some of the inherit IDE-ish features of Emacs, such as CEDET, EDE, and Semantic.  Support for these tools continues to improve thanks to the work of Andrea Turso, Steven Rémot, Joris Steyn, and others.  If you wish to test, contribute to, or simply experiment with such features then [this thread is a good place to start](https://github.com/emacs-php/php-mode/issues/256).
 
-### PHP 7 Support ###
+### PHP 7 Support
 
 PHP 7 has been released.  PHP Mode supports the following features and changes from PHP 7:
 
@@ -67,23 +67,23 @@ PHP 7 has been released.  PHP Mode supports the following features and changes f
 Features
 --------
 
-### New Keywords ###
+### New Keywords
 
 Now PHP Mode supports syntax highlighting for new keywords which PHP 5.4 introduced, e.g. those related to traits, such as `insteadof`.  Also supported are the older keywords `clone` and `default`.
 
-### Constants ###
+### Constants
 
 Syntax highlighting includes every magic constant and predefined constant listed on the official PHP site.  However, some constants from specific extensions are not currently included.
 
-### Traits, Interfaces, and Namespaces ###
+### Traits, Interfaces, and Namespaces
 
 Traits, interfaces, and namespaces now appear under Imenu listings. Fontification behaves properly for namespaces as well, so that code like `namespace Foo\Bar\Baz` no longer looks like a warning.  This is also true for namespace aliases, e.g. `use <namespace> as <alias>`; currently the aliased name is not listed in Imenu, but future versions will address this.
 
-### Treatment of Underscores ###
+### Treatment of Underscores
 
 PHP Mode treats underscores as ‘symbol constituents’ (in Emacs terminology) so that you can use keys like `M-f` and `M-b` to move through the individual parts of a variable name like `$foo_bar_baz`.
 
-### Chained Method Calls ###
+### Chained Method Calls
 
 PHP Mode can align method calls over multiple lines anchored around the `->` operator, e.g.:
 
@@ -97,7 +97,7 @@ This behaviour is off by default, but you can customize the variable `php-lineup
 
 **Note:** Alignment will only work if you use one of the php-mode coding styles or inherit one of the styles.
 
-### Nested Array Formatting ###
+### Nested Array Formatting
 
 Nested function calls and `array()` structures now look better by default (or at least in my opinion).  Here is an example of the style:
 
@@ -111,7 +111,7 @@ $results = Post::model()->find(
 );
 ```
 
-### Anonymous Functions ###
+### Anonymous Functions
 
 Anonymous functions such as
 
@@ -121,19 +121,19 @@ $greet = function($name) { ... };
 
 will now appear on Imenu; in this case the name will be `$greet`.
 
-### Flymake Support ###
+### Flymake Support
 
 By customizing the variable `php-executable` you can enable Flymake mode in order to see warnings and errors in real-time as you write code.
 
-### Search Local Documentation ###
+### Search Local Documentation
 
 The key command `C-c C-f` will search the PHP website for documentation on the word under the cursor.  However, if you have a [local copy of the PHP documentation](http://us2.php.net/download-docs.php) then PHP Mode will try searching that documentation first.  All you need to do is customize the variable `php-manual-path` and give it the path to your copy of the documentation.  If PHP Mode cannot find something locally then it will still fallback on searching the PHP website.
 
-### Executing Regions of PHP ###
+### Executing Regions of PHP
 
 The command `php-send-region`, which is bound to `C-c C-r` by default, will execute the selected region of PHP code.  In conjunction with the Emacs command `C-x h` you can use this to execute an entire file.  Any output will appear in a buffer called `*PHP*`.
 
-### PHPDoc Tag / Annotation Highlighting ###
+### PHPDoc Tag / Annotation Highlighting
 
 PHPDoc is a documentation format similar to [JavaDoc](https://en.wikipedia.org/wiki/Javadoc).
 
@@ -182,7 +182,7 @@ The annotations are the lines that begin with the `@` character, and PHP Mode wi
 
 PHP Mode has not fully supported [PSR-5: PHPDoc (Draft)](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md) yet.
 
-### Coding Styles ###
+### Coding Styles
 
 By default PHP Mode tries to provide a reasonable style for indentation and formatting, which you can use via the function `php-enable-default-coding-style`.  However, it provides other options suited for particular projects which you may find useful.  Other coding styles are available through these functions:
 
@@ -198,7 +198,7 @@ They will help format your code for PEAR/PSR-2 projects, or work on Drupal, Word
 (add-hook 'php-mode-hook 'php-enable-default-coding-style)
 ```
 
-#### Symfony2 Style ####
+#### Symfony2 Style
 
 With this style method call chains can be formatted with indented continuation and a hanging semi-colon:
 
@@ -212,19 +212,19 @@ With this style method call chains can be formatted with indented continuation a
 
 This style is used widely throughout Symfony2 source code even if it is not explicitly mentioned in their conventions documents.
 
-### Extra Constants ###
+### Extra Constants
 
 If you commonly use a framework or library that defines a set of constants then you may wish to customize the value of `php-extra-constants`.  It is a list of strings that PHP Mode will treat as additional constants, i.e. providing them the same level syntax highlighting that PHP Mode uses for built-in constants.
 
-### Web Mode Constants and Keywords ###
+### Web Mode Constants and Keywords
 
 If you use [Web Mode][] then PHP Mode will attempt to use any additional PHP constants and keywords that Web Mode allows you to define.
 
-### Avoid HTML Template Compatibility ###
+### Avoid HTML Template Compatibility
 
 Many developers use PHP Mode to edit pure PHP scripts (e.g. files with only PHP and no HTML). A basic compatibility layer with HTML has historically been part of PHP Mode but it does not work perfectly and can cause some bad side effects such as slowness and incorrect font locking.  Configuring the `php-template-compatibility` property with a `nil` will cancel any attempt of HTML compatibility.  [Web Mode](http://web-mode.org/) is a great alternative to PHP Mode if you need to work with PHP scripts that do contain HTML and other markup.
 
-### Subword Mode ###
+### Subword Mode
 
 GNU Emacs comes with [Subword Mode][], a minor mode that allows you to navigate the parts of a [camelCase][] as if they were separate words.  For example, PHP Mode treats the variable `$fooBarBaz` as a whole name by default.  But if you enable Subword Mode then Emacs will treat the variable name as three separate words, and therefore word-related commands (e.g. `M-f`, `M-b`, `M-d`) will only affect the camelCase part of the name under the cursor.
 
@@ -236,11 +236,11 @@ If you want to always use Subword Mode for PHP files then you can add this to yo
 
 The key-binding `C-c C-w` will also toggle Subword Mode on and off.
 
-### Amaka Support ###
+### Amaka Support
 
 Viewing and editing build scripts for [Amaka](http://trashofmasters.github.io/amaka/) will automatically enable PHP Mode.
 
-### Insert current class/namespace ###
+### Insert current class/namespace
 
 ```el
 (with-eval-after-load 'php-mode

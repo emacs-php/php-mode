@@ -77,7 +77,7 @@ Settings
 実験的および作業中の機能
 -------------------------------------
 
-### CC Mode, CEDET, EDE, and Semantic ###
+### CC Mode, CEDET, EDE, and Semantic
 
 In 2013 Daniel Haxney began rewriting parts of PHP Mode in terms of Emacs' built-in CC Mode.  This laid the foundation for incorporating some of the inherit IDE-ish features of Emacs, such as CEDET, EDE, and Semantic.  Support for these tools continues to improve thanks to the work of Andrea Turso, Steven Rémot, Joris Steyn, and others.  If you wish to test, contribute to, or simply experiment with such features then [this thread is a good place to start](https://github.com/emacs-php/php-mode/issues/256).
 
@@ -221,7 +221,7 @@ PHPモードはデフォルトでは`php-enable-default-coding-style`関数で�
 (add-hook 'php-mode-hook 'php-enable-default-coding-style)
 ```
 
-#### Symfony2 Style ####
+#### Symfony2 Style
 
 このスタイルではメソッドチェーンのインデントの継続とぶらさがったセミコロンを整形できます。
 
