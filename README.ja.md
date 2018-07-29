@@ -27,7 +27,7 @@ PHP 5.4以降を開発しやすくするための機能をアップデートす�
 インストール
 ------------
 
-**PHPモードはEmacs 24以降が必要です**。古いバージョンのEmacsでも動作するかもしれませんが、保証外です。 古いバージョンのEmacsのPHPモードを使用することによる問題のバグ報告は積極的に対応しません。
+**PHPモードはEmacs 24.3以降で動作します**。古いバージョンのEmacsでも動作するかもしれませんが、保証外です。 古いバージョンのEmacsのPHPモードを使用することによる問題のバグ報告は積極的に対応しません。
 
 GNU Emacs 24以降では、[package][]機能を使って[MELPA][]からPHPモードをインストールすることができます。 *[Marmalade][]パッケージリポジトリには2004年のオリジナル版PHPモードしか登録されていません*。そのため、MELPAを使用してPHPモードをインストールすることを推奨します。単にパッケージマネージャを使いたくない場合は、`php-mode.el`ファイルをダウンロードして`load-path`の通ったディレクトリに配置し、必要に応じて `(require 'php-mode)` をEmacsの設定に追加すると、PHPファイルを開くたびに自動的にPHPモードが有効になります。
 
@@ -41,7 +41,7 @@ GNU Emacs 24以降では、[package][]機能を使って[MELPA][]からPHPモー
 バグを報告する
 --------------
 
-報告の際には `php-mode-version` コマンドを実行して、その出力をバグレポートに含めてください。問題を再現するための手がかりになります。
+報告の際には `M-x php-mode-debug` コマンドを実行して、その出力をバグレポートに含めてください。問題を再現するための手がかりになります。
 
 Settings
 --------
@@ -77,7 +77,7 @@ Settings
 実験的および作業中の機能
 -------------------------------------
 
-### CC Mode, CEDET, EDE, and Semantic ###
+### CC Mode, CEDET, EDE, and Semantic
 
 In 2013 Daniel Haxney began rewriting parts of PHP Mode in terms of Emacs' built-in CC Mode.  This laid the foundation for incorporating some of the inherit IDE-ish features of Emacs, such as CEDET, EDE, and Semantic.  Support for these tools continues to improve thanks to the work of Andrea Turso, Steven Rémot, Joris Steyn, and others.  If you wish to test, contribute to, or simply experiment with such features then [this thread is a good place to start](https://github.com/emacs-php/php-mode/issues/256).
 
@@ -203,7 +203,7 @@ class Product
 }
 ```
 
-アノテーションは `@` から始まる行で、わかりやすく強調表示されます。ただしPHPモードは[PSR-5: PHPDoc (草案)](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md)の完全なサポートは実装していません。
+アノテーションは `@` から始まる行で、わかりやすく強調表示されます。ただしPHPモードは[PSR-5: PHPDoc (草案)](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md)の完全なサポートは実装していません。我々は将来的にこれらの強調表示を厳密にサポートしたいと考えていますが、現在の実装は限定的です。詳しくは[#478](https://github.com/emacs-php/php-mode/issues/478)をご覧ください。
 
 ### コーディングスタイル
 
@@ -221,7 +221,7 @@ PHPモードはデフォルトでは`php-enable-default-coding-style`関数で�
 (add-hook 'php-mode-hook 'php-enable-default-coding-style)
 ```
 
-#### Symfony2 Style ####
+#### Symfony2 Style
 
 このスタイルではメソッドチェーンのインデントの継続とぶらさがったセミコロンを整形できます。
 
