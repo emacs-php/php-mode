@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Github Issue:    https://github.com/ejmr/php-mode/issues/42
+ * Github Issue:    https://github.com/emacs-php/php-mode/issues/42
  *
  * Indenting the code below, particularly the closures, should not
  * cause any problems such as the long backtrace reported in the issue

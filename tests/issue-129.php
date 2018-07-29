@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/129
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/129
  *
  * PHP Mode should use 'font-lock-keyword-face' to highlight 'final'
  * in the method below.

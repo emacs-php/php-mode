@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/237
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/237
  *
  * Indentation of chaining method for PSR2
  */

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/145
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/145
  *
  * This tests closure indentation.
  *

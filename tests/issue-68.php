@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/68
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/68
  *
  * The 'catch' keywords should align with 'try' and not march
  * off to the right side of the screen like they do in the bug

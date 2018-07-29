@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/197
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/197
  *
  * Test that member highlighting goes before highlighting of cc-mode
  * types

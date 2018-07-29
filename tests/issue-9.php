@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Github Issue:    https://github.com/ejmr/php-mode/issues/9
+ * Github Issue:    https://github.com/emacs-php/php-mode/issues/9
  *
  * The HTML below contains a single quote as part of "We'll".  The bug
  * for issue 9 shows how the presence of this single quote makes

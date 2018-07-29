@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/124
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/124
  *
  * PHP Mode must highlight the heredoc string below using
  * font-lock-string-face.  The presence of the apostrophe or anything

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/135
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/135
  *
  * Test indentation of method calls
  */

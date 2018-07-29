@@ -1,5 +1,5 @@
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/259
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/259
  *
  * This code shows how writing a closure which imports external
  * variables with the `use` keyword causes php-mode to incorrectly

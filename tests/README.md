@@ -15,4 +15,4 @@ tests cases.
 
 
 
-[github]: https://github.com/ejmr/php-mode
+[github]: https://github.com/emacs-php/php-mode

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Github Issue:    https://github.com/ejmr/php-mode/issues/99
+ * Github Issue:    https://github.com/emacs-php/php-mode/issues/99
  *
  * The code below contains a 'foreach' without any braces.  We use CC
  * Mode to customize indentation and it treats continued differently

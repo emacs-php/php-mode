@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Github Issue:    https://github.com/ejmr/php-mode/issues16
+ * Github Issue:    https://github.com/emacs-php/php-mode/issues16
  *
  * The third 'use' statement, with comma-separated namespaces, should
  * appear in the same syntax highlighting as the first two 'use'

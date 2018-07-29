@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/175
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/175
  *
  * PHP mode should not highlight more than 2 digit charcter
  *

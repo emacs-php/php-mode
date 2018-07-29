@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Github Issue:    https://github.com/ejmr/php-mode/issues/8
+ * Github Issue:    https://github.com/emacs-php/php-mode/issues/8
  *
  * The code below contains annotations in the comments which begin
  * with the '@' character.  The highlighting for these annotations

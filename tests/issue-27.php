@@ -2,7 +2,7 @@
 <?php
 
 /**
- * Github Issue:    https://github.com/ejmr/php-mode/issues/27
+ * Github Issue:    https://github.com/emacs-php/php-mode/issues/27
  *
  * The file tests indentation on a script beginning with a shebang.
  * If you place the cursor on the line '// Tab' and indent it should

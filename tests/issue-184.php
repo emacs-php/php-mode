@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHub Issue:    https://github.com/ejmr/php-mode/issues/184
+ * GitHub Issue:    https://github.com/emacs-php/php-mode/issues/184
  *
  * Test indentation of statements at beginning of line.
  *
