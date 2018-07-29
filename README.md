@@ -180,7 +180,7 @@ class Product
 
 The annotations are the lines that begin with the `@` character, and PHP Mode will give these special highlighting to help them stand out.
 
-PHP Mode has not fully supported [PSR-5: PHPDoc (Draft)](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md) yet.
+PHP Mode has not fully supported [PSR-5: PHPDoc (Draft)](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md) yet.  We want to support them, but the current implementation still limited.  See issue [#478](https://github.com/emacs-php/php-mode/issues/478) for details.
 
 ### Coding Styles
 
