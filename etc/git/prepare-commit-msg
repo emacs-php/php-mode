@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# prepare-commit-msg
+# ==================
+#
+# ## SYNOPSIS
+#
+# This hook fills the user's editor with a pre-written commit message
+# template, intended to help contributors adhere to good style and
+# practices when it comes to writing Git commit messages.
+#
+########################################################################
+
+# This hook will always recieve three arguments.  We only care about the
+# first for our purposes, but still assign useful names to the others
+# in case we need them in the future.
+COMMIT_MESSAGE=$1
+COMMIT_SOURCE=$2
+COMMIT_SHA1=$3
+
+# If the commit message already contains content then the developer
+# is probably using his or her own template.  In which case we do not
+# trample over it.  We test for a pre-existing template by reading
+# the first line of the commit message this hook recieved, and check
+# so see if it is an empty string (apply our template) or not (leave
+# the message alone).
+TITLE_LINE=$(head -n1 $COMMIT_MESSAGE)
+
+if [ -z "$TITLE_LINE" ]; then
+	project_dir=$(git rev-parse --show-toplevel)
+	template="$project_dir/etc/git/commit-template.txt"
+	echo "$(cat $template)\n$(cat $COMMIT_MESSAGE)" > $COMMIT_MESSAGE
+fi
+
+exit 0

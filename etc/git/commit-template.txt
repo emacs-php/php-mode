@@ -1,0 +1,13 @@
+# SUBJECT, 50 Characters, No Period
+# "If applied, this commit will..."
+
+# BODY, 72 Characters
+# Answers the question, "Why?", not, "How?"
+
+# METADATA
+# GitHub-Issue:
+# Resolves:
+# See-also:
+# Reviewed-by:
+# Special-thanks:
+# HANGING INDENT
