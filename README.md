@@ -23,7 +23,7 @@ The current maintainer is:
 
 1. USAMI Kenta (@zonuexe)
 
-Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode](https://github.com/emacs-php/php-mode).
+Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode](https://github.com/emacs-php/php-mode).  Alternatively you may also request features via [the FeatHub page](https://feathub.com/emacs-php/php-suite) for the entire [PHP suite for GNU Emacs](https://github.com/emacs-php/php-suite).
 
 
 Installation
