@@ -22,7 +22,7 @@ PHP 5.4以降を開発しやすくするための機能をアップデートす�
 
 1. USAMI Kenta (@zonuexe)
 
-[PHPモードのGitHubプロジェクト](https://github.com/emacs-php/php-mode)にissueを作成してバグ報告や機能リクエストを送ってください。
+[PHPモードのGitHubプロジェクト](https://github.com/emacs-php/php-mode)にissueを作成してバグ報告や機能リクエストを送ってください。或いは[PHPのスイート](https://github.com/emacs-php/php-suite)の[FeatHubページ](https://feathub.com/emacs-php/php-suite)に機能リクエストを送ってもいいです。
 
 インストール
 ------------
