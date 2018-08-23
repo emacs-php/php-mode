@@ -320,6 +320,8 @@ PHP Mode uses the [GNU General Public License 3](http://www.gnu.org/copyleft/gpl
 Contributors
 ------------
 
+[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/0)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/0)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/1)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/1)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/2)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/2)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/3)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/3)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/4)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/4)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/5)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/5)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/6)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/6)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/7)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/7)
+
 In chronological order:
 
 1. Juanjo
