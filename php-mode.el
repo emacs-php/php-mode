@@ -15,7 +15,7 @@
 (defconst php-mode-version-number "1.19.1"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2018-06-08"
+(defconst php-mode-modified "2018-08-28"
   "PHP Mode build date.")
 
 ;; This file is free software; you can redistribute it and/or
@@ -1698,12 +1698,21 @@ a completion list."
                " \\(\\sw+\\)")
       1 font-lock-type-face)
 
-     ;; Highlight return types in functions and methods.
+     ;; Highlight the ? character for nullable return types.
+     ("function.+:\\s-*\\(\\?\\)\\(?:\\sw\\|\\s_\\|\\\\\\)+" 1 font-lock-type-face)
+     (")\\s-*:\\s-*\\(\\?\\)\\(?:\\sw\\|\\s_\\|\\\\\\)+\\s-*\\(?:\{\\|;\\)" 1 font-lock-type-face)
+
+     ;; Highlight the ? character for nullable type hints.
+     ("\\(\\?\\)\\(:?\\sw\\|\\s_\\|\\\\\\)+\\s-+\\$" 1 font-lock-type-face)
+
+     ;; Class names without a namespace are not highlighted at all when they
+     ;; are used as nullable type hints or return types (both nullable and
+     ;; non-nullable). We have to use separate regular expressions, because
+     ;; we want to capture the class name as well, not just the ? character
+     ;; like the regexps above.
+     ("\\?\\(\\(:?\\sw\\|\\s_\\)+\\)\\s-+\\$" 1 font-lock-type-face)
      ("function.+:\\s-*\\??\\(\\(?:\\sw\\|\\s_\\)+\\)" 1 font-lock-type-face)
      (")\\s-*:\\s-*\\??\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*\\(?:\{\\|;\\)" 1 font-lock-type-face)
-
-     ;; Highlight class names used as nullable type hints
-     ("\\?\\(\\(:?\\sw\\|\\s_\\)+\\)\\s-+\\$" 1 font-lock-type-face)
      ))
   "Detailed highlighting for PHP Mode.")
 
