@@ -92,6 +92,7 @@
 
 (eval-when-compile
   (require 'regexp-opt)
+  (autoload 'pkg-info-version-info "pkg-info")
   (defvar c-vsemi-status-unknown-p)
   (defvar syntax-propertize-via-font-lock))
 
