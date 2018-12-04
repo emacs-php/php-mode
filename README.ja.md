@@ -22,7 +22,7 @@ PHP 5.4以降を開発しやすくするための機能をアップデートす�
 
 1. USAMI Kenta (@zonuexe)
 
-[PHPモードのGitHubプロジェクト](https://github.com/emacs-php/php-mode)にissueを作成してバグ報告や機能リクエストを送ってください。或いは[PHPのスイート](https://github.com/emacs-php/php-suite)の[FeatHubページ](https://feathub.com/emacs-php/php-suite)に機能リクエストを送ってもいいです。
+[PHP ModeのGitHubプロジェクト][php-mode]にissueを作成してバグ報告や機能リクエストを送ってください。あるいは[PHP suite][php-suite]の[FeatHubページ][feathub]に機能リクエストを送っても構いません。
 
 インストール
 ------------
@@ -353,3 +353,6 @@ PHPモードの改善に協力したすべての貢献者のリストは[README.
 [melpa-stable-link]: http://stable.melpa.org/#/php-mode
 [melpa-badge]: http://melpa.org/packages/php-mode-badge.svg
 [melpa-stable-badge]: http://stable.melpa.org/packages/php-mode-badge.svg
+[php-mode]: https://github.com/emacs-php/php-mode
+[php-suite]: https://github.com/emacs-php/php-suite
+[feathub]: https://feathub.com/emacs-php/php-suite
