@@ -1,5 +1,6 @@
 ;;; php-mode.el --- Major mode for editing PHP code
 
+;; Copyright (C) 2018  Friends of Emacs-PHP development
 ;; Copyright (C) 1999, 2000, 2001, 2003, 2004 Turadg Aleahmad
 ;;               2008 Aaron S. Hawley
 ;;               2011, 2012, 2013, 2014, 2015, 2016, 2017 Eric James Michael Ritz
