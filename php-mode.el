@@ -92,6 +92,7 @@
 
 (eval-when-compile
   (require 'regexp-opt)
+  (autoload 'pkg-info-version-info "pkg-info")
   (defvar c-vsemi-status-unknown-p)
   (defvar syntax-propertize-via-font-lock))
 
@@ -170,7 +171,7 @@ Turning this on will open it whenever `php-mode' is loaded."
 (defsubst php-in-string-or-comment-p ()
   (nth 8 (syntax-ppss)))
 
-(defun php-mode-extra-constants-create-regexp(kwds)
+(defun php-mode-extra-constants-create-regexp (kwds)
   "Create regexp for the list of extra constant keywords KWDS."
    (concat "[^_$]?\\<\\("
            (regexp-opt
@@ -178,7 +179,7 @@ Turning this on will open it whenever `php-mode' is loaded."
                      (when (boundp 'web-mode-extra-php-constants) web-mode-extra-php-constants)))
            "\\)\\>[^_]?"))
 
-(defun php-mode-extra-constants-set(sym value)
+(defun php-mode-extra-constants-set (sym value)
   "Apply the list of extra constant keywords `VALUE'.
 
 This function is called when the custom variable php-extra-constants
