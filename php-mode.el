@@ -223,7 +223,7 @@ of constants when set."
 (defcustom php-mode-extra-constants '()
   "A list of additional strings to treat as PHP constants."
   :group 'php-mode
-  :type 'list
+  :type '(repeat string)
   :set 'php-mode-extra-constants-set)
 
 (defun php-create-regexp-for-method (visibility)
