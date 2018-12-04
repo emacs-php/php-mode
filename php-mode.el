@@ -122,11 +122,21 @@
 
 ;; Local variables
 ;;;###autoload
-(defgroup php nil
-  "Major mode for editing PHP code."
+(defgroup php-mode nil
+  "Language support for PHP."
   :tag "PHP"
-  :prefix "php-"
   :group 'languages
+  :group 'php
+  :link '(url-link :tag "Official Site" "https://github.com/emacs-php/php-mode")
+  :link '(url-link :tag "PHP Mode Wiki" "https://github.com/emacs-php/php-mode/wiki"))
+
+;;;###autoload
+(defgroup php-mode nil
+  "Major mode for editing PHP code."
+  :tag "PHP Mode"
+  :prefix "php-mode-"
+  :group 'languages
+  :group 'php
   :link '(url-link :tag "Official Site" "https://github.com/emacs-php/php-mode")
   :link '(url-link :tag "PHP Mode Wiki" "https://github.com/emacs-php/php-mode/wiki"))
 
@@ -135,13 +145,17 @@
   "The location of the PHP executable."
   :type 'string)
 
-(defcustom php-default-face 'default
+(define-obsolete-variable-alias 'php-default-face 'php-mode-default-face "1.20.0")
+(defcustom php-mode-default-face 'default
   "Default face in `php-mode' buffers."
+  :group 'php-mode
   :type 'face)
 
-(defcustom php-speedbar-config t
+(define-obsolete-variable-alias 'php-speedbar-config 'php-mode-speedbar-config "1.20.0")
+(defcustom php-mode-speedbar-config t
   "When set to true automatically configures Speedbar to observe PHP files.
 Ignores php-file patterns option; fixed to expression \"\\.\\(inc\\|php[s345]?\\)\""
+  :group 'php-mode
   :type 'boolean
   :set (lambda (sym val)
          (set-default sym val)
@@ -152,14 +166,17 @@ Ignores php-file patterns option; fixed to expression \"\\.\\(inc\\|php[s345]?\\
 (defcustom php-mode-speedbar-open nil
   "Normally `php-mode' starts with the speedbar closed.
 Turning this on will open it whenever `php-mode' is loaded."
+  :group 'php-mode
   :type 'boolean
   :set (lambda (sym val)
          (set-default sym val)
          (when val
-             (speedbar 1))))
+           (speedbar 1))))
 
-(defcustom php-template-compatibility t
+(define-obsolete-variable-alias 'php-template-compatibility 'php-mode-template-compatibility "1.20.0")
+(defcustom php-mode-template-compatibility t
   "Should detect presence of html tags."
+  :group 'php-mode
   :type 'boolean)
 
 (defsubst php-in-string-p ()
@@ -195,14 +212,18 @@ of constants when set."
      'php-mode `((,(php-mode-extra-constants-create-regexp value) 1 'php-constant))))
   (set sym value))
 
-(defcustom php-lineup-cascaded-calls nil
+(define-obsolete-variable-alias 'php-lineup-cascaded-calls 'php-mode-lineup-cascaded-calls "1.20.0")
+(defcustom php-mode-lineup-cascaded-calls nil
   "Indent chained method calls to the previous line."
+  :group 'php-mode
   :type 'boolean)
 
-;;;###autoload
-(defcustom php-extra-constants '()
+
+(define-obsolete-variable-alias 'php-extra-constants 'php-mode-extra-constants "1.20.0")
+(defcustom php-mode-extra-constants '()
   "A list of additional strings to treat as PHP constants."
-  :type 'list
+  :group 'php-mode
+  :type '(repeat string)
   :set 'php-mode-extra-constants-set)
 
 (defun php-create-regexp-for-method (visibility)
@@ -266,10 +287,11 @@ can be used to match against definitions for that classlike."
     "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
   "Imenu generic expression for PHP Mode.  See `imenu-generic-expression'.")
 
-(defcustom php-do-not-use-semantic-imenu t
+(define-obsolete-variable-alias 'php-do-not-use-semantic-imenu 'php-mode-do-not-use-semantic-imenu "1.20.0")
+(defcustom php-mode-do-not-use-semantic-imenu t
   "Customize `imenu-create-index-function' for `php-mode'.
 
-If using `semantic-mode' `imenu-create-index-function' will be
+If using function `semantic-mode' `imenu-create-index-function' will be
 set to `semantic-create-imenu-index' due to `c-mode' being its
 parent.  Set this variable to t if you want to use
 `imenu-default-create-index-function' even with `semantic-mode'
@@ -1015,7 +1037,7 @@ this ^ lineup"
 (defgroup php-faces nil
   "Faces used in PHP Mode"
   :tag "PHP Faces"
-  :group 'php
+  :group 'php-mode
   :group 'faces)
 
 (defface php-string '((t (:inherit font-lock-string-face)))
@@ -1860,5 +1882,4 @@ The output will appear in the buffer *PHP*."
              t)
 
 (provide 'php-mode)
-
 ;;; php-mode.el ends here
