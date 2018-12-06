@@ -2,6 +2,35 @@
 
 All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [1.20.0] - 2018-12-07
+
+Start preparing for major refactoring in major mode.
+
+### Changed
+
+ * Improve code highlight
+    * Fix highlighting of callable keyword ([#471](https://github.com/emacs-php/php-mode/pull/471) by [@fabacino])
+    * Highlight the `?` character for nullable type hints and return types ([#482](https://github.com/emacs-php/php-mode/pull/482) by [@fabacino])
+ * Modify "customize group" and variables
+    * Add php-mode group and some variables belong to new group ([#486](https://github.com/emacs-php/php-mode/pull/486))
+      * `php-default-face` → `php-mode-default-face`
+      * `php-speedbar-config` → `'php-mode-speedbar-config`
+      * `php-template-compatibility` → `php-mode-template-compatibility`
+      * `php-lineup-cascaded-calls` → `php-mode-lineup-cascaded-calls`
+      * `php-extra-constants` → `php-mode-extra-constants`
+      * `php-do-not-use-semantic-imenu` → `php-mode-do-not-use-semantic-imenu`
+ * Modify documents and copyright
+    * Move the URL of Website to https://github.com/emacs-php/php-mode
+    * Add copyright notation about [Friends of Emacs-PHP development](https://github.com/emacs-php)
+    * Add a "Hall of Fame" to the contributors list ([#481](https://github.com/emacs-php/php-mode/pull/481) by [@ejmr] and thanks [@sergey48k](https://github.com/sergey48k) and [@sourcerer-io](https://github.com/sourcerer-io) project)
+ * Some refactors
+    * Fix style and suppress warning in compile [#485](https://github.com/emacs-php/php-mode/pull/485)
+
+<!--
+ * Divide `php-mode.el` into `php.el` and `php-helper.el` for refactor
+   *  With this change, we provide simple functions to other packages without loading `php-mode`.
+-->
+
 ## [1.19.1] - 2018-05-12
 
 ### Added
@@ -30,3 +59,6 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 ## Before 1.19.0
 
 See [Changelog · emacs-php/php-mode Wiki](https://github.com/emacs-php/php-mode/wiki/Changelog).
+
+[@ejmr]: https://github.com/ejmr
+[@fabacino]: https://github.com/fabacino

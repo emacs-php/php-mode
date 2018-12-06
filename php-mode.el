@@ -1,5 +1,6 @@
 ;;; php-mode.el --- Major mode for editing PHP code
 
+;; Copyright (C) 2018  Friends of Emacs-PHP development
 ;; Copyright (C) 1999, 2000, 2001, 2003, 2004 Turadg Aleahmad
 ;;               2008 Aaron S. Hawley
 ;;               2011, 2012, 2013, 2014, 2015, 2016, 2017 Eric James Michael Ritz
@@ -8,14 +9,14 @@
 ;; Maintainer: USAMI Kenta <tadsan@zonu.me>
 ;; URL: https://github.com/emacs-php/php-mode
 ;; Keywords: languages php
-;; Version: 1.19.1
+;; Version: 1.20.0
 ;; Package-Requires: ((emacs "24.3") (cl-lib "0.5"))
 ;; License: GPL-3.0-or-later
 
-(defconst php-mode-version-number "1.19.1"
+(defconst php-mode-version-number "1.20.0"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2018-08-28"
+(defconst php-mode-modified "2018-12-05"
   "PHP Mode build date.")
 
 ;; This file is free software; you can redistribute it and/or
