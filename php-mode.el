@@ -123,7 +123,7 @@
 
 ;; Local variables
 ;;;###autoload
-(defgroup php-mode nil
+(defgroup php nil
   "Language support for PHP."
   :tag "PHP"
   :group 'languages
