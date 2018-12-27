@@ -6,12 +6,22 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
 Start preparing for major refactoring in major mode.
 
+### Added
+
+ * Add php-project variables for workflow ([#488](https://github.com/emacs-php/php-mode/pull/488))
+    * The following variables are reserved as file/directory local variables.
+      * `php-project-repl`
+      * `php-project-unit-test`
+      * `php-project-deploy`
+      * `php-project-build`
+      * `php-project-server-start`
+
 ### Changed
 
  * Improve code highlight
     * Fix highlighting of callable keyword ([#471](https://github.com/emacs-php/php-mode/pull/471) by [@fabacino])
     * Highlight the `?` character for nullable type hints and return types ([#482](https://github.com/emacs-php/php-mode/pull/482) by [@fabacino])
- * Modify "customize group" and variables
+ * Modify "customize group" and variable names
     * Add php-mode group and some variables belong to new group ([#486](https://github.com/emacs-php/php-mode/pull/486))
       * `php-default-face` → `php-mode-default-face`
       * `php-speedbar-config` → `'php-mode-speedbar-config`
