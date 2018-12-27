@@ -418,6 +418,11 @@ This function may interfere with other hooks and other behaviors.
 In that case set to `NIL'."
   :type 'boolean)
 
+(defcustom php-mode-disable-parent-mode-hooks t
+  "When set to `T', do not run hooks of parent modes (`java-mode', `c-mode')."
+  :type 'boolean
+  :group 'php-mode)
+
 (defun php-mode-version ()
   "Display string describing the version of PHP Mode."
   (interactive)
@@ -1258,7 +1263,9 @@ After setting the stylevars run hooks according to STYLENAME
   "Major mode for editing PHP code.
 
 \\{php-mode-map}"
-
+  (when php-mode-disable-parent-mode-hooks
+    (setq-local c-mode-hook nil)
+    (setq-local java-mode-hook nil))
   (c-initialize-cc-mode t)
   (c-init-language-vars php-mode)
   (c-common-init 'php-mode)
@@ -1333,7 +1340,6 @@ After setting the stylevars run hooks according to STYLENAME
     (with-silent-modifications
       (save-excursion
         (php-syntax-propertize-function (point-min) (point-max))))))
-
 
 (declare-function semantic-create-imenu-index "semantic/imenu" (&optional stream))
 
