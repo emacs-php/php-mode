@@ -434,9 +434,9 @@ In that case set to `NIL'."
 (define-obsolete-variable-alias 'php-available-project-root-files 'php-project-available-root-files "1.19.0")
 
 (defvar php-mode-map
-  (let ((map (make-sparse-keymap)))
-    ;; (define-key map [menu-bar php]
-    ;;   (cons "PHP" (make-sparse-keymap "PHP")))
+  (let ((map (make-sparse-keymap "PHP Mode")))
+    ;; Remove menu item for c-mode
+    (define-key map [menu-bar C] nil)
 
     ;; (define-key map [menu-bar php complete-function]
     ;;   '("Complete function name" . php-complete-function))
