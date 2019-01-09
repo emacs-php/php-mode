@@ -418,7 +418,8 @@ This function may interfere with other hooks and other behaviors.
 In that case set to `NIL'."
   :type 'boolean)
 
-(defcustom php-mode-disable-parent-mode-hooks t
+(define-obsolete-variable-alias 'php-mode-disable-parent-mode-hooks 'php-mode-disable-c-mode-hook "1.21.0")
+(defcustom php-mode-disable-c-mode-hook t
   "When set to `T', do not run hooks of parent modes (`java-mode', `c-mode')."
   :type 'boolean
   :group 'php-mode)
@@ -1263,7 +1264,7 @@ After setting the stylevars run hooks according to STYLENAME
   "Major mode for editing PHP code.
 
 \\{php-mode-map}"
-  (when php-mode-disable-parent-mode-hooks
+  (when php-mode-disable-c-mode-hook
     (setq-local c-mode-hook nil)
     (setq-local java-mode-hook nil))
   (c-initialize-cc-mode t)
