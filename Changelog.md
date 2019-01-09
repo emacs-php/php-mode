@@ -2,6 +2,23 @@
 
 All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [1.21.0] - 2019-01-09
+
+A minor change from the previous version, but this version has BC brake about `c-mode-hook`.
+
+### Added
+
+ * Add `php` customize group.
+   * This group is positioned above `php-mode`.
+   * This group was originally planned to be included in v1.20.0.
+ * Add `php-mode-disable-c-mode-hook` custom variable.
+   * Setting this variable to `nil` will restore the behavior of `c-mode-hook` up to the previous version.
+
+### Changed
+
+ * `php-mode` initialization no longer executes hooks for `c-mode`.
+   *  If you want to return to the same behavior as the conventional PHP-Mode, set `nil` to `php-mode-disable-c-mode-hook`.
+
 ## [1.20.0] - 2018-12-07
 
 Start preparing for major refactoring in major mode.
