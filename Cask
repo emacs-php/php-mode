@@ -1,4 +1,4 @@
-(package "php-mode" "1.20.0" "Major mode for editing PHP code")
+(package "php-mode" "1.21.0" "Major mode for editing PHP code")
 (source melpa)
 
 (package-file "php-mode.el")
