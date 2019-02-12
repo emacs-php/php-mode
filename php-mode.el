@@ -675,6 +675,10 @@ might be to handle switch and goto labels differently."
                                (c-lang-const c-constant-kwds))
                        :test 'string-equal))))
 
+(c-lang-defconst c-basic-matchers-before
+  php (cl-remove-if (lambda (elm) (and (listp elm) (equal (car elm) "\\s|")))
+                    (c-lang-const c-basic-matchers-before php)))
+
 (defun php-lineup-cascaded-calls (langelem)
   "Line up chained methods using `c-lineup-cascaded-calls',
 but only if the setting is enabled"
