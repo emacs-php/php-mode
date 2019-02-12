@@ -945,7 +945,3 @@ style from Drupal."
                    (php-project-get-root-dir))))
 
 ;;; php-mode-test.el ends here
-
-;; Local Variables:
-;; firestarter: ert-run-tests-interactively
-;; End:
