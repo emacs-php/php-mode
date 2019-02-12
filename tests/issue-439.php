@@ -31,3 +31,13 @@ Let'go Justin
 $g = <<<"いろは"
 Let'go Justin
 いろは;
+
+var_dump(<<<"ABC"
+Let'go Justin
+ABC);
+
+if (1 === 1) {
+    var_dump(<<<"ABC"
+    Let'go Justin
+    ABC);
+}

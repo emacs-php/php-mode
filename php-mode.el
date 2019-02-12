@@ -984,7 +984,7 @@ this ^ lineup"
   "Build a regular expression for the end of a heredoc started by the string HEREDOC-START."
   ;; Extract just the identifier without <<< and quotes.
   (string-match "\\_<.+?\\_>" heredoc-start)
-  (concat "^\\(" (match-string 0 heredoc-start) "\\)\\W"))
+  (concat "^\\s-*\\(" (match-string 0 heredoc-start) "\\)\\W"))
 
 (defun php-syntax-propertize-function (start end)
   "Apply propertize rules from START to END."
