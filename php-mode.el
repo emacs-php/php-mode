@@ -16,7 +16,7 @@
 (defconst php-mode-version-number "1.21.0"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2019-01-09"
+(defconst php-mode-modified "2019-02-28"
   "PHP Mode build date.")
 
 ;; This file is free software; you can redistribute it and/or
@@ -674,6 +674,10 @@ might be to handle switch and goto labels differently."
                        (append (c-lang-const c-label-kwds)
                                (c-lang-const c-constant-kwds))
                        :test 'string-equal))))
+
+(c-lang-defconst c-basic-matchers-before
+  php (cl-remove-if (lambda (elm) (and (listp elm) (equal (car elm) "\\s|")))
+                    (c-lang-const c-basic-matchers-before php)))
 
 (defun php-lineup-cascaded-calls (langelem)
   "Line up chained methods using `c-lineup-cascaded-calls',
