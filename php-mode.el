@@ -1000,12 +1000,7 @@ this ^ lineup"
   (while (re-search-forward "['\"]" end t)
     (when (php-in-comment-p)
       (c-put-char-property (match-beginning 0)
-                           'syntax-table (string-to-syntax "_"))))
-  (funcall
-   (syntax-propertize-rules
-    ("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
-    ("\\('\\)\\(\\\\.\\|[^'\n\\]\\)*\\('\\)" (1 "\"") (3 "\"")))
-   start end))
+                           'syntax-table (string-to-syntax "_")))))
 
 (defun php-heredoc-syntax ()
   "Mark the boundaries of searched heredoc."
