@@ -2,6 +2,14 @@
 
 All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [1.21.1] - 2019-04-01
+
+### Changed
+
+ * Fixed an error that occurred in Emacs 27
+ * Modify URL of PHP web site
+ * Fix highlighting of static method calls
+
 ## [1.21.0] - 2019-01-09
 
 A minor change from the previous version, but this version has BC brake about `c-mode-hook`.
