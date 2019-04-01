@@ -928,6 +928,11 @@ style from Drupal."
   "Test highlighting of type hints and return types."
   (with-php-mode-test ("type-hints.php" :faces t)))
 
+(ert-deftest php-mode-test-static-method-calls ()
+  "Test highlighting of static method calls which are named the same
+as a keyword."
+  (with-php-mode-test ("static-method-calls.php" :faces t)))
+
 (ert-deftest php-mode-debug-test ()
   "Test running php-mode-debug and php-mode-debug--buffer."
   (with-temp-buffer

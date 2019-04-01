@@ -16,7 +16,7 @@
 (defconst php-mode-version-number "1.21.0"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2019-02-28"
+(defconst php-mode-modified "2019-03-04"
   "PHP Mode build date.")
 
 ;; This file is free software; you can redistribute it and/or
@@ -1685,6 +1685,10 @@ a completion list."
 
      ;; Support the ::class constant in PHP5.6
      ("\\sw+\\(::\\)\\(class\\)\\b" (1 'php-paamayim-nekudotayim) (2 'php-constant))
+
+     ;; Highlight static method calls as such. This is necessary for method
+     ;; names which are identical to keywords to be highlighted correctly.
+     ("\\sw+::\\(\\sw+\\)(" 1 'php-static-method-call)
 
      ;; While c-opt-cpp-* highlights the <?php opening tags, it is not
      ;; possible to make it highlight short open tags and closing tags
