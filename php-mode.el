@@ -299,13 +299,11 @@ parent.  Set this variable to t if you want to use
 enabled."
   :type 'boolean)
 
-(defcustom php-site-url "https://secure.php.net/"
+(defcustom php-site-url "https://php.net/"
   "Default PHP.net site URL.
 
-The URL to use open PHP manual and search word.
-You can find a mirror site closer to you."
-  :type 'string
-  :link '(url-link :tag "List of Mirror Sites" "https://secure.php.net/mirrors.php"))
+The URL to use open PHP manual and search word."
+  :type 'string)
 
 (defcustom php-manual-url 'en
   "URL at which to find PHP manual.
