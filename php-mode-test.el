@@ -949,4 +949,28 @@ as a keyword."
   (should (string= (abbreviate-file-name default-directory)
                    (php-project-get-root-dir))))
 
+(defun php-mode-test-in-function-p (&optional pos)
+  "Determine whether POS is inside a function.
+Meant for `php-mode-test-issue-503'."
+  (let (bof (pos (or pos (point))))
+    (save-excursion
+      (when (beginning-of-defun)
+        (setq bof (point))
+        (end-of-defun)
+        (and (> pos bof)
+             (< pos (point)))))))
+
+(ert-deftest php-mode-test-issue-503 ()
+  "Function `php-beginning-of-defun' should return non-nil on success."
+  (with-php-mode-test
+   ("issue-503.php")
+   (php-mode)
+   (goto-char (point-max))
+   (should (eq (php-mode-test-in-function-p) nil))
+   (should (eq (php-mode-test-in-function-p (1- (point))) t))
+   (should (eq (php-mode-test-in-function-p 1) nil))
+   (should (eq (php-mode-test-in-function-p 24) t))
+   (goto-char (point-min))
+   (should (eq (php-mode-test-in-function-p nil) nil))))
+
 ;;; php-mode-test.el ends here

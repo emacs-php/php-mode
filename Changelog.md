@@ -2,6 +2,13 @@
 
 All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [1.21.2]
+
+### Fixed
+
+ * Function `php-beginning-of-defun` should return non-nil on success
+ ([#503](https://github.com/emacs-php/php-mode/issues/503))
+
 ## [1.21.1] - 2019-04-01
 
 ### Changed
