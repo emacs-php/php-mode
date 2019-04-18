@@ -786,10 +786,10 @@ but only if the setting is enabled"
   "Move to the beginning of the ARGth PHP function from point.
 Implements PHP version of `beginning-of-defun-function'."
   (interactive "p")
-  (let ((arg (or arg 1)))
+  (let (found-p (arg (or arg 1)))
     (while (> arg 0)
-      (re-search-backward php-beginning-of-defun-regexp
-                          nil 'noerror)
+      (setq found-p (re-search-backward php-beginning-of-defun-regexp
+                                        nil 'noerror))
       (setq arg (1- arg)))
     (while (< arg 0)
       (end-of-line 1)
@@ -798,9 +798,10 @@ Implements PHP version of `beginning-of-defun-function'."
         (forward-list 2)
         (forward-line 1)
         (if (eq opoint (point))
-            (re-search-forward php-beginning-of-defun-regexp
-                               nil 'noerror))
-        (setq arg (1+ arg))))))
+            (setq found-p (re-search-forward php-beginning-of-defun-regexp
+                                             nil 'noerror)))
+        (setq arg (1+ arg))))
+    (not (null found-p))))
 
 (defun php-end-of-defun (&optional arg)
   "Move the end of the ARGth PHP function from point.
