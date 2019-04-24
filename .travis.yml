@@ -6,6 +6,7 @@ env:
     - EMACS_VERSION=emacs-25.2-travis
     - EMACS_VERSION=emacs-25.3-travis
     - EMACS_VERSION=emacs-26.1-travis
+    - EMACS_VERSION=emacs-26.2-travis
     - EMACS_VERSION=emacs-git-snapshot-travis
     - EMACS_VERSION=remacs-git-snapshot-travis
 # matrix:
