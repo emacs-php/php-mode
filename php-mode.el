@@ -625,6 +625,7 @@ PHP does not have an \"enum\"-like keyword."
     "endswitch"
     "endwhile"
     "eval"
+    "fn" ;; NOT c-lambda-kwds
     "global"
     "isset"
     "list"
