@@ -1340,12 +1340,7 @@ After setting the stylevars run hooks according to STYLENAME
   (setq-local defun-prompt-regexp
               "^\\s-*function\\s-+&?\\s-*\\(\\(\\sw\\|\\s_\\)+\\)\\s-*")
   (setq-local add-log-current-defun-header-regexp
-              php-beginning-of-defun-regexp)
-
-  (when (>= emacs-major-version 25)
-    (with-silent-modifications
-      (save-excursion
-        (php-syntax-propertize-function (point-min) (point-max))))))
+              php-beginning-of-defun-regexp))
 
 (declare-function semantic-create-imenu-index "semantic/imenu" (&optional stream))
 
