@@ -1653,17 +1653,11 @@ a completion list."
 
      ;; Highlight special variables
      ("\\(\\$\\)\\(this\\|that\\)\\_>" (1 'php-$this-sigil) (2 'php-$this))
-     ("\\(\\$\\)\\([a-zA-Z0-9_]+\\)" (1 'php-variable-sigil) (2 'php-variable-name))
+     ("\\(\\$+\\)\\(\\sw+\\)" (1 'php-variable-sigil) (2 'php-variable-name))
      ("\\(->\\)\\([a-zA-Z0-9_]+\\)" (1 'php-object-op) (2 'php-property-name))
 
      ;; Highlight function/method names
      ("\\<function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1 'php-function-name)
-
-     ;; The dollar sign should not get a variable-name face, below
-     ;; pattern resets the face to default in case cc-mode sets the
-     ;; variable-name face (cc-mode does this for variables prefixed
-     ;; with type, like in arglist)
-     ("\\(\\$\\)\\(\\sw+\\)" 1 'php-variable-sigil)
 
      ;; 'array' and 'callable' are keywords, except in the following situations:
      ;; - when used as a type hint
