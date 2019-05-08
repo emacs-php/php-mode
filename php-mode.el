@@ -988,7 +988,7 @@ this ^ lineup"
   "Build a regular expression for the end of a heredoc started by the string HEREDOC-START."
   ;; Extract just the identifier without <<< and quotes.
   (string-match "\\_<.+?\\_>" heredoc-start)
-  (concat "^\\(" (match-string 0 heredoc-start) "\\)\\W"))
+  (concat "^\\s-*\\(" (match-string 0 heredoc-start) "\\)\\W"))
 
 (defun php-syntax-propertize-function (start end)
   "Apply propertize rules from START to END."
@@ -1000,12 +1000,7 @@ this ^ lineup"
   (while (re-search-forward "['\"]" end t)
     (when (php-in-comment-p)
       (c-put-char-property (match-beginning 0)
-                           'syntax-table (string-to-syntax "_"))))
-  (funcall
-   (syntax-propertize-rules
-    ("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
-    ("\\('\\)\\(\\\\.\\|[^'\n\\]\\)*\\('\\)" (1 "\"") (3 "\"")))
-   start end))
+                           'syntax-table (string-to-syntax "_")))))
 
 (defun php-heredoc-syntax ()
   "Mark the boundaries of searched heredoc."
