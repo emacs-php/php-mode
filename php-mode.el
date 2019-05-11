@@ -63,6 +63,7 @@
 
 ;;; Code:
 
+(require 'php)
 (require 'cc-mode)
 (require 'cc-langs)
 
@@ -83,7 +84,6 @@
 (require 'speedbar)
 (require 'imenu)
 (require 'nadvice nil t)
-(require 'package)
 
 (require 'cl-lib)
 (require 'mode-local)
@@ -91,7 +91,6 @@
 
 (eval-when-compile
   (require 'regexp-opt)
-  (autoload 'pkg-info-version-info "pkg-info")
   (defvar c-vsemi-status-unknown-p)
   (defvar syntax-propertize-via-font-lock))
 
@@ -118,16 +117,10 @@
         ;; need it in php-mode, just return nil.
         nil)))
 
+(autoload 'php-mode-debug "php-mode-debug"
+  "Display informations useful for debugging PHP Mode." t)
 
 ;; Local variables
-;;;###autoload
-(defgroup php nil
-  "Language support for PHP."
-  :tag "PHP"
-  :group 'languages
-  :group 'php
-  :link '(url-link :tag "Official Site" "https://github.com/emacs-php/php-mode")
-  :link '(url-link :tag "PHP Mode Wiki" "https://github.com/emacs-php/php-mode/wiki"))
 
 ;;;###autoload
 (defgroup php-mode nil
@@ -138,11 +131,6 @@
   :group 'php
   :link '(url-link :tag "Official Site" "https://github.com/emacs-php/php-mode")
   :link '(url-link :tag "PHP Mode Wiki" "https://github.com/emacs-php/php-mode/wiki"))
-
-(defcustom php-executable (or (executable-find "php")
-                              "/usr/bin/php")
-  "The location of the PHP executable."
-  :type 'string)
 
 (define-obsolete-variable-alias 'php-default-face 'php-mode-default-face "1.20.0")
 (defcustom php-mode-default-face 'default
@@ -177,15 +165,6 @@ Turning this on will open it whenever `php-mode' is loaded."
   "Should detect presence of html tags."
   :group 'php-mode
   :type 'boolean)
-
-(defsubst php-in-string-p ()
-  (nth 3 (syntax-ppss)))
-
-(defsubst php-in-comment-p ()
-  (nth 4 (syntax-ppss)))
-
-(defsubst php-in-string-or-comment-p ()
-  (nth 8 (syntax-ppss)))
 
 (defun php-mode-extra-constants-create-regexp (kwds)
   "Create regexp for the list of extra constant keywords KWDS."
@@ -225,67 +204,6 @@ of constants when set."
   :type '(repeat string)
   :set 'php-mode-extra-constants-set)
 
-(defun php-create-regexp-for-method (visibility)
-  "Make a regular expression for methods with the given VISIBILITY.
-
-VISIBILITY must be a string that names the visibility for a PHP
-method, e.g. 'public'.  The parameter VISIBILITY can itself also
-be a regular expression.
-
-The regular expression this function returns will check for other
-keywords that can appear in method signatures, e.g. 'final' and
-'static'.  The regular expression will have one capture group
-which will be the name of the method."
-  (concat
-   ;; Initial space with possible 'abstract' or 'final' keywords
-   "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?"
-   ;; 'static' keyword may come either before or after visibility
-   "\\(?:" visibility "\\(?:\\s-+static\\)?\\|\\(?:static\\s-+\\)?" visibility "\\)\\s-+"
-   ;; Make sure 'function' comes next with some space after
-   "function\\s-+"
-   ;; Capture the name as the first group and the regexp and make sure
-   ;; by the end we see the opening parenthesis for the parameters.
-   "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("))
-
-(defun php-create-regexp-for-classlike (type)
-  "Accepts a `TYPE' of a 'classlike' object as a string, such as
-'class' or 'interface', and returns a regexp as a string which
-can be used to match against definitions for that classlike."
-  (concat
-   ;; First see if 'abstract' or 'final' appear, although really these
-   ;; are not valid for all values of `type' that the function
-   ;; accepts.
-   "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?"
-   ;; The classlike type
-   type
-   ;; Its name, which is the first captured group in the regexp.  We
-   ;; allow backslashes in the name to handle namespaces, but again
-   ;; this is not necessarily correct for all values of `type'.
-   "\\s-+\\(\\(?:\\sw\\|\\\\\\|\\s_\\)+\\)"))
-
-(defvar php-imenu-generic-expression
-  `(("Namespaces"
-    ,(php-create-regexp-for-classlike "namespace") 1)
-   ("Classes"
-    ,(php-create-regexp-for-classlike "class") 1)
-   ("Interfaces"
-    ,(php-create-regexp-for-classlike "interface") 1)
-   ("Traits"
-    ,(php-create-regexp-for-classlike "trait") 1)
-   ("All Methods"
-    ,(php-create-regexp-for-method "\\(?:\\sw\\|\\s_\\)+") 1)
-   ("Private Methods"
-    ,(php-create-regexp-for-method "private") 1)
-   ("Protected Methods"
-    ,(php-create-regexp-for-method "protected")  1)
-   ("Public Methods"
-    ,(php-create-regexp-for-method "public") 1)
-   ("Anonymous Functions"
-    "\\<\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*=\\s-*function\\s-*(" 1)
-   ("Named Functions"
-    "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
-  "Imenu generic expression for PHP Mode.  See `imenu-generic-expression'.")
-
 (define-obsolete-variable-alias 'php-do-not-use-semantic-imenu 'php-mode-do-not-use-semantic-imenu "1.20.0")
 (defcustom php-mode-do-not-use-semantic-imenu t
   "Customize `imenu-create-index-function' for `php-mode'.
@@ -296,32 +214,6 @@ parent.  Set this variable to t if you want to use
 `imenu-default-create-index-function' even with `semantic-mode'
 enabled."
   :type 'boolean)
-
-(defcustom php-site-url "https://php.net/"
-  "Default PHP.net site URL.
-
-The URL to use open PHP manual and search word."
-  :type 'string)
-
-(defcustom php-manual-url 'en
-  "URL at which to find PHP manual.
-You can replace \"en\" with your ISO language code."
-  :type '(choice (const  :tag "English" 'en)
-                 (const  :tag "Brazilian Portuguese" 'pt_BR)
-                 (const  :tag "Chinese (Simplified)" 'zh)
-                 (const  :tag "French" 'fr)
-                 (const  :tag "German" 'de)
-                 (const  :tag "Japanese" 'ja)
-                 (const  :tag "Romanian" 'ro)
-                 (const  :tag "Russian" 'ru)
-                 (const  :tag "Spanish" 'es)
-                 (const  :tag "Turkish" 'tr)
-                 (string :tag "PHP manual URL")))
-
-(defcustom php-search-url nil
-  "URL at which to search for documentation on a word."
-  :type '(choice (string :tag "URL to search PHP documentation")
-                 (const  :tag "Use `php-site-url' variable" nil)))
 
 (defcustom php-completion-file ""
   "Path to the file which contains the function names known to PHP."
@@ -1192,70 +1084,6 @@ After setting the stylevars run hooks according to STYLENAME
       (prog1 (php-set-style (symbol-name coding-style))
         (remove-hook 'hack-local-variables-hook #'php-mode-set-style-delay)))))
 
-(defun php-mode-debug--buffer (&optional command &rest args)
-  "Return buffer for php-mode-debug, and execute `COMMAND' with `ARGS'."
-  (with-current-buffer (get-buffer-create "*PHP Mode DEBUG*")
-    (cl-case command
-      (init (erase-buffer)
-            (goto-address-mode))
-      (top (goto-char (point-min)))
-      (insert (goto-char (point-max))
-              (apply #'insert args)))
-    (current-buffer)))
-
-(defun php-mode-debug--message (format-string &rest args)
-  "Write message `FORMAT-STRING' and `ARGS' to debug buffer, like `message'."
-  (declare (indent 1))
-  (php-mode-debug--buffer 'insert (apply #'format format-string args) "\n"))
-
-(declare-function custom-group-members "cus-edit" (symbol groups-only))
-
-(defun php-mode-debug ()
-  "Display informations useful for debugging PHP Mode."
-  (interactive)
-  (require 'cus-edit)
-  (require 'pkg-info nil t)
-  (php-mode-debug--buffer 'init)
-  (php-mode-debug--message "Feel free to report on GitHub what you noticed!")
-  (php-mode-debug--message "https://github.com/emacs-php/php-mode/issues/new")
-  (php-mode-debug--message "")
-  (php-mode-debug--message "Pasting the following information on the issue will help us to investigate the cause.")
-  (php-mode-debug--message "```")
-  (php-mode-debug--message "--- PHP-MODE DEBUG BEGIN ---")
-  (php-mode-debug--message "versions: %s; %s" (emacs-version) (php-mode-version))
-  (php-mode-debug--message "package-version: %s"
-    (if (fboundp 'pkg-info)
-        (pkg-info-version-info 'php-mode)
-      (let ((pkg (and (boundp 'package-alist)
-                      (cadr (assq 'php-mode package-alist)))))
-        (when (and pkg (member (package-desc-status pkg) '("unsigned" "dependency")))
-          (package-version-join (package-desc-version pkg))))))
-
-  (php-mode-debug--message "major-mode: %s" major-mode)
-  (php-mode-debug--message "minor-modes: %s"
-    (cl-loop for s in minor-mode-list
-             unless (string-match-p "global" (symbol-name s))
-             if (and (boundp s) (symbol-value s))
-             collect s))
-  (php-mode-debug--message "variables: %s"
-    (cl-loop for v in '(indent-tabs-mode tab-width)
-             collect (list v (symbol-value v))))
-  (php-mode-debug--message "custom variables: %s"
-    (cl-loop for (v type) in (custom-group-members 'php nil)
-             if (eq type 'custom-variable)
-             collect (list v (symbol-value v))))
-  (php-mode-debug--message "c-indentation-style: %s" c-indentation-style)
-  (php-mode-debug--message "c-style-variables: %s"
-    (cl-loop for v in c-style-variables
-             unless (memq v '(c-doc-comment-style c-offsets-alist))
-             collect (list v (symbol-value v))))
-  (php-mode-debug--message "c-doc-comment-style: %s" c-doc-comment-style)
-  (php-mode-debug--message "c-offsets-alist: %s" c-offsets-alist)
-  (php-mode-debug--message "--- PHP-MODE DEBUG END ---")
-  (php-mode-debug--message "```\n")
-  (php-mode-debug--message "Thank you!")
-  (pop-to-buffer (php-mode-debug--buffer 'top)))
-
 ;;;###autoload
 (define-derived-mode php-mode c-mode "PHP"
   "Major mode for editing PHP code.
@@ -1826,46 +1654,6 @@ The output will appear in the buffer *PHP*."
       (delete-char 1))))
 
 (ad-activate 'fixup-whitespace)
-
-
-(defcustom php-class-suffix-when-insert "::"
-  "Suffix for inserted class."
-  :group 'php
-  :type 'string)
-
-(defcustom php-namespace-suffix-when-insert "\\"
-  "Suffix for inserted namespace."
-  :group 'php
-  :type 'string)
-
-(defvar php--re-namespace-pattern
-  (php-create-regexp-for-classlike "namespace"))
-
-(defvar php--re-classlike-pattern
-  (php-create-regexp-for-classlike (regexp-opt '("class" "interface" "trait"))))
-
-(defun php-get-current-element (re-pattern)
-  "Return backward matched element by RE-PATTERN."
-  (save-excursion
-    (when (re-search-backward re-pattern nil t)
-      (match-string-no-properties 1))))
-
-;;;###autoload
-(defun php-current-class ()
-  "Insert current class name if cursor in class context."
-  (interactive)
-  (let ((matched (php-get-current-element php--re-classlike-pattern)))
-    (when matched
-      (insert (concat matched php-class-suffix-when-insert)))))
-
-;;;###autoload
-(defun php-current-namespace ()
-  "Insert current namespace if cursor in namespace context."
-  (interactive)
-  (let ((matched (php-get-current-element php--re-namespace-pattern)))
-    (when matched
-      (insert (concat matched php-namespace-suffix-when-insert)))))
-
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist

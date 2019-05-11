@@ -30,8 +30,9 @@
 ;; with Emacs >= 24.1.
 
 ;;; Code:
-
+(require 'php)
 (require 'php-mode)
+(require 'php-mode-debug)
 (require 'php-project)
 (require 'ert)
 (require 'cl-lib)
