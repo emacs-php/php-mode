@@ -2,6 +2,13 @@
 
 This project accepts contributions in various languages.  Not only development but also documentation and translation are important contributions.
 
+ * [English](#english) `[en]`
+ * [简体中文](#simplified-chinese) `[zh-Hans]`
+ * [繁体中文](#traditional-chinese) `[zh-Hant]`
+ * [日本語](#japanese) `[ja]`
+
+----------
+
 ## English
 
 ### Guideline (en)
