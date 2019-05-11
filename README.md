@@ -275,24 +275,7 @@ Other Packages for PHP programming
 How to Contribute
 -----------------
 
-All contributions to PHP Mode are welcome.  But please try to do the following when sending improvements or bug fixes:
-
-1. Add your name to the list of ‘Contributors’ in this `README.md` file if it is not there already.  If you have a GitHub page and/or personal site then please feel free to link your name to it so people can see your other work.
-
-2. If your contribution addresses an issue on the GitHub project page then include a single line like `GitHub-Issue: #16` with the appropriate issue number.
-
-3. Make sure to update the constant `php-mode-modified` *only if you patch affects `php-mode.el`,* which means this step is unnecessary for patches related to unit tests.
-
-4. However, please do not modify `php-mode-version-number`.  The maintainers will decide what constitutes a bump in the version number.
-
-5. Open the `php-mode-test.el` file and [run all of the tests](http://www.gnu.org/software/emacs/manual/html_node/ert/Running-Tests-Interactively.html#Running-Tests-Interactively) to ensure they still pass as expected.  Sometimes we expect for a test to fail, and those unit tests have the appropriate configuration so their failure will not raise any warnings.  You can use `make test` script to run all tests from a terminal, which is also useful in conjunction with [`git bisect run`](http://git-scm.com/book/en/Git-Tools-Debugging-with-Git).
-
-6. Send us a pull request here on GitHub.
-
-7. Please make your commit messages as detailed as possible.  It is better to be too verbose than to write too little.  Look at the commits of the maintainers to see many examples of the level of detail that we feel is ideal.  Please never assume that your patch is so simple that future developers will be able to understand the *reason* for the change without comment.  And that is important: your commit message should always strive to answer *"Why"* the patch exists, *"What*" does it accomplish?  The maintainers will sometimes write detailed commit messages for pull-requests by other developers, but please do not rely on us to do this consistently.
-
-If you are fixing a bug related to a GitHub issue, then first of all, thank you for the help improving PHP Mode.  Second, there is a `tests/` directory which contains PHP scripts for issues (although not all of them).  Please consider adding a test script to that directory that documents the expected behavior and provides code that allows others to see if said behavior works properly.  Then create a unit test within `php-mode-test.el` using [ERT][]. Please try to follow the format of the existing tests.
-
+Please see [CONTRIBUTING.md](CONTRIBUTING.md#english).
 
 The Wiki
 --------
@@ -403,7 +386,6 @@ In chronological order:
 
 
 [wiki]: https://github.com/emacs-php/php-mode/wiki
-[ert]: http://www.gnu.org/software/emacs/manual/html_node/ert/index.html
 [cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
 [Subword Mode]: https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
 [camelCase]: http://en.wikipedia.org/wiki/Camel_case

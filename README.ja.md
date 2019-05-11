@@ -299,17 +299,7 @@ PHPプログラミングのためのパッケージ
 貢献するには
 -----------------
 
-PHPモードはどなたからの貢献も歓迎です。改善やバグ修正を行う前に以下の手順を行ってください。
-
- 1. あなたの名前が`README.md`の“Contributors”のリストになければ追加してください。あなたの名前とGitHubアカウントや個人サイトをリンクして構いません。
- 2. もし既にissueとして提起された問題に対処するならば、コミットメッセージに`GitHub-Issue: #16`のような行を含めてください。
- 3. `php-mode.el`に影響する変更をした場合、`php-mode-modified`定数を更新してください。テストやドキュメントのみの修正の場合は不要です。
- 4. しかし、 `php-mode-version-number` は変更しないでください。メンテナがバージョンを決定します。
- 5. `php-mode-test.el`を開いて[すべてのテストを実行](http://www.gnu.org/software/emacs/manual/html_node/ert/Running-Tests-Interactively.html#Running-Tests-Interactively)し、期待通りにテストを通過することを確認します。端末から`make test`で確認することもでき、[`git bisect run`](http://git-scm.com/book/en/Git-Tools-Debugging-with-Git)と併用すると便利です。
- 6. GitHubからプルリクエストを送信します
- 7. 可能な限り詳細なコミットメッセージを作成してください。不足するよりも冗長すぎる方が良いです。メンテナーのコミットを参照して、私たちが理想的だと期待するコミットメッセージの詳細度として参考にしてください。シンプルすぎるパッチだからと決めつけずにコミットメッセージを書けば、コード中にコメントを書かなくても将来の開発者がコミットの「理由」「経緯」を理解できるようになります。コミットメッセージには「なぜ」コミットを作成したか、「何を」解決するものなのかを記述することが重要です。メンテナーはほかの開発者のプルリクエストに詳細なコミットメッセージを書き込むことがありますが、常に一貫して行われるとは期待しないでください。
-
-**GitHubのissueに関連するバグを修正する場合**： PHPモードの改善に協力いただきありがとうございます！ `tests/`ディレクトリには(すべてではありませんが)issueに関連のあるPHPスクリプトが配置されています。そこに予期される挙動と他のひとが動作を適切に確認できるテストコードを追加することを検討してください。そして`php-mode-test.el`に既存のテストと同じように[ERT][]を使ったテストコードを追加してください。
+[CONTRIBUTING.md](CONTRIBUTING.md#japanese)をご覧ください。
 
 Wiki
 --------
@@ -339,7 +329,6 @@ Contributors
 PHPモードの改善に協力したすべての貢献者のリストは[README.md#contributors](https://github.com/emacs-php/php-mode/blob/master/README.md#contributors)に掲載されています。
 
 [wiki]: https://github.com/emacs-php/php-mode/wiki
-[ert]: http://www.gnu.org/software/emacs/manual/html_node/ert/index.html
 [cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
 [Subword Mode]: https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
 [camelCase]: https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%A1%E3%83%AB%E3%82%B1%E3%83%BC%E3%82%B9
