@@ -1,5 +1,5 @@
 EMACS ?= emacs
-ELS = php-project.el php-mode.el php-mode-debug.el php-mode-test.el
+ELS = php.el php-project.el php-mode.el php-mode-debug.el php-mode-test.el
 AUTOLOADS = php-project-autoloads.el php-mode-autoloads.el
 ELCS = $(ELS:.el=.elc)
 
@@ -10,7 +10,7 @@ all: autoloads $(ELCS)
 
 autoloads: $(AUTOLOADS)
 
-$(AUTOLOADS): php-project.el php-mode-debug.el php-mode.el
+$(AUTOLOADS): php.el php-project.el php-mode-debug.el php-mode.el
 	$(EMACS) -Q -batch -L . --eval \
 	"(progn \
 	   (require 'package) \
