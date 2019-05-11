@@ -5,7 +5,7 @@
 ;; Author: USAMI Kenta <tadsan@zonu.me>
 ;; Keywords: tools, files
 ;; URL: https://github.com/emacs-php/php-mode
-;; Version: 1.21.1
+;; Version: 1.21.2
 ;; Package-Requires: ((emacs "24.3") (cl-lib "0.5"))
 ;; License: GPL-3.0-or-later
 
