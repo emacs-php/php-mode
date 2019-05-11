@@ -9,14 +9,14 @@
 ;; Maintainer: USAMI Kenta <tadsan@zonu.me>
 ;; URL: https://github.com/emacs-php/php-mode
 ;; Keywords: languages php
-;; Version: 1.21.1
+;; Version: 1.21.2
 ;; Package-Requires: ((emacs "24.3") (cl-lib "0.5"))
 ;; License: GPL-3.0-or-later
 
-(defconst php-mode-version-number "1.21.1"
+(defconst php-mode-version-number "1.21.2"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2019-04-01"
+(defconst php-mode-modified "2019-05-11"
   "PHP Mode build date.")
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -98,7 +98,7 @@
 ;; Work around emacs bug#18845, cc-mode expects cl to be loaded
 ;; while php-mode only uses cl-lib (without compatibility aliases)
 (eval-and-compile
-  (if (and (= emacs-major-version 24) (>= emacs-minor-version 4))
+  (when (and (= emacs-major-version 24) (>= emacs-minor-version 4))
     (require 'cl)))
 
 ;; Work around https://github.com/emacs-php/php-mode/issues/310.
@@ -191,7 +191,7 @@ Turning this on will open it whenever `php-mode' is loaded."
   "Create regexp for the list of extra constant keywords KWDS."
    (concat "[^_$]?\\<\\("
            (regexp-opt
-             (append kwds
+            (append kwds
                      (when (boundp 'web-mode-extra-php-constants) web-mode-extra-php-constants)))
            "\\)\\>[^_]?"))
 

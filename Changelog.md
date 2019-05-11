@@ -2,12 +2,24 @@
 
 All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [1.21.2]
+## [1.21.2] - 2019-05-11
+
+It officially supports **PHP 7.3** and **Emacs 26.2**.
+Many improvements have been received from [@sergeyklay], thank you!
+
+### Added
+
+ * Highlighting added `fn` keyword supported by [PHP 7.2 arrow function] ([#506])
 
 ### Fixed
 
- * Function `php-beginning-of-defun` should return non-nil on success
- ([#503](https://github.com/emacs-php/php-mode/issues/503))
+ * Function `php-beginning-of-defun` should return non-nil on success ([#503])
+ * Fixed an error that occurred in some heredoc/nowdoc ([#496])
+
+### Changed
+
+ * Support PHP 7.3 heredoc/nowdoc ([#496])
+ * Minor optimization of font-lock regular expression ([#510])
 
 ## [1.21.1] - 2019-04-01
 
@@ -102,5 +114,11 @@ Start preparing for major refactoring in major mode.
 
 See [Changelog · emacs-php/php-mode Wiki](https://github.com/emacs-php/php-mode/wiki/Changelog).
 
+[#496]: https://github.com/emacs-php/php-mode/pull/496
+[#503]: https://github.com/emacs-php/php-mode/issues/503
+[#506]: https://github.com/emacs-php/php-mode/issues/506
+[#510]: https://github.com/emacs-php/php-mode/pull/510
 [@ejmr]: https://github.com/ejmr
 [@fabacino]: https://github.com/fabacino
+[@sergeyklay]: https://github.com/sergeyklay
+[PHP 7.2 arrow function]: https://wiki.php.net/rfc/arrow_functions_v2
