@@ -88,10 +88,6 @@ Load `php-mode` synchronously from a specific path.  It will load 10 times the s
 (add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
 ```
 
-### **(不可)** Marmalade
-
-[Marmalade][]パッケージリポジトリは、もはや維持されていないので**設定の削除を推奨します**。また、このリポジトリには2004年のオリジナル版PHPモードしか登録されていませんでした。
-
 Reporting Bugs
 --------------
 
