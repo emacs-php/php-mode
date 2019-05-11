@@ -98,7 +98,7 @@
 ;; Work around emacs bug#18845, cc-mode expects cl to be loaded
 ;; while php-mode only uses cl-lib (without compatibility aliases)
 (eval-and-compile
-  (if (and (= emacs-major-version 24) (>= emacs-minor-version 4))
+  (when (and (= emacs-major-version 24) (>= emacs-minor-version 4))
     (require 'cl)))
 
 ;; Work around https://github.com/emacs-php/php-mode/issues/310.
@@ -191,7 +191,7 @@ Turning this on will open it whenever `php-mode' is loaded."
   "Create regexp for the list of extra constant keywords KWDS."
    (concat "[^_$]?\\<\\("
            (regexp-opt
-             (append kwds
+            (append kwds
                      (when (boundp 'web-mode-extra-php-constants) web-mode-extra-php-constants)))
            "\\)\\>[^_]?"))
 
