@@ -81,7 +81,7 @@ Major mode for editing PHP code.
 ;; (require 'php-mode)
 ```
 
-#### **C**: `(require 'php-mode)` *(非推奨)*
+#### **C**: `(require 'php-mode)` *(NOT RECOMMENDED)*
 
 Load `php-mode` synchronously from a specific path.  It will load 10 times the size of the code compared to method **A**, and how much the startup time will depend on the performance of your machine's CPU and file system.
 
