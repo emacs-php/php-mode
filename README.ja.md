@@ -9,35 +9,89 @@ PHP Mode for GNU Emacs
 [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
 [![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)](http://www.gnu.org/licenses/gpl-3.0.txt)
 
-PHP 5.4以降を開発しやすくするための機能をアップデートするプロジェクトです。これは以下の人々の作業をもとにフォークされました。
+GNU EmacsでのPHPコーディングを支援するメジャーモードの開発プロジェクトです。
+これまで、以下の人々の作業をもとにフォークされました。
 
-1. Turadg Aleahmad (Original Author)
-2. Aaron S. Hawley
-3. Lennart Borgman
-4. Eric James Michael Ritz
-5. Syohei Yoshida
+ 1. Turadg Aleahmad (Original Author)
+ 2. Aaron S. Hawley
+ 3. Lennart Borgman
+ 4. Eric James Michael Ritz
+ 5. Syohei Yoshida
 
 リストアップされたすべての貢献者たちも同様にPHPモードを改善しました。
 
 現在のメンテナ：
 
-1. USAMI Kenta (@zonuexe)
+ 1. USAMI Kenta (@zonuexe)
 
 [PHP ModeのGitHubプロジェクト][php-mode]にissueを作成してバグ報告や機能リクエストを送ってください。あるいは[PHP suite][php-suite]の[FeatHubページ][feathub]に機能リクエストを送っても構いません。
 
 インストール
 ------------
 
-**PHPモードはEmacs 24.3以降で動作します**。古いバージョンのEmacsでも動作するかもしれませんが、保証外です。 古いバージョンのEmacsのPHPモードを使用することによる問題のバグ報告は積極的に対応しません。
+**PHP ModeはEmacs 24.3以降で動作します**。古いバージョンのEmacsでも動作するかもしれませんが、保証外です。 古いバージョンのEmacsのPHPモードを使用することによる問題のバグ報告は積極的に対応しません。現在のサポートポリシーは[Supported Version]のページをご覧ください。
 
-GNU Emacs 24以降では、[package][]機能を使って[MELPA][]からPHPモードをインストールすることができます。 *[Marmalade][]パッケージリポジトリには2004年のオリジナル版PHPモードしか登録されていません*。そのため、MELPAを使用してPHPモードをインストールすることを推奨します。単にパッケージマネージャを使いたくない場合は、`php-mode.el`ファイルをダウンロードして`load-path`の通ったディレクトリに配置し、必要に応じて `(require 'php-mode)` をEmacsの設定に追加すると、PHPファイルを開くたびに自動的にPHPモードが有効になります。
+### **(推奨)** MELPAからのインストール
 
-さらに`skeleton/php-ext.el`を`load-path`に追加することで[テンプレートを有効にする](https://www.gnu.org/software/emacs/manual/html_node/autotype/index.html#Top)ことができます。
+[![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
 
-```lisp
-(eval-after-load 'php-mode
-  '(require 'php-ext))
+GNU Emacs 24以降では、[package][]機能(または[Cask][])を使って[MELPA][]/[MELPA Stable][]からPHP Modeをインストールできます。
+
+### 手動でインストール
+
+このプロジェクトを `git cline` または、[php-mode releases]からzip/tarアーカイブをダウンロードして展開してください。
+
+#### A: `(load php-mode-autoloads.el)` *(推奨)*
+
+これはパッケージマネージャを利用した場合と同等のパフォーマンスと使いやすさを両立した初期化方法です。
+
+ダウンロードしたコードを展開したディレクトリに移動し、`make`コマンドを実行すると、バイトコンパイルおよび `php-mode-autoloads.el` を生成できます。 `init.el`からファイルをロードするだけで使用準備は完了です。
+
+```el
+;; Put follow code into init.el
+(when (file-directory-p "~/path/to/php-mode")
+  (load "~/path/to/php-mode/php-mode-autoloads.el"))
+
+;; Any code below is *unnecessary*
+;; (require 'php-mode)
+;; (add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
+;; (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 ```
+
+#### **B**: `(autoload 'php-mode)`
+
+Emacs起動時の僅かな読み込み増加をも削減したい上級ユーザー向けです。
+
+この場合も `make`でバイトコンパイルしておくことを推奨します。
+
+```el
+;; Put follow code into init.el
+(autoload 'php-mode (expand-file-name "~/path/to/php-mode/php-mode") "\
+Major mode for editing PHP code.
+
+\\{php-mode-map}
+
+\(fn)" t nil)
+
+(add-to-list 'auto-mode-alist '("\\.\\(?:php\\|phtml\\)\\'" . php-mode))
+
+;; Any code below is *unnecessary*
+;; (add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
+;; (require 'php-mode)
+```
+
+#### **C**: `(require 'php-mode)` *(非推奨)*
+
+特定のパスから`php-mode`を同期的に読み込みます。 **A**の場合と比べて10倍のサイズのコードを読み込むことになり、起動時間の増加幅はCPUとファイスシステムのパフォーマンスに依存します。
+
+```el
+(require 'php-mode "~/path/to/php-mode/php-mode")
+(add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
+```
+
+### **(不可)** Marmalade
+
+[Marmalade][]パッケージリポジトリは、もはや維持されていないので**設定の削除を推奨します**。また、このリポジトリには2004年のオリジナル版PHPモードしか登録されていませんでした。
 
 バグを報告する
 --------------
@@ -317,20 +371,24 @@ Contributors
 
 PHPモードの改善に協力したすべての貢献者のリストは[README.md#contributors](https://github.com/emacs-php/php-mode/blob/master/README.md#contributors)に掲載されています。
 
-[wiki]: https://github.com/emacs-php/php-mode/wiki
-[cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
-[Subword Mode]: https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
-[camelCase]: https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%A1%E3%83%AB%E3%82%B1%E3%83%BC%E3%82%B9
-[package]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html
-[MELPA]: http://melpa.milkbox.net/
+[Cask]: https://github.com/cask/cask
+[MELPA Stable]: https://stable.melpa.org/
+[MELPA]: https://melpa.org/
 [Marmalade]: http://marmalade-repo.org/
+[Subword Mode]: https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
+[Supported Version]: https://github.com/emacs-php/php-mode/wiki/Supported-Version
 [Web Mode]: http://web-mode.org/
+[camelCase]: https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%A1%E3%83%AB%E3%82%B1%E3%83%BC%E3%82%B9
+[cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
+[feathub]: https://feathub.com/emacs-php/php-suite
+[melpa-badge]: http://melpa.org/packages/php-mode-badge.svg
+[melpa-link]: http://melpa.org/#/php-mode
+[melpa-stable-badge]: http://stable.melpa.org/packages/php-mode-badge.svg
+[melpa-stable-link]: http://stable.melpa.org/#/php-mode
+[package]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html
+[php-mode]: https://github.com/emacs-php/php-mode
+[php-mode releases]: https://github.com/emacs-php/php-mode/releases
+[php-suite]: https://github.com/emacs-php/php-suite
 [travis-badge]: https://travis-ci.org/emacs-php/php-mode.svg
 [travis-link]: https://travis-ci.org/emacs-php/php-mode
-[melpa-link]: http://melpa.org/#/php-mode
-[melpa-stable-link]: http://stable.melpa.org/#/php-mode
-[melpa-badge]: http://melpa.org/packages/php-mode-badge.svg
-[melpa-stable-badge]: http://stable.melpa.org/packages/php-mode-badge.svg
-[php-mode]: https://github.com/emacs-php/php-mode
-[php-suite]: https://github.com/emacs-php/php-suite
-[feathub]: https://feathub.com/emacs-php/php-suite
+[wiki]: https://github.com/emacs-php/php-mode/wiki
