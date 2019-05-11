@@ -31,6 +31,8 @@ Installation
 
 **PHP Mode works on Emacs 24.3 or later.**  PHP Mode may work with older versions of Emacs but this is not guaranteed.  Bug reports for problems related to using PHP Mode with older versions of Emacs will most like *not* be addressed.
 
+The current support policy can be found on the [Supported Version] page.
+
 ### **(RECOMMENDED)** Install from MELPA
 
 [![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
