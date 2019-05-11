@@ -32,6 +32,7 @@
 ;;; Code:
 
 (require 'php-mode)
+(require 'php-mode-debug)
 (require 'php-project)
 (require 'ert)
 (require 'cl-lib)

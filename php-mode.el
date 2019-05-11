@@ -83,7 +83,6 @@
 (require 'speedbar)
 (require 'imenu)
 (require 'nadvice nil t)
-(require 'package)
 
 (require 'cl-lib)
 (require 'mode-local)
@@ -91,7 +90,6 @@
 
 (eval-when-compile
   (require 'regexp-opt)
-  (autoload 'pkg-info-version-info "pkg-info")
   (defvar c-vsemi-status-unknown-p)
   (defvar syntax-propertize-via-font-lock))
 
@@ -118,6 +116,8 @@
         ;; need it in php-mode, just return nil.
         nil)))
 
+(autoload 'php-mode-debug "php-mode-debug"
+  "Display informations useful for debugging PHP Mode." t)
 
 ;; Local variables
 ;;;###autoload
@@ -1191,70 +1191,6 @@ After setting the stylevars run hooks according to STYLENAME
                             php-mode-coding-style)))
       (prog1 (php-set-style (symbol-name coding-style))
         (remove-hook 'hack-local-variables-hook #'php-mode-set-style-delay)))))
-
-(defun php-mode-debug--buffer (&optional command &rest args)
-  "Return buffer for php-mode-debug, and execute `COMMAND' with `ARGS'."
-  (with-current-buffer (get-buffer-create "*PHP Mode DEBUG*")
-    (cl-case command
-      (init (erase-buffer)
-            (goto-address-mode))
-      (top (goto-char (point-min)))
-      (insert (goto-char (point-max))
-              (apply #'insert args)))
-    (current-buffer)))
-
-(defun php-mode-debug--message (format-string &rest args)
-  "Write message `FORMAT-STRING' and `ARGS' to debug buffer, like `message'."
-  (declare (indent 1))
-  (php-mode-debug--buffer 'insert (apply #'format format-string args) "\n"))
-
-(declare-function custom-group-members "cus-edit" (symbol groups-only))
-
-(defun php-mode-debug ()
-  "Display informations useful for debugging PHP Mode."
-  (interactive)
-  (require 'cus-edit)
-  (require 'pkg-info nil t)
-  (php-mode-debug--buffer 'init)
-  (php-mode-debug--message "Feel free to report on GitHub what you noticed!")
-  (php-mode-debug--message "https://github.com/emacs-php/php-mode/issues/new")
-  (php-mode-debug--message "")
-  (php-mode-debug--message "Pasting the following information on the issue will help us to investigate the cause.")
-  (php-mode-debug--message "```")
-  (php-mode-debug--message "--- PHP-MODE DEBUG BEGIN ---")
-  (php-mode-debug--message "versions: %s; %s" (emacs-version) (php-mode-version))
-  (php-mode-debug--message "package-version: %s"
-    (if (fboundp 'pkg-info)
-        (pkg-info-version-info 'php-mode)
-      (let ((pkg (and (boundp 'package-alist)
-                      (cadr (assq 'php-mode package-alist)))))
-        (when (and pkg (member (package-desc-status pkg) '("unsigned" "dependency")))
-          (package-version-join (package-desc-version pkg))))))
-
-  (php-mode-debug--message "major-mode: %s" major-mode)
-  (php-mode-debug--message "minor-modes: %s"
-    (cl-loop for s in minor-mode-list
-             unless (string-match-p "global" (symbol-name s))
-             if (and (boundp s) (symbol-value s))
-             collect s))
-  (php-mode-debug--message "variables: %s"
-    (cl-loop for v in '(indent-tabs-mode tab-width)
-             collect (list v (symbol-value v))))
-  (php-mode-debug--message "custom variables: %s"
-    (cl-loop for (v type) in (custom-group-members 'php nil)
-             if (eq type 'custom-variable)
-             collect (list v (symbol-value v))))
-  (php-mode-debug--message "c-indentation-style: %s" c-indentation-style)
-  (php-mode-debug--message "c-style-variables: %s"
-    (cl-loop for v in c-style-variables
-             unless (memq v '(c-doc-comment-style c-offsets-alist))
-             collect (list v (symbol-value v))))
-  (php-mode-debug--message "c-doc-comment-style: %s" c-doc-comment-style)
-  (php-mode-debug--message "c-offsets-alist: %s" c-offsets-alist)
-  (php-mode-debug--message "--- PHP-MODE DEBUG END ---")
-  (php-mode-debug--message "```\n")
-  (php-mode-debug--message "Thank you!")
-  (pop-to-buffer (php-mode-debug--buffer 'top)))
 
 ;;;###autoload
 (define-derived-mode php-mode c-mode "PHP"

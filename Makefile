@@ -1,5 +1,5 @@
 EMACS ?= emacs
-ELS = php-project.el php-mode.el php-mode-test.el
+ELS = php-project.el php-mode.el php-mode-debug.el php-mode-test.el
 AUTOLOADS = php-project-autoloads.el php-mode-autoloads.el
 ELCS = $(ELS:.el=.elc)
 
@@ -10,7 +10,7 @@ all: autoloads $(ELCS)
 
 autoloads: $(AUTOLOADS)
 
-$(AUTOLOADS): php-project.el php-mode.el
+$(AUTOLOADS): php-project.el php-mode-debug.el php-mode.el
 	$(EMACS) -Q -batch -L . --eval \
 	"(progn \
 	   (require 'package) \
@@ -24,7 +24,7 @@ clean:
 dev:
 	cp etc/git/prepare-commit-msg .git/hooks/prepare-commit-msg
 	chmod u+x .git/hooks/prepare-commit-msg
-	
+
 # Runs all unit tests from php-mode-test.el and shows the results. The
 # script will exit with the status code zero if all tests pass. If any
 # test fails the script exits with a non-zero status and shows

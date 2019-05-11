@@ -3,6 +3,7 @@
 
 (package-file "php-mode.el")
 (package-file "php-project.el")
+(package-file "php-mode-debug.el")
 
 (development
  (depends-on "pkg-info")
