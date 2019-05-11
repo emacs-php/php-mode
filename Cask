@@ -2,6 +2,7 @@
 (source melpa)
 
 (package-file "php.el")
+(package-file "php-face.el")
 (package-file "php-mode.el")
 (package-file "php-project.el")
 (package-file "php-mode-debug.el")
