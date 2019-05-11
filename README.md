@@ -1,7 +1,7 @@
 PHP Mode for GNU Emacs
 ======================
 
-[![Emacs: 26.1](https://img.shields.io/badge/Emacs-26.1-blue.svg)](https://www.gnu.org/software/emacs/)
+[![Emacs: 26.2](https://img.shields.io/badge/Emacs-26.2-blue.svg)](https://www.gnu.org/software/emacs/)
 [![lang: PHP 7](https://img.shields.io/badge/lang-PHP%207-brightgreen.svg)](http://php.net/manual/migration70.php)
 [![lang: PHP 5](https://img.shields.io/badge/lang-PHP%205-green.svg)](http://php.net/downloads.php)
 [![travis badge][travis-badge]][travis-link]
@@ -9,7 +9,8 @@ PHP Mode for GNU Emacs
 [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
 [![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)](http://www.gnu.org/licenses/gpl-3.0.txt)
 
-This project updates PHP Mode for GNU Emacs with features to make it more friendly to use with PHP 5.4 and later.  This fork builds on the work of:
+This is a major mode development project to support PHP coding in GNU Emacs.
+This fork builds on the work of:
 
 1. Turadg Aleahmad (Original Author)
 2. Aaron S. Hawley
@@ -25,19 +26,70 @@ The current maintainer is:
 
 Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode][php-mode].  Alternatively you may also request features via [the FeatHub page][feathub] for the entire [PHP suite for GNU Emacs][php-suite].
 
-
 Installation
 ------------
 
 **PHP Mode works on Emacs 24.3 or later.**  PHP Mode may work with older versions of Emacs but this is not guaranteed.  Bug reports for problems related to using PHP Mode with older versions of Emacs will most like *not* be addressed.
 
-With GNU Emacs 24 or later then you can use its [package][] feature to install PHP Mode from [MELPA][].  *The [Marmalade][] package repository only has the original PHP Mode from 2004.*  Therefore we recommend you use MELPA to install PHP Mode.  If you simply do not wish to use the package manager, then all you need to do is download the `php-mode.el` file, place it inside your `load-path`, and optionally add `(require 'php-mode)` to your Emacs configuration to automatically enable PHP Mode whenever you open a PHP file.
+The current support policy can be found on the [Supported Version] page.
 
-Additionally, you can add `skeleton/php-ext.el` to your `load-path` to [enable the templates](https://www.gnu.org/software/emacs/manual/html_node/autotype/index.html#Top).
+### **(RECOMMENDED)** Install from MELPA
 
-```lisp
-(eval-after-load 'php-mode
-  '(require 'php-ext))
+[![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
+
+With GNU Emacs 24 or later then you can use its [package][] feature (or [Cask][]) to install PHP Mode from [MELPA][] or [MELPA Stable][].
+
+### Manual installation
+
+Please `git cline` this project or download and unarchive tar or zip file from [php-mode releases].
+
+You can choose one of the following **A**, **B**, **C** installation methods.
+
+#### **A**: `(load php-mode-autoloads.el)` *(RECOMMENDED)*
+
+This is an initialization method that achieves the same performance and ease of use as using a package manager.
+
+By moving the downloaded file to the extracted path of the current directory and executing the `make` command, byte compilation and `php-mode-autoloads.el` is generated.  Just load the file from `init.el` and you are ready to use.
+
+```el
+;; Put follow code into init.el
+(when (file-directory-p "~/path/to/php-mode")
+  (load "~/path/to/php-mode/php-mode-autoloads.el"))
+
+;; Any code below is *unnecessary*
+;; (require 'php-mode)
+;; (add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
+;; (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
+```
+#### **B**: `(autoload 'php-mode)`
+
+This is for advanced users who want to reduce the slight increase in reading when Emacs starts.
+
+Also in this case, it is recommended to byte compile with `make`.
+
+```el
+;; Put follow code into init.el
+(autoload 'php-mode (expand-file-name "~/path/to/php-mode/php-mode") "\
+Major mode for editing PHP code.
+
+\\{php-mode-map}
+
+\(fn)" t nil)
+
+(add-to-list 'auto-mode-alist '("\\.\\(?:php\\|phtml\\)\\'" . php-mode))
+
+;; Any code below is *unnecessary*
+;; (add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
+;; (require 'php-mode)
+```
+
+#### **C**: `(require 'php-mode)` *(NOT RECOMMENDED)*
+
+Load `php-mode` synchronously from a specific path.  It will load 10 times the size of the code compared to method **A**, and how much the startup time will depend on the performance of your machine's CPU and file system.
+
+```el
+(require 'php-mode "~/path/to/php-mode/php-mode")
+(add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
 ```
 
 Reporting Bugs
@@ -282,18 +334,6 @@ The Wiki
 
 The GitHub project page has a [wiki][] that you should feel free to edit.  The wiki lists the features and bugs that are on plan to include in upcoming versions of PHP Mode.  It is also a place to add any tips to make the mode more useful.
 
-
-The Mailing List
-----------------
-
-The “emacs-php” mailing list is a place to discuss PHP Mode as well as all other PHP-related packages for Emacs.  You can find the mailing list at:
-
-1. [emacs-php at Google Groups](https://groups.google.com/forum/#!forum/emacs-php)
-2. [Gmane](http://dir.gmane.org/gmane.emacs.php)
-
-We encourage all users of PHP Mode *and* developers of any PHP-related packages to feel free to post anything there regarding PHP and Emacs.
-
-
 License
 -------
 
@@ -385,20 +425,24 @@ In chronological order:
 76. [Mark A. Hershberger](https://github.com/hexmode)
 
 
-[wiki]: https://github.com/emacs-php/php-mode/wiki
-[cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
-[Subword Mode]: https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
-[camelCase]: http://en.wikipedia.org/wiki/Camel_case
-[package]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html
-[MELPA]: http://melpa.milkbox.net/
+[Cask]: https://github.com/cask/cask
+[MELPA Stable]: https://stable.melpa.org/
+[MELPA]: https://melpa.org/
 [Marmalade]: http://marmalade-repo.org/
+[Subword Mode]: https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
+[Supported Version]: https://github.com/emacs-php/php-mode/wiki/Supported-Version
 [Web Mode]: http://web-mode.org/
+[camelCase]: https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%A1%E3%83%AB%E3%82%B1%E3%83%BC%E3%82%B9
+[cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
+[feathub]: https://feathub.com/emacs-php/php-suite
+[melpa-badge]: http://melpa.org/packages/php-mode-badge.svg
+[melpa-link]: http://melpa.org/#/php-mode
+[melpa-stable-badge]: http://stable.melpa.org/packages/php-mode-badge.svg
+[melpa-stable-link]: http://stable.melpa.org/#/php-mode
+[package]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html
+[php-mode]: https://github.com/emacs-php/php-mode
+[php-mode releases]: https://github.com/emacs-php/php-mode/releases
+[php-suite]: https://github.com/emacs-php/php-suite
 [travis-badge]: https://travis-ci.org/emacs-php/php-mode.svg
 [travis-link]: https://travis-ci.org/emacs-php/php-mode
-[melpa-link]: http://melpa.org/#/php-mode
-[melpa-stable-link]: http://stable.melpa.org/#/php-mode
-[melpa-badge]: http://melpa.org/packages/php-mode-badge.svg
-[melpa-stable-badge]: http://stable.melpa.org/packages/php-mode-badge.svg
-[php-mode]: https://github.com/emacs-php/php-mode
-[php-suite]: https://github.com/emacs-php/php-suite
-[feathub]: https://feathub.com/emacs-php/php-suite
+[wiki]: https://github.com/emacs-php/php-mode/wiki
