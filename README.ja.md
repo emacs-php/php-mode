@@ -307,22 +307,10 @@ Wiki
 
 GitHubのプロジェクトページには[wiki][]があり、自由に編集して構いません。このWikiには今後追加する計画のある機能やバグが掲載されています。また、PHPモードをより使いやすくするためのTipsを追加できます。
 
-メーリングリスト
-----------------
-
-The “emacs-php” mailing list is a place to discuss PHP Mode as well as all other PHP-related packages for Emacs.  You can find the mailing list at:
-
-1. [emacs-php at Google Groups](https://groups.google.com/forum/#!forum/emacs-php)
-2. [Gmane](http://dir.gmane.org/gmane.emacs.php)
-
-We encourage all users of PHP Mode *and* developers of any PHP-related packages to feel free to post anything there regarding PHP and Emacs.
-
-
 ライセンス
 -------
 
 PHP Mode uses the [GNU General Public License 3](http://www.gnu.org/copyleft/gpl.html).
-
 
 Contributors
 ------------

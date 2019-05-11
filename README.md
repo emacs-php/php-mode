@@ -25,7 +25,6 @@ The current maintainer is:
 
 Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode][php-mode].  Alternatively you may also request features via [the FeatHub page][feathub] for the entire [PHP suite for GNU Emacs][php-suite].
 
-
 Installation
 ------------
 
@@ -281,18 +280,6 @@ The Wiki
 --------
 
 The GitHub project page has a [wiki][] that you should feel free to edit.  The wiki lists the features and bugs that are on plan to include in upcoming versions of PHP Mode.  It is also a place to add any tips to make the mode more useful.
-
-
-The Mailing List
-----------------
-
-The “emacs-php” mailing list is a place to discuss PHP Mode as well as all other PHP-related packages for Emacs.  You can find the mailing list at:
-
-1. [emacs-php at Google Groups](https://groups.google.com/forum/#!forum/emacs-php)
-2. [Gmane](http://dir.gmane.org/gmane.emacs.php)
-
-We encourage all users of PHP Mode *and* developers of any PHP-related packages to feel free to post anything there regarding PHP and Emacs.
-
 
 License
 -------
