@@ -43,9 +43,9 @@
 (c-after-font-lock-init)
 
 (defvar php-mode-test-dir (expand-file-name "tests"
-                                            (if load-file-name
-                                                (file-name-directory load-file-name)
-                                              default-directory))
+                                         (if load-file-name
+                                             (file-name-directory load-file-name)
+                                           default-directory))
   "Directory containing the `php-mode' test files.")
 
 (defvar php-mode-test-valid-magics '(indent)
@@ -178,8 +178,8 @@ The next character after \">We\" is a single quote. It should not
 have a string face."
   :expected-result :failed
   (with-php-mode-test ("issue-9.php")
-                      (search-forward ">We")
-                      (forward-char) ;; Jump to after the opening apostrophe
+    (search-forward ">We")
+    (forward-char) ;; Jump to after the opening apostrophe
     (should-not (eq
                  (get-text-property (point) 'face)
                  'php-string))))
@@ -234,10 +234,10 @@ Gets the face of the text after the comma."
 This applies for both single and double quotes."
   (with-php-mode-test ("issue-21.php")
     (while (search-forward "#" nil t)
-     (while (not (looking-at "\n"))
-       (should (eq (get-text-property (point) 'face)
-                   'font-lock-comment-face))
-       (forward-char)))))
+      (while (not (looking-at "\n"))
+        (should (eq (get-text-property (point) 'face)
+                    'font-lock-comment-face))
+        (forward-char)))))
 
 (ert-deftest php-mode-test-issue-27 ()
   "Indentation in a file with a shebang."
@@ -268,22 +268,22 @@ an error."
 (ert-deftest php-mode-test-issue-53 ()
   "Check if whitespace effects are undone when changing coding
 style from Drupal."
-  (with-php-mode-test
-   ("issue-53.php")
-   (search-forward "return $this->bar;")
-   ;; the file written to has no significance, only the buffer
-   (let ((tmp-filename (concat (make-temp-name temporary-file-directory) ".php")))
-     (dolist (mode '(pear wordpress symfony2))
-       (php-set-style "drupal")
-       (php-set-style (symbol-name mode))
-       (should-not show-trailing-whitespace)
-       (php-set-style "psr2")
-       (php-set-style (symbol-name mode))
-       (should-not show-trailing-whitespace)
+  (with-php-mode-test ("issue-53.php")
+    (search-forward "return $this->bar;")
+    ;; the file written to has no significance, only the buffer
+    (let ((tmp-filename (concat (make-temp-name temporary-file-directory) ".php")))
+      (dolist (mode '(pear wordpress symfony2))
+        (php-set-style "drupal")
+        (php-set-style (symbol-name mode))
+        (should (eq nil show-trailing-whitespace))
+        (php-set-style "psr2")
+        (php-set-style (symbol-name mode))
+        (should (eq nil show-trailing-whitespace))
 
-       (php-set-style "drupal")
-       (write-file tmp-filename)
-       (should (looking-at-p "$"))))))
+        (php-set-style "drupal")
+        (write-file tmp-filename)
+        (should (eq t show-trailing-whitespace))
+        (should (looking-at-p "$"))))))
 
 (ert-deftest php-mode-test-issue-73 ()
   "The `delete-indentation' function should work properly for PHP.
@@ -309,15 +309,14 @@ style from Drupal."
 
 (ert-deftest php-mode-test-issue-83 ()
   "All static method should appear on imenu whether 'static' keyword is placed before or after visibility"
-  (with-php-mode-test
-   ("issue-83.php")
-   (let* ((index-alist (imenu--make-index-alist))
-          (public-methods (mapcar 'car (cdr (assoc "Public Methods" index-alist))))
-          (all-methods (mapcar 'car (cdr (assoc "All Methods" index-alist)))))
-     (should (member "staticBeforeVisibility" public-methods))
-     (should (member "staticBeforeVisibility" all-methods))
-     (should (member "staticAfterVisibility" public-methods))
-     (should (member "staticAfterVisibility" all-methods)))))
+  (with-php-mode-test ("issue-83.php")
+    (let* ((index-alist (imenu--make-index-alist))
+           (public-methods (mapcar 'car (cdr (assoc "Public Methods" index-alist))))
+           (all-methods (mapcar 'car (cdr (assoc "All Methods" index-alist)))))
+      (should (member "staticBeforeVisibility" public-methods))
+      (should (member "staticBeforeVisibility" all-methods))
+      (should (member "staticAfterVisibility" public-methods))
+      (should (member "staticAfterVisibility" all-methods)))))
 
 (ert-deftest php-mode-test-issue-99 ()
   "Proper indentation for 'foreach' statements without braces."
@@ -340,14 +339,14 @@ style from Drupal."
 (ert-deftest php-mode-test-issue-124 ()
   "Proper syntax propertizing when a quote appears in a heredoc."
   (with-php-mode-test ("issue-124.php" :indent t)
-     (search-forward "Start of heredoc")
-     ;; The heredoc should be recognized as a string.
-     (dolist (syntax (c-guess-basic-syntax))
-       (should (eq (car syntax) 'string)))
-     (search-forward "function bar")
-     ;; After the heredoc should *not* be recognized as a string.
-     (dolist (syntax (c-guess-basic-syntax))
-       (should (not (eq (car syntax) 'string))))))
+    (search-forward "Start of heredoc")
+    ;; The heredoc should be recognized as a string.
+    (dolist (syntax (c-guess-basic-syntax))
+      (should (eq (car syntax) 'string)))
+    (search-forward "function bar")
+    ;; After the heredoc should *not* be recognized as a string.
+    (dolist (syntax (c-guess-basic-syntax))
+      (should (not (eq (car syntax) 'string))))))
 
 (ert-deftest php-mode-test-issue-136 ()
   "Proper highlighting for variable interpolation."
@@ -964,16 +963,15 @@ Meant for `php-mode-test-issue-503'."
 
 (ert-deftest php-mode-test-issue-503 ()
   "Function `php-beginning-of-defun' should return non-nil on success."
-  (with-php-mode-test
-   ("issue-503.php")
-   (php-mode)
-   (goto-char (point-max))
-   (should (eq (php-mode-test-in-function-p) nil))
-   (should (eq (php-mode-test-in-function-p (1- (point))) t))
-   (should (eq (php-mode-test-in-function-p 1) nil))
-   (should (eq (php-mode-test-in-function-p 24) t))
-   (goto-char (point-min))
-   (should (eq (php-mode-test-in-function-p nil) nil))))
+  (with-php-mode-test ("issue-503.php")
+    (php-mode)
+    (goto-char (point-max))
+    (should (eq (php-mode-test-in-function-p) nil))
+    (should (eq (php-mode-test-in-function-p (1- (point))) t))
+    (should (eq (php-mode-test-in-function-p 1) nil))
+    (should (eq (php-mode-test-in-function-p 24) t))
+    (goto-char (point-min))
+    (should (eq (php-mode-test-in-function-p nil) nil))))
 
 (ert-deftest php-mode-test-php74-arrow-fn ()
   "Test highlighting arrow funcsion (short closure syntax) added in PHP 7.4."
