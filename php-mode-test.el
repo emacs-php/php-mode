@@ -273,6 +273,9 @@ style from Drupal."
     (let ((tmp-filename (concat (make-temp-name temporary-file-directory) ".php")))
       (with-php-mode-test ("issue-53.php")
         (search-forward "return $this->bar;")
+        (should (equal (list "before-write-file" mode nil)
+                       (list "before-write-file" mode (looking-at-p "$"))))
+
         (php-set-style "drupal")
         (php-set-style (symbol-name mode))
         (should (equal (list "drupal" mode nil)
@@ -286,7 +289,8 @@ style from Drupal."
         (should (equal (list "drupal-2" mode t)
                        (list "drupal-2" mode show-trailing-whitespace)))
         (write-file tmp-filename)
-        (should (looking-at-p "$"))))))
+        (should (equal (list "after-write-file" mode t)
+                       (list "after-write-file" mode (looking-at-p "$"))))))))
 
 (ert-deftest php-mode-test-issue-73 ()
   "The `delete-indentation' function should work properly for PHP.
