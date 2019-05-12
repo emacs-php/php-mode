@@ -268,11 +268,11 @@ an error."
 (ert-deftest php-mode-test-issue-53 ()
   "Check if whitespace effects are undone when changing coding
 style from Drupal."
-  (with-php-mode-test ("issue-53.php")
-    (search-forward "return $this->bar;")
+  (dolist (mode '(pear wordpress symfony2))
     ;; the file written to has no significance, only the buffer
     (let ((tmp-filename (concat (make-temp-name temporary-file-directory) ".php")))
-      (dolist (mode '(pear wordpress symfony2))
+      (with-php-mode-test ("issue-53.php")
+        (search-forward "return $this->bar;")
         (php-set-style "drupal")
         (php-set-style (symbol-name mode))
         (should (equal (list "drupal" mode nil)
@@ -283,9 +283,9 @@ style from Drupal."
                        (list "psr2" mode show-trailing-whitespace)))
 
         (php-set-style "drupal")
+        (should (equal (list "drupal-2" mode t)
+                       (list "drupal-2" mode show-trailing-whitespace)))
         (write-file tmp-filename)
-        (should (equal (list "drupal-after-write" mode t)
-                       (list "drupal-after-write" mode show-trailing-whitespace)))
         (should (looking-at-p "$"))))))
 
 (ert-deftest php-mode-test-issue-73 ()
