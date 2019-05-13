@@ -41,7 +41,7 @@ With GNU Emacs 24 or later then you can use its [package][] feature (or [Cask][]
 
 ### Manual installation
 
-Please `git cline` this project or download and unarchive tar or zip file from [php-mode releases].
+Please `git clone` this project or download and unarchive tar or zip file from [php-mode releases].
 
 You can choose one of the following **A**, **B**, **C** installation methods.
 
