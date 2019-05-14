@@ -100,6 +100,10 @@
   "PHP Mode face used to highlight sigils($) of $this variable."
   :group 'php-faces)
 
+(defface php-errorcontrol-op '((t (:inherit  font-lock-type-face)))
+  "PHP Mode face used to highlight errorcontrol operators (@).."
+  :group 'php-face)
+
 (defface php-php-tag '((t (:inherit font-lock-preprocessor-face)))
   "PHP Mode face used to highlight PHP tags."
   :group 'php-faces)

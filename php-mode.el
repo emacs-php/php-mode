@@ -569,6 +569,10 @@ might be to handle switch and goto labels differently."
   php (cl-remove-if (lambda (elm) (and (listp elm) (equal (car elm) "\\s|")))
                     (c-lang-const c-basic-matchers-before php)))
 
+(c-lang-defconst c-basic-matchers-after
+  php (cl-remove-if (lambda (elm) (and (listp elm) (memq 'c-annotation-face elm)))
+                    (c-lang-const c-basic-matchers-after php)))
+
 (defun php-lineup-cascaded-calls (langelem)
   "Line up chained methods using `c-lineup-cascaded-calls',
 but only if the setting is enabled"
@@ -1376,6 +1380,7 @@ a completion list."
    ;;  only add patterns here if you want to prevent cc-mode from applying
    ;;  a different face.
    `(
+     ("\\<\\(@\\)" 1 'php-errorcontrol-op)
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
      ("\\(->\\)\\(\\sw+\\)\\s-*(" (1 'php-object-op) (2 'php-method-call))
