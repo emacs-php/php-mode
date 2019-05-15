@@ -413,6 +413,10 @@ In that case set to `NIL'."
         (left-assoc "\\" "::" "->")
         (prefix "\\" "::")))
 
+(c-lang-defconst c-operators
+  php (delete '(postfix-if-paren "<" ">")
+              (c-lang-const c-operators)))
+
 ;; Allow '\' when scanning from open brace back to defining
 ;; construct like class
 (c-lang-defconst c-block-prefix-disallowed-chars
@@ -543,6 +547,12 @@ PHP does not have an \"enum\"-like keyword."
 (c-lang-defconst c-recognize-<>-arglists
   php nil)
 
+(c-lang-defconst c-<>-type-kwds
+  php nil)
+
+(c-lang-defconst c-inside-<>-type-kwds
+  php nil)
+
 (c-lang-defconst c-enums-contain-decls
   php nil)
 
@@ -569,6 +579,9 @@ might be to handle switch and goto labels differently."
 (c-lang-defconst c-basic-matchers-after
   php (cl-remove-if (lambda (elm) (and (listp elm) (memq 'c-annotation-face elm)))
                     (c-lang-const c-basic-matchers-after php)))
+
+(c-lang-defconst c-opt-<>-sexp-key
+  php nil)
 
 (defun php-lineup-cascaded-calls (langelem)
   "Line up chained methods using `c-lineup-cascaded-calls',
