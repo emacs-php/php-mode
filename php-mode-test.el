@@ -984,4 +984,8 @@ Meant for `php-mode-test-issue-503'."
   "Test highlighting arrow funcsion (short closure syntax) added in PHP 7.4."
   (with-php-mode-test ("7.4/arrow-function.php" :faces t)))
 
+(ert-deftest php-mode-test-lang ()
+  "Test highlighting for language constructs."
+  (with-php-mode-test ("lang/errorcontrol.php" :faces t)))
+
 ;;; php-mode-test.el ends here
