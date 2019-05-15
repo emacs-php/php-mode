@@ -476,29 +476,25 @@ PHP does not have an \"enum\"-like keyword."
   php nil)
 
 (c-lang-defconst c-block-stmt-2-kwds
-  php (append '("elseif" "foreach" "declare")
-              (remove "synchronized" (c-lang-const c-block-stmt-2-kwds))))
+  php '("catch" "declare" "elseif" "for" "foreach" "if" "switch" "while"))
 
 (c-lang-defconst c-simple-stmt-kwds
-  php (append '("include" "include_once" "require" "require_once"
-                "echo" "print" "die" "exit")
-              (c-lang-const c-simple-stmt-kwds)))
+  php '("break" "continue" "die" "echo" "exit" "goto" "return" "throw"
+        "include" "include_once" "print" "require" "require_once"))
 
 (c-lang-defconst c-constant-kwds
-  php '("true"
-        "false"
-        "null"))
+  php '("true" "false" "null"))
 
 (c-lang-defconst c-lambda-kwds
-  php '("function"
-        "use"))
+  php '("function" "use"))
 
 (c-lang-defconst c-other-block-decl-kwds
   php '("namespace"))
 
 (c-lang-defconst c-other-kwds
   "Keywords not accounted for by any other `*-kwds' language constant."
-  php '(
+  php
+  '(
     "__halt_compiler"
     "and"
     "array"
