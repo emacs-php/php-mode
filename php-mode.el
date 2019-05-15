@@ -469,7 +469,8 @@ PHP does not have an \"enum\"-like keyword."
   php '("implements" "extends"))
 
 (c-lang-defconst c-type-list-kwds
-  php '("new" "use" "implements" "extends" "namespace" "instanceof" "insteadof"))
+  php '("@new" ;; @new is *NOT* language construct, it's workaround for coloring.
+        "new" "use" "implements" "extends" "namespace" "instanceof" "insteadof"))
 
 (c-lang-defconst c-ref-list-kwds
   php nil)
@@ -1380,7 +1381,6 @@ a completion list."
    ;;  only add patterns here if you want to prevent cc-mode from applying
    ;;  a different face.
    `(
-     ("\\<\\(@\\)" 1 'php-errorcontrol-op)
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
      ("\\(->\\)\\(\\sw+\\)\\s-*(" (1 'php-object-op) (2 'php-method-call))
@@ -1436,6 +1436,7 @@ a completion list."
    ;;   already fontified by another pattern. Note that using OVERRIDE
    ;;   is usually overkill.
    `(
+     ("\\<\\(@\\)" 1 'php-errorcontrol-op)
      ;; Highlight all upper-cased symbols as constant
      ("\\<\\([A-Z_][A-Z0-9_]+\\)\\>" 1 'php-constant)
 
