@@ -1391,6 +1391,7 @@ a completion list."
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
      ("\\(->\\)\\(\\sw+\\)\\s-*(" (1 'php-object-op) (2 'php-method-call))
+     ("\\<\\(const\\)\\s-+\\(\\_<.+?\\_>\\)" (1 'php-keyword) (2 'php-constant-assign))
 
      ;; Highlight special variables
      ("\\(\\$\\)\\(this\\)\\>" (1 'php-$this-sigil) (2 'php-$this))

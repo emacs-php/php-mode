@@ -92,6 +92,10 @@
   "PHP Mode face used to highlight constants."
   :group 'php-faces)
 
+(defface php-constant-assign '((t (:inherit font-lock-type-face)))
+  "PHP Mode face used to highlight constant assigning (\"const\" statement)."
+  :group 'php-faces)
+
 (defface php-magical-constant '((t (:inherit font-lock-builtin-face)))
   "PHP Mode face used to highlight magical constants."
   :group 'php-faces)
