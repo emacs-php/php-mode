@@ -701,13 +701,12 @@ style from Drupal."
                        "__IS_CONSTANT__"
                        "IS_CONSTANT99"
                        "extraconstant"
-                       "ClassName"
-                       "class;")))
+                       "ClassName")))
       (dolist (variable variables)
         (search-forward variable)
         (goto-char (match-beginning 0))
-        (should (eq 'php-constant
-                    (get-text-property (point) 'face))))))
+        (should (equal (cons variable 'php-constant)
+                       (cons variable (get-text-property (point) 'face)))))))
 
   ;; Set default
   (custom-set-variables '(php-extra-constants (quote ())))
@@ -989,6 +988,7 @@ Meant for `php-mode-test-issue-503'."
   (with-php-mode-test ("lang/types/cast.php" :faces t))
   (with-php-mode-test ("lang/types/function.php" :faces t))
   (with-php-mode-test ("lang/types/keywords.php" :faces t))
-  (with-php-mode-test ("lang/errorcontrol.php" :faces t)))
+  (with-php-mode-test ("lang/errorcontrol.php" :faces t))
+  (with-php-mode-test ("lang/magical-constants/echo.php" :faces t)))
 
 ;;; php-mode-test.el ends here
