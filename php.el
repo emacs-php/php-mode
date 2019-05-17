@@ -78,6 +78,14 @@ You can replace \"en\" with your ISO language code."
   :group 'php
   :type 'string)
 
+;;; PHP Keywords
+(defconst php-magical-constants
+  (list "__LINE__" "__FILE__" "__FUNCTION__" "__CLASS__" "__TRAIT__" "__METHOD__" "__NAMESPACE__")
+  "Magical keyword that is expanded at compile time.
+
+These are different from \"constants\" in strict terms.
+see https://www.php.net/manual/language.constants.predefined.php")
+
 ;;; Utillity for locate language construction
 (defsubst php-in-string-p ()
   "Return non-nil if inside a string.
