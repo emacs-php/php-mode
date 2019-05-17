@@ -502,8 +502,6 @@ PHP does not have an \"enum\"-like keyword."
     "__halt_compiler"
     "and"
     "array"
-    "callable"
-    "iterable"
     "as"
     "break"
     "catch"
@@ -1395,7 +1393,7 @@ a completion list."
      ("\\(->\\)\\(\\sw+\\)\\s-*(" (1 'php-object-op) (2 'php-method-call))
 
      ;; Highlight special variables
-     ("\\(\\$\\)\\(this\\|that\\)\\_>" (1 'php-$this-sigil) (2 'php-$this))
+     ("\\(\\$\\)\\(this\\)\\>" (1 'php-$this-sigil) (2 'php-$this))
      ("\\(\\$+\\)\\(\\sw+\\)" (1 'php-variable-sigil) (2 'php-variable-name))
      ("\\(->\\)\\([a-zA-Z0-9_]+\\)" (1 'php-object-op) (2 'php-property-name))
 
