@@ -39,7 +39,7 @@
  ("Class name resolution is a special case\n" . font-lock-comment-face)
  ("stdClass" . php-constant)
  ("::" . php-paamayim-nekudotayim)
- ("class" . php-constant)
+ ("class" . php-magical-constant)
  (";\n")
  ("SomeClass" . php-constant)
  ("::" . php-paamayim-nekudotayim)
