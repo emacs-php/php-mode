@@ -92,6 +92,10 @@
   "PHP Mode face used to highlight constants."
   :group 'php-faces)
 
+(defface php-magical-constant '((t (:inherit font-lock-builtin-face)))
+  "PHP Mode face used to highlight magical constants."
+  :group 'php-faces)
+
 (defface php-$this '((t (:inherit php-constant)))
   "PHP Mode face used to highlight $this variables."
   :group 'php-faces)
