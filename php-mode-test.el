@@ -159,7 +159,7 @@ file name and check that the faces of the fonts in the buffer match."
           `(should (equal
                     (php-mode-test--parse-list-file
                      (concat (expand-file-name ,file php-mode-test-dir)
-                             ,(if (eq t faces) ".faces" faces)))
+                             (if (eq t ,faces) ".faces" ,faces)))
                     (php-mode-test--buffer-face-list (current-buffer)))))
      (goto-char (point-min))
      (let ((case-fold-search nil))
