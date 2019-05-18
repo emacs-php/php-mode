@@ -930,7 +930,8 @@ style from Drupal."
 (ert-deftest php-mode-test-issue-443 ()
   "This case allows you to color things that are not authentic PHP tags
 (ex.  `<?xml', `<?hh') as false positives."
-  (with-php-mode-test ("issue-443.php" :faces t)))
+  (with-php-mode-test ("issue-443.php"
+                       :faces (if (version<= "27" emacs-version) ".27.faces" t))))
 
 (ert-deftest php-mode-test-type-hints ()
   "Test highlighting of type hints and return types."
