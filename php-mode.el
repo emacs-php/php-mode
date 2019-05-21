@@ -1054,8 +1054,8 @@ After setting the stylevars run hooks according to STYLENAME
 
   (setq indent-line-function 'php-cautious-indent-line)
   (setq indent-region-function 'php-cautious-indent-region)
-  (setq c-at-vsemi-p-fn 'php-c-at-vsemi-p)
-  (setq c-vsemi-status-unknown-p 'php-c-vsemi-status-unknown-p)
+  (setq c-at-vsemi-p-fn #'php-c-at-vsemi-p)
+  (setq c-vsemi-status-unknown-p-fn #'php-c-vsemi-status-unknown-p)
 
   ;; We map the php-{beginning,end}-of-defun functions so that they
   ;; replace the similar commands that we inherit from CC Mode.
