@@ -1490,14 +1490,12 @@ a completion list."
 (defvar php-font-lock-keywords php-font-lock-keywords-3
   "Default expressions to highlight in PHP Mode.")
 
-(add-to-list 'flymake-allowed-file-name-masks
-             '("\\.php[345s]?\\'"
-               php-flymake-php-init
-               flymake-simple-cleanup
-               flymake-get-real-file-name))
-
-(add-to-list 'flymake-err-line-patterns
-             '("\\(Parse\\|Fatal\\) error: \\(.*?\\) in \\(.*?\\) on line \\([0-9]+\\)" 3 4 nil 2))
+(add-to-list
+ (eval-when-compile
+   (if (boundp 'flymake-proc-allowed-file-name-masks)
+       'flymake-proc-allowed-file-name-masks
+     'flymake-allowed-file-name-masks))
+ '("\\.php[345s]?\\'" php-flymake-php-init))
 
 
 (defun php-send-region (start end)
