@@ -28,6 +28,7 @@
 ;; This file provides common variable and functions for PHP packages.
 
 ;;; Code:
+(require 'flymake)
 
 ;;;###autoload
 (defgroup php nil
@@ -172,6 +173,19 @@ can be used to match against definitions for that classlike."
   (save-excursion
     (when (re-search-backward re-pattern nil t)
       (match-string-no-properties 1))))
+
+;;; Provide support for Flymake so that users can see warnings and
+;;; errors in real-time as they write code.
+(defun php-flymake-php-init ()
+  "PHP specific init-cleanup routines.
+
+This is an alternative function of `flymake-php-init'.
+Look at the `php-executable' variable instead of the constant \"php\" command."
+  (let* ((init (funcall (eval-when-compile
+                          (if (fboundp 'flymake-proc-php-init)
+                              'flymake-proc-php-init
+                            'flymake-php-init)))))
+    (list php-executable (cdr init))))
 
 ;;;###autoload
 (defun php-current-class ()
