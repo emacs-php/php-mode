@@ -843,8 +843,8 @@ This is was done due to the problem reported here:
       ret)))
 
 (defun php-c-vsemi-status-unknown-p ()
-  "See `php-c-at-vsemi-p'."
-  )
+  "Always return NIL.  See `php-c-at-vsemi-p'."
+  nil)
 
 (defun php-lineup-string-cont (langelem)
   "Line up string toward equal sign or dot.
