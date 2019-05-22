@@ -1089,7 +1089,10 @@ After setting the stylevars run hooks according to STYLENAME
   (when (>= emacs-major-version 25)
     (with-silent-modifications
       (save-excursion
-        (php-syntax-propertize-function (point-min) (point-max))))))
+        (let* ((start (point-min))
+               (end (min (point-max)
+                         (+ start syntax-propertize-chunk-size))))
+          (php-syntax-propertize-function start end))))))
 
 (declare-function semantic-create-imenu-index "semantic/imenu" (&optional stream))
 
