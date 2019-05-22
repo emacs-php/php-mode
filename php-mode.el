@@ -1010,6 +1010,15 @@ After setting the stylevars run hooks according to STYLENAME
   (c-init-language-vars php-mode)
   (c-common-init 'php-mode)
 
+  (setq-local comment-start "// ")
+  (setq-local comment-start-skip
+              (eval-when-compile
+                (rx (group (or (: "#")
+                               (: "/" (+ "/"))
+                               (: "/*")))
+                    (* (syntax whitespace)))))
+  (setq-local comment-end "")
+
   (setq-local font-lock-string-face 'php-string)
   (setq-local font-lock-keyword-face 'php-keyword)
   (setq-local font-lock-builtin-face 'php-builtin)
