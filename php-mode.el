@@ -996,11 +996,23 @@ After setting the stylevars run hooks according to STYLENAME
       (prog1 (php-set-style (symbol-name coding-style))
         (remove-hook 'hack-local-variables-hook #'php-mode-set-style-delay)))))
 
+(defvar php-mode-syntax-table
+  (let ((table (make-syntax-table)))
+    (c-populate-syntax-table table)
+    (modify-syntax-entry ?_  "_"   table)
+    (modify-syntax-entry ?`  "\""  table)
+    (modify-syntax-entry ?\" "\""  table)
+    (modify-syntax-entry ?#  "< b" table)
+    (modify-syntax-entry ?\n "> b" table)
+    (modify-syntax-entry ?$  "'"   table)
+    table))
+
 ;;;###autoload
 (define-derived-mode php-mode c-mode "PHP"
   "Major mode for editing PHP code.
 
 \\{php-mode-map}"
+  :syntax-table php-mode-syntax-table
   ;; :after-hook (c-update-modeline)
   ;; (setq abbrev-mode t)
   (when php-mode-disable-c-mode-hook
@@ -1026,13 +1038,6 @@ After setting the stylevars run hooks according to STYLENAME
   (setq-local font-lock-function-name-face 'php-function-name)
   (setq-local font-lock-variable-name-face 'php-variable-name)
   (setq-local font-lock-constant-face 'php-constant)
-
-  (modify-syntax-entry ?_    "_" php-mode-syntax-table)
-  (modify-syntax-entry ?`    "\"" php-mode-syntax-table)
-  (modify-syntax-entry ?\"   "\"" php-mode-syntax-table)
-  (modify-syntax-entry ?#    "< b" php-mode-syntax-table)
-  (modify-syntax-entry ?\n   "> b" php-mode-syntax-table)
-  (modify-syntax-entry ?$    "'" php-mode-syntax-table)
 
   (setq-local syntax-propertize-function #'php-syntax-propertize-function)
   (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
