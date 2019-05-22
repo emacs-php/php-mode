@@ -843,8 +843,8 @@ This is was done due to the problem reported here:
       ret)))
 
 (defun php-c-vsemi-status-unknown-p ()
-  "See `php-c-at-vsemi-p'."
-  )
+  "Always return NIL.  See `php-c-at-vsemi-p'."
+  nil)
 
 (defun php-lineup-string-cont (langelem)
   "Line up string toward equal sign or dot.
@@ -996,11 +996,23 @@ After setting the stylevars run hooks according to STYLENAME
       (prog1 (php-set-style (symbol-name coding-style))
         (remove-hook 'hack-local-variables-hook #'php-mode-set-style-delay)))))
 
+(defvar php-mode-syntax-table
+  (let ((table (make-syntax-table)))
+    (c-populate-syntax-table table)
+    (modify-syntax-entry ?_  "_"   table)
+    (modify-syntax-entry ?`  "\""  table)
+    (modify-syntax-entry ?\" "\""  table)
+    (modify-syntax-entry ?#  "< b" table)
+    (modify-syntax-entry ?\n "> b" table)
+    (modify-syntax-entry ?$  "'"   table)
+    table))
+
 ;;;###autoload
 (define-derived-mode php-mode c-mode "PHP"
   "Major mode for editing PHP code.
 
 \\{php-mode-map}"
+  :syntax-table php-mode-syntax-table
   ;; :after-hook (c-update-modeline)
   ;; (setq abbrev-mode t)
   (when php-mode-disable-c-mode-hook
@@ -1010,6 +1022,15 @@ After setting the stylevars run hooks according to STYLENAME
   (c-init-language-vars php-mode)
   (c-common-init 'php-mode)
 
+  (setq-local comment-start "// ")
+  (setq-local comment-start-skip
+              (eval-when-compile
+                (rx (group (or (: "#")
+                               (: "/" (+ "/"))
+                               (: "/*")))
+                    (* (syntax whitespace)))))
+  (setq-local comment-end "")
+
   (setq-local font-lock-string-face 'php-string)
   (setq-local font-lock-keyword-face 'php-keyword)
   (setq-local font-lock-builtin-face 'php-builtin)
@@ -1017,13 +1038,6 @@ After setting the stylevars run hooks according to STYLENAME
   (setq-local font-lock-function-name-face 'php-function-name)
   (setq-local font-lock-variable-name-face 'php-variable-name)
   (setq-local font-lock-constant-face 'php-constant)
-
-  (modify-syntax-entry ?_    "_" php-mode-syntax-table)
-  (modify-syntax-entry ?`    "\"" php-mode-syntax-table)
-  (modify-syntax-entry ?\"   "\"" php-mode-syntax-table)
-  (modify-syntax-entry ?#    "< b" php-mode-syntax-table)
-  (modify-syntax-entry ?\n   "> b" php-mode-syntax-table)
-  (modify-syntax-entry ?$    "'" php-mode-syntax-table)
 
   (setq-local syntax-propertize-function #'php-syntax-propertize-function)
   (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
@@ -1054,12 +1068,8 @@ After setting the stylevars run hooks according to STYLENAME
 
   (setq indent-line-function 'php-cautious-indent-line)
   (setq indent-region-function 'php-cautious-indent-region)
-  (setq c-at-vsemi-p-fn 'php-c-at-vsemi-p)
-  (setq c-vsemi-status-unknown-p 'php-c-vsemi-status-unknown-p)
-
-  ;; syntax-begin-function is obsolete in Emacs 25.1
-  (with-no-warnings
-    (setq-local syntax-begin-function 'c-beginning-of-syntax))
+  (setq c-at-vsemi-p-fn #'php-c-at-vsemi-p)
+  (setq c-vsemi-status-unknown-p-fn #'php-c-vsemi-status-unknown-p)
 
   ;; We map the php-{beginning,end}-of-defun functions so that they
   ;; replace the similar commands that we inherit from CC Mode.
