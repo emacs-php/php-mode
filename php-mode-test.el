@@ -271,7 +271,8 @@ an error."
 style from Drupal."
   (dolist (mode '(pear wordpress symfony2))
     ;; the file written to has no significance, only the buffer
-    (let ((tmp-filename (concat (make-temp-name temporary-file-directory) ".php")))
+    (let ((tmp-filename (concat (make-temp-name temporary-file-directory) ".php"))
+          (auto-mode-alist '(("\\.php\\'" . php-mode))))
       (with-php-mode-test ("issue-53.php")
         (search-forward "return $this->bar;")
         (should (equal (list "before-write-file" mode nil)
