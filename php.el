@@ -86,6 +86,12 @@ You can replace \"en\" with your ISO language code."
   :group 'php
   :type 'string)
 
+(defcustom php-default-major-mode 'php-mode
+  "Major mode for edition PHP script."
+  :group 'php
+  :tag "PHP Default Major Mode"
+  :type 'function)
+
 (defcustom php-template-mode-alist
   '(("\\.blade" . web-mode)
     ("\\.phpt\\'" . phpt-mode)
@@ -210,9 +216,6 @@ Look at the `php-executable' variable instead of the constant \"php\" command."
                             'flymake-php-init)))))
     (list php-executable (cdr init))))
 
-(eval-when-compile
-  (declare-function php-mode "php-mode"))
-
 ;;;###autoload
 (defun php-mode-maybe ()
   "Select PHP mode or other major mode."
@@ -220,8 +223,8 @@ Look at the `php-executable' variable instead of the constant \"php\" command."
     (when (and mode (not (fboundp mode)))
       (if (string-match-p "\\.blade\\." buffer-file-name)
           (warn "php-mode is NOT support blade template")
-        (setq mode #'php-mode)))
-    (funcall (or mode #'php-mode))))
+        (setq mode nil)))
+    (funcall (or mode php-default-major-mode))))
 
 ;;;###autoload
 (defun php-current-class ()
