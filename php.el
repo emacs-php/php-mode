@@ -85,6 +85,17 @@ You can replace \"en\" with your ISO language code."
   "Suffix for inserted namespace."
   :group 'php
   :type 'string)
+
+(defcustom php-template-mode-alist
+  '(("\\.blade" . web-mode)
+    ("\\.phpt\\'" . phpt-mode)
+    ("\\.phtml\\'" . web-mode))
+  "Automatically use another MAJOR-MODE when open template file."
+  :group 'php
+  :tag "PHP Template Mode Alist"
+  :type '(alist :key-type regexp :value-type function)
+  :link '(url-link :tag "web-mode" "http://web-mode.org/")
+  :link '(url-link :tag "phpt-mode" "https://github.com/emacs-php/phpt-mode"))
 
 ;;; PHP Keywords
 (defconst php-magical-constants
@@ -198,6 +209,19 @@ Look at the `php-executable' variable instead of the constant \"php\" command."
                               'flymake-proc-php-init
                             'flymake-php-init)))))
     (list php-executable (cdr init))))
+
+(eval-when-compile
+  (declare-function php-mode "php-mode"))
+
+;;;###autoload
+(defun php-mode-maybe ()
+  "Select PHP mode or other major mode."
+  (let ((mode (assoc-default buffer-file-name php-template-mode-alist #'string-match-p)))
+    (when (and mode (not (fboundp mode)))
+      (if (string-match-p "\\.blade\\." buffer-file-name)
+          (warn "php-mode is NOT support blade template")
+        (setq mode #'php-mode)))
+    (funcall (or mode #'php-mode))))
 
 ;;;###autoload
 (defun php-current-class ()
