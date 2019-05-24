@@ -40,17 +40,23 @@
 
 (defcustom php-executable (or (executable-find "php") "/usr/bin/php")
   "The location of the PHP executable."
+  :group 'php
+  :tag "PHP Executable"
   :type 'string)
 
 (defcustom php-site-url "https://php.net/"
   "Default PHP.net site URL.
 
 The URL to use open PHP manual and search word."
+  :group 'php
+  :tag "PHP Site URL"
   :type 'string)
 
 (defcustom php-manual-url 'en
   "URL at which to find PHP manual.
 You can replace \"en\" with your ISO language code."
+  :group 'php
+  :tag "PHP Manual URL"
   :type '(choice (const  :tag "English" 'en)
                  (const  :tag "Brazilian Portuguese" 'pt_BR)
                  (const  :tag "Chinese (Simplified)" 'zh)
@@ -66,6 +72,7 @@ You can replace \"en\" with your ISO language code."
 (defcustom php-search-url nil
   "URL at which to search for documentation on a word."
   :group 'php
+  :tag "PHP Search URL"
   :type '(choice (string :tag "URL to search PHP documentation")
                  (const  :tag "Use `php-site-url' variable" nil)))
 
