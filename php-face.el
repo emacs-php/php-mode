@@ -38,103 +38,128 @@
 
 (defface php-string '((t (:inherit font-lock-string-face)))
   "PHP Mode face used to highlight string literals."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP String")
 
 (defface php-keyword '((t (:inherit font-lock-keyword-face)))
   "PHP Mode face used to highlight keywords."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP Keyword")
 
 (defface php-builtin '((t (:inherit font-lock-builtin-face)))
   "PHP Mode face used to highlight builtins."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP Built-in")
 
 (defface php-function-name '((t (:inherit font-lock-function-name-face)))
   "PHP Mode face used to highlight function names."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP Function Name")
 
 (defface php-function-call '((t (:inherit default)))
   "PHP Mode face used to highlight function names in calles."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP Function Call")
 
 (defface php-method-call '((t (:inherit php-function-call)))
   "PHP Mode face used to highlight method names in calles."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP Method Call")
 
 (defface php-static-method-call '((t (:inherit php-method-call)))
   "PHP Mode face used to highlight static method names in calles."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP Static Method Call")
 
 (defface php-variable-name '((t (:inherit font-lock-variable-name-face)))
   "PHP Mode face used to highlight variable names."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP Variable Name")
 
 (defface php-property-name '((t (:inherit php-variable-name)))
   "PHP Mode face used to highlight property names."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP Property Name")
 
 (defface php-variable-sigil '((t (:inherit default)))
   "PHP Mode face used to highlight variable sigils ($)."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP Variable Sigil")
 
 (defface php-object-op '((t (:inherit default)))
   "PHP Mode face used to object operators (->)."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP Object Op")
 
 (defface php-paamayim-nekudotayim '((t (:inherit default)))
   "PHP Mode face used to highlight \"Paamayim Nekudotayim\" scope resolution operators (::)."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP Paamayim Nekudotayim")
 
 (defface php-type '((t (:inherit font-lock-type-face)))
   "PHP Mode face used to highlight types."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP Type")
 
 (defface php-constant '((t (:inherit font-lock-constant-face)))
   "PHP Mode face used to highlight constants."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP Constant")
 
 (defface php-constant-assign '((t (:inherit font-lock-type-face)))
   "PHP Mode face used to highlight constant assigning (\"const\" statement)."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP Constant Assign")
 
 (defface php-magical-constant '((t (:inherit font-lock-builtin-face)))
   "PHP Mode face used to highlight magical constants."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP Magical Constant")
 
 (defface php-$this '((t (:inherit php-constant)))
   "PHP Mode face used to highlight $this variables."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP $this")
 
 (defface php-$this-sigil '((t (:inherit php-constant)))
   "PHP Mode face used to highlight sigils($) of $this variable."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP $this Sigil")
 
 (defface php-errorcontrol-op '((t (:inherit  font-lock-type-face)))
   "PHP Mode face used to highlight errorcontrol operators (@).."
-  :group 'php-face)
+  :group 'php-faces
+  :tag "PHP ErrorControl Op")
 
 (defface php-php-tag '((t (:inherit font-lock-preprocessor-face)))
   "PHP Mode face used to highlight PHP tags."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHP php Tag")
 
 (defface php-doc-annotation-tag '((t . (:inherit font-lock-constant-face)))
   "Face used to highlight annotation tags in doc-comment."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHPDoc Annotation Tag")
 
 (defface php-doc-variable-sigil '((t (:inherit font-lock-variable-name-face)))
   "PHP Mode face used to highlight variable sigils($)."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHPDoc Variable Sigil")
 
 (defface php-doc-$this '((t (:inherit php-type)))
   "PHP Mode face used to highlight $this variable in doc-comment."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHPDoc $this")
 
 (defface php-doc-$this-sigil '((t (:inherit php-type)))
   "PHP Mode face used to highlight sigil of $this variable in doc-comment."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHPDoc $this Sigil")
 
 (defface php-doc-class-name '((t (:inherit php-string)))
   "Face used to class names in doc-comment."
-  :group 'php-faces)
+  :group 'php-faces
+  :tag "PHPDoc Class Name")
 
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 

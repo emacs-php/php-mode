@@ -136,6 +136,7 @@
 (defcustom php-mode-default-face 'default
   "Default face in `php-mode' buffers."
   :group 'php-mode
+  :tag "PHP Mode Default Face"
   :type 'face)
 
 (define-obsolete-variable-alias 'php-speedbar-config 'php-mode-speedbar-config "1.20.0")
@@ -143,6 +144,7 @@
   "When set to true automatically configures Speedbar to observe PHP files.
 Ignores php-file patterns option; fixed to expression \"\\.\\(inc\\|php[s345]?\\)\""
   :group 'php-mode
+  :tag "PHP Mode Speedbar Config"
   :type 'boolean
   :set (lambda (sym val)
          (set-default sym val)
@@ -154,6 +156,7 @@ Ignores php-file patterns option; fixed to expression \"\\.\\(inc\\|php[s345]?\\
   "Normally `php-mode' starts with the speedbar closed.
 Turning this on will open it whenever `php-mode' is loaded."
   :group 'php-mode
+  :tag "PHP Mode Speedbar Open"
   :type 'boolean
   :set (lambda (sym val)
          (set-default sym val)
@@ -164,6 +167,7 @@ Turning this on will open it whenever `php-mode' is loaded."
 (defcustom php-mode-template-compatibility t
   "Should detect presence of html tags."
   :group 'php-mode
+  :tag "PHP Mode Template Compatibility"
   :type 'boolean)
 
 (defun php-mode-extra-constants-create-regexp (kwds)
@@ -194,6 +198,7 @@ of constants when set."
 (defcustom php-mode-lineup-cascaded-calls nil
   "Indent chained method calls to the previous line."
   :group 'php-mode
+  :tag "PHP Mode Lineup Cascaded Calls"
   :type 'boolean)
 
 
@@ -201,6 +206,7 @@ of constants when set."
 (defcustom php-mode-extra-constants '()
   "A list of additional strings to treat as PHP constants."
   :group 'php-mode
+  :tag "PHP Mode Extra Constants"
   :type '(repeat string)
   :set 'php-mode-extra-constants-set)
 
@@ -213,6 +219,8 @@ set to `semantic-create-imenu-index' due to `c-mode' being its
 parent.  Set this variable to t if you want to use
 `imenu-default-create-index-function' even with `semantic-mode'
 enabled."
+  :group 'php-mode
+  :tag "PHP Mode Do Not Use Semantic Imenu"
   :type 'boolean)
 
 (defcustom php-completion-file ""
@@ -233,31 +241,45 @@ enabled."
 
 (defcustom php-mode-hook nil
   "List of functions to be executed on entry to `php-mode'."
+  :group 'php-mode
+  :tag "PHP Mode Hook"
   :type 'hook)
 
 (defcustom php-mode-pear-hook nil
   "Hook called when a PHP PEAR file is opened with `php-mode'."
+  :group 'php-mode
+  :tag "PHP Mode Pear Hook"
   :type 'hook)
 
 (defcustom php-mode-drupal-hook nil
   "Hook called when a Drupal file is opened with `php-mode'."
+  :group 'php-mode
+  :tag "PHP Mode Drupal Hook"
   :type 'hook)
 
 (defcustom php-mode-wordpress-hook nil
   "Hook called when a WordPress file is opened with `php-mode'."
+  :group 'php-mode
+  :tag "PHP Mode WordPress Hook"
   :type 'hook)
 
 (defcustom php-mode-symfony2-hook nil
   "Hook called when a Symfony2 file is opened with `php-mode'."
+  :group 'php-mode
+  :tag "PHP Mode Symfony2 Hook"
   :type 'hook)
 
 (defcustom php-mode-psr2-hook nil
   "Hook called when a PSR-2 file is opened with `php-mode'."
+  :group 'php-mode
+  :tag "PHP Mode PSR-2 Hook"
   :type 'hook)
 
 (defcustom php-mode-force-pear nil
   "Normally PEAR coding rules are enforced only when the filename contains \"PEAR.\"
 Turning this on will force PEAR rules on all PHP files."
+  :group 'php-mode
+  :tag "PHP Mode Force Pear"
   :type 'boolean)
 
 (defcustom php-mode-warn-if-mumamo-off t
@@ -265,6 +287,8 @@ Turning this on will force PEAR rules on all PHP files."
 mumamo-mode turned on.  Detects if there are any HTML tags in the
 buffer before warning, but this is is not very smart; e.g. if you
 have any tags inside a PHP string, it will be fooled."
+  :group 'php-mode
+  :tag "PHP Mode Warn If MuMaMo Off"
   :type '(choice (const :tag "Warn" t) (const "Don't warn" nil)))
 
 (defcustom php-mode-coding-style 'pear
@@ -282,6 +306,8 @@ This variable can take one of the following symbol values:
 `Symfony2' - use coding styles preferred for working with Symfony2 projects.
 
 `PSR-2' - use coding styles preferred for working with projects using PSR-2 standards."
+  :group 'php-mode
+  :tag "PHP Mode Coding Style"
   :type '(choice (const :tag "Default" default)
                  (const :tag "PEAR" pear)
                  (const :tag "Drupal" drupal)
@@ -297,6 +323,8 @@ This variable can take one of the following symbol values:
 
 If you want to suppress styles from being overwritten by directory / file
 local variables, set NIL."
+  :group 'php-mode
+  :tag "PHP Mode Enable Project Coding Style"
   :type 'boolean)
 
 (defcustom php-mode-enable-backup-style-variables t
@@ -304,11 +332,15 @@ local variables, set NIL."
 
 This function may interfere with other hooks and other behaviors.
 In that case set to `NIL'."
+  :group 'php-mode
+  :tag "PHP Mode Enable Backup Style Variables"
   :type 'boolean)
 
 (define-obsolete-variable-alias 'php-mode-disable-parent-mode-hooks 'php-mode-disable-c-mode-hook "1.21.0")
 (defcustom php-mode-disable-c-mode-hook t
   "When set to `T', do not run hooks of parent modes (`java-mode', `c-mode')."
+  :group 'php-mode
+  :tag "PHP Mode Disable C Mode Hook"
   :type 'boolean
   :group 'php-mode)
 
@@ -1234,6 +1266,7 @@ current `tags-file-name'."
 If non-nil, this shadows the value of `browse-url-browser-function' when
 calling `php-search-documentation' or `php-search-local-documentation'."
   :group 'php
+  :tag "PHP Search Documentation Browser Function"
   :type '(choice (const :tag "default" nil) function)
   :link '(variable-link browse-url-browser-function))
 
