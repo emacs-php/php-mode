@@ -825,6 +825,7 @@ example `html-mode'.  Known such libraries are:\n\t"
 If the optional argument `QUIET' is non-nil then no syntactic errors are
 reported, even if `c-report-syntactic-errors' is non-nil."
   (if (or (not php-mode-warn-if-mumamo-off)
+          (not (php-in-poly-php-html-mode))
           php-warned-bad-indent
           (php-check-html-for-indentation))
       (funcall 'c-indent-region start end quiet)))
@@ -832,6 +833,7 @@ reported, even if `c-report-syntactic-errors' is non-nil."
 (defun php-cautious-indent-line ()
   "Carefully indent lines in contexts other than HTML templates."
   (if (or (not php-mode-warn-if-mumamo-off)
+          (not (php-in-poly-php-html-mode))
           php-warned-bad-indent
           (php-check-html-for-indentation))
       (let ((here (point))
