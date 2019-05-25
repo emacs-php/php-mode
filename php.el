@@ -108,6 +108,11 @@ it is the character that will terminate the string, or t if the string should be
   "Return character address of start of comment or string; nil if not in one."
   (nth 8 (syntax-ppss)))
 
+(defsubst php-in-poly-php-html-mode ()
+  "Return T if current buffer is in `poly-html-mode'."
+  (and (boundp 'poly-php-html-mode)
+       (symbol-value 'poly-php-html-mode)))
+
 (defun php-create-regexp-for-method (visibility)
   "Make a regular expression for methods with the given VISIBILITY.
 
