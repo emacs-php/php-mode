@@ -2,6 +2,36 @@
 
 All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [1.21.3] - 2019-05-25
+
+This version includes both PHP syntax support enhancements and performance improvements. See https://github.com/emacs-php/php-mode/projects/1 for all issues for this release.  Also, [@mallt] has helped me improve it with a number of issues. thank you very much.
+
+### Added
+
+ * Added new Faces to display PHP syntax
+   * `php-constant-assign`
+   * `php-magical-constant`
+   * `php-errorcontrol-op`
+ * Some funtions have been split into features such as `php.el`, `php-face.el` and `php-mode-debug.el`.
+
+### Fixed
+
+ * Improved performance when opening large files ([#491], [#531])
+
+[#491]: https://github.com/emacs-php/php-mode/issues/491
+[#531]: https://github.com/emacs-php/php-mode/pull/531
+
+### Changed
+
+ * Syntax highlighting has been adjusted
+
+### Removed
+
+ * `php-ext` and Skeleton templates have been split into [php-skeleton] ([#534])
+
+[php-skeleton]: https://github.com/emacs-php/php-skeleton
+[#534]: https://github.com/emacs-php/php-mode/pull/534
+
 ## [1.21.2] - 2019-05-11
 
 It officially supports **PHP 7.3** and **Emacs 26.2**.
@@ -120,5 +150,6 @@ See [Changelog · emacs-php/php-mode Wiki](https://github.com/emacs-php/php-mode
 [#510]: https://github.com/emacs-php/php-mode/pull/510
 [@ejmr]: https://github.com/ejmr
 [@fabacino]: https://github.com/fabacino
+[@mallt]: https://github.com/mallt
 [@sergeyklay]: https://github.com/sergeyklay
 [PHP 7.2 arrow function]: https://wiki.php.net/rfc/arrow_functions_v2
