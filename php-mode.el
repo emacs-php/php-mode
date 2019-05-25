@@ -445,8 +445,24 @@ In that case set to `NIL'."
         (prefix "\\" "::")))
 
 (c-lang-defconst c-operators
-  php (delete '(postfix-if-paren "<" ">")
-              (c-lang-const c-operators)))
+  php `((prefix "#")
+        ,@(c-lang-const c-identifier-ops)
+        (left-assoc ".")
+        (postfix "++" "--" "[" "]" "(" ")")
+        (prefix "++" "--" "+" "-" "!" "~" "new" "(" ")")
+        (left-assoc "*" "/" "%")
+        (left-assoc "+" "-")
+        (left-assoc "<<" ">>" ">>>")
+        (left-assoc "<" ">" "<=" ">=" "instanceof")
+        (left-assoc "==" "!=")
+        (left-assoc "&")
+        (left-assoc "^")
+        (left-assoc "|")
+        (left-assoc "&&")
+        (left-assoc "||")
+        (right-assoc-sequence "?" ":")
+        (right-assoc ,@(c-lang-const c-assignment-operators))
+        (left-assoc ",")))
 
 ;; Allow '\' when scanning from open brace back to defining
 ;; construct like class
