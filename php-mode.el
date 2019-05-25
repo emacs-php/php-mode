@@ -464,9 +464,7 @@ In that case set to `NIL'."
   php t)
 
 (c-lang-defconst c-assignment-operators
-  ;; falls back to java, so no need to specify the language
-  php (append (remove ">>>=" (c-lang-const c-assignment-operators))
-              '(".=")))
+  php '("=" "*=" "/=" "%=" "+=" "-=" ">>=" "<<=" "&=" "^=" "|=" ".=" "??="))
 
 (c-lang-defconst beginning-of-defun-function
   php 'php-beginning-of-defun)
