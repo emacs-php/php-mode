@@ -667,7 +667,10 @@ Meant for `php-mode-test-issue-503'."
 
 (ert-deftest php-mode-test-lang ()
   "Test highlighting for language constructs."
-  (with-php-mode-test ("comments.php" :faces t))
+  (with-php-mode-test ("comments.php"
+                       :faces (if (eq emacs-major-version 24)
+                                  ".24.faces"
+                                t)))
   (with-php-mode-test ("doc-comment-return-type.php" :faces t))
   (with-php-mode-test ("lang/types/cast.php" :faces t))
   (with-php-mode-test ("lang/types/function.php" :faces t))
