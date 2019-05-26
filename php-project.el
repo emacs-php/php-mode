@@ -102,79 +102,56 @@ STRING
       If the string is an actual directory path, it is set as the absolute path
       of the root directory, not the marker.")
   (put 'php-project-root 'safe-local-variable
-       #'(lambda (v) (or (stringp v) (assq v php-project-available-root-files)))))
+       #'(lambda (v) (or (stringp v) (assq v php-project-available-root-files))))
 
-;;;###autoload
-(progn
   (defvar-local php-project-bootstrap-scripts nil
     "List of path to bootstrap php script file.
 
 The ideal bootstrap file is silent, it only includes dependent files,
 defines constants, and sets the class loaders.")
-  (put 'php-project-bootstrap-scripts 'safe-local-variable #'php-project--eval-bootstrap-scripts))
+  (put 'php-project-bootstrap-scripts 'safe-local-variable #'php-project--eval-bootstrap-scripts)
 
-;;;###autoload
-(progn
   (defvar-local php-project-php-executable nil
     "Path to php executable file.")
   (put 'php-project-php-executable 'safe-local-variable
-       #'(lambda (v) (and (stringp v) (file-executable-p v)))))
+       #'(lambda (v) (and (stringp v) (file-executable-p v))))
 
-;;;###autoload
-(progn
   (defvar-local php-project-phan-executable nil
     "Path to phan executable file.")
-  (put 'php-project-phan-executable 'safe-local-variable #'php-project--eval-bootstrap-scripts))
+  (put 'php-project-phan-executable 'safe-local-variable #'php-project--eval-bootstrap-scripts)
 
-;;;###autoload
-(progn
   (defvar-local php-project-coding-style nil
     "Symbol value of the coding style of the project that PHP major mode refers to.
 
 Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
-  (put 'php-project-coding-style 'safe-local-variable #'symbolp))
+  (put 'php-project-coding-style 'safe-local-variable #'symbolp)
 
-;;;###autoload
-(progn
-  (defvar php-project-repl nil
+  (defvar-local php-project-repl nil
     "Function name or path to REPL (interactive shell) script.")
-  (make-variable-buffer-local 'php-project-repl)
   (put 'php-project-repl 'safe-local-variable
        #'(lambda (v) (or (functionp v)
-                         (php-project--eval-bootstrap-scripts v)))))
+                         (php-project--eval-bootstrap-scripts v))))
 
-;;;###autoload
-(progn
-  (defvar php-project-unit-test nil
+  (defvar-local php-project-unit-test nil
     "Function name or path to unit test script.")
-  (make-variable-buffer-local 'php-project-unit-test)
   (put 'php-project-unit-test 'safe-local-variable
        #'(lambda (v) (or (functionp v)
-                         (php-project--eval-bootstrap-scripts v)))))
+                         (php-project--eval-bootstrap-scripts v))))
 
-;;;###autoload
-(progn
-  (defvar php-project-deploy nil
+  (defvar-local php-project-deploy nil
     "Function name or path to deploy script.")
-  (make-variable-buffer-local 'php-project-deploy)
   (put 'php-project-deploy 'safe-local-variable
        #'(lambda (v) (or (functionp v)
-                         (php-project--eval-bootstrap-scripts v)))))
+                         (php-project--eval-bootstrap-scripts v))))
 
-;;;###autoload
-(progn
-  (defvar php-project-build nil
+  (defvar-local php-project-build nil
     "Function name or path to build script.")
-  (make-variable-buffer-local 'php-project-build)
   (put 'php-project-build 'safe-local-variable
        #'(lambda (v) (or (functionp v)
-                         (php-project--eval-bootstrap-scripts v)))))
+                         (php-project--eval-bootstrap-scripts v))))
 
-;;;###autoload
-(progn
-  (defvar php-project-server-start nil
+  (defvar-local php-project-server-start nil
     "Function name or path to server-start script.")
-  (make-variable-buffer-local 'php-project-server-start)
   (put 'php-project-server-start 'safe-local-variable
        #'(lambda (v) (or (functionp v)
                          (php-project--eval-bootstrap-scripts v)))))
