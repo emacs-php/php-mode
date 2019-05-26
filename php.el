@@ -115,6 +115,12 @@ You can replace \"en\" with your ISO language code."
   :type '(alist :key-type regexp :value-type function)
   :link '(url-link :tag "web-mode" "http://web-mode.org/")
   :link '(url-link :tag "phpt-mode" "https://github.com/emacs-php/phpt-mode"))
+
+(defcustom php-mode-maybe-hook nil
+  "List of functions to be executed on entry to `php-mode-maybe'."
+  :group 'php
+  :tag "PHP Mode Maybe Hook"
+  :type 'hook)
 
 ;;; PHP Keywords
 (defconst php-magical-constants
@@ -274,6 +280,7 @@ Look at the `php-executable' variable instead of the constant \"php\" command."
 (defun php-mode-maybe ()
   "Select PHP mode or other major mode."
   (interactive)
+  (run-hooks php-mode-maybe-hook)
   (funcall (php-derivation-major-mode)))
 
 ;;;###autoload
