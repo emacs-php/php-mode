@@ -139,7 +139,7 @@ Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
 
 \(\(PATTERN . SYMBOL))
       Alist of file name pattern regular expressions and the above symbol pairs.
-      PATTERN is regexp pattern or `T'.
+      PATTERN is regexp pattern.
 ")
   (put 'php-project-php-file-as-template 'safe-local-variable #'php-project--validate-php-file-as-template)
 
@@ -183,7 +183,7 @@ Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
    ((listp val)
     (cl-loop for v in val
              always (and (consp v)
-                         (or (stringp (car v)) (eq t (car v)))
+                         (stringp (car v))
                          (php-project--validate-php-file-as-template (cdr v)))))
    (t nil)))
 
