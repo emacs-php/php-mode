@@ -1600,23 +1600,9 @@ The output will appear in the buffer *PHP*."
 (ad-activate 'fixup-whitespace)
 
 ;;;###autoload
-(add-to-list 'auto-mode-alist
-             (cons
-              (eval-when-compile
-                (rx (or
-                     ;; File name extensions  (ex. "*.php", "*.phtml")
-                     (: "."
-                        (or (: "php" (? (in "s345t")))
-                            "amk"
-                            "phtml"))
-                     ;; Full file names  (ex. "/Makefile", "/Amkfile")
-                     (: "/"
-                        (or "Amkfile"
-                            ".php_cs"
-                            ".php_cs.dist")))
-                    string-end))
-              'php-mode)
-             t)
+(progn
+  (add-to-list 'auto-mode-alist '("/\\.php_cs\\(?:\\.dist\\)?\\'" . php-mode))
+  (add-to-list 'auto-mode-alist '("\\.\\(?:php[s345]?\\|phtml\\)\\'" . php-mode-maybe)))
 
 (provide 'php-mode)
 ;;; php-mode.el ends here

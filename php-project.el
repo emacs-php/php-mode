@@ -102,85 +102,90 @@ STRING
       If the string is an actual directory path, it is set as the absolute path
       of the root directory, not the marker.")
   (put 'php-project-root 'safe-local-variable
-       #'(lambda (v) (or (stringp v) (assq v php-project-available-root-files)))))
+       #'(lambda (v) (or (stringp v) (assq v php-project-available-root-files))))
 
-;;;###autoload
-(progn
   (defvar-local php-project-bootstrap-scripts nil
     "List of path to bootstrap php script file.
 
 The ideal bootstrap file is silent, it only includes dependent files,
 defines constants, and sets the class loaders.")
-  (put 'php-project-bootstrap-scripts 'safe-local-variable #'php-project--eval-bootstrap-scripts))
+  (put 'php-project-bootstrap-scripts 'safe-local-variable #'php-project--eval-bootstrap-scripts)
 
-;;;###autoload
-(progn
   (defvar-local php-project-php-executable nil
     "Path to php executable file.")
   (put 'php-project-php-executable 'safe-local-variable
-       #'(lambda (v) (and (stringp v) (file-executable-p v)))))
+       #'(lambda (v) (and (stringp v) (file-executable-p v))))
 
-;;;###autoload
-(progn
   (defvar-local php-project-phan-executable nil
     "Path to phan executable file.")
-  (put 'php-project-phan-executable 'safe-local-variable #'php-project--eval-bootstrap-scripts))
+  (put 'php-project-phan-executable 'safe-local-variable #'php-project--eval-bootstrap-scripts)
 
-;;;###autoload
-(progn
   (defvar-local php-project-coding-style nil
     "Symbol value of the coding style of the project that PHP major mode refers to.
 
 Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
-  (put 'php-project-coding-style 'safe-local-variable #'symbolp))
+  (put 'php-project-coding-style 'safe-local-variable #'symbolp)
 
-;;;###autoload
-(progn
-  (defvar php-project-repl nil
+  (defvar-local php-project-php-file-as-template 'auto
+    "
+`auto' (default)
+      Automatically switch to mode for template when HTML tag detected in file.
+
+`t'
+      Switch all PHP files in that directory to mode for HTML template.
+
+`nil'
+      Any .php  in that directory is just a PHP script.
+
+\(\(PATTERN . SYMBOL))
+      Alist of file name pattern regular expressions and the above symbol pairs.
+      PATTERN is regexp pattern.
+")
+  (put 'php-project-php-file-as-template 'safe-local-variable #'php-project--validate-php-file-as-template)
+
+  (defvar-local php-project-repl nil
     "Function name or path to REPL (interactive shell) script.")
-  (make-variable-buffer-local 'php-project-repl)
   (put 'php-project-repl 'safe-local-variable
        #'(lambda (v) (or (functionp v)
-                         (php-project--eval-bootstrap-scripts v)))))
+                         (php-project--eval-bootstrap-scripts v))))
 
-;;;###autoload
-(progn
-  (defvar php-project-unit-test nil
+  (defvar-local php-project-unit-test nil
     "Function name or path to unit test script.")
-  (make-variable-buffer-local 'php-project-unit-test)
   (put 'php-project-unit-test 'safe-local-variable
        #'(lambda (v) (or (functionp v)
-                         (php-project--eval-bootstrap-scripts v)))))
+                         (php-project--eval-bootstrap-scripts v))))
 
-;;;###autoload
-(progn
-  (defvar php-project-deploy nil
+  (defvar-local php-project-deploy nil
     "Function name or path to deploy script.")
-  (make-variable-buffer-local 'php-project-deploy)
   (put 'php-project-deploy 'safe-local-variable
        #'(lambda (v) (or (functionp v)
-                         (php-project--eval-bootstrap-scripts v)))))
+                         (php-project--eval-bootstrap-scripts v))))
 
-;;;###autoload
-(progn
-  (defvar php-project-build nil
+  (defvar-local php-project-build nil
     "Function name or path to build script.")
-  (make-variable-buffer-local 'php-project-build)
   (put 'php-project-build 'safe-local-variable
        #'(lambda (v) (or (functionp v)
-                         (php-project--eval-bootstrap-scripts v)))))
+                         (php-project--eval-bootstrap-scripts v))))
 
-;;;###autoload
-(progn
-  (defvar php-project-server-start nil
+  (defvar-local php-project-server-start nil
     "Function name or path to server-start script.")
-  (make-variable-buffer-local 'php-project-server-start)
   (put 'php-project-server-start 'safe-local-variable
        #'(lambda (v) (or (functionp v)
                          (php-project--eval-bootstrap-scripts v)))))
 
 
 ;; Functions
+(defun php-project--validate-php-file-as-template (val)
+  "Return T when `VAL' is valid list of safe ."
+  (cond
+   ((null val) t)
+   ((memq val '(t auto)) t)
+   ((listp val)
+    (cl-loop for v in val
+             always (and (consp v)
+                         (stringp (car v))
+                         (php-project--validate-php-file-as-template (cdr v)))))
+   (t nil)))
 
 (defun php-project--eval-bootstrap-scripts (val)
   "Return T when `VAL' is valid list of safe bootstrap php script."
@@ -212,6 +217,17 @@ Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
                  (list php-project-phan-executable
                        (cons 'root "vendor/bin/phan"))))
       (executable-find "phan")))
+
+(defun php-project-get-file-html-template-type (filename)
+  "Return symbol T, NIL or `auto' by `FILENAME'."
+  (cond
+   ((not php-project-php-file-as-template) nil)
+   ((eq t php-project-php-file-as-template) t)
+   ((eq 'auto php-project-php-file-as-template) 'auto)
+   ((listp php-project-php-file-as-template)
+    (assoc-default filename php-project-php-file-as-template #'string-match-p))
+   (t (prog1 nil
+        (warn "php-project-php-file-as-template is unexpected format")))))
 
 ;;;###autoload
 (defun php-project-get-bootstrap-scripts ()

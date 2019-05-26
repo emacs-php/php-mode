@@ -29,6 +29,7 @@
 
 ;;; Code:
 (require 'flymake)
+(require 'php-project)
 
 ;;;###autoload
 (defgroup php nil
@@ -85,6 +86,41 @@ You can replace \"en\" with your ISO language code."
   "Suffix for inserted namespace."
   :group 'php
   :type 'string)
+
+(defcustom php-default-major-mode 'php-mode
+  "Major mode for editing PHP script."
+  :group 'php
+  :tag "PHP Default Major Mode"
+  :type 'function)
+
+(defcustom php-html-template-major-mode 'web-mode
+  "Major mode for editing PHP-HTML template."
+  :group 'php
+  :tag "PHP-HTML Template Major Mode"
+  :type 'function)
+
+(defcustom php-blade-template-major-mode 'web-mode
+  "Major mode for editing Blade template."
+  :group 'php
+  :tag "PHP Blade Template Major Mode"
+  :type 'function)
+
+(defcustom php-template-mode-alist
+  `(("\\.blade" . ,php-blade-template-major-mode)
+    ("\\.phpt\\'" . ,(if (fboundp 'phpt-mode) 'phpt-mode php-html-template-major-mode))
+    ("\\.phtml\\'" . ,php-html-template-major-mode))
+  "Automatically use another MAJOR-MODE when open template file."
+  :group 'php
+  :tag "PHP Template Mode Alist"
+  :type '(alist :key-type regexp :value-type function)
+  :link '(url-link :tag "web-mode" "http://web-mode.org/")
+  :link '(url-link :tag "phpt-mode" "https://github.com/emacs-php/phpt-mode"))
+
+(defcustom php-mode-maybe-hook nil
+  "List of functions to be executed on entry to `php-mode-maybe'."
+  :group 'php
+  :tag "PHP Mode Maybe Hook"
+  :type 'hook)
 
 ;;; PHP Keywords
 (defconst php-magical-constants
@@ -198,6 +234,54 @@ Look at the `php-executable' variable instead of the constant \"php\" command."
                               'flymake-proc-php-init
                             'flymake-php-init)))))
     (list php-executable (cdr init))))
+
+(defconst php-re-detect-html-tag
+  (eval-when-compile
+    (rx (or (: string-start (* (in space))
+               "<!"
+               (or "DOCTYPE" "doctype")
+               (+ (in space))
+               (or "HTML" "html"))
+            (: (or line-start
+                   (: "<" (? "/")
+                      (* (in space)) (+ (in alpha "-")) (* (in space)) ">"))
+               (: "<" (* (in space)) (+ (in alpha "-")) (* (in space)) ">"))))))
+
+(defun php-buffer-has-html-tag ()
+  "Return position of HTML tag or NIL in current buffer."
+  (save-excursion
+    (save-restriction
+      (widen)
+      (goto-char (point-min))
+      (re-search-forward php-re-detect-html-tag nil t))))
+
+(defun php-derivation-major-mode ()
+  "Return major mode for PHP file by file-name and its content."
+  (let ((mode (assoc-default buffer-file-name
+                             php-template-mode-alist
+                             #'string-match-p))
+        type)
+    (when (and (null mode) buffer-file-name
+               php-project-php-file-as-template)
+      (setq type (php-project-get-file-html-template-type buffer-file-name))
+      (cond
+       ((eq t type) (setq mode php-html-template-major-mode))
+       ((eq 'auto type)
+        (when (php-buffer-has-html-tag)
+          (setq mode php-html-template-major-mode)))))
+    (when (and mode (not (fboundp mode)))
+      (if (string-match-p "\\.blade\\." buffer-file-name)
+          (warn "php-mode is NOT support blade template. %s"
+                "Please install `web-mode' package")
+        (setq mode nil)))
+    (or mode php-default-major-mode)))
+
+;;;###autoload
+(defun php-mode-maybe ()
+  "Select PHP mode or other major mode."
+  (interactive)
+  (run-hooks php-mode-maybe-hook)
+  (funcall (php-derivation-major-mode)))
 
 ;;;###autoload
 (defun php-current-class ()
