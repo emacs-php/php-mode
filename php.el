@@ -92,10 +92,22 @@ You can replace \"en\" with your ISO language code."
   :tag "PHP Default Major Mode"
   :type 'function)
 
+(defcustom php-html-template-major-mode 'web-mode
+  "Major mode for editing PHP-HTML template."
+  :group 'php
+  :tag "PHP-HTML Template Major Mode"
+  :type 'function)
+
+(defcustom php-blade-template-major-mode 'web-mode
+  "Major mode for editing Blade template."
+  :group 'php
+  :tag "PHP Blade Template Major Mode"
+  :type 'function)
+
 (defcustom php-template-mode-alist
-  '(("\\.blade" . web-mode)
-    ("\\.phpt\\'" . phpt-mode)
-    ("\\.phtml\\'" . web-mode))
+  `(("\\.blade" . ,php-blade-template-major-mode)
+    ("\\.phpt\\'" . ,(if (fboundp 'phpt-mode) 'phpt-mode php-html-template-major-mode))
+    ("\\.phtml\\'" . ,php-html-template-major-mode))
   "Automatically use another MAJOR-MODE when open template file."
   :group 'php
   :tag "PHP Template Mode Alist"
