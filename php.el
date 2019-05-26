@@ -216,6 +216,26 @@ Look at the `php-executable' variable instead of the constant \"php\" command."
                             'flymake-php-init)))))
     (list php-executable (cdr init))))
 
+(defconst php-re-detect-html-tag
+  (eval-when-compile
+    (rx (or (: string-start (* (in space))
+               "<!"
+               (or "DOCTYPE" "doctype")
+               (+ (in space))
+               (or "HTML" "html"))
+            (: (or line-start
+                   (: "<" (? "/")
+                      (* (in space)) (+ (in alpha "-")) (* (in space)) ">"))
+               (: "<" (* (in space)) (+ (in alpha "-")) (* (in space)) ">"))))))
+
+(defun php-buffer-has-html-tag ()
+  "Return position of HTML tag or NIL in current buffer."
+  (save-excursion
+    (save-restriction
+      (widen)
+      (goto-char (point-min))
+      (re-search-forward php-re-detect-html-tag nil t))))
+
 ;;;###autoload
 (defun php-mode-maybe ()
   "Select PHP mode or other major mode."
