@@ -87,7 +87,7 @@ You can replace \"en\" with your ISO language code."
   :type 'string)
 
 (defcustom php-default-major-mode 'php-mode
-  "Major mode for edition PHP script."
+  "Major mode for editing PHP script."
   :group 'php
   :tag "PHP Default Major Mode"
   :type 'function)
