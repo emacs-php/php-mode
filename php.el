@@ -29,6 +29,7 @@
 
 ;;; Code:
 (require 'flymake)
+(require 'php-project)
 
 ;;;###autoload
 (defgroup php nil
@@ -248,15 +249,32 @@ Look at the `php-executable' variable instead of the constant \"php\" command."
       (goto-char (point-min))
       (re-search-forward php-re-detect-html-tag nil t))))
 
+(defun php-derivation-major-mode ()
+  "Return major mode for PHP file by file-name and its content."
+  (let ((mode (assoc-default buffer-file-name
+                             php-template-mode-alist
+                             #'string-match-p))
+        type)
+    (when (and (null mode) buffer-file-name
+               php-project-php-file-as-template)
+      (setq type (php-project-get-file-html-template-type buffer-file-name))
+      (cond
+       ((eq t type) (setq mode php-html-template-major-mode))
+       ((eq 'auto type)
+        (when (php-buffer-has-html-tag)
+          (setq mode php-html-template-major-mode)))))
+    (when (and mode (not (fboundp mode)))
+      (if (string-match-p "\\.blade\\." buffer-file-name)
+          (warn "php-mode is NOT support blade template. %s"
+                "Please install `web-mode' package")
+        (setq mode nil)))
+    (or mode php-default-major-mode)))
+
 ;;;###autoload
 (defun php-mode-maybe ()
   "Select PHP mode or other major mode."
-  (let ((mode (assoc-default buffer-file-name php-template-mode-alist #'string-match-p)))
-    (when (and mode (not (fboundp mode)))
-      (if (string-match-p "\\.blade\\." buffer-file-name)
-          (warn "php-mode is NOT support blade template")
-        (setq mode nil)))
-    (funcall (or mode php-default-major-mode))))
+  (interactive)
+  (funcall (php-derivation-major-mode)))
 
 ;;;###autoload
 (defun php-current-class ()
