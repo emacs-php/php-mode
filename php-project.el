@@ -126,6 +126,23 @@ defines constants, and sets the class loaders.")
 Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
   (put 'php-project-coding-style 'safe-local-variable #'symbolp)
 
+  (defvar-local php-project-php-file-as-template 'auto
+    "
+`auto' (default)
+      Automatically switch to mode for template when HTML tag detected in file.
+
+`t'
+      Switch all PHP files in that directory to mode for HTML template.
+
+`nil'
+      Any .php  in that directory is just a PHP script.
+
+\(\(PATTERN . SYMBOL))
+      Alist of file name pattern regular expressions and the above symbol pairs.
+      PATTERN is regexp pattern or `T'.
+")
+  (put 'php-project-php-file-as-template 'safe-local-variable #'php-project--validate-php-file-as-template)
+
   (defvar-local php-project-repl nil
     "Function name or path to REPL (interactive shell) script.")
   (put 'php-project-repl 'safe-local-variable
@@ -158,6 +175,17 @@ Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
 
 
 ;; Functions
+(defun php-project--validate-php-file-as-template (val)
+  "Return T when `VAL' is valid list of safe ."
+  (cond
+   ((null val) t)
+   ((memq val '(t auto)) t)
+   ((listp val)
+    (cl-loop for v in val
+             always (and (consp v)
+                         (or (stringp (car v)) (eq t (car v)))
+                         (php-project--validate-php-file-as-template (cdr v)))))
+   (t nil)))
 
 (defun php-project--eval-bootstrap-scripts (val)
   "Return T when `VAL' is valid list of safe bootstrap php script."
@@ -189,6 +217,17 @@ Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
                  (list php-project-phan-executable
                        (cons 'root "vendor/bin/phan"))))
       (executable-find "phan")))
+
+(defun php-project-get-file-html-template-type (filename)
+  "Return symbol T, NIL or `auto' by `FILENAME'."
+  (cond
+   ((not php-project-php-file-as-template) nil)
+   ((eq t php-project-php-file-as-template) t)
+   ((eq 'auto php-project-php-file-as-template) 'auto)
+   ((listp php-project-php-file-as-template)
+    (assoc-default filename php-project-php-file-as-template #'string-match-p))
+   (t (prog1 nil
+        (warn "php-project-php-file-as-template is unexpected format")))))
 
 ;;;###autoload
 (defun php-project-get-bootstrap-scripts ()
