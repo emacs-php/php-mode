@@ -23,7 +23,7 @@ This version contains unobtrusive changes for future compatibility. Also, `forwa
 [#532]: https://github.com/emacs-php/php-mode/pull/532
 [#539]: https://github.com/emacs-php/php-mode/pull/539
 [#540]: https://github.com/emacs-php/php-mode/pull/540
-[@takeokunn](https://github.com/takeokunn)
+[@takeokunn]: https://github.com/takeokunn
 
 ## [1.21.3] - 2019-05-25
 
