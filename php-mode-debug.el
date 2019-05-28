@@ -5,7 +5,7 @@
 ;; Author: USAMI Kenta <tadsan@zonu.me>
 ;; URL: https://github.com/emacs-php/php-mode
 ;; Keywords: maint
-;; Version: 1.21.3
+;; Version: 1.21.4
 ;; Package-Requires: ((emacs "24.3") (cl-lib "0.5"))
 ;; License: GPL-3.0-or-later
 
