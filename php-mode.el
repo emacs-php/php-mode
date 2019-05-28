@@ -201,6 +201,12 @@ of constants when set."
   :tag "PHP Mode Lineup Cascaded Calls"
   :type 'boolean)
 
+(defcustom php-mode-page-delimiter
+  (eval-when-compile (rx symbol-start (or "namespace" "function" "class" "trait" "interface") symbol-end))
+  "Regexp describing line-beginnings that PHP declaration statements."
+  :group 'php-mode
+  :tag "PHP Mode Page Delimiter"
+  :type 'regexp)
 
 (define-obsolete-variable-alias 'php-extra-constants 'php-mode-extra-constants "1.20.0")
 (defcustom php-mode-extra-constants '()
@@ -1067,6 +1073,7 @@ After setting the stylevars run hooks according to STYLENAME
                                (: "/*")))
                     (* (syntax whitespace)))))
   (setq-local comment-end "")
+  (setq-local page-delimiter php-mode-page-delimiter)
 
   (setq-local font-lock-string-face 'php-string)
   (setq-local font-lock-keyword-face 'php-keyword)
