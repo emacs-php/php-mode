@@ -2,6 +2,29 @@
 
 All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [1.21.4] - 2019-05-29
+
+This version contains unobtrusive changes for future compatibility. Also, `forward-page` /` backward-page` may improve your operation. Thank you [@takeokunn].
+
+### Added
+
+ * A new command `php-mode-maybe` has been added to improve the compatibility of Blade templates and HTML templates with Web Mode. ([#532])
+ * A new custom variable php-mode-page-delimiter is added, which is assigned to page-delimiter in PHP-Mode. It allows you to move smoothly to the previous and subsequent definition statements with `forward-page` (<kbd>C-x C-[</kbd>) and `backward-page` (<kbd>C-x C-]</kbd>). ([#540] by [@takeokunn])
+
+### Change
+
+ * `php-maybe-mode` and `.php` files are associated with `auto-mode-alist` instead of `php-mode` ([#532])
+ * Compatibility with [poly-php] has been improved. This has not yet been officially released.
+
+### Deprecated
+
+ * PHP Mode does not support phpt files . Consider installing the [phpt-mode] package. This mode is a wrapper around Polymode based PHP-Mode.
+
+[#532]: https://github.com/emacs-php/php-mode/pull/532
+[#539]: https://github.com/emacs-php/php-mode/pull/539
+[#540]: https://github.com/emacs-php/php-mode/pull/540
+[@takeokunn](https://github.com/takeokunn)
+
 ## [1.21.3] - 2019-05-25
 
 This version includes both PHP syntax support enhancements and performance improvements. See https://github.com/emacs-php/php-mode/projects/1 for all issues for this release.  Also, [@mallt] has helped me improve it with a number of issues. thank you very much.
@@ -153,3 +176,5 @@ See [Changelog · emacs-php/php-mode Wiki](https://github.com/emacs-php/php-mode
 [@mallt]: https://github.com/mallt
 [@sergeyklay]: https://github.com/sergeyklay
 [PHP 7.2 arrow function]: https://wiki.php.net/rfc/arrow_functions_v2
+[poly-php]: https://github.com/emacs-php/poly-php
+[phpt-mode]: https://github.com/emacs-php/phpt-mode

@@ -9,14 +9,14 @@
 ;; Maintainer: USAMI Kenta <tadsan@zonu.me>
 ;; URL: https://github.com/emacs-php/php-mode
 ;; Keywords: languages php
-;; Version: 1.21.3
+;; Version: 1.21.4
 ;; Package-Requires: ((emacs "24.3") (cl-lib "0.5"))
 ;; License: GPL-3.0-or-later
 
-(defconst php-mode-version-number "1.21.3"
+(defconst php-mode-version-number "1.21.4"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2019-05-25"
+(defconst php-mode-modified "2019-05-29"
   "PHP Mode build date.")
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -34,32 +34,25 @@
 
 ;;; Commentary:
 
-;; PHP Mode is a major mode for editing PHP source code.  It's an
-;; extension of C mode; thus it inherits all C mode's navigation
-;; functionality.  But it colors according to the PHP grammar and
-;; indents according to the PEAR coding guidelines.  It also includes
-;; a couple handy IDE-type features such as documentation search and a
-;; source and class browser.
+;; PHP Mode is a major mode for editing PHP script.  It's an extension
+;; of CC mode; thus it inherits all C mode's navigation functionality.
+;; But it colors according to the PHP syntax and indents according to the
+;; PSR-2 coding guidelines.  It also includes a couple handy IDE-type
+;; features such as documentation search and a source and class browser.
 
-;; ## Usage
+;; Please read the manual for setting items compatible with CC Mode.
+;; https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
 
-;; Put this file in your Emacs Lisp path (eg. site-lisp) and add to
-;; your .emacs file:
+;; This mode is designed for PHP scripts consisting of a single <?php block.
+;; We recommend the introduction of Web Mode for HTML and Blade templates combined with PHP.
+;; http://web-mode.org/
 
-;;   (require 'php-mode)
+;; Modern PHP Mode can be set on a project basis by .dir-locals.el.
+;; Please read php-project.el for details of directory local variables.
 
-;; To use abbrev-mode, add lines like this:
-
-;;   (add-hook 'php-mode-hook
-;;     '(lambda () (define-abbrev php-mode-abbrev-table "ex" "extends")))
-
-;; To make php-mode compatible with html-mode, see http://php-mode.sf.net
-
-;; Many options available under Help:Customize
-;; Options specific to php-mode are in
-;;  Programming/Languages/PHP
-;; Since it inherits much functionality from c-mode, look there too
-;;  Programming/Languages/C
+;; If you are using a package manager, you do not need (require 'php-mode) in
+;; your ~/.emacs.d/init.el.  Read the README for installation instructions.
+;; https://github.com/emacs-php/php-mode
 
 ;;; Code:
 
