@@ -107,7 +107,7 @@ You can replace \"en\" with your ISO language code."
 
 (defcustom php-template-mode-alist
   `(("\\.blade" . ,php-blade-template-major-mode)
-    ("\\.phpt\\'" . ,(if (fboundp 'phpt-mode) 'phpt-mode php-html-template-major-mode))
+    ("\\.phpt\\'" . ,(if (fboundp 'phpt-mode) 'phpt-mode php-default-major-mode))
     ("\\.phtml\\'" . ,php-html-template-major-mode))
   "Automatically use another MAJOR-MODE when open template file."
   :group 'php
