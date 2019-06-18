@@ -101,6 +101,11 @@
   :group 'php-faces
   :tag "PHP Type")
 
+(defface php-class '((t (:inherit font-lock-type-face)))
+  "PHP Mode face used to highlight class."
+  :group 'php-faces
+  :tag "PHP Class")
+
 (defface php-constant '((t (:inherit font-lock-constant-face)))
   "PHP Mode face used to highlight constants."
   :group 'php-faces
