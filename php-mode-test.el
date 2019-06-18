@@ -662,9 +662,10 @@ Meant for `php-mode-test-issue-503'."
     (goto-char (point-min))
     (should (eq (php-mode-test-in-function-p nil) nil))))
 
-(ert-deftest php-mode-test-php74-arrow-fn ()
-  "Test highlighting arrow funcsion (short closure syntax) added in PHP 7.4."
-  (with-php-mode-test ("7.4/arrow-function.php" :faces t)))
+(ert-deftest php-mode-test-php74 ()
+  "Test highlighting language constructs added in PHP 7.4."
+  (with-php-mode-test ("7.4/arrow-function.php" :faces t))
+  (with-php-mode-test ("7.4/typed-property.php" :faces t)))
 
 (ert-deftest php-mode-test-lang ()
   "Test highlighting for language constructs."
