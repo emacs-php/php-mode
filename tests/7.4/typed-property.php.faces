@@ -1,0 +1,78 @@
+;; -*- mode: emacs-lisp -*-
+(("<?php" . php-php-tag)
+ ("
+
+")
+ ("class" . php-keyword)
+ (" ")
+ ("Typed" . font-lock-type-face)
+ ("
+{
+    ")
+ ("private" . php-keyword)
+ (" ")
+ ("?string" . php-class)
+ (" ")
+ ("$" . php-variable-sigil)
+ ("string" . php-variable-name)
+ (";
+
+    ")
+ ("private" . php-keyword)
+ (" ")
+ ("Hoge" . php-class)
+ (" ")
+ ("$" . php-variable-sigil)
+ ("hoge" . php-variable-name)
+ (";
+
+    ")
+ ("public" . php-keyword)
+ (" ")
+ ("function" . php-keyword)
+ (" ")
+ ("__construct" . php-function-name)
+ ("(")
+ ("$" . php-variable-sigil)
+ ("var" . php-variable-name)
+ (" = ")
+ ("null" . php-constant)
+ (")
+    {
+        ")
+ ("$" . php-$this-sigil)
+ ("this" . php-$this)
+ ("->" . php-object-op)
+ ("string" . php-property-name)
+ (" = ")
+ ("$" . php-variable-sigil)
+ ("var" . php-variable-name)
+ (";
+    }
+
+    ")
+ ("public" . php-keyword)
+ (" ")
+ ("function" . php-keyword)
+ (" ")
+ ("print" . php-function-name)
+ ("()
+    {
+        var_dump(")
+ ("$" . php-$this-sigil)
+ ("this" . php-$this)
+ ("->" . php-object-op)
+ ("string" . php-property-name)
+ (");
+    }
+}
+
+(")
+ ("new" . php-keyword)
+ (" ")
+ ("Typed" . font-lock-type-face)
+ (")")
+ ("->" . php-object-op)
+ ("print" . php-method-call)
+ ("();
+"))
