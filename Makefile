@@ -1,6 +1,6 @@
 EMACS ?= emacs
 ELS = php.el php-face.el php-project.el php-mode.el php-mode-debug.el php-mode-test.el
-AUTOLOADS = php-project-autoloads.el php-mode-autoloads.el
+AUTOLOADS = php-mode-autoloads.el
 ELCS = $(ELS:.el=.elc)
 
 %.elc: %.el
