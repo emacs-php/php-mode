@@ -1101,8 +1101,8 @@ After setting the stylevars run hooks according to STYLENAME
   (setq-local font-lock-constant-face 'php-constant)
 
   (setq-local syntax-propertize-function #'php-syntax-propertize-function)
-  (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
-               #'php-syntax-propertize-extend-region)
+  (add-hook 'syntax-propertize-extend-region-functions
+            #'php-syntax-propertize-extend-region t t)
 
   (setq imenu-generic-expression php-imenu-generic-expression)
 
