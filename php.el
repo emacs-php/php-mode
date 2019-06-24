@@ -28,8 +28,10 @@
 ;; This file provides common variable and functions for PHP packages.
 
 ;;; Code:
+(require 'cl-lib)
 (require 'flymake)
 (require 'php-project)
+(require 'rx)
 
 ;;;###autoload
 (defgroup php nil
@@ -121,6 +123,14 @@ You can replace \"en\" with your ISO language code."
   :group 'php
   :tag "PHP Mode Maybe Hook"
   :type 'hook)
+
+(defcustom php-default-builtin-web-server-port 3939
+  "Port number of PHP Built-in HTTP server (php -S)."
+  :group 'php
+  :tag "PHP Default Built-in Web Server Port"
+  :type 'integer
+  :link '(url-link :tag "Built-in web server"
+                   "https://www.php.net/manual/features.commandline.webserver.php"))
 
 ;;; PHP Keywords
 (defconst php-magical-constants
@@ -298,6 +308,56 @@ Look at the `php-executable' variable instead of the constant \"php\" command."
   (let ((matched (php-get-current-element php--re-namespace-pattern)))
     (when matched
       (insert (concat matched php-namespace-suffix-when-insert)))))
+
+;;;###autoload
+(defun php-run-builtin-web-server (router-or-dir hostname port &optional document-root)
+  "Run PHP Built-in web server.
+
+`ROUTER-OR-DIR': Path to router PHP script or Document root.
+`HOSTNAME': Hostname or IP address of Built-in web server.
+`PORT': Port number of Built-in web server.
+`DOCUMENT-ROOT': Path to Document root.
+
+When `DOCUMENT-ROOT' is NIL, the document root is obtained from `ROUTER-OR-DIR'."
+  (interactive
+   (let ((insert-default-directory t)
+         (d-o-r (read-file-name "Document root or Script: " default-directory)))
+     (list
+      (expand-file-name d-o-r)
+      (read-string "Hostname: " "0.0.0.0")
+      (read-number "Port: " php-default-builtin-web-server-port)
+      (if (file-directory-p d-o-r)
+          nil
+        (let ((root-input (read-file-name "Document root: " (directory-file-name d-o-r))))
+          (file-name-directory
+           (if (file-directory-p root-input)
+               root-input
+             (directory-file-name root-input))))))))
+  (let* ((default-directory
+           (or document-root
+               (if (file-directory-p router-or-dir)
+                   router-or-dir
+                 (directory-file-name router-or-dir))))
+         (pattern (rx-form `(: bos ,(getenv "HOME"))))
+         (short-dirname (replace-regexp-in-string pattern "~" default-directory))
+         (short-filename (replace-regexp-in-string pattern "~" router-or-dir))
+         (buf-name (format "php -S %s:%s -t %s %s"
+                           hostname
+                           port
+                           short-dirname
+                           (if document-root short-filename "")))
+         (args (cl-remove-if
+                #'null
+                (list "-S"
+                      (format "%s:%d" hostname port)
+                      "-t"
+                      default-directory
+                      (when document-root router-or-dir)))))
+    (message "Run PHP built-in server: %s" buf-name)
+    (apply #'make-comint buf-name php-executable nil args)
+    (funcall
+     (if (called-interactively-p 'interactive) #'display-buffer #'get-buffer)
+     (format "*%s*" buf-name))))
 
 (provide 'php)
 ;;; php.el ends here
