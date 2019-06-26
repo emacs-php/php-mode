@@ -1274,20 +1274,22 @@ current `tags-file-name'."
       nil)))
 
 (defun php-show-arglist ()
+  "Show function arguments at cursor position."
   (interactive)
   (let* ((tagname (php-get-pattern))
          (buf (find-tag-noselect tagname nil nil))
          arglist)
     (with-current-buffer buf
-      (goto-char (point-min))
-      (when (re-search-forward
-             (format "function\\s-+%s\\s-*(\\([^{]*\\))" tagname)
-             nil t)
-        (setq arglist (buffer-substring-no-properties
-                       (match-beginning 1) (match-end 1)))))
+      (save-excursion
+        (goto-char (point-min))
+        (when (re-search-forward
+               (format "function\\s-+%s\\s-*(\\([^{]*\\))" tagname)
+               nil t)
+          (setq arglist (buffer-substring-no-properties
+                         (match-beginning 1) (match-end 1))))))
     (if arglist
         (message "Arglist for %s: %s" tagname arglist)
-        (message "Unknown function: %s" tagname))))
+      (message "Unknown function: %s" tagname))))
 
 (defcustom php-search-documentation-browser-function nil
   "Function to display PHP documentation in a WWW browser.
