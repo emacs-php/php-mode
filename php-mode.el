@@ -1010,6 +1010,7 @@ this ^ lineup"
   (cons "PHP" (c-lang-const c-mode-menu php)))
 
 (defvar-local php-mode--delayed-set-style nil)
+(defvar-local php-style-delete-trailing-whitespace nil)
 
 (defun php-set-style (stylename &optional dont-override)
   "Set the current `php-mode' buffer to use the style STYLENAME.
