@@ -1010,6 +1010,7 @@ this ^ lineup"
   (cons "PHP" (c-lang-const c-mode-menu php)))
 
 (defvar-local php-mode--delayed-set-style nil)
+(defvar-local php-style-delete-trailing-whitespace nil)
 
 (defun php-set-style (stylename &optional dont-override)
   "Set the current `php-mode' buffer to use the style STYLENAME.
@@ -1064,7 +1065,8 @@ After setting the stylevars run hooks according to STYLENAME
   (when php-mode--delayed-set-style
     (let ((coding-style (or (and (boundp 'php-project-coding-style) php-project-coding-style)
                             php-mode-coding-style)))
-      (prog1 (php-set-style (symbol-name coding-style))
+      (prog1 (when coding-style
+               (php-set-style (symbol-name coding-style)))
         (remove-hook 'hack-local-variables-hook #'php-mode-set-style-delay)))))
 
 (defvar php-mode-syntax-table
