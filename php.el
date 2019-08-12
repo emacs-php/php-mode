@@ -245,7 +245,7 @@ Look at the `php-executable' variable instead of the constant \"php\" command."
                             'flymake-php-init)))))
     (list php-executable (cdr init))))
 
-(defconst php-re-detect-html-tag
+(defconst php-re-detect-html-tag-aggressive
   (eval-when-compile
     (rx (or (: string-start (* (in space))
                "<!"
@@ -257,13 +257,38 @@ Look at the `php-executable' variable instead of the constant \"php\" command."
                       (* (in space)) (+ (in alpha "-")) (* (in space)) ">"))
                (: "<" (* (in space)) (+ (in alpha "-")) (* (in space)) ">"))))))
 
+(defconst php-re-detect-html-tag-default
+  (eval-when-compile
+    (rx (or (: string-start (* (in space))
+               "<!"
+               (or "DOCTYPE" "doctype")
+               (+ (in space))
+               (or "HTML" "html"))
+            (: line-start
+               (: "<" (* (in space)) (+ (in alpha "-")) (* (in space)) ">"))))))
+
+(defcustom php-re-detect-html-tag 'php-re-detect-html-tag-default
+  "Regexp pattern variable-name of HTML detection."
+  :group 'php
+  :tag "PHP Re Detect HTML Tag"
+  :type '(choice (const :tag "Default pattern" 'php-re-detect-html-tag-default)
+                 (const :tag "Aggressive pattern" 'php-re-detect-html-tag-aggressive)
+                 (variable :tag "Variable name of RegExp pattern")))
+
+(defsubst php-re-detect-html-tag ()
+  "Return RegExp pattern for HTML detection."
+  (if (symbolp php-re-detect-html-tag)
+      (symbol-value php-re-detect-html-tag)
+    php-re-detect-html-tag))
+
 (defun php-buffer-has-html-tag ()
   "Return position of HTML tag or NIL in current buffer."
   (save-excursion
     (save-restriction
       (widen)
       (goto-char (point-min))
-      (re-search-forward php-re-detect-html-tag nil t))))
+      (save-match-data
+        (re-search-forward (php-re-detect-html-tag) nil t)))))
 
 (defun php-derivation-major-mode ()
   "Return major mode for PHP file by file-name and its content."
