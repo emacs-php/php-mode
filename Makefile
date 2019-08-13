@@ -1,5 +1,5 @@
 EMACS ?= emacs
-ELS = php.el php-face.el php-project.el php-mode.el php-mode-debug.el php-mode-test.el
+ELS = php.el php-face.el php-project.el php-mode.el php-mode-debug.el
 AUTOLOADS = php-mode-autoloads.el
 ELCS = $(ELS:.el=.elc)
 
@@ -37,6 +37,6 @@ dev:
 # for an example of using a script like this with the 'git bisect run'
 # command.
 test: clean all
-	$(EMACS) -Q -batch -L . -l php-mode-test.el -f ert-run-tests-batch-and-exit
+	$(EMACS) -Q -batch -L . -l tests/php-mode-test.el -f ert-run-tests-batch-and-exit
 
 .PHONY: all autoloads clean test
