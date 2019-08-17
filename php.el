@@ -159,8 +159,13 @@ it is the character that will terminate the string, or t if the string should be
   (and (boundp 'poly-php-html-mode)
        (symbol-value 'poly-php-html-mode)))
 
-(defun php-create-regexp-for-method (visibility)
-  "Make a regular expression for methods with the given VISIBILITY.
+(defconst php-beginning-of-defun-regexp
+  "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("
+  "Regular expression for a PHP function.")
+
+(eval-when-compile
+  (defun php-create-regexp-for-method (&optional visibility)
+    "Make a regular expression for methods with the given VISIBILITY.
 
 VISIBILITY must be a string that names the visibility for a PHP
 method, e.g. 'public'.  The parameter VISIBILITY can itself also
@@ -170,61 +175,71 @@ The regular expression this function returns will check for other
 keywords that can appear in method signatures, e.g. 'final' and
 'static'.  The regular expression will have one capture group
 which will be the name of the method."
-  (concat
-   ;; Initial space with possible 'abstract' or 'final' keywords
-   "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?"
-   ;; 'static' keyword may come either before or after visibility
-   "\\(?:" visibility "\\(?:\\s-+static\\)?\\|\\(?:static\\s-+\\)?" visibility "\\)\\s-+"
-   ;; Make sure 'function' comes next with some space after
-   "function\\s-+"
-   ;; Capture the name as the first group and the regexp and make sure
-   ;; by the end we see the opening parenthesis for the parameters.
-   "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("))
+    (rx-form `(: line-start
+                 (* (syntax whitespace))
+                 ,@(if visibility
+                      `((* (or "abstract" "final" "static")
+                           (+ (syntax whitespace)))
+                        (or ,@visibility)
+                        (+ (syntax whitespace))
+                        (* (or "abstract" "final" "static")
+                           (+ (syntax whitespace))))
+                     '((* (* (or "abstract" "final" "static"
+                                 "private" "protected" "public"))
+                          (+ (syntax whitespace)))))
+                 "function"
+                 (+ (syntax whitespace))
+                 (group (+ (or (syntax word) (syntax symbol))))
+                 (* (syntax whitespace))
+                 "(")))
 
-(defun php-create-regexp-for-classlike (type)
-  "Accepts a `TYPE' of a 'classlike' object as a string, such as
+  (defun php-create-regexp-for-classlike (type)
+    "Accepts a `TYPE' of a 'classlike' object as a string, such as
 'class' or 'interface', and returns a regexp as a string which
 can be used to match against definitions for that classlike."
-  (concat
-   ;; First see if 'abstract' or 'final' appear, although really these
-   ;; are not valid for all values of `type' that the function
-   ;; accepts.
-   "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?"
-   ;; The classlike type
-   type
-   ;; Its name, which is the first captured group in the regexp.  We
-   ;; allow backslashes in the name to handle namespaces, but again
-   ;; this is not necessarily correct for all values of `type'.
-   "\\s-+\\(\\(?:\\sw\\|\\\\\\|\\s_\\)+\\)"))
+    (concat
+     ;; First see if 'abstract' or 'final' appear, although really these
+     ;; are not valid for all values of `type' that the function
+     ;; accepts.
+     "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?"
+     ;; The classlike type
+     type
+     ;; Its name, which is the first captured group in the regexp.  We
+     ;; allow backslashes in the name to handle namespaces, but again
+     ;; this is not necessarily correct for all values of `type'.
+     "\\s-+\\(\\(?:\\sw\\|\\\\\\|\\s_\\)+\\)")))
 
-(defvar php-imenu-generic-expression
-  `(("Namespaces"
-    ,(php-create-regexp-for-classlike "namespace") 1)
-   ("Classes"
-    ,(php-create-regexp-for-classlike "class") 1)
-   ("Interfaces"
-    ,(php-create-regexp-for-classlike "interface") 1)
-   ("Traits"
-    ,(php-create-regexp-for-classlike "trait") 1)
-   ("All Methods"
-    ,(php-create-regexp-for-method "\\(?:\\sw\\|\\s_\\)+") 1)
-   ("Private Methods"
-    ,(php-create-regexp-for-method "private") 1)
-   ("Protected Methods"
-    ,(php-create-regexp-for-method "protected")  1)
-   ("Public Methods"
-    ,(php-create-regexp-for-method "public") 1)
-   ("Anonymous Functions"
-    "\\<\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*=\\s-*function\\s-*(" 1)
-   ("Named Functions"
-    "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
+(defconst php-imenu-generic-expression
+  (eval-when-compile
+    `(("Namespaces"
+       ,(php-create-regexp-for-classlike "namespace") 1)
+      ("Classes"
+       ,(php-create-regexp-for-classlike "class") 1)
+      ("Interfaces"
+       ,(php-create-regexp-for-classlike "interface") 1)
+      ("Traits"
+       ,(php-create-regexp-for-classlike "trait") 1)
+      ("All Methods"
+       ,(php-create-regexp-for-method) 1)
+      ("Private Methods"
+       ,(php-create-regexp-for-method '("private")) 1)
+      ("Protected Methods"
+       ,(php-create-regexp-for-method '("protected"))  1)
+      ("Public Methods"
+       ,(php-create-regexp-for-method '("public")) 1)
+      ("Anonymous Functions"
+       "\\<\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*=\\s-*f\\(unctio\\)?n\\s-*(" 1)
+      ("Named Functions"
+       "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1)))
   "Imenu generic expression for PHP Mode.  See `imenu-generic-expression'.")
 
-(defvar php--re-namespace-pattern
-  (php-create-regexp-for-classlike "namespace"))
+(defconst php--re-namespace-pattern
+  (eval-when-compile
+    (php-create-regexp-for-classlike "namespace")))
 
-(defvar php--re-classlike-pattern
-  (php-create-regexp-for-classlike (regexp-opt '("class" "interface" "trait"))))
+(defconst php--re-classlike-pattern
+  (eval-when-compile
+    (php-create-regexp-for-classlike (regexp-opt '("class" "interface" "trait")))))
 
 (defun php-get-current-element (re-pattern)
   "Return backward matched element by RE-PATTERN."
