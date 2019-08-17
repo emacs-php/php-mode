@@ -192,45 +192,22 @@ which will be the name of the method."
                  (group (+ (or (syntax word) (syntax symbol))))
                  (* (syntax whitespace))
                  "(")))
-  )
 
-(defun php-create-regexp-for-classlike (type)
-  "Accepts a `TYPE' of a 'classlike' object as a string, such as
+  (defun php-create-regexp-for-classlike (type)
+    "Accepts a `TYPE' of a 'classlike' object as a string, such as
 'class' or 'interface', and returns a regexp as a string which
 can be used to match against definitions for that classlike."
-  (concat
-   ;; First see if 'abstract' or 'final' appear, although really these
-   ;; are not valid for all values of `type' that the function
-   ;; accepts.
-   "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?"
-   ;; The classlike type
-   type
-   ;; Its name, which is the first captured group in the regexp.  We
-   ;; allow backslashes in the name to handle namespaces, but again
-   ;; this is not necessarily correct for all values of `type'.
-   "\\s-+\\(\\(?:\\sw\\|\\\\\\|\\s_\\)+\\)"))
-
-(defvar php-imenu-generic-expression
-  `(("Namespaces"
-    ,(php-create-regexp-for-classlike "namespace") 1)
-   ("Classes"
-    ,(php-create-regexp-for-classlike "class") 1)
-   ("Interfaces"
-    ,(php-create-regexp-for-classlike "interface") 1)
-   ("Traits"
-    ,(php-create-regexp-for-classlike "trait") 1)
-   ("All Methods"
-    ,(php-create-regexp-for-method "\\(?:\\sw\\|\\s_\\)+") 1)
-   ("Private Methods"
-    ,(php-create-regexp-for-method "private") 1)
-   ("Protected Methods"
-    ,(php-create-regexp-for-method "protected")  1)
-   ("Public Methods"
-    ,(php-create-regexp-for-method "public") 1)
-   ("Anonymous Functions"
-    "\\<\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*=\\s-*function\\s-*(" 1)
-   ("Named Functions"
-    "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
+    (concat
+     ;; First see if 'abstract' or 'final' appear, although really these
+     ;; are not valid for all values of `type' that the function
+     ;; accepts.
+     "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?"
+     ;; The classlike type
+     type
+     ;; Its name, which is the first captured group in the regexp.  We
+     ;; allow backslashes in the name to handle namespaces, but again
+     ;; this is not necessarily correct for all values of `type'.
+     "\\s-+\\(\\(?:\\sw\\|\\\\\\|\\s_\\)+\\)")))
   "Imenu generic expression for PHP Mode.  See `imenu-generic-expression'.")
 
 (defvar php--re-namespace-pattern
