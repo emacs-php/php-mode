@@ -208,13 +208,38 @@ can be used to match against definitions for that classlike."
      ;; allow backslashes in the name to handle namespaces, but again
      ;; this is not necessarily correct for all values of `type'.
      "\\s-+\\(\\(?:\\sw\\|\\\\\\|\\s_\\)+\\)")))
+
+(defconst php-imenu-generic-expression
+  (eval-when-compile
+    `(("Namespaces"
+       ,(php-create-regexp-for-classlike "namespace") 1)
+      ("Classes"
+       ,(php-create-regexp-for-classlike "class") 1)
+      ("Interfaces"
+       ,(php-create-regexp-for-classlike "interface") 1)
+      ("Traits"
+       ,(php-create-regexp-for-classlike "trait") 1)
+      ("All Methods"
+       ,(php-create-regexp-for-method) 1)
+      ("Private Methods"
+       ,(php-create-regexp-for-method '("private")) 1)
+      ("Protected Methods"
+       ,(php-create-regexp-for-method '("protected"))  1)
+      ("Public Methods"
+       ,(php-create-regexp-for-method '("public")) 1)
+      ("Anonymous Functions"
+       "\\<\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*=\\s-*f\\(unctio\\)?n\\s-*(" 1)
+      ("Named Functions"
+       "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1)))
   "Imenu generic expression for PHP Mode.  See `imenu-generic-expression'.")
 
-(defvar php--re-namespace-pattern
-  (php-create-regexp-for-classlike "namespace"))
+(defconst php--re-namespace-pattern
+  (eval-when-compile
+    (php-create-regexp-for-classlike "namespace")))
 
-(defvar php--re-classlike-pattern
-  (php-create-regexp-for-classlike (regexp-opt '("class" "interface" "trait"))))
+(defconst php--re-classlike-pattern
+  (eval-when-compile
+    (php-create-regexp-for-classlike (regexp-opt '("class" "interface" "trait")))))
 
 (defun php-get-current-element (re-pattern)
   "Return backward matched element by RE-PATTERN."
