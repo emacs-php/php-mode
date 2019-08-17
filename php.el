@@ -159,6 +159,10 @@ it is the character that will terminate the string, or t if the string should be
   (and (boundp 'poly-php-html-mode)
        (symbol-value 'poly-php-html-mode)))
 
+(defconst php-beginning-of-defun-regexp
+  "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("
+  "Regular expression for a PHP function.")
+
 (defun php-create-regexp-for-method (visibility)
   "Make a regular expression for methods with the given VISIBILITY.
 

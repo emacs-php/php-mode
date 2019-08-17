@@ -734,10 +734,6 @@ but only if the setting is enabled"
   (interactive)
   (php-set-style "psr2"))
 
-(defconst php-beginning-of-defun-regexp
-  "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("
-  "Regular expression for a PHP function.")
-
 (defun php-beginning-of-defun (&optional arg)
   "Move to the beginning of the ARGth PHP function from point.
 Implements PHP version of `beginning-of-defun-function'."
