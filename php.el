@@ -244,8 +244,9 @@ can be used to match against definitions for that classlike."
 (defun php-get-current-element (re-pattern)
   "Return backward matched element by RE-PATTERN."
   (save-excursion
-    (when (re-search-backward re-pattern nil t)
-      (match-string-no-properties 1))))
+    (save-match-data
+      (when (re-search-backward re-pattern nil t)
+        (match-string-no-properties 1)))))
 
 ;;; Provide support for Flymake so that users can see warnings and
 ;;; errors in real-time as they write code.
