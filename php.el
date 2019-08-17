@@ -160,7 +160,7 @@ it is the character that will terminate the string, or t if the string should be
        (symbol-value 'poly-php-html-mode)))
 
 (defconst php-beginning-of-defun-regexp
-  "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("
+  "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(\\sw\\|\\s_\\)+\\)\\s-*("
   "Regular expression for a PHP function.")
 
 (eval-when-compile
