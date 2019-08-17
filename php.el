@@ -163,8 +163,9 @@ it is the character that will terminate the string, or t if the string should be
   "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("
   "Regular expression for a PHP function.")
 
-(defun php-create-regexp-for-method (visibility)
-  "Make a regular expression for methods with the given VISIBILITY.
+(eval-when-compile
+  (defun php-create-regexp-for-method (&optional visibility)
+    "Make a regular expression for methods with the given VISIBILITY.
 
 VISIBILITY must be a string that names the visibility for a PHP
 method, e.g. 'public'.  The parameter VISIBILITY can itself also
@@ -174,16 +175,24 @@ The regular expression this function returns will check for other
 keywords that can appear in method signatures, e.g. 'final' and
 'static'.  The regular expression will have one capture group
 which will be the name of the method."
-  (concat
-   ;; Initial space with possible 'abstract' or 'final' keywords
-   "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?"
-   ;; 'static' keyword may come either before or after visibility
-   "\\(?:" visibility "\\(?:\\s-+static\\)?\\|\\(?:static\\s-+\\)?" visibility "\\)\\s-+"
-   ;; Make sure 'function' comes next with some space after
-   "function\\s-+"
-   ;; Capture the name as the first group and the regexp and make sure
-   ;; by the end we see the opening parenthesis for the parameters.
-   "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("))
+    (rx-form `(: line-start
+                 (* (syntax whitespace))
+                 ,@(if visibility
+                      `((* (or "abstract" "final" "static")
+                           (+ (syntax whitespace)))
+                        (or ,@visibility)
+                        (+ (syntax whitespace))
+                        (* (or "abstract" "final" "static")
+                           (+ (syntax whitespace))))
+                     '((* (* (or "abstract" "final" "static"
+                                 "private" "protected" "public"))
+                          (+ (syntax whitespace)))))
+                 "function"
+                 (+ (syntax whitespace))
+                 (group (+ (or (syntax word) (syntax symbol))))
+                 (* (syntax whitespace))
+                 "(")))
+  )
 
 (defun php-create-regexp-for-classlike (type)
   "Accepts a `TYPE' of a 'classlike' object as a string, such as
