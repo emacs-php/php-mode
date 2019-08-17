@@ -175,6 +175,8 @@ The regular expression this function returns will check for other
 keywords that can appear in method signatures, e.g. 'final' and
 'static'.  The regular expression will have one capture group
 which will be the name of the method."
+    (when (stringp visibility)
+      (setq visibility (list visibility)))
     (rx-form `(: line-start
                  (* (syntax whitespace))
                  ,@(if visibility
