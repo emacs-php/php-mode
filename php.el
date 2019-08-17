@@ -187,10 +187,11 @@ which will be the name of the method."
                         (* (or "abstract" "final" "static")
                            (+ (syntax whitespace))))
                      '((* (* (or "abstract" "final" "static"
-                                 "private" "protected" "public"))
-                          (+ (syntax whitespace)))))
+                                 "private" "protected" "public")
+                             (+ (syntax whitespace))))))
                  "function"
                  (+ (syntax whitespace))
+                 (? "&" (* (syntax whitespace)))
                  (group (+ (or (syntax word) (syntax symbol))))
                  (* (syntax whitespace))
                  "(")))
