@@ -353,6 +353,17 @@ Look at the `php-executable' variable instead of the constant \"php\" command."
       (insert (concat matched php-namespace-suffix-when-insert)))))
 
 ;;;###autoload
+(defun php-copyit-fqsen ()
+  "Copy/kill class/method FQSEN."
+  (interactive)
+  (let ((namespace (or (php-get-current-element php--re-namespace-pattern) ""))
+        (class     (or (php-get-current-element php--re-classlike-pattern) ""))
+        (namedfunc (php-get-current-element php-beginning-of-defun-regexp)))
+    (kill-new (concat (if (string= namespace "") "" namespace)
+                      (if (string= class "") "" (concat "\\" class "::"))
+                      (if (string= namedfunc "") "" (concat namedfunc "()"))))))
+
+;;;###autoload
 (defun php-run-builtin-web-server (router-or-dir hostname port &optional document-root)
   "Run PHP Built-in web server.
 
