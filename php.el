@@ -160,7 +160,7 @@ it is the character that will terminate the string, or t if the string should be
        (symbol-value 'poly-php-html-mode)))
 
 (defconst php-beginning-of-defun-regexp
-  "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("
+  "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(\\sw\\|\\s_\\)+\\)\\s-*("
   "Regular expression for a PHP function.")
 
 (eval-when-compile
@@ -175,6 +175,8 @@ The regular expression this function returns will check for other
 keywords that can appear in method signatures, e.g. 'final' and
 'static'.  The regular expression will have one capture group
 which will be the name of the method."
+    (when (stringp visibility)
+      (setq visibility (list visibility)))
     (rx-form `(: line-start
                  (* (syntax whitespace))
                  ,@(if visibility
@@ -185,10 +187,11 @@ which will be the name of the method."
                         (* (or "abstract" "final" "static")
                            (+ (syntax whitespace))))
                      '((* (* (or "abstract" "final" "static"
-                                 "private" "protected" "public"))
-                          (+ (syntax whitespace)))))
+                                 "private" "protected" "public")
+                             (+ (syntax whitespace))))))
                  "function"
                  (+ (syntax whitespace))
+                 (? "&" (* (syntax whitespace)))
                  (group (+ (or (syntax word) (syntax symbol))))
                  (* (syntax whitespace))
                  "(")))
@@ -244,8 +247,9 @@ can be used to match against definitions for that classlike."
 (defun php-get-current-element (re-pattern)
   "Return backward matched element by RE-PATTERN."
   (save-excursion
-    (when (re-search-backward re-pattern nil t)
-      (match-string-no-properties 1))))
+    (save-match-data
+      (when (re-search-backward re-pattern nil t)
+        (match-string-no-properties 1)))))
 
 ;;; Provide support for Flymake so that users can see warnings and
 ;;; errors in real-time as they write code.
@@ -348,6 +352,17 @@ Look at the `php-executable' variable instead of the constant \"php\" command."
   (let ((matched (php-get-current-element php--re-namespace-pattern)))
     (when matched
       (insert (concat matched php-namespace-suffix-when-insert)))))
+
+;;;###autoload
+(defun php-copyit-fqsen ()
+  "Copy/kill class/method FQSEN."
+  (interactive)
+  (let ((namespace (or (php-get-current-element php--re-namespace-pattern) ""))
+        (class     (or (php-get-current-element php--re-classlike-pattern) ""))
+        (namedfunc (php-get-current-element php-beginning-of-defun-regexp)))
+    (kill-new (concat (if (string= namespace "") "" namespace)
+                      (if (string= class "") "" (concat "\\" class "::"))
+                      (if (string= namedfunc "") "" (concat namedfunc "()"))))))
 
 ;;;###autoload
 (defun php-run-builtin-web-server (router-or-dir hostname port &optional document-root)
