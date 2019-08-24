@@ -1073,7 +1073,7 @@ After setting the stylevars run hooks according to STYLENAME
     (modify-syntax-entry ?\" "\""  table)
     (modify-syntax-entry ?#  "< b" table)
     (modify-syntax-entry ?\n "> b" table)
-    (modify-syntax-entry ?$  "'"   table)
+    (modify-syntax-entry ?$  "_"   table)
     table))
 
 ;;;###autoload
