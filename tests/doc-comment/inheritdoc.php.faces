@@ -1,0 +1,7 @@
+;; -*- mode: emacs-lisp -*-
+(("<?php" . php-php-tag)
+ ("\n\n")
+ ("/**\n * " . font-lock-doc-face)
+ ("{@inheritdoc}" php-doc-annotation-tag font-lock-doc-face)
+ ("\n */" . font-lock-doc-face)
+ ("\n"))
