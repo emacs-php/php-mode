@@ -672,7 +672,7 @@ Meant for `php-mode-test-issue-503'."
                        :faces (cond ((eq emacs-major-version 24) ".24.faces")
                                     ((version<= "27" emacs-version) ".27.faces")
                                     (t t))))
-  (with-php-mode-test ("doc-comment-return-type.php" :faces t))
+  (with-php-mode-test ("doc-comment/return-type.php" :faces t))
   (with-php-mode-test ("doc-comment/inheritdoc.php" :faces t))
   (with-php-mode-test ("lang/types/cast.php" :faces t))
   (with-php-mode-test ("lang/types/function.php" :faces t))
