@@ -1436,7 +1436,7 @@ a completion list."
         "return" "throws" "var"))
 
 (defconst php-phpdoc-font-lock-doc-comments
-  `(("{@[-[:alpha:]]+\\s-\\([^}]*\\)}" ; "{@foo ...}" markup.
+  `(("{@[-[:alpha:]]+\\s-*\\([^}]*\\)}" ; "{@foo ...}" markup.
      (0 'php-doc-annotation-tag prepend nil)
      (1 'php-string prepend nil))
     (,(rx (group "$") (group (in "A-Za-z_") (* (in "0-9A-Za-z_"))))
