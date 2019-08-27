@@ -1513,7 +1513,14 @@ a completion list."
      ;; Highlight static method calls as such. This is necessary for method
      ;; names which are identical to keywords to be highlighted correctly.
      ("\\sw+::\\(\\sw+\\)(" 1 'php-static-method-call)
-
+     ;; Multiple catch (FooException | BarException $e)
+     (,(rx symbol-start "catch" symbol-end
+           (* (syntax whitespace)) "(" (* (syntax whitespace))
+           (group (+ (or (syntax word) (syntax symbol)))))
+      (1 font-lock-type-face)
+      (,(rx (* (syntax whitespace)) "|" (* (syntax whitespace))
+            (group (+ (or (syntax word) (syntax symbol))) symbol-end))
+       nil nil (1 font-lock-type-face)))
      ;; While c-opt-cpp-* highlights the <?php opening tags, it is not
      ;; possible to make it highlight short open tags and closing tags
      ;; as well. So we force the correct face on all cases that
