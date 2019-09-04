@@ -37,6 +37,7 @@ dev:
 # for an example of using a script like this with the 'git bisect run'
 # command.
 test: clean all
+	touch tests/project/1/.git
 	$(EMACS) -Q -batch -L . -l tests/php-mode-test.el -f ert-run-tests-batch-and-exit
 
 .PHONY: all autoloads clean test
