@@ -134,6 +134,8 @@ file name and check that the faces of the fonts in the buffer match."
   `(with-temp-buffer
      (setq php-mode-enable-backup-style-variables nil)
      (insert-file-contents (expand-file-name ,file php-mode-test-dir))
+     (setq default-directory
+           (expand-file-name ".." (expand-file-name ,file php-mode-test-dir)))
      (php-mode)
      ,(if (fboundp 'font-lock-ensure)
           '(font-lock-ensure)
@@ -635,8 +637,12 @@ as a keyword."
     (should (eq 0 (- (point-max) (point-min))))))
 
 (ert-deftest php-project-root ()
-  (should (string= (abbreviate-file-name default-directory)
-                   (php-project-get-root-dir))))
+  "Test for detection `php-project-root' by directory."
+  (dolist (root (mapcar #'car php-project-available-root-files))
+    (with-php-mode-test ("project/1/src/functions.php")
+      (let ((php-project-root root))
+        (should (string= (expand-file-name "project/1/" php-mode-test-dir)
+                         (expand-file-name (php-project-get-root-dir))))))))
 
 (defun php-mode-test-in-function-p (&optional pos)
   "Determine whether POS is inside a function.
