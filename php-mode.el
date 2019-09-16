@@ -661,6 +661,7 @@ but only if the setting is enabled"
    (tab-width . ,(default-value 'tab-width))
    (fill-column . ,(default-value 'fill-column))
    (show-trailing-whitespace . ,(default-value 'show-trailing-whitespace))
+   (php-mode-lineup-cascaded-calls . t)
    (php-style-delete-trailing-whitespace . nil)))
 
 (defun php-enable-default-coding-style ()
@@ -687,6 +688,7 @@ but only if the setting is enabled"
    (tab-width . 2)
    (fill-column . 78)
    (show-trailing-whitespace . t)
+   (php-mode-lineup-cascaded-calls . nil)
    (php-style-delete-trailing-whitespace . t)))
 
 (defun php-enable-drupal-coding-style ()
@@ -713,6 +715,7 @@ but only if the setting is enabled"
   '("php"
     (c-offsets-alist . ((statement-cont . php-lineup-hanging-semicolon)))
     (c-indent-comments-syntactically-p . t)
+    (php-mode-lineup-cascaded-calls . nil)
     (fill-column . 78)))
 
 (defun php-enable-symfony2-coding-style ()
@@ -727,6 +730,7 @@ but only if the setting is enabled"
     (c-indent-comments-syntactically-p . t)
     (fill-column . 78)
     (show-trailing-whitespace . t)
+    (php-mode-lineup-cascaded-calls . nil)
     (php-style-delete-trailing-whitespace . t)))
 
 (defun php-enable-psr2-coding-style ()
