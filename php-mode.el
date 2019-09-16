@@ -721,7 +721,7 @@ but only if the setting is enabled"
   (php-set-style "symfony2"))
 
 (c-add-style
-  "psr2"
+ "psr2" ; PSR-2 / PSR-12
   '("php"
     (c-offsets-alist . ((statement-cont . +)))
     (c-indent-comments-syntactically-p . t)
