@@ -1042,12 +1042,11 @@ After setting the stylevars run hooks according to STYLENAME
   (if (eq (symbol-value 'php-style-delete-trailing-whitespace) t)
       (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)
     (remove-hook 'before-save-hook 'delete-trailing-whitespace t))
-    (cond ((eq stylename "pear")      (run-hooks 'php-mode-pear-hook))
-          ((eq stylename "drupal")    (run-hooks 'php-mode-drupal-hook))
-          ((eq stylename "wordpress") (run-hooks 'php-mode-wordpress-hook))
-          ((eq stylename "symfony2")  (run-hooks 'php-mode-symfony2-hook))
-          ((eq stylename "psr2")      (run-hooks 'php-mode-psr2-hook))))
-
+  (cond ((equal stylename "pear")      (run-hooks 'php-mode-pear-hook))
+        ((equal stylename "drupal")    (run-hooks 'php-mode-drupal-hook))
+        ((equal stylename "wordpress") (run-hooks 'php-mode-wordpress-hook))
+        ((equal stylename "symfony2")  (run-hooks 'php-mode-symfony2-hook))
+        ((equal stylename "psr2")      (run-hooks 'php-mode-psr2-hook))))
 (put 'php-set-style 'interactive-form (interactive-form 'c-set-style))
 
 (defun php-mode--disable-delay-set-style (&rest args)
