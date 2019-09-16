@@ -636,7 +636,7 @@ might be to handle switch and goto labels differently."
 (defun php-lineup-cascaded-calls (langelem)
   "Line up chained methods using `c-lineup-cascaded-calls',
 but only if the setting is enabled"
-  (if php-lineup-cascaded-calls
+  (when php-lineup-cascaded-calls
     (c-lineup-cascaded-calls langelem)))
 
 (c-add-style
