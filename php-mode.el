@@ -1009,6 +1009,14 @@ this ^ lineup"
 (easy-menu-define php-mode-menu php-mode-map "PHP Mode Commands"
   (cons "PHP" (c-lang-const c-mode-menu php)))
 
+(defun php-mode-get-style-alist ()
+  "Return an alist consisting of `php' style and styles that inherit it."
+  (cl-loop for l in c-style-alist
+           if (or (string= (car l) "php")
+                  (equal (cadr l) "php"))
+           collect l))
+
+(defvar php-mode-set-style-history nil)
 (defvar-local php-mode--delayed-set-style nil)
 (defvar-local php-style-delete-trailing-whitespace nil)
 
@@ -1027,7 +1035,15 @@ After setting the stylevars run hooks according to STYLENAME
   \"wordpress\" `php-mode-wordpress-hook'
   \"symfony2\"  `php-mode-symfony2-hook'
   \"psr2\"      `php-mode-psr2-hook'"
-  (interactive)
+  (interactive
+   (list (let ((completion-ignore-case t)
+	       (prompt (format "Which %s indentation style? "
+			       mode-name)))
+	   (completing-read prompt
+                            (php-mode-get-style-alist)
+                            nil t nil
+			    'php-mode-set-style-history
+			    c-indentation-style))))
   (php-mode--disable-delay-set-style)
 
   ;; Back up manually set variables
@@ -1051,7 +1067,6 @@ After setting the stylevars run hooks according to STYLENAME
         ((equal stylename "wordpress") (run-hooks 'php-mode-wordpress-hook))
         ((equal stylename "symfony2")  (run-hooks 'php-mode-symfony2-hook))
         ((equal stylename "psr2")      (run-hooks 'php-mode-psr2-hook))))
-(put 'php-set-style 'interactive-form (interactive-form 'c-set-style))
 
 (defun php-mode--disable-delay-set-style (&rest args)
   "Disable php-mode-set-style-delay on after hook.  `ARGS' be ignore."
