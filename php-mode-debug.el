@@ -54,6 +54,8 @@
 (defun php-mode-debug ()
   "Display informations useful for debugging PHP Mode."
   (interactive)
+  (unless (eq major-mode 'php-mode)
+    (user-error "Invoke this command only in php-mode buffer"))
   (php-mode-debug--buffer 'init)
   (php-mode-debug--message "Feel free to report on GitHub what you noticed!")
   (php-mode-debug--message "https://github.com/emacs-php/php-mode/issues/new")
@@ -90,6 +92,7 @@
              collect (list v (symbol-value v))))
   (php-mode-debug--message "c-doc-comment-style: %s" c-doc-comment-style)
   (php-mode-debug--message "c-offsets-alist: %s" c-offsets-alist)
+  (php-mode-debug--message "buffer: %s" (list :length (save-excursion (goto-char (point-max)) (point))))
   (php-mode-debug--message "--- PHP-MODE DEBUG END ---")
   (php-mode-debug--message "```\n")
   (php-mode-debug--message "Thank you!")
