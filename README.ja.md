@@ -1,7 +1,7 @@
 PHP Mode for GNU Emacs
 ======================
 
-[![Emacs: 26.2](https://img.shields.io/badge/Emacs-26.2-blue.svg)](https://www.gnu.org/software/emacs/)
+[![Emacs: 26.3](https://img.shields.io/badge/Emacs-26.3-blue.svg)](https://www.gnu.org/software/emacs/)
 [![lang: PHP 7](https://img.shields.io/badge/lang-PHP%207-brightgreen.svg)](http://php.net/manual/migration70.php)
 [![lang: PHP 5](https://img.shields.io/badge/lang-PHP%205-green.svg)](http://php.net/downloads.php)
 [![travis badge][travis-badge]][travis-link]
