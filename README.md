@@ -100,6 +100,10 @@ Load `php-mode` synchronously from a specific path.  It will load 10 times the s
 (add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
 ```
 
+### Configuration
+
+PHP Mode's default style might not be what you expect.  Before filing a bug, please try the following:  `C-h v php-mode-coding-style`, to get the list of available styles.  Then use `M-x php-set-style` for each of these, to check to see if one of them is to your liking.  Use `TODO: Please comment on what config method you'd like to recommend to users`
+
 Reporting Bugs
 --------------
 
