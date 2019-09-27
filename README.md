@@ -39,6 +39,14 @@ The current support policy can be found on the [Supported Version] page.
 
 With GNU Emacs 24 or later then you can use its [package][] feature (or [Cask][]) to install PHP Mode from [MELPA][] or [MELPA Stable][].
 
+### Install using OS package system
+
+PHP Mode is available from [package systems provided by several OSs](https://repology.org/project/emacs:php-mode/versions).  This is the easiest way to add PHP to Emacs and can be installed with just `sudo apt-get install elpa-php-mode`.
+
+The package name on Debian, Ubuntu, and some derived operating systems is [`elpa-php-mode`](https://packages.debian.org/buster/elpa-php-mode).  The packages provided for these operating systems are stable, but since they are behind the latest version of PHP Mode, consider the possibility of not incorporating the latest PHP feature support and performance improvements.
+
+Also, the `php-elisp` package provided by [Debian 9 (stretch)](https://packages.debian.org/stretch/php-elisp) and [Ubuntu 18.10](https://packages.ubuntu.com/cosmic/php-elisp) and earlier is [extremely old](https://github.com/emacs-php/php-mode/issues/430), so **PLEASE DO NOT INSTALL IT**.
+
 ### Manual installation
 
 Please `git clone` this project or download and unarchive tar or zip file from [php-mode releases].
