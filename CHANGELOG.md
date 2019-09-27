@@ -1,6 +1,6 @@
 # Changes for PHP Mode by Version
 
-All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
+All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
 ## [1.21.4] - 2019-05-29
 
@@ -11,7 +11,7 @@ This version contains unobtrusive changes for future compatibility. Also, `forwa
  * A new command `php-mode-maybe` has been added to improve the compatibility of Blade templates and HTML templates with Web Mode. ([#532])
  * A new custom variable php-mode-page-delimiter is added, which is assigned to page-delimiter in PHP-Mode. It allows you to move smoothly to the previous and subsequent definition statements with `forward-page` (<kbd>C-x C-[</kbd>) and `backward-page` (<kbd>C-x C-]</kbd>). ([#540] by [@takeokunn])
 
-### Change
+### Changed
 
  * `php-maybe-mode` and `.php` files are associated with `auto-mode-alist` instead of `php-mode` ([#532])
  * Compatibility with [poly-php] has been improved. This has not yet been officially released.
