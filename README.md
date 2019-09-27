@@ -92,6 +92,15 @@ Load `php-mode` synchronously from a specific path.  It will load 10 times the s
 (add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
 ```
 
+### Install using Debian packages (RECOMMENDED)
+
+`sudo apt install elpa-php-mode`
+No further configuration is required.
+
+Users of old releases that don't have elpa-php-mode (derivatives of Debian 9 such as Ubuntu 18.04), may use this instead:
+`sudo apt-get install php-elisp`
+but may ultimately prefer to install a newer version of PHP Mode using one of the other methods.
+
 Reporting Bugs
 --------------
 
