@@ -1,6 +1,54 @@
 # Changes for PHP Mode by Version
 
-All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
+All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
+
+## [1.22.0] - 2019-09-27
+
+This release is positioned as the last minor version of the PHP Mode 1.x series.
+PHP Mode 2.0 is planned to be released in January 2020.
+
+### Added
+
+ * Improve PHP 7 and PHPDoc support
+   * Highlighting typed property ([#545])
+   * Highlighting `{@inheritdoc}` tag ([#566])
+   * Highlighting  multiple `catch`  ([#567])
+ * Add new `php-class` face ([#545])
+ * Add new `php-run-builtin-web-server` command for invoke `php -S` buitin server ([#548])
+ * Add new `php-copyit-fqsen` command for kill current method FQSEN ([#561])
+ * Apply lineup cascaded call (method chain separated by new line) for all styles ([#563], [#572])
+
+### Changed
+
+ * Loose HTML template detection algorithm ([#558])
+ * Move php-mode-test.el into tests directory ([#559])
+   * `php-mode-autoloads.el` no longer includes `php-mode-test`
+ * Modify syntax-entry `$` to `"_"` from `"'"` ([#565])
+ * Make `php-set-style` display only styles that inherited "php" ([#573])
+
+### Fixed
+
+ * Fix default major mode for `*.phpt` file as `php-default-major-mode` ([#542])
+ * prevent recursion in `php-syntax-propertize-extend-region` ([$556], thanks [Herbert Jones][@herbertjones])
+ * Fix call `run-hooks` in `set-style` ([#571])
+
+[#542]: https://github.com/emacs-php/php-mode/pull/542
+[#545]: https://github.com/emacs-php/php-mode/pull/545
+[#548]: https://github.com/emacs-php/php-mode/pull/548
+[#556]: https://github.com/emacs-php/php-mode/pull/556
+[#558]: https://github.com/emacs-php/php-mode/pull/558
+[#559]: https://github.com/emacs-php/php-mode/pull/559
+[#561]: https://github.com/emacs-php/php-mode/pull/561
+[#563]: https://github.com/emacs-php/php-mode/issues/563
+[#565]: https://github.com/emacs-php/php-mode/pull/565
+[#566]: https://github.com/emacs-php/php-mode/pull/566
+[#567]: https://github.com/emacs-php/php-mode/pull/567
+[#571]: https://github.com/emacs-php/php-mode/pull/571
+[#572]: https://github.com/emacs-php/php-mode/pull/572
+[#572]: https://github.com/emacs-php/php-mode/pull/572
+[#573]: https://github.com/emacs-php/php-mode/pull/573
+[#556]: https://github.com/emacs-php/php-mode/pull/556
+[@herbertjones]: https://github.com/herbertjones
 
 ## [1.21.4] - 2019-05-29
 
@@ -11,7 +59,7 @@ This version contains unobtrusive changes for future compatibility. Also, `forwa
  * A new command `php-mode-maybe` has been added to improve the compatibility of Blade templates and HTML templates with Web Mode. ([#532])
  * A new custom variable php-mode-page-delimiter is added, which is assigned to page-delimiter in PHP-Mode. It allows you to move smoothly to the previous and subsequent definition statements with `forward-page` (<kbd>C-x C-[</kbd>) and `backward-page` (<kbd>C-x C-]</kbd>). ([#540] by [@takeokunn])
 
-### Change
+### Changed
 
  * `php-maybe-mode` and `.php` files are associated with `auto-mode-alist` instead of `php-mode` ([#532])
  * Compatibility with [poly-php] has been improved. This has not yet been officially released.
