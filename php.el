@@ -393,9 +393,8 @@ When `DOCUMENT-ROOT' is NIL, the document root is obtained from `ROUTER-OR-DIR'.
                (if (file-directory-p router-or-dir)
                    router-or-dir
                  (directory-file-name router-or-dir))))
-         (pattern (rx-form `(: bos ,(getenv "HOME"))))
-         (short-dirname (replace-regexp-in-string pattern "~" default-directory))
-         (short-filename (replace-regexp-in-string pattern "~" router-or-dir))
+         (short-dirname (abbreviate-file-name default-directory))
+         (short-filename (abbreviate-file-name router-or-dir))
          (buf-name (format "php -S %s:%s -t %s %s"
                            hostname
                            port
