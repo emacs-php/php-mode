@@ -177,24 +177,24 @@ keywords that can appear in method signatures, e.g. 'final' and
 which will be the name of the method."
     (when (stringp visibility)
       (setq visibility (list visibility)))
-    (rx-form `(: line-start
-                 (* (syntax whitespace))
-                 ,@(if visibility
-                      `((* (or "abstract" "final" "static")
-                           (+ (syntax whitespace)))
-                        (or ,@visibility)
-                        (+ (syntax whitespace))
-                        (* (or "abstract" "final" "static")
-                           (+ (syntax whitespace))))
-                     '((* (* (or "abstract" "final" "static"
-                                 "private" "protected" "public")
-                             (+ (syntax whitespace))))))
-                 "function"
-                 (+ (syntax whitespace))
-                 (? "&" (* (syntax whitespace)))
-                 (group (+ (or (syntax word) (syntax symbol))))
-                 (* (syntax whitespace))
-                 "(")))
+    (rx-to-string `(: line-start
+                      (* (syntax whitespace))
+                      ,@(if visibility
+                            `((* (or "abstract" "final" "static")
+                                 (+ (syntax whitespace)))
+                              (or ,@visibility)
+                              (+ (syntax whitespace))
+                              (* (or "abstract" "final" "static")
+                                 (+ (syntax whitespace))))
+                          '((* (* (or "abstract" "final" "static"
+                                      "private" "protected" "public")
+                                  (+ (syntax whitespace))))))
+                      "function"
+                      (+ (syntax whitespace))
+                      (? "&" (* (syntax whitespace)))
+                      (group (+ (or (syntax word) (syntax symbol))))
+                      (* (syntax whitespace))
+                      "(")))
 
   (defun php-create-regexp-for-classlike (type)
     "Accepts a `TYPE' of a 'classlike' object as a string, such as
@@ -393,9 +393,8 @@ When `DOCUMENT-ROOT' is NIL, the document root is obtained from `ROUTER-OR-DIR'.
                (if (file-directory-p router-or-dir)
                    router-or-dir
                  (directory-file-name router-or-dir))))
-         (pattern (rx-form `(: bos ,(getenv "HOME"))))
-         (short-dirname (replace-regexp-in-string pattern "~" default-directory))
-         (short-filename (replace-regexp-in-string pattern "~" router-or-dir))
+         (short-dirname (abbreviate-file-name default-directory))
+         (short-filename (abbreviate-file-name router-or-dir))
          (buf-name (format "php -S %s:%s -t %s %s"
                            hostname
                            port
