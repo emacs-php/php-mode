@@ -307,7 +307,7 @@ This variable can take one of the following symbol values:
 `PSR-2' - use coding styles preferred for working with projects using PSR-2 standards."
   :group 'php-mode
   :tag "PHP Mode Coding Style"
-  :type '(choice (const :tag "Default" default)
+  :type '(choice (const :tag "Default" php)
                  (const :tag "PEAR" pear)
                  (const :tag "Drupal" drupal)
                  (const :tag "WordPress" wordpress)
