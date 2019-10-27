@@ -86,7 +86,32 @@
   :group 'php-faces
   :tag "PHP Variable Sigil")
 
-(defface php-object-op '((t (:inherit default)))
+(defface php-operator '((t (:inherit default)))
+  "PHP Mode face used to operators."
+  :group 'php-faces
+  :tag "PHP Operator")
+
+(defface php-assignment-op '((t (:inherit php-operator)))
+  "PHP Mode face used to assignment operators (=, +=, ...)."
+  :group 'php-faces
+  :tag "PHP Object Op")
+
+(defface php-comparison-op '((t (:inherit php-operator)))
+  "PHP Mode face used to comparison operators (==, !=, ===, ...)."
+  :group 'php-faces
+  :tag "PHP Comparison Op")
+
+(defface php-logical-op '((t (:inherit php-operator)))
+  "PHP Mode face used to logical operators (&&, ||, ?:)."
+  :group 'php-faces
+  :tag "PHP Logical Op")
+
+(defface php-string-op '((t (:inherit php-operator)))
+  "PHP Mode face used to logical operators (.)."
+  :group 'php-faces
+  :tag "PHP String Op")
+
+(defface php-object-op '((t (:inherit php-operator)))
   "PHP Mode face used to object operators (->)."
   :group 'php-faces
   :tag "PHP Object Op")
@@ -131,7 +156,7 @@
   :group 'php-faces
   :tag "PHP $this Sigil")
 
-(defface php-errorcontrol-op '((t (:inherit  font-lock-type-face)))
+(defface php-errorcontrol-op '((t (:inherit font-lock-type-face)))
   "PHP Mode face used to highlight errorcontrol operators (@).."
   :group 'php-faces
   :tag "PHP ErrorControl Op")
