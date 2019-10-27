@@ -1610,6 +1610,8 @@ a completion list."
    ;;   is usually overkill.
    `(
      ("\\<\\(@\\)" 1 'php-errorcontrol-op)
+     ;; Highlight function calls
+     ("\\(\\_<\\(?:\\sw\\|\\s_\\)+?\\_>\\)\\s-*(" 1 'php-function-call)
      ;; Highlight all upper-cased symbols as constant
      ("\\<\\([A-Z_][A-Z0-9_]+\\)\\>" 1 'php-constant)
 

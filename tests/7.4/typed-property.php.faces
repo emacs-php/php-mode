@@ -58,7 +58,9 @@
  ("print" . php-function-name)
  ("()
     {
-        var_dump(")
+        ")
+ ("var_dump" . php-function-call)
+ ("(")
  ("$" . php-$this-sigil)
  ("this" . php-$this)
  ("->" . php-object-op)
