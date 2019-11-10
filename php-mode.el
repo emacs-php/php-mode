@@ -633,6 +633,34 @@ might be to handle switch and goto labels differently."
 (c-lang-defconst c-opt-<>-sexp-key
   php nil)
 
+(defconst php-mode--re-return-typed-closure
+  (eval-when-compile
+    (rx symbol-start "function" symbol-end
+               (* (syntax whitespace))
+               "(" (* (not (any "("))) ")"
+               (* (syntax whitespace))
+               (? symbol-start "use" symbol-end
+                  (* (syntax whitespace))
+                  "(" (* (not (any "("))) ")"
+                  (* (syntax whitespace)))
+               ":" (+ (not (any "{}")))
+               (group "{"))))
+
+(defun php-c-lineup-arglist (langelem)
+  "Line up the current argument line under the first argument using `c-lineup-arglist' LANGELEM."
+  (let (in-return-typed-closure)
+    (when (and (consp langelem)
+               (eq 'arglist-cont-nonempty (car langelem)))
+      (save-excursion
+        (save-match-data
+          (when (and (re-search-backward php-mode--re-return-typed-closure (cdr langelem) t)
+                     (progn
+                       (goto-char (match-data 1))
+                       (not (php-in-string-or-comment-p))))
+            (setq in-return-typed-closure t)))))
+    (unless in-return-typed-closure
+      (c-lineup-arglist langelem))))
+
 (defun php-lineup-cascaded-calls (langelem)
   "Line up chained methods using `c-lineup-cascaded-calls',
 but only if the setting is enabled"
@@ -644,7 +672,7 @@ but only if the setting is enabled"
  `((c-basic-offset . 4)
    (c-offsets-alist . ((arglist-close . php-lineup-arglist-close)
                        (arglist-cont . (first php-lineup-cascaded-calls 0))
-                       (arglist-cont-nonempty . (first php-lineup-cascaded-calls c-lineup-arglist))
+                       (arglist-cont-nonempty . (first php-lineup-cascaded-calls php-c-lineup-arglist))
                        (arglist-intro . php-lineup-arglist-intro)
                        (case-label . +)
                        (class-open . 0)
