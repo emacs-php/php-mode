@@ -2,6 +2,28 @@
 
 All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## Unreleased
+
+### Changed
+
+ * Drop support for Emacs 24 and 25.1
+
+## [1.22.1] - 2019-11-10
+
+This release is a minor modified version of the 1.22.x series.
+PHP Mode 2.0 is planned to be released in January 2020.
+
+### Fixed
+
+ * Fix usas of `rx-form` ([#580], thank you [@cmack])
+ * Fix `php-mode-coding-style` custom variable ([#581])
+ * Fix unexpected indentation of (return typed) closures written in arguments ([#585])
+
+[@cmack]: https://github.com/cmack
+[#580]: https://github.com/emacs-php/php-mode/pull/580
+[#581]: https://github.com/emacs-php/php-mode/pull/581
+[#585]: https://github.com/emacs-php/php-mode/pull/585
+
 ## [1.22.0] - 2019-09-27
 
 This release is positioned as the last minor version of the PHP Mode 1.x series.

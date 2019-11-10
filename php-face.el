@@ -4,7 +4,7 @@
 
 ;; Author: USAMI Kenta <tadsan@zonu.me>
 ;; Created: 5 May 2019
-;; Version: 1.22.0
+;; Version: 1.22.1
 ;; Keywords: faces, php
 ;; Homepage: https://github.com/emacs-php/php-mode
 ;; Package-Requires: ((emacs "24.3"))
