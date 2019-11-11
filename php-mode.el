@@ -653,11 +653,10 @@ might be to handle switch and goto labels differently."
                (eq 'arglist-cont-nonempty (car langelem)))
       (save-excursion
         (save-match-data
-          (when (and (re-search-backward php-mode--re-return-typed-closure (cdr langelem) t)
-                     (progn
-                       (goto-char (match-data 1))
-                       (not (php-in-string-or-comment-p))))
-            (setq in-return-typed-closure t)))))
+          (when (re-search-backward php-mode--re-return-typed-closure (cdr langelem) t)
+            (goto-char (match-beginning 1))
+            (when (not (php-in-string-or-comment-p))
+              (setq in-return-typed-closure t))))))
     (unless in-return-typed-closure
       (c-lineup-arglist langelem))))
 
