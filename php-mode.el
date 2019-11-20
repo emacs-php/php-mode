@@ -16,9 +16,6 @@
 (defconst php-mode-version-number "1.22.1"
   "PHP Mode version number.")
 
-(defconst php-mode-modified "2019-11-10"
-  "PHP Mode build date.")
-
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
@@ -346,9 +343,16 @@ In that case set to `NIL'."
 (defun php-mode-version ()
   "Display string describing the version of PHP Mode."
   (interactive)
-  (funcall
-   (if (called-interactively-p 'interactive) #'message #'format)
-   "PHP Mode %s of %s" php-mode-version-number php-mode-modified))
+  (let ((fmt
+         (eval-when-compile
+           (let ((id "$Id$"))
+             (concat "PHP Mode %s"
+                     (if (string= id (concat [?$ ?I ?d ?$]))
+                         ""
+                       (concat " " id)))))))
+    (funcall
+     (if (called-interactively-p 'interactive) #'message #'format)
+     fmt php-mode-version-number)))
 
 ;;;###autoload
 (define-obsolete-variable-alias 'php-available-project-root-files 'php-project-available-root-files "1.19.0")
