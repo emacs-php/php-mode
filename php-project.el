@@ -233,6 +233,11 @@ Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
    (t (prog1 nil
         (warn "php-project-php-file-as-template is unexpected format")))))
 
+(defun php-project-apply-local-variables ()
+  "Apply php-project variables to local variables."
+  (when (and php-project-etags-file (null tags-file-name))
+    (setq-local tags-file-name (php-project--eval-bootstrap-scripts php-project-etags-file))))
+
 ;;;###autoload
 (defun php-project-get-bootstrap-scripts ()
   "Return list of bootstrap script."

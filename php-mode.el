@@ -342,6 +342,12 @@ In that case set to `NIL'."
   :tag "PHP Mode Disable C Mode Hook"
   :type 'boolean)
 
+(defcustom php-mode-enable-project-local-variable t
+  "When set to `T', apply project local variable to buffer local variable."
+  :group 'php-mode
+  :tag "PHP Mode Enable Project Local Variable"
+  :type 'boolean)
+
 (defun php-mode-version ()
   "Display string describing the version of PHP Mode."
   (interactive)
@@ -1116,6 +1122,11 @@ After setting the stylevars run hooks according to STYLENAME
                (php-set-style (symbol-name coding-style)))
         (remove-hook 'hack-local-variables-hook #'php-mode-set-style-delay)))))
 
+(defun php-mode-set-local-variable-delay ()
+  "Set local variable from php-project."
+  (php-project-apply-local-variables)
+  (remove-hook 'hack-local-variables-hook #'php-mode-set-local-variable-delay))
+
 (defvar php-mode-syntax-table
   (let ((table (make-syntax-table)))
     (c-populate-syntax-table table)
@@ -1168,6 +1179,9 @@ After setting the stylevars run hooks according to STYLENAME
 
   ;; PHP vars are case-sensitive
   (setq case-fold-search t)
+
+  (when php-mode-enable-project-local-variable
+    (add-hook 'hack-local-variables-hook #'php-mode-set-local-variable-delay t t))
 
   ;; When php-mode-enable-project-coding-style is set, it is delayed by hook.
   ;; Since it depends on the timing at which the file local variable is set.
