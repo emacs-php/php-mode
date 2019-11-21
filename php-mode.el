@@ -192,7 +192,10 @@ of constants when set."
   :type 'boolean)
 
 (defcustom php-mode-page-delimiter
-  (eval-when-compile (rx symbol-start (or "namespace" "function" "class" "trait" "interface") symbol-end))
+  (eval-when-compile
+    (rx symbol-start
+        (or "namespace" "function" "class" "trait" "interface")
+        symbol-end))
   "Regexp describing line-beginnings that PHP declaration statements."
   :group 'php-mode
   :tag "PHP Mode Page Delimiter"
