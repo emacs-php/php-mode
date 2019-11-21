@@ -72,6 +72,19 @@
 ;; Constants
 (defconst php-project-composer-autoloader "vendor/autoload.php")
 
+;; Custom variables
+(defgroup php-project nil
+  "Major mode for editing PHP code."
+  :tag "PHP Project"
+  :prefix "php-project-"
+  :group 'php)
+
+(defcustom php-project-auto-detect-etags-file nil
+  "If `T', automatically detect etags file when file is opened."
+  :tag "PHP Project Auto Detect Etags File"
+  :group 'php-project
+  :type 'boolean)
+
 ;; Variables
 (defvar php-project-available-root-files
   '((projectile ".projectile")
@@ -107,6 +120,7 @@ STRING
   (defvar-local php-project-etags-file nil)
   (put 'php-project-etags-file 'safe-local-variable
        #'(lambda (v) (or (functionp v)
+                         (eq v t)
                          (php-project--eval-bootstrap-scripts v))))
 
   (defvar-local php-project-bootstrap-scripts nil
@@ -235,9 +249,15 @@ Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
 
 (defun php-project-apply-local-variables ()
   "Apply php-project variables to local variables."
-  (when (and php-project-etags-file (null tags-file-name))
-    (setq-local tags-file-name (php-project--eval-bootstrap-scripts php-project-etags-file))))
-
+  (when (null tags-file-name)
+    (when (or (and php-project-auto-detect-etags-file
+                   (null php-project-etags-file))
+              (eq php-project-etags-file t))
+      (let ((tags-file (expand-file-name "TAGS" (php-project-get-root-dir))))
+        (when (file-exists-p tags-file)
+          (setq-local php-project-etags-file tags-file))))
+    (when php-project-etags-file
+      (setq-local tags-file-name (php-project--eval-bootstrap-scripts php-project-etags-file)))))
 ;;;###autoload
 (defun php-project-get-bootstrap-scripts ()
   "Return list of bootstrap script."
