@@ -337,8 +337,7 @@ In that case set to `NIL'."
   "When set to `T', do not run hooks of parent modes (`java-mode', `c-mode')."
   :group 'php-mode
   :tag "PHP Mode Disable C Mode Hook"
-  :type 'boolean
-  :group 'php-mode)
+  :type 'boolean)
 
 (defun php-mode-version ()
   "Display string describing the version of PHP Mode."
