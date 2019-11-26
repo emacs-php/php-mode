@@ -413,5 +413,40 @@ When `DOCUMENT-ROOT' is NIL, the document root is obtained from `ROUTER-OR-DIR'.
      (if (called-interactively-p 'interactive) #'display-buffer #'get-buffer)
      (format "*%s*" buf-name))))
 
+(defun php-ini ()
+  "Get `php --ini' output buffer."
+  (interactive)
+  (let ((buffer (get-buffer-create " *php --ini*")))
+    (with-current-buffer buffer
+      (view-mode -1)
+      (read-only-mode -1)
+      (erase-buffer)
+      (shell-command (concat php-executable " --ini") buffer)
+      (view-mode +1))
+    (if (called-interactively-p 'interactive)
+        (pop-to-buffer buffer)
+      buffer)))
+
+(defun php-find-system-php-ini-file (&optional file)
+  "Find php.ini FILE by `php --ini'."
+  (interactive
+   (list
+    (let* ((default-directory (expand-file-name "~"))
+           (buffer (php-ini))
+           (path (with-current-buffer buffer
+                   (goto-char (point-min))
+                   (save-match-data
+                     (when (re-search-forward ": \\(.+?\\)$" nil nil)
+                       (match-string 1))))))
+      (when (or (null path) (not (file-directory-p path)))
+        (when (called-interactively-p 'interactive)
+          (pop-to-buffer buffer))
+        (user-error "Failed get path to PHP ini files directory"))
+      (read-file-name "Find php.ini file: "
+                      (concat (expand-file-name path) "/")
+                      nil nil nil
+                      #'file-exists-p))))
+  (find-file file))
+
 (provide 'php)
 ;;; php.el ends here
