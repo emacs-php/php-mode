@@ -680,6 +680,7 @@ Meant for `php-mode-test-issue-503'."
                                     (t t))))
   (with-php-mode-test ("doc-comment/return-type.php" :faces t))
   (with-php-mode-test ("doc-comment/inheritdoc.php" :faces t))
+  (with-php-mode-test ("lang/function/calls.php" :faces t))
   (with-php-mode-test ("lang/try-cactch/multiple.php" :faces t))
   (with-php-mode-test ("lang/types/cast.php" :faces t))
   (with-php-mode-test ("lang/types/function.php" :faces t))
