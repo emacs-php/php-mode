@@ -1658,7 +1658,7 @@ a completion list."
      ;; Assignment operators (=, +=, ...)
      ("\\([^=<!>]+?\\([\-+./%]?=\\)[^=<!>]+?\\)" 2 'php-assignment-op)
 
-     ;; Comparison operatoes (==, ===, >=, ...)
+     ;; Comparison operators (==, ===, >=, ...)
      ("\\([!=]=\\{1,2\\}[>]?\\|[<>]=?\\)" 1 'php-comparison-op)
 
      ;; Arithmetic operators (+, -, *, **, /, %)
