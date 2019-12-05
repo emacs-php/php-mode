@@ -106,6 +106,16 @@
   :group 'php-faces
   :tag "PHP Logical Op")
 
+(defface php-arithmetic-op '((t (:inherit php-operator)))
+  "PHP Mode face used to arithmetic operators (+, -, %, ...)."
+  :group 'php-faces
+  :tag "PHP Arithmetic Op")
+
+(defface php-inc-dec-op '((t (:inherit php-operator)))
+  "PHP Mode face used to increment and decremt operators (--, ++)."
+  :group 'php-faces
+  :tag "PHP Increment/Decrement Op")
+
 (defface php-string-op '((t (:inherit php-operator)))
   "PHP Mode face used to logical operators (.)."
   :group 'php-faces

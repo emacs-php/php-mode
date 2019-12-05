@@ -1543,11 +1543,14 @@ a completion list."
      ("\\(->\\)\\(\\sw+\\)\\s-*(" (1 'php-object-op) (2 'php-method-call))
      ("\\<\\(const\\)\\s-+\\(\\_<.+?\\_>\\)" (1 'php-keyword) (2 'php-constant-assign))
 
+     ;; Logical operator (!)
+     ("\\(![^=]\\)" 1 'php-logical-op)
+
      ;; Highlight special variables
      ("\\(\\$\\)\\(this\\)\\>" (1 'php-$this-sigil) (2 'php-$this))
      ("\\(\\$+\\)\\(\\sw+\\)" (1 'php-variable-sigil) (2 'php-variable-name))
      ("\\(->\\)\\([a-zA-Z0-9_]+\\)" (1 'php-object-op) (2 'php-property-name))
-
+     
      ;; Highlight function/method names
      ("\\<function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1 'php-function-name)
 
@@ -1622,7 +1625,7 @@ a completion list."
 
      ;; Highlight class name after "use .. as"
      ("\\<as\\s-+\\(\\sw+\\)" 1 font-lock-type-face)
-
+     
      ;; Class names are highlighted by cc-mode as defined in
      ;; c-class-decl-kwds, below regexp is a workaround for a bug
      ;; where the class names are not highlighted right after opening
@@ -1651,6 +1654,23 @@ a completion list."
      ("\\?\\(\\(:?\\sw\\|\\s_\\)+\\)\\s-+\\$" 1 font-lock-type-face)
      ("function.+:\\s-*\\??\\(\\(?:\\sw\\|\\s_\\)+\\)" 1 font-lock-type-face)
      (")\\s-*:\\s-*\\??\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*\\(?:\{\\|;\\)" 1 font-lock-type-face)
+
+     ;; Assignment operators (=, +=, ...)
+     ("\\([^=<!>]+?\\([\-+./%]?=\\)[^=<!>]+?\\)" 2 'php-assignment-op)
+
+     ;; Comparison operators (==, ===, >=, ...)
+     ("\\([!=]=\\{1,2\\}[>]?\\|[<>]=?\\)" 1 'php-comparison-op)
+
+     ;; Arithmetic operators (+, -, *, **, /, %)
+     ("\\(?:[A-Za-z0-9[:blank:]]\\)\\([\-+*/%]\\*?\\)\\(?:[A-Za-z0-9[:blank:]]\\)" 1 'php-arithmetic-op)
+
+     ;; Increment and Decrement operators (++, --)
+     ("\\(\-\-\\|\+\+\\)\$\\w+" 1 'php-inc-dec-op) ;; pre inc/dec
+     ("\$\\w+\\(\-\-\\|\+\+\\)" 1 'php-inc-dec-op) ;; post inc/dec
+
+     ;; Logical operators (and, or, &&, ...)
+     ;; Not operator (!) is defined in "before cc-mode" section above.
+     ("\\(&&\\|\|\|\\)" 1 'php-logical-op)
      ))
   "Detailed highlighting for PHP Mode.")
 
