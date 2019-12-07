@@ -1,32 +1,24 @@
 ;; -*- mode: emacs-lisp -*-
 (("<?php" . php-php-tag)
- ("
-
-")
+ ("\n\n")
  ("class" . php-keyword)
  (" ")
  ("Typed" . font-lock-type-face)
- ("
-{
-    ")
+ ("\n{\n    ")
  ("private" . php-keyword)
  (" ")
  ("?string" . php-class)
  (" ")
  ("$" . php-variable-sigil)
  ("string" . php-variable-name)
- (";
-
-    ")
+ (";\n\n    ")
  ("private" . php-keyword)
  (" ")
  ("Hoge" . php-class)
  (" ")
  ("$" . php-variable-sigil)
  ("hoge" . php-variable-name)
- (";
-
-    ")
+ (";\n\n    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -35,46 +27,38 @@
  ("(")
  ("$" . php-variable-sigil)
  ("var" . php-variable-name)
- (" = ")
+ (" ")
+ ("=" . php-assignment-op)
+ (" ")
  ("null" . php-constant)
- (")
-    {
-        ")
+ (")\n    {\n        ")
  ("$" . php-$this-sigil)
  ("this" . php-$this)
  ("->" . php-object-op)
  ("string" . php-property-name)
- (" = ")
+ (" ")
+ ("=" . php-assignment-op)
+ (" ")
  ("$" . php-variable-sigil)
  ("var" . php-variable-name)
- (";
-    }
-
-    ")
+ (";\n    }\n\n    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("print" . php-function-name)
- ("()
-    {
-        ")
+ ("()\n    {\n        ")
  ("var_dump" . php-function-call)
  ("(")
  ("$" . php-$this-sigil)
  ("this" . php-$this)
  ("->" . php-object-op)
  ("string" . php-property-name)
- (");
-    }
-}
-
-(")
+ (");\n    }\n}\n\n(")
  ("new" . php-keyword)
  (" ")
  ("Typed" . font-lock-type-face)
  (")")
  ("->" . php-object-op)
  ("print" . php-method-call)
- ("();
-"))
+ ("();\n"))
