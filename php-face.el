@@ -56,7 +56,7 @@
   :group 'php-faces
   :tag "PHP Function Name")
 
-(defface php-function-call '((t (:inherit default)))
+(defface php-function-call '((t ()))
   "PHP Mode face used to highlight function names in calles."
   :group 'php-faces
   :tag "PHP Function Call")
@@ -81,12 +81,12 @@
   :group 'php-faces
   :tag "PHP Property Name")
 
-(defface php-variable-sigil '((t (:inherit default)))
+(defface php-variable-sigil '((t ()))
   "PHP Mode face used to highlight variable sigils ($)."
   :group 'php-faces
   :tag "PHP Variable Sigil")
 
-(defface php-operator '((t (:inherit default)))
+(defface php-operator '((t ()))
   "PHP Mode face used to operators."
   :group 'php-faces
   :tag "PHP Operator")
@@ -126,7 +126,7 @@
   :group 'php-faces
   :tag "PHP Object Op")
 
-(defface php-paamayim-nekudotayim '((t (:inherit default)))
+(defface php-paamayim-nekudotayim '((t ()))
   "PHP Mode face used to highlight \"Paamayim Nekudotayim\" scope resolution operators (::)."
   :group 'php-faces
   :tag "PHP Paamayim Nekudotayim")
