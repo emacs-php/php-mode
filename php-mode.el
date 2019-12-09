@@ -688,6 +688,7 @@ but only if the setting is enabled"
                        (case-label . +)
                        (class-open . 0)
                        (comment-intro . 0)
+                       (inexpr-class . 0)
                        (inlambda . 0)
                        (inline-open . 0)
                        (namespace-open . 0)

@@ -540,7 +540,8 @@ style from Drupal."
 (ert-deftest php-mode-test-issue-227 ()
   "multi-line strings indents "
   (custom-set-variables '(php-lineup-cascaded-calls t))
-  (with-php-mode-test ("issue-227.php" :indent t :style pear)))
+  (with-php-mode-test ("issue-227.php" :indent t :style pear :magic t)))
+
 (ert-deftest php-mode-test-issue-237 ()
   "Indent chaining method for PSR2."
   (with-php-mode-test ("issue-237.php" :indent t :style psr2 :magic t)))
@@ -680,7 +681,9 @@ Meant for `php-mode-test-issue-503'."
                                     (t t))))
   (with-php-mode-test ("doc-comment/return-type.php" :faces t))
   (with-php-mode-test ("doc-comment/inheritdoc.php" :faces t))
+  (with-php-mode-test ("lang/class/anonymous-class.php" :indent t :magic t :faces t))
   (with-php-mode-test ("lang/function/calls.php" :faces t))
+  (with-php-mode-test ("lang/function/closure.php" :indent t :magic t :faces t))
   (with-php-mode-test ("lang/try-cactch/multiple.php" :faces t))
   (with-php-mode-test ("lang/types/cast.php" :faces t))
   (with-php-mode-test ("lang/types/function.php" :faces t))
