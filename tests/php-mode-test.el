@@ -540,7 +540,8 @@ style from Drupal."
 (ert-deftest php-mode-test-issue-227 ()
   "multi-line strings indents "
   (custom-set-variables '(php-lineup-cascaded-calls t))
-  (with-php-mode-test ("issue-227.php" :indent t :style pear)))
+  (with-php-mode-test ("issue-227.php" :indent t :style pear :magic t)))
+
 (ert-deftest php-mode-test-issue-237 ()
   "Indent chaining method for PSR2."
   (with-php-mode-test ("issue-237.php" :indent t :style psr2 :magic t)))
