@@ -683,6 +683,7 @@ Meant for `php-mode-test-issue-503'."
   (with-php-mode-test ("doc-comment/inheritdoc.php" :faces t))
   (with-php-mode-test ("lang/class/anonymous-class.php" :indent t :magic t :faces t))
   (with-php-mode-test ("lang/function/calls.php" :faces t))
+  (with-php-mode-test ("lang/function/closure.php" :indent t :magic t :faces t))
   (with-php-mode-test ("lang/try-cactch/multiple.php" :faces t))
   (with-php-mode-test ("lang/types/cast.php" :faces t))
   (with-php-mode-test ("lang/types/function.php" :faces t))
