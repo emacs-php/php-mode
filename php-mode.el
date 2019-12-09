@@ -645,32 +645,41 @@ might be to handle switch and goto labels differently."
 (c-lang-defconst c-opt-<>-sexp-key
   php nil)
 
-(defconst php-mode--re-return-typed-closure
+(defconst php-mode--langelem-ignore-indentation-alist
   (eval-when-compile
-    (rx symbol-start "function" symbol-end
+    `((arglist-cont-nonempty
+       ,(rx symbol-start "function"
+            (* (syntax whitespace))
+            "(" (* any) ")"
+            (* (syntax whitespace))
+            (? symbol-start "use" symbol-end
                (* (syntax whitespace))
                "(" (* (not (any "("))) ")"
-               (* (syntax whitespace))
-               (? symbol-start "use" symbol-end
-                  (* (syntax whitespace))
-                  "(" (* (not (any "("))) ")"
-                  (* (syntax whitespace)))
-               ":" (+ (not (any "{}")))
-               (group "{"))))
+               (* (syntax whitespace)))
+            ":" (+ (not (any "{}")))
+            "{"))
+      (inclass
+       ,(rx symbol-start "new"
+            (+ (syntax whitespace))
+            "class" symbol-end
+            (* any)
+            "{")))))
 
-(defun php-c-lineup-arglist (langelem)
-  "Line up the current argument line under the first argument using `c-lineup-arglist' LANGELEM."
-  (let (in-return-typed-closure)
-    (when (and (consp langelem)
-               (eq 'arglist-cont-nonempty (car langelem)))
+(defun php-mode-advice-c-evalute-offset (offset langelem symbol)
+  "Show OFFSET, LANGELEM and SYMBOL."
+  (message "(offset (offset=%s langelem=%s symbol=%s))" offset langelem symbol)
+  (let* ((name (car-safe langelem))
+         (v (when name
+              (cdr-safe (assq name php-mode--langelem-ignore-indentation-alist))))
+         in-return-typed-closure)
+    (when v
       (save-excursion
         (save-match-data
-          (when (re-search-backward php-mode--re-return-typed-closure (cdr langelem) t)
-            (goto-char (match-beginning 1))
+          (when (re-search-backward (car v) (nth 1 langelem) t)
+            (goto-char (match-end 0))
             (when (not (php-in-string-or-comment-p))
               (setq in-return-typed-closure t))))))
-    (unless in-return-typed-closure
-      (c-lineup-arglist langelem))))
+    in-return-typed-closure))
 
 (defun php-lineup-cascaded-calls (langelem)
   "Line up chained methods using `c-lineup-cascaded-calls',
@@ -683,7 +692,7 @@ but only if the setting is enabled"
  `((c-basic-offset . 4)
    (c-offsets-alist . ((arglist-close . php-lineup-arglist-close)
                        (arglist-cont . (first php-lineup-cascaded-calls 0))
-                       (arglist-cont-nonempty . (first php-lineup-cascaded-calls php-c-lineup-arglist))
+                       (arglist-cont-nonempty . (first php-lineup-cascaded-calls c-lineup-arglist))
                        (arglist-intro . php-lineup-arglist-intro)
                        (case-label . +)
                        (class-open . 0)
@@ -1194,6 +1203,9 @@ After setting the stylevars run hooks according to STYLENAME
           (advice-add #'c-set-style :after #'php-mode--disable-delay-set-style '(local))))
     (let ((php-mode-enable-backup-style-variables nil))
       (php-set-style (symbol-name php-mode-coding-style))))
+
+  (advice-add #'c-evaluate-offset :before-until
+              #'php-mode-advice-c-evalute-offset '(local))
 
   (when (or php-mode-force-pear
             (and (stringp buffer-file-name)
