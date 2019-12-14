@@ -170,10 +170,6 @@ file name and check that the faces of the fonts in the buffer match."
   "Proper indentation for classs and functions in namespace block."
   (with-php-mode-test ("namespace-block.php" :indent t :magic t)))
 
-(ert-deftest php-mode-test-issue-8 ()
-  "Annotation highlighting."
-  (with-php-mode-test ("issue-8.php" :faces t)))
-
 (ert-deftest php-mode-test-issue-9 ()
   "Single quote in text in HTML misinterpreted.
 The next character after \">We\" is a single quote. It should not
@@ -560,10 +556,6 @@ style from Drupal."
     (should (eq 'php-variable-sigil (get-text-property (match-beginning 0) 'face)))
     (should (eq 'php-variable-name (get-text-property (1+ (match-beginning 0)) 'face)))))
 
-(ert-deftest psr-5-style-tag-annotation ()
-  "PSR-5 style tag annotation."
-  (with-php-mode-test ("annotation.php" :faces t)))
-
 (ert-deftest php-mode-test-issue-305 ()
   "Test highlighting variables which contains 'this' or 'that'."
   (with-php-mode-test ("issue-305.php" :faces t)))
@@ -675,13 +667,15 @@ Meant for `php-mode-test-issue-503'."
 
 (ert-deftest php-mode-test-lang ()
   "Test highlighting for language constructs."
-  (with-php-mode-test ("comments.php"
+  (with-php-mode-test ("lang/class/anonymous-class.php" :indent t :magic t :faces t))
+  (with-php-mode-test ("lang/doc-comment/comments.php"
                        :faces (cond ((eq emacs-major-version 24) ".24.faces")
                                     ((version<= "27" emacs-version) ".27.faces")
                                     (t t))))
-  (with-php-mode-test ("doc-comment/return-type.php" :faces t))
-  (with-php-mode-test ("doc-comment/inheritdoc.php" :faces t))
-  (with-php-mode-test ("lang/class/anonymous-class.php" :indent t :magic t :faces t))
+  (with-php-mode-test ("lang/doc-comment/annotation.php" :faces t))
+  (with-php-mode-test ("lang/doc-comment/issue-8.php" :faces t))
+  (with-php-mode-test ("lang/doc-comment/inheritdoc.php" :faces t))
+  (with-php-mode-test ("lang/doc-comment/return-type.php" :faces t))
   (with-php-mode-test ("lang/function/calls.php" :faces t))
   (with-php-mode-test ("lang/function/closure.php" :indent t :magic t :faces t))
   (with-php-mode-test ("lang/try-cactch/multiple.php" :faces t))
