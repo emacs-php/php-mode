@@ -1657,7 +1657,7 @@ a completion list."
      (")\\s-*:\\s-*\\??\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*\\(?:\{\\|;\\)" 1 font-lock-type-face)
 
      ;; Assignment operators (=, +=, ...)
-     ("\\([^=<!>]+?\\([\-+./%]?=\\)[^=<!>]+?\\)" 2 'php-assignment-op)
+     ("\\([^=<!>]+?\\([\-+./%]?=\\)[^=<!]+?\\)" 2 'php-assignment-op)
 
      ;; Comparison operators (==, ===, >=, ...)
      ("\\([!=]=\\{1,2\\}[>]?\\|[<>]=?\\)" 1 'php-comparison-op)
