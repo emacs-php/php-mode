@@ -688,6 +688,7 @@ but only if the setting is enabled"
                        (case-label . +)
                        (class-open . 0)
                        (comment-intro . 0)
+                       (inexpr-class . 0)
                        (inlambda . 0)
                        (inline-open . 0)
                        (namespace-open . 0)
@@ -1550,7 +1551,7 @@ a completion list."
      ("\\(\\$\\)\\(this\\)\\>" (1 'php-$this-sigil) (2 'php-$this))
      ("\\(\\$+\\)\\(\\sw+\\)" (1 'php-variable-sigil) (2 'php-variable-name))
      ("\\(->\\)\\([a-zA-Z0-9_]+\\)" (1 'php-object-op) (2 'php-property-name))
-     
+
      ;; Highlight function/method names
      ("\\<function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1 'php-function-name)
 
@@ -1625,7 +1626,7 @@ a completion list."
 
      ;; Highlight class name after "use .. as"
      ("\\<as\\s-+\\(\\sw+\\)" 1 font-lock-type-face)
-     
+
      ;; Class names are highlighted by cc-mode as defined in
      ;; c-class-decl-kwds, below regexp is a workaround for a bug
      ;; where the class names are not highlighted right after opening
@@ -1656,7 +1657,7 @@ a completion list."
      (")\\s-*:\\s-*\\??\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*\\(?:\{\\|;\\)" 1 font-lock-type-face)
 
      ;; Assignment operators (=, +=, ...)
-     ("\\([^=<!>]+?\\([\-+./%]?=\\)[^=<!>]+?\\)" 2 'php-assignment-op)
+     ("\\([^=<!>]+?\\([\-+./%]?=\\)[^=<!]+?\\)" 2 'php-assignment-op)
 
      ;; Comparison operators (==, ===, >=, ...)
      ("\\([!=]=\\{1,2\\}[>]?\\|[<>]=?\\)" 1 'php-comparison-op)
@@ -1670,8 +1671,7 @@ a completion list."
 
      ;; Logical operators (and, or, &&, ...)
      ;; Not operator (!) is defined in "before cc-mode" section above.
-     ("\\(&&\\|\|\|\\)" 1 'php-logical-op)
-     ))
+     ("\\(&&\\|||\\)" 1 'php-logical-op)))
   "Detailed highlighting for PHP Mode.")
 
 (defvar php-font-lock-keywords php-font-lock-keywords-3
