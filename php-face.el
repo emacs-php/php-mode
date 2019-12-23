@@ -201,7 +201,7 @@
   :group 'php-faces
   :tag "PHPDoc Class Name")
 
-(defface php-class-declaration '((t (:inherit font-lock-keyword-face)))
+(defface php-class-declaration '((t (:inherit php-keyword)))
   "Face used to class declarations."
   :group 'php-faces
   :tag "PHP Class Declaration")

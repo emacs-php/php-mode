@@ -1540,7 +1540,7 @@ a completion list."
    ;;  a different face.
    `(
      ;; Class declaration keywords (class, trait, interface)
-     ("\\class\\|trait\\interface" . 'php-class-declaration)
+     ("class\\|trait\\|interface" . 'php-class-declaration)
      
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
