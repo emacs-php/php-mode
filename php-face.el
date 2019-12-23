@@ -216,6 +216,12 @@
   :group 'php-faces
   :tag "PHP Namespace Declaration")
 
+
+(defface php-import-declaration '((t (:inherit php-keyword)))
+  "Face used to highlight import statements (use ... as ...)"
+  :group 'php-faces
+  :tag "PHP Import Statement")
+
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
 (provide 'php-face)

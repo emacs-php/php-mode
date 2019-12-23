@@ -1547,6 +1547,9 @@ a completion list."
 
      ;; Namespace declaration
      ("namespace" .  'php-namespace-declaration)
+
+     ;; import statement
+     ("use\\|as" . 'php-import-declaration)
      
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
