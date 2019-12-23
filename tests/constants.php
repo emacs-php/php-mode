@@ -12,9 +12,6 @@ IS_CONSTANT99;
 no_constant;
 no_CONSTANT;
 
-// Test php-extra-constants
-extraconstant;
-
 // Everything called statically should be highlighted with the constant face
 // (like c++-mode)
 ClassName::$test;

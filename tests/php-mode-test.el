@@ -370,25 +370,6 @@ style from Drupal."
 
 (ert-deftest php-mode-test-constants ()
   "Proper highlighting for constants."
-  (custom-set-variables '(php-extra-constants (quote ("extraconstant"))))
-  (with-php-mode-test ("constants.php")
-    (let ((variables '(
-                       "true" "TRUE"
-                       "false" "FALSE"
-                       "null" "NULL"
-                       "IS_CONSTANT"
-                       "__IS_CONSTANT__"
-                       "IS_CONSTANT99"
-                       "extraconstant"
-                       "ClassName")))
-      (dolist (variable variables)
-        (search-forward variable)
-        (goto-char (match-beginning 0))
-        (should (equal (cons variable 'php-constant)
-                       (cons variable (get-text-property (point) 'face)))))))
-
-  ;; Set default
-  (custom-set-variables '(php-extra-constants (quote ())))
   (with-php-mode-test ("constants.php" :faces t)))
 
 (ert-deftest php-mode-test-identifiers()

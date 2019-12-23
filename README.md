@@ -271,14 +271,6 @@ With this style method call chains can be formatted with indented continuation a
 
 This style is used widely throughout Symfony2 source code even if it is not explicitly mentioned in their conventions documents.
 
-### Extra Constants
-
-If you commonly use a framework or library that defines a set of constants then you may wish to customize the value of `php-extra-constants`.  It is a list of strings that PHP Mode will treat as additional constants, i.e. providing them the same level syntax highlighting that PHP Mode uses for built-in constants.
-
-### Web Mode Constants and Keywords
-
-If you use [Web Mode][] then PHP Mode will attempt to use any additional PHP constants and keywords that Web Mode allows you to define.
-
 ### Avoid HTML Template Compatibility
 
 Many developers use PHP Mode to edit pure PHP scripts (e.g. files with only PHP and no HTML). A basic compatibility layer with HTML has historically been part of PHP Mode but it does not work perfectly and can cause some bad side effects such as slowness and incorrect font locking.  Configuring the `php-template-compatibility` property with a `nil` will cancel any attempt of HTML compatibility.  [Web Mode](http://web-mode.org/) is a great alternative to PHP Mode if you need to work with PHP scripts that do contain HTML and other markup.

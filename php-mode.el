@@ -160,30 +160,6 @@ Turning this on will open it whenever `php-mode' is loaded."
   :tag "PHP Mode Template Compatibility"
   :type 'boolean)
 
-(defun php-mode-extra-constants-create-regexp (kwds)
-  "Create regexp for the list of extra constant keywords KWDS."
-   (concat "[^_$]?\\<\\("
-           (regexp-opt
-            (append kwds
-                     (when (boundp 'web-mode-extra-php-constants) web-mode-extra-php-constants)))
-           "\\)\\>[^_]?"))
-
-(defun php-mode-extra-constants-set (sym value)
-  "Apply the list of extra constant keywords `VALUE'.
-
-This function is called when the custom variable php-extra-constants
-is updated.  The web-mode-extra-constants list is appended to the list
-of constants when set."
-  ;; remove old keywords
-  (when (boundp 'php-extra-constants)
-    (font-lock-remove-keywords
-     'php-mode `((,(php-mode-extra-constants-create-regexp php-extra-constants) 1 'php-constant))))
-  ;; add new keywords
-  (when value
-    (font-lock-add-keywords
-     'php-mode `((,(php-mode-extra-constants-create-regexp value) 1 'php-constant))))
-  (set sym value))
-
 (define-obsolete-variable-alias 'php-lineup-cascaded-calls 'php-mode-lineup-cascaded-calls "1.20.0")
 (defcustom php-mode-lineup-cascaded-calls nil
   "Indent chained method calls to the previous line."
@@ -200,14 +176,6 @@ of constants when set."
   :group 'php-mode
   :tag "PHP Mode Page Delimiter"
   :type 'regexp)
-
-(define-obsolete-variable-alias 'php-extra-constants 'php-mode-extra-constants "1.20.0")
-(defcustom php-mode-extra-constants '()
-  "A list of additional strings to treat as PHP constants."
-  :group 'php-mode
-  :tag "PHP Mode Extra Constants"
-  :type '(repeat string)
-  :set 'php-mode-extra-constants-set)
 
 (define-obsolete-variable-alias 'php-do-not-use-semantic-imenu 'php-mode-do-not-use-semantic-imenu "1.20.0")
 (defcustom php-mode-do-not-use-semantic-imenu t
