@@ -1540,7 +1540,7 @@ a completion list."
    ;;  a different face.
    `(
      ;; Class declaration keywords (class, trait, interface)
-     ("class\\|trait\\|interface" . 'php-class-declaration)
+     ("\\(class\\|trait\\|interface\\)[^(]" (1 'php-class-declaration))
 
      ;; Class declaration specification keywords (implements, extends)
      ("implements\\|extends" . 'php-class-declaration-spec)
