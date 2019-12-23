@@ -8,6 +8,43 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
  * Drop support for Emacs 24 and 25.1
 
+## [1.22.2] - 2019-12-23
+
+A face has been added for coloring PHP syntax. Thank you [@minikN]!
+
+This release is a minor modified version of the 1.22.x series.
+PHP Mode 2.0 is planned to be released in January 2020.
+
+### Added
+
+ * Add `php-project-etags-file` and `php-project-apply-local-variables` ([#591])
+ * Add `php-find-system-php-ini-file` and `php-ini` command ([#593])
+
+### Changed
+
+ * Improve PHP syntax highlighting (by [@minikN])
+   * Add support for multiple operators ([#594])
+   * Add `=>` to assignment operators ([#602], [#603])
+ * Plain faces no longer inherit `default` ([#597])
+
+### Removed
+
+ * Remove `php-mode-modified` variable ([#590])
+
+### Fixed
+
+ * Fix anonymous class indentation ([#598])
+
+[@minikN]: https://github.com/minikN
+[#590]: https://github.com/emacs-php/php-mode/pull/590
+[#591]: https://github.com/emacs-php/php-mode/pull/591
+[#593]: https://github.com/emacs-php/php-mode/pull/593
+[#594]: https://github.com/emacs-php/php-mode/pull/594
+[#597]: https://github.com/emacs-php/php-mode/pull/597
+[#598]: https://github.com/emacs-php/php-mode/pull/598
+[#602]: https://github.com/emacs-php/php-mode/pull/602
+[#603]: https://github.com/emacs-php/php-mode/pull/603
+
 ## [1.22.1] - 2019-11-10
 
 This release is a minor modified version of the 1.22.x series.
