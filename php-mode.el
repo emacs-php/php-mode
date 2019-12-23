@@ -1541,6 +1541,9 @@ a completion list."
    `(
      ;; Class declaration keywords (class, trait, interface)
      ("class\\|trait\\|interface" . 'php-class-declaration)
+
+     ;; Class declaration specification keywords (implements, extends)
+     ("implements\\|extends" . 'php-class-declaration-spec)
      
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()

@@ -202,9 +202,14 @@
   :tag "PHPDoc Class Name")
 
 (defface php-class-declaration '((t (:inherit php-keyword)))
-  "Face used to class declarations."
+  "Face used to highlight class declaration keywords"
   :group 'php-faces
   :tag "PHP Class Declaration")
+
+(defface php-class-declaration-spec '((t (:inherit php-keyword)))
+  "Face used to highlight class declaration specification keywords (implements, extends)"
+  :group 'php-faces
+  :tag "PHP Class Declaration Specification")
 
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
