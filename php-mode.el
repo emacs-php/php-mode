@@ -1494,6 +1494,9 @@ a completion list."
    ;;  only add patterns here if you want to prevent cc-mode from applying
    ;;  a different face.
    `(
+     ;; Class declaration keywords (class, trait, interface)
+     ("class\\|trait\\|interface" . 'php-class-declaration)
+     
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
      ("\\(->\\)\\(\\sw+\\)\\s-*(" (1 'php-object-op) (2 'php-method-call))
