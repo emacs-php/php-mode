@@ -1,4 +1,4 @@
-3;;; php-mode.el --- Major mode for editing PHP code
+;;; php-mode.el --- Major mode for editing PHP code
 
 ;; Copyright (C) 2018-2019  Friends of Emacs-PHP development
 ;; Copyright (C) 1999, 2000, 2001, 2003, 2004 Turadg Aleahmad
@@ -1546,10 +1546,11 @@ a completion list."
      ("implements\\|extends" . 'php-class-declaration-spec)
 
      ;; Namespace declaration
-     ("namespace" .  'php-namespace-declaration)
+     ("namespace" . 'php-namespace-declaration)
 
-     ;; import statement
-     ("use\\|as" . 'php-import-declaration)
+     ;; import statement (use ... as ...)
+     ("\\(use[[:space:]]\\)\\(?:[[:word:]\\]\\)" (1 'php-import-declaration))
+     ("\\(?:[[:word:]\\]\\)\\([[:space:]]as\\)" (1 'php-import-declaration))
      
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
@@ -1638,7 +1639,7 @@ a completion list."
 
      ;; Highlight class name after "use .. as"
      ("\\<as\\s-+\\(\\sw+\\)" 1 font-lock-type-face)
-
+     
      ;; Class names are highlighted by cc-mode as defined in
      ;; c-class-decl-kwds, below regexp is a workaround for a bug
      ;; where the class names are not highlighted right after opening
