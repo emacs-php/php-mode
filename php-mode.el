@@ -1551,6 +1551,9 @@ a completion list."
      ;; import statement (use ... as ...)
      ("\\(use[[:space:]]\\)\\(?:[[:word:]\\]\\)" (1 'php-import-declaration))
      ("\\(?:[[:word:]\\]\\)\\([[:space:]]as\\)" (1 'php-import-declaration))
+
+     ;; Class modifiers (abstract, final)
+     ("\\(abstract\\|final\\)[[:space:]]\\(?:class\\)" (1 'php-modifiers-class))
      
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
