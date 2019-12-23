@@ -1554,6 +1554,9 @@ a completion list."
 
      ;; Class modifiers (abstract, final)
      ("\\(abstract\\|final\\)[[:space:]]\\(?:class\\)" (1 'php-modifiers-class))
+
+     ;; Method modifiers (abstract, final, static)
+     ("\\(abstract\\|final\\)[[:space:]]\\(?:static[[:space:]]\\)?\\(?:public\\|private\\|protected\\)" (1 'php-modifiers-method))
      
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()

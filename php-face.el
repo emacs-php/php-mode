@@ -226,6 +226,11 @@
   :group 'php-faces
   :tag "PHP Class Modifiers")
 
+(defface php-modifiers-method '((t (:inherit php-keyword)))
+  "Face used to highlight method modifiers (final, abstract)"
+  :group 'php-faces
+  :tag "PHP Method Modifiers")
+
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
 (provide 'php-face)
