@@ -221,6 +221,11 @@
   :group 'php-faces
   :tag "PHP Import Statement")
 
+(defface php-class-modifier '((t (:inherit php-keyword)))
+  "PHP Mode Face used to highlight class modifiers (final, abstract)."
+  :group 'php-faces
+  :tag "PHP Class Modifier")
+
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
 (provide 'php-face)
