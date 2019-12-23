@@ -1,4 +1,4 @@
-;;; php-mode.el --- Major mode for editing PHP code
+3;;; php-mode.el --- Major mode for editing PHP code
 
 ;; Copyright (C) 2018-2019  Friends of Emacs-PHP development
 ;; Copyright (C) 1999, 2000, 2001, 2003, 2004 Turadg Aleahmad
@@ -1544,6 +1544,9 @@ a completion list."
 
      ;; Class declaration specification keywords (implements, extends)
      ("implements\\|extends" . 'php-class-declaration-spec)
+
+     ;; Namespace declaration
+     ("namespace" .  'php-namespace-declaration)
      
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()

@@ -211,6 +211,11 @@
   :group 'php-faces
   :tag "PHP Class Declaration Specification")
 
+(defface php-namespace-declaration '((t (:inherit php-keyword)))
+  "Face used to highlight namespace declaration keyword."
+  :group 'php-faces
+  :tag "PHP Namespace Declaration")
+
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
 (provide 'php-face)
