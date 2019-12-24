@@ -38,9 +38,9 @@ GNU Emacs 24以降では、[package][]機能(または[Cask][])を使って[MELP
 
 ### OSのパッケージマネージャからのインストール
 
-PHP Modeは[いくつかのOSが提供するパッケージシステム][php-mode-packages]からインストール可能です。これはEmacsにPHPを追加する最も簡単な方法で、ただ `sudo apt-get install elpa-php-mode` で導入できます。
+PHP Modeは[いくつかのOSが提供するパッケージシステム][php-mode-packages]からインストール可能です。DebianおよびUbuntuのようなDebian派生のOSではEmacsにPHPを追加する最も簡単な方法で、`sudo apt install elpa-php-mode` で導入できます。これらの "Stable" リリースは最新のPHP Modeよりも古いものの、十分にテストされた固定バージョンが提供されます。オートロードとバイトコンパイルは自動で行われます。
 
-Debian、Ubuntuや派生OSなどでのパッケージ名は[`elpa-php-mode`][elpa-php-mode]です。これらのパッケージは安定版ですが、PHP Modeの最新版からは遅れているため、最新のPHP機能サポートや性能改善が反映されていない可能性があることに気をつけてください。
+最新のPHP Modeの機能とパフォーマンス改善を活用するために**sid** ("unstable"としても知られるローリングリリース)で提供されるバージョンのインストールを検討してください。最新バージョンは[`elpa-php-mode`][elpa-php-mode]にあります。"apt-pinning"を使ってアップデートを自動化することもできます。
 
 また、[Debian 9 (stretch)][php-elisp-stretch]や[Ubuntu 18.10][php-elisp-ubuntu1810]以前で提供されていた `php-elisp` パッケージは[あまりにも古い][issue-430]ので、 **くれぐれもインストールしないでください**。
 
