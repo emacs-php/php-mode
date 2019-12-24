@@ -40,9 +40,9 @@ With GNU Emacs 24 or later then you can use its [package][] feature (or [Cask][]
 
 ### Install using OS package system
 
-PHP Mode is available from [package systems provided by several OSs](https://repology.org/project/emacs:php-mode/versions).  This is the easiest way to add PHP to Emacs and can be installed with just `sudo apt-get install elpa-php-mode`.
+PHP Mode is available from [package systems provided by several OSs](https://repology.org/project/emacs:php-mode/versions).  On Debian, and operating systems derived from it, such as Ubuntu, the easiest way to add PHP support to Emacs is `sudo apt install elpa-php-mode`.  "Stable" releases of these operating systems include a well-tested frozen version of this package that is always older than the latest upstream version of PHP Mode.  Autoloads and byte-compilation are automatic.
 
-The package name on Debian, Ubuntu, and some derived operating systems is [`elpa-php-mode`](https://packages.debian.org/buster/elpa-php-mode).  The packages provided for these operating systems are stable, but since they are behind the latest version of PHP Mode, consider the possibility of not incorporating the latest PHP feature support and performance improvements.
+Please consider installing the package provided in `sid` (aka: "unstable", a rolling release) in order to benefit from the latest PHP Mode features and performance improvements.  The latest version can be found here: [`elpa-php-mode`](https://packages.debian.org/sid/elpa-php-mode).  Investigate "apt-pinning" to make tracking this update stream automatic.
 
 Also, the `php-elisp` package provided by [Debian 9 (stretch)](https://packages.debian.org/stretch/php-elisp) and [Ubuntu 18.10](https://packages.ubuntu.com/cosmic/php-elisp) and earlier is [extremely old](https://github.com/emacs-php/php-mode/issues/430), so **PLEASE DO NOT INSTALL IT**.
 
@@ -98,6 +98,10 @@ Load `php-mode` synchronously from a specific path.  It will load 10 times the s
 (require 'php-mode "~/path/to/php-mode/php-mode")
 (add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
 ```
+
+### Configuration
+
+PHP Mode's default style might not be what you expect.  Before filing a bug, please try the following:  `C-h v php-mode-coding-style`, to get the list of available styles.  Then use `M-x php-set-style` for each of these, to check to see if one of them is to your liking.  Use `TODO: Please comment on what config method you'd like to recommend to users`
 
 Reporting Bugs
 --------------
