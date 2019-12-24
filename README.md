@@ -40,11 +40,11 @@ With GNU Emacs 24 or later then you can use its [package][] feature (or [Cask][]
 
 ### Install using OS package system
 
-PHP Mode is available from [package systems provided by several OSs](https://repology.org/project/emacs:php-mode/versions).  On Debian, and operating systems derived from it, such as Ubuntu, the easiest way to add PHP support to Emacs is `sudo apt install elpa-php-mode`.  "Stable" releases of these operating systems include a well-tested frozen version of this package that is always older than the latest upstream version of PHP Mode.  Autoloads and byte-compilation are automatic.
+PHP Mode is available from [package systems provided by several OSs][php-mode-packages].  On Debian, and operating systems derived from it, such as Ubuntu, the easiest way to add PHP support to Emacs is `sudo apt install elpa-php-mode`.  "Stable" releases of these operating systems include a well-tested frozen version of this package that is always older than the latest upstream version of PHP Mode.  Autoloads and byte-compilation are automatic.
 
-Please consider installing the package provided in `sid` (aka: "unstable", a rolling release) in order to benefit from the latest PHP Mode features and performance improvements.  The latest version can be found here: [`elpa-php-mode`](https://packages.debian.org/sid/elpa-php-mode).  Investigate "apt-pinning" to make tracking this update stream automatic.
+Please consider installing the package provided in `sid` (aka: "unstable", a rolling release) in order to benefit from the latest PHP Mode features and performance improvements.  The latest version can be found here: [`elpa-php-mode`][elpa-php-mode].  Investigate "apt-pinning" to make tracking this update stream automatic.
 
-Also, the `php-elisp` package provided by [Debian 9 (stretch)](https://packages.debian.org/stretch/php-elisp) and [Ubuntu 18.10](https://packages.ubuntu.com/cosmic/php-elisp) and earlier is [extremely old](https://github.com/emacs-php/php-mode/issues/430), so **PLEASE DO NOT INSTALL IT**.
+Also, the `php-elisp` package provided by [Debian 9 (stretch)][php-elisp-stretch] and [Ubuntu 18.10][php-elisp-ubuntu1810] and earlier is [extremely old][issue-430], so **PLEASE DO NOT INSTALL IT**.
 
 ### Manual installation
 
@@ -427,7 +427,6 @@ In chronological order:
 75. [Sebastian Fieber](https://github.com/fallchildren)
 76. [Mark A. Hershberger](https://github.com/hexmode)
 
-
 [Cask]: https://github.com/cask/cask
 [MELPA Stable]: https://stable.melpa.org/
 [MELPA]: https://melpa.org/
@@ -437,13 +436,18 @@ In chronological order:
 [Web Mode]: http://web-mode.org/
 [camelCase]: https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%A1%E3%83%AB%E3%82%B1%E3%83%BC%E3%82%B9
 [cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
+[elpa-php-mode]: https://packages.debian.org/sid/elpa-php-mode
 [feathub]: https://feathub.com/emacs-php/php-suite
+[issue-430]: https://github.com/emacs-php/php-mode/issues/430
 [melpa-badge]: http://melpa.org/packages/php-mode-badge.svg
 [melpa-link]: http://melpa.org/#/php-mode
 [melpa-stable-badge]: http://stable.melpa.org/packages/php-mode-badge.svg
 [melpa-stable-link]: http://stable.melpa.org/#/php-mode
 [package]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html
-[php-mode]: https://github.com/emacs-php/php-mode
+[php-elisp-stretch]: https://packages.debian.org/stretch/php-elisp
+[php-elisp-ubuntu1810]: https://packages.ubuntu.com/cosmic/php-elisp
 [php-mode releases]: https://github.com/emacs-php/php-mode/releases
+[php-mode-packages]: https://repology.org/project/emacs:php-mode/versions
+[php-mode]: https://github.com/emacs-php/php-mode
 [php-suite]: https://github.com/emacs-php/php-suite
 [wiki]: https://github.com/emacs-php/php-mode/wiki

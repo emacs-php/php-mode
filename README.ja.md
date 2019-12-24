@@ -38,11 +38,11 @@ GNU Emacs 24以降では、[package][]機能(または[Cask][])を使って[MELP
 
 ### OSのパッケージマネージャからのインストール
 
-PHP Modeは[いくつかのOSが提供するパッケージシステム](https://repology.org/project/emacs:php-mode/versions)からインストール可能です。これはEmacsにPHPを追加する最も簡単な方法で、ただ `sudo apt-get install elpa-php-mode` で導入できます。
+PHP Modeは[いくつかのOSが提供するパッケージシステム][php-mode-packages]からインストール可能です。これはEmacsにPHPを追加する最も簡単な方法で、ただ `sudo apt-get install elpa-php-mode` で導入できます。
 
-Debian、Ubuntuや派生OSなどでのパッケージ名は[`elpa-php-mode`](https://packages.debian.org/buster/elpa-php-mode)です。これらのパッケージは安定版ですが、PHP Modeの最新版からは遅れているため、最新のPHP機能サポートや性能改善が反映されていない可能性があることに気をつけてください。
+Debian、Ubuntuや派生OSなどでのパッケージ名は[`elpa-php-mode`][elpa-php-mode]です。これらのパッケージは安定版ですが、PHP Modeの最新版からは遅れているため、最新のPHP機能サポートや性能改善が反映されていない可能性があることに気をつけてください。
 
-また、[Debian 9 (stretch)](https://packages.debian.org/stretch/php-elisp) や [Ubuntu 18.10](https://packages.ubuntu.com/cosmic/php-elisp)以前で提供されていた `php-elisp` パッケージは[あまりにも古い](https://github.com/emacs-php/php-mode/issues/430)ので、 **くれぐれもインストールしないでください**。
+また、[Debian 9 (stretch)][php-elisp-stretch]や[Ubuntu 18.10][php-elisp-ubuntu1810]以前で提供されていた `php-elisp` パッケージは[あまりにも古い][issue-430]ので、 **くれぐれもインストールしないでください**。
 
 ### 手動でインストール
 
@@ -375,14 +375,19 @@ PHPモードの改善に協力したすべての貢献者のリストは[README.
 [Web Mode]: http://web-mode.org/
 [camelCase]: https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%A1%E3%83%AB%E3%82%B1%E3%83%BC%E3%82%B9
 [cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
+[elpa-php-mode]: https://packages.debian.org/sid/elpa-php-mode
 [feathub]: https://feathub.com/emacs-php/php-suite
+[issue-430]: https://github.com/emacs-php/php-mode/issues/430
 [melpa-badge]: http://melpa.org/packages/php-mode-badge.svg
 [melpa-link]: http://melpa.org/#/php-mode
 [melpa-stable-badge]: http://stable.melpa.org/packages/php-mode-badge.svg
 [melpa-stable-link]: http://stable.melpa.org/#/php-mode
 [package]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html
-[php-mode]: https://github.com/emacs-php/php-mode
+[php-elisp-stretch]: https://packages.debian.org/stretch/php-elisp
+[php-elisp-ubuntu1810]: https://packages.ubuntu.com/cosmic/php-elisp
 [php-mode releases]: https://github.com/emacs-php/php-mode/releases
+[php-mode-packages]: https://repology.org/project/emacs:php-mode/versions
+[php-mode]: https://github.com/emacs-php/php-mode
 [php-suite]: https://github.com/emacs-php/php-suite
 [travis-badge]: https://travis-ci.org/emacs-php/php-mode.svg
 [travis-link]: https://travis-ci.org/emacs-php/php-mode
