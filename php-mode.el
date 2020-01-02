@@ -1553,10 +1553,16 @@ a completion list."
      ("\\(?:[[:word:]\\]\\)\\([[:space:]]as\\)" (1 'php-import-declaration))
 
      ;; Class modifiers (abstract, final)
-     ("\\(abstract\\|final\\)[[:space:]]\\(?:class\\)" (1 'php-modifiers-class))
+     ("\\(abstract\\|final\\)[[:space:]]\\(?:class\\)" (1 'php-class-modifiers))
 
-     ;; Method modifiers (abstract, final, static)
-     ("\\(abstract\\|final\\)[[:space:]]\\(?:static[[:space:]]\\)?\\(?:public\\|private\\|protected\\)" (1 'php-modifiers-method))
+     ;; Method modifiers (abstract, final)
+     ("\\(abstract\\|final\\)[[:space:]]\\(?:static\\|public\\|private\\|protected\\)" (1 'php-method-modifiers))
+
+     ;; Method access protection
+     
+     
+     ;; Property access protection
+     ;("\\(private\\|protected\\|public\\)\\(?:[[:space:]]const[[:space:]][[:word:]]\\|[[:space:]]\$[[:word:]]\\)" (1 'php-property-access))
      
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
