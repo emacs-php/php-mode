@@ -1729,7 +1729,7 @@ a completion list."
      ("\\(?:[^0-9[:space:]]\\)\\([[:space:]]*\\.[[:space:]]*\\)\\(?:[^0-9[:space:]]\\)" . (1 'php-string-op))
      
      ;; Block delimiters ((, ), [, ], {, })
-     ("\(\\|\)\\|\[\\|\]\\|\{\\|\}" . 'php-block-delimiter)
+     ("\(\\|\)\\|\\[\\|\\]\\|\{\\|\}" . 'php-block-delimiter)
 
      ;; Numbers
      ("[0-9]+\\.?" . 'php-number)))
