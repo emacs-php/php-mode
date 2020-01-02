@@ -226,6 +226,16 @@
   :group 'php-faces
   :tag "PHP Class Modifier")
 
+(defface php-method-modifier '((t (:inherit php-keyword)))
+  "PHP Mode Face used to highlight method modifiers (final, abstract)."
+  :group 'php-faces
+  :tag "PHP Method Modifier")
+
+(defface php-visibility-modifier '((t (:inherit php-keyword)))
+  "PHP Mode Face used to highlight access keywords (public, protected, private)."
+  :group 'php-faces
+  :tag "PHP Visibility Modifier")
+
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
 (provide 'php-face)
