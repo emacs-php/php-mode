@@ -281,6 +281,11 @@
   :group 'php-faces
   :tag "PHP Constant Keywords")
 
+(defface php-number '((t (:inherit default)))
+  "Face used to highlight numbers."
+  :group 'php-faces
+  :tag "PHP Numbers")
+
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
 (provide 'php-face)

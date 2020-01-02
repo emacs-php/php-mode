@@ -1587,7 +1587,7 @@ a completion list."
 
      ;; Constant keywords
      ("true\\|false\\|null" . 'php-constant-keyword)
-     
+
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
      ("\\(->\\)\\(\\sw+\\)\\s-*(" (1 'php-object-op) (2 'php-method-call))
@@ -1720,7 +1720,10 @@ a completion list."
 
      ;; Logical operators (and, or, &&, ...)
      ;; Not operator (!) is defined in "before cc-mode" section above.
-     ("\\(&&\\|||\\)" 1 'php-logical-op)))
+     ("\\(&&\\|||\\)" 1 'php-logical-op)
+     
+     ;; Numbers
+     ("[0-9]+\\.?" . 'php-number)))
   "Detailed highlighting for PHP Mode.")
 
 (defvar php-font-lock-keywords php-font-lock-keywords-3
