@@ -246,6 +246,16 @@
   :group 'php-faces
   :tag "PHP Property Access")
 
+(defface php-property-const '((t (:inherit php-keyword)))
+  "Face used to highlight const keyword in property declaration."
+  :group 'php-faces
+  :tag "PHP Property Const")
+
+(defface php-property-static '((t (:inherit php-keyword)))
+  "Face used to highlight static keyword in property declaration."
+  :group 'php-faces
+  :tag "PHP Property Static")
+
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
 (provide 'php-face)

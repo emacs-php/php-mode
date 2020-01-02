@@ -1556,16 +1556,23 @@ a completion list."
      ("\\(abstract\\|final\\)[[:space:]]\\(?:class\\)" (1 'php-class-modifiers))
 
      ;; Method modifiers (abstract, final)
-     ("\\(abstract\\|final\\)[[:space:]]\\(?:static\\|public\\|private\\|protected\\|function\\)" (1 'php-method-modifiers))
+     ("\\(abstract\\|final\\)\\(?:[[:space:]]static\\|[[:space:]]public\\|[[:space:]]private\\|[[:space:]]protected\\)*\\(?:[[:space:]]function\\)" (1 'php-method-modifiers))
 
      ;; Method access protection (public, protected, private)
-     ("\\(private\\|protected\\|public\\)[[:space:]]\\(?:static\\|function\\|abstract|\\final\\)" (1 'php-method-access))
+     ("\\(private\\|protected\\|public\\)\\(?:[[:space:]]static\\|[[:space:]]final\\|[[:space:]]abstract\\)*\\(?:[[:space:]]function\\)" (1 'php-method-access))
 
      ;; Method static modifier
-     ("\\(static\\)[[:space:]]\\(?:public\\|protected\\|private\\|function\\|abstract\\|final\\)" (1 'php-method-static))
+     ("\\(static\\)\\(?:[[:space:]]private\\|[[:space:]]protected\\|[[:space:]]public\\|[[:space:]]final\\|[[:space:]]abstract\\)*\\(?:[[:space:]]function\\)" (1 'php-method-static))
+
+     ;; Property constants
+     ("\\(const\\)[[:space:]]\\(?:[^\$][[:word:]]\\)" (1 'php-property-const))
      
      ;; Property access protection
-     ;("\\(private\\|protected\\|public\\)\\(?:[[:space:]]const[[:space:]][[:word:]]\\|[[:space:]]\$[[:word:]]\\)" (1 'php-property-access))
+     ("\\(private\\|protected\\|public\\)\\(?:[[:space:]]static\\|[[:space:]]const\\)?\\(?:[[:space:]]\$?[[:word:]]+\\)\\(?:[[:space:]]*=[[:space:]]*[^;]+\\)?\\(?:;\\)" (1 'php-property-access))
+     ;("\\(private\\|protected\\|public\\)[[:space:]]\\(?:const[[:space:]][^\$][[:word:]]\\|\$[[:word:]]\\)" (1 'php-property-access))
+
+     ;; Property static modifier
+     ;;("\\(static\\)[[:space:]]\\(?:public\\|protected\\|private\\)" (1 'php-property-static))
      
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
