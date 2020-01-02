@@ -1569,11 +1569,10 @@ a completion list."
      
      ;; Property access protection
      ("\\(private\\|protected\\|public\\)\\(?:[[:space:]]static\\|[[:space:]]const\\)?\\(?:[[:space:]]\$?[[:word:]]+\\)\\(?:[[:space:]]*=[[:space:]]*[^;]+\\)?\\(?:;\\)" (1 'php-property-access))
-     ;("\\(private\\|protected\\|public\\)[[:space:]]\\(?:const[[:space:]][^\$][[:word:]]\\|\$[[:word:]]\\)" (1 'php-property-access))
 
      ;; Property static modifier
-     ;;("\\(static\\)[[:space:]]\\(?:public\\|protected\\|private\\)" (1 'php-property-static))
-     
+     ("\\(static\\)\\(?:[[:space:]]private\\|[[:space:]]protected\\|[[:space:]]public\\)?\\(?:[[:space:]]\$?[[:word:]]+\\)\\(?:[[:space:]]*=[[:space:]]*[^;]+\\)?\\(?:;\\)" (1 'php-property-static))
+  
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
      ("\\(->\\)\\(\\sw+\\)\\s-*(" (1 'php-object-op) (2 'php-method-call))
