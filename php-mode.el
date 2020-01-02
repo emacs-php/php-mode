@@ -1584,6 +1584,9 @@ a completion list."
 
      ;; Include statements (include, include_once, require, require_once)
      ("include[^_]\\|include_once\\|require[^_]\\|require_once" . 'php-include-statement)
+
+     ;; Constant keywords
+     ("true\\|false\\|null" . 'php-constant-keyword)
      
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()

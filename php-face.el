@@ -276,6 +276,11 @@
   :group 'php-faces
   :tag "PHP Include Statement")
 
+(defface php-constant-keyword '((t (:inherit php-keyword)))
+  "Face used to highlight constant keywords (true, false, null)."
+  :group 'php-faces
+  :tag "PHP Constant Keywords")
+
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
 (provide 'php-face)
