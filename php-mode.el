@@ -1574,7 +1574,7 @@ a completion list."
      ("\\(static\\)\\(?:[[:space:]]private\\|[[:space:]]protected\\|[[:space:]]public\\)?\\(?:[[:space:]]\$?[[:word:]]+\\)\\(?:[[:space:]]*=[[:space:]]*[^;]+\\)?\\(?:;\\)" (1 'php-property-static))
 
      ;; Block statements (if, elseif, for, foreach, catch, switch, while, declare)
-     ("\\(if\\|elseif\\|for\\|foreach\\|catch\\|switch\\|while\\|declare\\)\\(?:[[:space:]]*\([[:space:]]*.*[[:space:]]*\)\\)" (1 'php-block-statement))
+     ("if\\|elseif\\|for\\|foreach\\|catch\\|switch\\|while\\|declare" . 'php-block-statement)
      
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
