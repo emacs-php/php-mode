@@ -117,7 +117,7 @@
   :tag "PHP Increment/Decrement Op")
 
 (defface php-string-op '((t (:inherit php-operator)))
-  "PHP Mode face used to logical operators (.)."
+  "PHP Mode face used to string operator (.)."
   :group 'php-faces
   :tag "PHP String Op")
 
@@ -290,6 +290,11 @@
   "Face used to highlight quotes surrounding a string."
   :group 'php-faces
   :tag "PHP String Quotes")
+
+(defface php-block-delimiter '((t (:inherit default)))
+  "Face used to highlight block delimiters ((, ), [, ], {, })"
+  :group 'php-faces
+  :tag "PHP Block Delimiters")
 
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 

@@ -1722,6 +1722,9 @@ a completion list."
      ;; Not operator (!) is defined in "before cc-mode" section above.
      ("\\(&&\\|||\\)" 1 'php-logical-op)
 
+     ;; Block delimiters ((, ), [, ], {, })
+     ("\(\\|\)\\|\[\\|\]\\|\{\\|\}" . 'php-block-delimiter)
+
      ;; Numbers
      ("[0-9]+\\.?" . 'php-number)))
   "Detailed highlighting for PHP Mode.")
