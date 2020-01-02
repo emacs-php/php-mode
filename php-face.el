@@ -221,15 +221,20 @@
   :group 'php-faces
   :tag "PHP Import Statement")
 
-(defface php-modifiers-class '((t (:inherit php-keyword)))
+(defface php-class-modifiers '((t (:inherit php-keyword)))
   "Face used to highlight class modifiers (final, abstract)"
   :group 'php-faces
   :tag "PHP Class Modifiers")
 
-(defface php-modifiers-method '((t (:inherit php-keyword)))
+(defface php-method-modifiers '((t (:inherit php-keyword)))
   "Face used to highlight method modifiers (final, abstract)"
   :group 'php-faces
   :tag "PHP Method Modifiers")
+
+(defface php-property-access '((t (:inherit php-keyword)))
+  "Face used to highlight property access keywords (public, protected, public)"
+  :group 'php-faces
+  :tag "PHP Property Access")
 
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
