@@ -286,6 +286,11 @@
   :group 'php-faces
   :tag "PHP Numbers")
 
+(defface php-string-quote '((t (:inherit php-string)))
+  "Face used to highlight quotes surrounding a string."
+  :group 'php-faces
+  :tag "PHP String Quotes")
+
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
 (provide 'php-face)

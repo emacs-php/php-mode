@@ -1721,7 +1721,7 @@ a completion list."
      ;; Logical operators (and, or, &&, ...)
      ;; Not operator (!) is defined in "before cc-mode" section above.
      ("\\(&&\\|||\\)" 1 'php-logical-op)
-     
+
      ;; Numbers
      ("[0-9]+\\.?" . 'php-number)))
   "Detailed highlighting for PHP Mode.")
@@ -1767,7 +1767,8 @@ The output will appear in the buffer *PHP*."
   '(progn
      (font-lock-add-keywords
       'php-mode
-      `((php-string-intepolated-variable-font-lock-find))
+      `((php-string-intepolated-variable-font-lock-find)
+	("\\s\"\\|\\s|" 0 'php-string-quote t))
       'append)))
 
 
