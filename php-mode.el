@@ -1582,6 +1582,9 @@ a completion list."
      ;; Print statements (echo, print, var_dump)
      ("echo\\|print\\|var_dump" . 'php-print-statement)
 
+     ;; Type operators (insteadof, instanceof)
+     ("insteadof\\|instanceof" . 'php-type-operator)
+
      ;; Include statements (include, include_once, require, require_once)
      ("include[^_]\\|include_once\\|require[^_]\\|require_once" . 'php-include-statement)
 
@@ -1722,6 +1725,9 @@ a completion list."
      ;; Not operator (!) is defined in "before cc-mode" section above.
      ("\\(&&\\|||\\)" 1 'php-logical-op)
 
+     ;; String operator (.)
+     ("\\(?:[^0-9[:space:]]\\)\\([[:space:]]*\\.[[:space:]]*\\)\\(?:[^0-9[:space:]]\\)" . (1 'php-string-op))
+     
      ;; Block delimiters ((, ), [, ], {, })
      ("\(\\|\)\\|\[\\|\]\\|\{\\|\}" . 'php-block-delimiter)
 

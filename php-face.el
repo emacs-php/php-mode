@@ -296,6 +296,11 @@
   :group 'php-faces
   :tag "PHP Block Delimiters")
 
+(defface php-type-operator '((t (:inherit default)))
+  "Face used to highlight type operators (insteadof, instanceof)"
+  :group 'php-faces
+  :tag "PHP Type Operators")
+
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
 (provide 'php-face)
