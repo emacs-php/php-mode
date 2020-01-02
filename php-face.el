@@ -236,6 +236,11 @@
   :group 'php-faces
   :tag "PHP Visibility Modifier")
 
+(defface php-control-structure '((t (:inherit php-keyword)))
+  "PHP Mode Face used to highlight control structures (if, foreach, while, switch, catch...)."
+  :group 'php-faces
+  :tag "PHP Control Structure")
+
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
 (provide 'php-face)
