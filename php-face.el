@@ -256,6 +256,11 @@
   :group 'php-faces
   :tag "PHP Property Static")
 
+(defface php-block-statement '((t (:inherit php-keyword)))
+  "Face used to highlight block statements (if, elseif, for, foreach, while, declare, switch, catch)."
+  :group 'php-faces
+  :tag "PHP Block Statement")
+
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
 (provide 'php-face)
