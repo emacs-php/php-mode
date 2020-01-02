@@ -1556,13 +1556,13 @@ a completion list."
      ("\\(abstract\\|final\\)[[:space:]]\\(?:class\\)" (1 'php-class-modifiers))
 
      ;; Method modifiers (abstract, final)
-     ("\\(abstract\\|final\\)[[:space:]]\\(?:static\\|public\\|private\\|protected\\)" (1 'php-method-modifiers))
+     ("\\(abstract\\|final\\)[[:space:]]\\(?:static\\|public\\|private\\|protected\\|function\\)" (1 'php-method-modifiers))
 
-     ;; Method access protection
-     ("\\(private\\|protected\\|public\\)[[:space:]]\\(?:static\\|function\\)" (1 'php-method-access))
+     ;; Method access protection (public, protected, private)
+     ("\\(private\\|protected\\|public\\)[[:space:]]\\(?:static\\|function\\|abstract|\\final\\)" (1 'php-method-access))
 
      ;; Method static modifier
-     ("\\(static\\)[[:space:]]\\(?:public\\|protected\\|private\\|function\\)" (1 'php-method-static))
+     ("\\(static\\)[[:space:]]\\(?:public\\|protected\\|private\\|function\\|abstract\\|final\\)" (1 'php-method-static))
      
      ;; Property access protection
      ;("\\(private\\|protected\\|public\\)\\(?:[[:space:]]const[[:space:]][[:word:]]\\|[[:space:]]\$[[:word:]]\\)" (1 'php-property-access))
