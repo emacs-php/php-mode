@@ -1575,6 +1575,15 @@ a completion list."
 
      ;; Block statements (if, elseif, for, foreach, catch, switch, while, declare)
      ("if\\|elseif\\|for\\|foreach\\|catch\\|switch\\|while\\|declare" . 'php-block-statement)
+
+     ;; Flow control statements (break, continue, die, exit, goto, return, throw)
+     ("break\\|continue\\|die\\|exit\\|goto\\|return\\|throw" . 'php-flow-control-statement)
+
+     ;; Print statements (echo, print, var_dump)
+     ("echo\\|print\\|var_dump" . 'php-print-statement)
+
+     ;; Include statements (include, include_once, require, require_once)
+     ("include[^_]\\|include_once\\|require[^_]\\|require_once" . 'php-include-statement)
      
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()

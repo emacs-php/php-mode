@@ -261,6 +261,21 @@
   :group 'php-faces
   :tag "PHP Block Statement")
 
+(defface php-flow-control-statement '((t (:inherit php-keyword)))
+  "Face used to highlight flow control statements (break, continue, die, exit, goto, return, throw)."
+  :group 'php-faces
+  :tag "PHP Flow Control Statement")
+
+(defface php-print-statement '((t (:inherit php-keyword)))
+  "Face used to highlight print statements (echo, print, var_dump)."
+  :group 'php-faces
+  :tag "PHP Print Statement")
+
+(defface php-include-statement '((t (:inherit php-keyword)))
+  "Face used to highlight include statements (include, include_once, require, require_once)."
+  :group 'php-faces
+  :tag "PHP Include Statement")
+
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
 (provide 'php-face)
