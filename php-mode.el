@@ -1559,7 +1559,10 @@ a completion list."
      ("\\(abstract\\|final\\)[[:space:]]\\(?:static\\|public\\|private\\|protected\\)" (1 'php-method-modifiers))
 
      ;; Method access protection
-     
+     ("\\(private\\|protected\\|public\\)[[:space:]]\\(?:static\\|function\\)" (1 'php-method-access))
+
+     ;; Method static modifier
+     ("\\(static\\)[[:space:]]\\(?:public\\|protected\\|private\\|function\\)" (1 'php-method-static))
      
      ;; Property access protection
      ;("\\(private\\|protected\\|public\\)\\(?:[[:space:]]const[[:space:]][[:word:]]\\|[[:space:]]\$[[:word:]]\\)" (1 'php-property-access))

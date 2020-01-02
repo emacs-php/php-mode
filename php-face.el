@@ -202,12 +202,12 @@
   :tag "PHPDoc Class Name")
 
 (defface php-class-declaration '((t (:inherit php-keyword)))
-  "Face used to highlight class declaration keywords"
+  "Face used to highlight class declaration keywords."
   :group 'php-faces
   :tag "PHP Class Declaration")
 
 (defface php-class-declaration-spec '((t (:inherit php-keyword)))
-  "Face used to highlight class declaration specification keywords (implements, extends)"
+  "Face used to highlight class declaration specification keywords (implements, extends)."
   :group 'php-faces
   :tag "PHP Class Declaration Specification")
 
@@ -217,22 +217,32 @@
   :tag "PHP Namespace Declaration")
 
 (defface php-import-declaration '((t (:inherit php-keyword)))
-  "Face used to highlight import statements (use ... as ...)"
+  "Face used to highlight import statements (use ... as ...)."
   :group 'php-faces
   :tag "PHP Import Statement")
 
 (defface php-class-modifiers '((t (:inherit php-keyword)))
-  "Face used to highlight class modifiers (final, abstract)"
+  "Face used to highlight class modifiers (final, abstract)."
   :group 'php-faces
   :tag "PHP Class Modifiers")
 
 (defface php-method-modifiers '((t (:inherit php-keyword)))
-  "Face used to highlight method modifiers (final, abstract)"
+  "Face used to highlight method modifiers (final, abstract)."
   :group 'php-faces
   :tag "PHP Method Modifiers")
 
+(defface php-method-access '((t (:inherit php-keyword)))
+  "Face used to highlight method access keywords (public, protected, private)."
+  :group 'php-faces
+  :tag "PHP Method Access")
+
+(defface php-method-static '((t (:inherit php-keyword)))
+  "Face used to highlight static keyword in method declaration."
+  :group 'php-faces
+  :tag "PHP Method Static")
+
 (defface php-property-access '((t (:inherit php-keyword)))
-  "Face used to highlight property access keywords (public, protected, public)"
+  "Face used to highlight property access keywords (public, protected, private)."
   :group 'php-faces
   :tag "PHP Property Access")
 
