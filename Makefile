@@ -6,7 +6,18 @@ ELCS = $(ELS:.el=.elc)
 %.elc: %.el
 	$(EMACS) -Q -batch -L . -f batch-byte-compile $<
 
-all: autoloads $(ELCS)
+all: autoloads $(ELCS) authors
+
+authors: AUTHORS.md
+
+.PHONY: AUTHORS.md
+AUTHORS.md: AUTHORS.md.in
+	@printf "Generating AUTHORS.md file..."
+	@test -d .git \
+		&& (cat $< > $@ \
+			&& git log --pretty=format:'- %aN' | sort -u >> $@ \
+			&& printf "FINISHED\n" ; ) \
+		|| printf "FAILED (non-fatal)\n"
 
 autoloads: $(AUTOLOADS)
 
@@ -40,4 +51,4 @@ test: clean all
 	touch tests/project/1/.git
 	$(EMACS) -Q -batch -L . -l tests/php-mode-test.el -f ert-run-tests-batch-and-exit
 
-.PHONY: all autoloads clean test
+.PHONY: all authors autoloads clean test
