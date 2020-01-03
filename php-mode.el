@@ -1553,10 +1553,10 @@ a completion list."
      ("\\(?:[[:word:]\\]\\)\\([[:space:]]as\\)" (1 'php-import-declaration))
 
      ;; Class modifiers (abstract, final)
-     ("\\(abstract\\|final\\)[[:space:]]\\(?:class\\)" (1 'php-class-modifiers))
+     ("\\(abstract\\|final\\)[[:space:]]\\(?:class\\)" (1 'php-class-modifier))
 
      ;; Method modifiers (abstract, final)
-     ("\\(abstract\\|final\\)\\(?:[[:space:]]static\\|[[:space:]]public\\|[[:space:]]private\\|[[:space:]]protected\\)*\\(?:[[:space:]]function\\)" (1 'php-method-modifiers))
+     ("\\(abstract\\|final\\)\\(?:[[:space:]]static\\|[[:space:]]public\\|[[:space:]]private\\|[[:space:]]protected\\)*\\(?:[[:space:]]function\\)" (1 'php-method-modifier))
 
      ;; Method access protection (public, protected, private)
      ("\\(private\\|protected\\|public\\)\\(?:[[:space:]]static\\|[[:space:]]final\\|[[:space:]]abstract\\)*\\(?:[[:space:]]function\\)" (1 'php-method-access))

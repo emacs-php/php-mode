@@ -219,17 +219,17 @@
 (defface php-import-declaration '((t (:inherit php-keyword)))
   "Face used to highlight import statements (use ... as ...)."
   :group 'php-faces
-  :tag "PHP Import Statement")
+  :tag "PHP Import Declaration")
 
-(defface php-class-modifiers '((t (:inherit php-keyword)))
+(defface php-class-modifier '((t (:inherit php-keyword)))
   "Face used to highlight class modifiers (final, abstract)."
   :group 'php-faces
-  :tag "PHP Class Modifiers")
+  :tag "PHP Class Modifier")
 
-(defface php-method-modifiers '((t (:inherit php-keyword)))
+(defface php-method-modifier '((t (:inherit php-keyword)))
   "Face used to highlight method modifiers (final, abstract)."
   :group 'php-faces
-  :tag "PHP Method Modifiers")
+  :tag "PHP Method Modifier")
 
 (defface php-method-access '((t (:inherit php-keyword)))
   "Face used to highlight method access keywords (public, protected, private)."
@@ -279,27 +279,27 @@
 (defface php-constant-keyword '((t (:inherit php-keyword)))
   "Face used to highlight constant keywords (true, false, null)."
   :group 'php-faces
-  :tag "PHP Constant Keywords")
+  :tag "PHP Constant Keyword")
 
 (defface php-number '((t (:inherit default)))
   "Face used to highlight numbers."
   :group 'php-faces
-  :tag "PHP Numbers")
+  :tag "PHP Number")
 
 (defface php-string-quote '((t (:inherit php-string)))
   "Face used to highlight quotes surrounding a string."
   :group 'php-faces
-  :tag "PHP String Quotes")
+  :tag "PHP String Quote")
 
 (defface php-block-delimiter '((t (:inherit default)))
   "Face used to highlight block delimiters ((, ), [, ], {, })"
   :group 'php-faces
-  :tag "PHP Block Delimiters")
+  :tag "PHP Block Delimiter")
 
 (defface php-type-operator '((t (:inherit default)))
   "Face used to highlight type operators (insteadof, instanceof)"
   :group 'php-faces
-  :tag "PHP Type Operators")
+  :tag "PHP Type Op")
 
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
