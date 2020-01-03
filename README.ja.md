@@ -36,55 +36,7 @@ PHP Modeは[いくつかのOSが提供するパッケージシステム][php-mod
 
 ### 手動でインストール
 
-このプロジェクトを `git cline` または、[php-mode releases]からzip/tarアーカイブをダウンロードして展開してください。
-
-#### A: `(load php-mode-autoloads.el)` *(推奨)*
-
-これはパッケージマネージャを利用した場合と同等のパフォーマンスと使いやすさを両立した初期化方法です。
-
-ダウンロードしたコードを展開したディレクトリに移動し、`make`コマンドを実行すると、バイトコンパイルおよび `php-mode-autoloads.el` を生成できます。 `init.el`からファイルをロードするだけで使用準備は完了です。
-
-```el
-;; Put follow code into init.el
-(when (file-directory-p "~/path/to/php-mode")
-  (load "~/path/to/php-mode/php-mode-autoloads.el"))
-
-;; Any code below is *unnecessary*
-;; (require 'php-mode)
-;; (add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
-;; (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
-```
-
-#### **B**: `(autoload 'php-mode)`
-
-Emacs起動時の僅かな読み込み増加をも削減したい上級ユーザー向けです。
-
-この場合も `make`でバイトコンパイルしておくことを推奨します。
-
-```el
-;; Put follow code into init.el
-(autoload 'php-mode (expand-file-name "~/path/to/php-mode/php-mode") "\
-Major mode for editing PHP code.
-
-\\{php-mode-map}
-
-\(fn)" t nil)
-
-(add-to-list 'auto-mode-alist '("\\.\\(?:php\\|phtml\\)\\'" . php-mode))
-
-;; Any code below is *unnecessary*
-;; (add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
-;; (require 'php-mode)
-```
-
-#### **C**: `(require 'php-mode)` *(非推奨)*
-
-特定のパスから`php-mode`を同期的に読み込みます。 **A**の場合と比べて10倍のサイズのコードを読み込むことになり、起動時間の増加幅はCPUとファイスシステムのパフォーマンスに依存します。
-
-```el
-(require 'php-mode "~/path/to/php-mode/php-mode")
-(add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
-```
+もしパッケージマネージャに依存したくなければ、伝統的な方法によってLispファイルを直接インストールすることもできます。詳細なセットアップ方法は[手動でのインストール][wiki-manual-installation-ja]ページをご覧ください。
 
 バグを報告する
 --------------
@@ -300,10 +252,6 @@ GNU Emacsには[Subword Mode][]という機能があり、このマイナーモ�
 
 キーバインド `C-c C-w` はSubword Modeのオンとオフを切り替えます。
 
-### Amakaサポート
-
-Viewing and editing build scripts for [Amaka](http://trashofmasters.github.io/amaka/) will automatically enable PHP Mode.
-
 ### 現在のclass/namespaceを挿入する
 
 ```el
@@ -383,7 +331,6 @@ PHP Modeは[GNU General Public License Version 3][gpl-v3] (GPLv3) でライセ�
 [Contributors]: https://github.com/emacs-php/php-mode/graphs/contributors
 [MELPA Stable]: https://stable.melpa.org/
 [MELPA]: https://melpa.org/
-[Marmalade]: http://marmalade-repo.org/
 [Subword Mode]: https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
 [Supported Version]: https://github.com/emacs-php/php-mode/wiki/Supported-Version
 [Web Mode]: http://web-mode.org/
@@ -398,8 +345,8 @@ PHP Modeは[GNU General Public License Version 3][gpl-v3] (GPLv3) でライセ�
 [package]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html
 [php-elisp-stretch]: https://packages.debian.org/stretch/php-elisp
 [php-elisp-ubuntu1810]: https://packages.ubuntu.com/cosmic/php-elisp
-[php-mode releases]: https://github.com/emacs-php/php-mode/releases
 [php-mode-packages]: https://repology.org/project/emacs:php-mode/versions
 [php-mode]: https://github.com/emacs-php/php-mode
 [php-suite]: https://github.com/emacs-php/php-suite
 [wiki]: https://github.com/emacs-php/php-mode/wiki
+[wiki-manual-installation-ja]: https://github.com/emacs-php/php-mode/wiki/Manual-installation-ja

@@ -38,56 +38,7 @@ Also, the `php-elisp` package provided by [Debian 9 (stretch)][php-elisp-stretch
 
 ### Manual installation
 
-Please `git clone` this project or download and unarchive tar or zip file from [php-mode releases].
-
-You can choose one of the following **A**, **B**, **C** installation methods.
-
-#### **A**: `(load php-mode-autoloads.el)` *(RECOMMENDED)*
-
-This is an initialization method that achieves the same performance and ease of use as using a package manager.
-
-By moving the downloaded file to the extracted path of the current directory and executing the `make` command, byte compilation and `php-mode-autoloads.el` is generated.  Just load the file from `init.el` and you are ready to use.
-
-```el
-;; Put follow code into init.el
-(when (file-directory-p "~/path/to/php-mode")
-  (load "~/path/to/php-mode/php-mode-autoloads.el"))
-
-;; Any code below is *unnecessary*
-;; (require 'php-mode)
-;; (add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
-;; (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
-```
-#### **B**: `(autoload 'php-mode)`
-
-This is for advanced users who want to reduce the slight increase in reading when Emacs starts.
-
-Also in this case, it is recommended to byte compile with `make`.
-
-```el
-;; Put follow code into init.el
-(autoload 'php-mode (expand-file-name "~/path/to/php-mode/php-mode") "\
-Major mode for editing PHP code.
-
-\\{php-mode-map}
-
-\(fn)" t nil)
-
-(add-to-list 'auto-mode-alist '("\\.\\(?:php\\|phtml\\)\\'" . php-mode))
-
-;; Any code below is *unnecessary*
-;; (add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
-;; (require 'php-mode)
-```
-
-#### **C**: `(require 'php-mode)` *(NOT RECOMMENDED)*
-
-Load `php-mode` synchronously from a specific path.  It will load 10 times the size of the code compared to method **A**, and how much the startup time will depend on the performance of your machine's CPU and file system.
-
-```el
-(require 'php-mode "~/path/to/php-mode/php-mode")
-(add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
-```
+If you don't want to depend on a package manager, you can install Lisp files directly in the traditional way.  See [Manual installation][wiki-manual-installation] for our recommended setup method.
 
 ### Configuration
 
@@ -281,10 +232,6 @@ If you want to always use Subword Mode for PHP files then you can add this to yo
 
 The key-binding `C-c C-w` will also toggle Subword Mode on and off.
 
-### Amaka Support
-
-Viewing and editing build scripts for [Amaka](http://trashofmasters.github.io/amaka/) will automatically enable PHP Mode.
-
 ### Insert current class/namespace
 
 ```el
@@ -364,7 +311,6 @@ This project was maintained by [Eric James Michael Ritz][@ejmr] until 2017. Curr
 [Contributors]: https://github.com/emacs-php/php-mode/graphs/contributors
 [MELPA Stable]: https://stable.melpa.org/
 [MELPA]: https://melpa.org/
-[Marmalade]: http://marmalade-repo.org/
 [Subword Mode]: https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
 [Supported Version]: https://github.com/emacs-php/php-mode/wiki/Supported-Version
 [Web Mode]: http://web-mode.org/
@@ -379,8 +325,8 @@ This project was maintained by [Eric James Michael Ritz][@ejmr] until 2017. Curr
 [package]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html
 [php-elisp-stretch]: https://packages.debian.org/stretch/php-elisp
 [php-elisp-ubuntu1810]: https://packages.ubuntu.com/cosmic/php-elisp
-[php-mode releases]: https://github.com/emacs-php/php-mode/releases
 [php-mode-packages]: https://repology.org/project/emacs:php-mode/versions
 [php-mode]: https://github.com/emacs-php/php-mode
 [php-suite]: https://github.com/emacs-php/php-suite
 [wiki]: https://github.com/emacs-php/php-mode/wiki
+[wiki-manual-installation]: https://github.com/emacs-php/php-mode/wiki/Manual-installation
