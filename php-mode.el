@@ -1574,7 +1574,7 @@ a completion list."
      ("\\(static\\)\\(?:[[:space:]]private\\|[[:space:]]protected\\|[[:space:]]public\\)?\\(?:[[:space:]]\$?[[:word:]]+\\)\\(?:[[:space:]]*=[[:space:]]*[^;]+\\)?\\(?:;\\)" (1 'php-property-static))
 
      ;; Block statements (if, elseif, for, foreach, catch, switch, while, declare)
-     ("if\\|elseif\\|for\\|foreach\\|catch\\|switch\\|while\\|declare" . 'php-block-statement)
+     ("\\(if\\|elseif\\|for\\|foreach\\|catch\\|switch\\|while\\|declare\\)\\(?:[[:space:]]*(\\)" (1 'php-block-statement))
 
      ;; Flow control statements (break, continue, die, exit, goto, return, throw)
      ("break\\|continue\\|die\\|exit\\|goto\\|return\\|throw" . 'php-flow-control-statement)
