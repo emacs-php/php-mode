@@ -263,16 +263,11 @@ have any tags inside a PHP string, it will be fooled."
 This variable can take one of the following symbol values:
 
 `Default' - use a reasonable default style for PHP.
-
+`PSR-2' - use PSR standards (PSR-2, PSR-12).
 `PEAR' - use coding styles preferred for PEAR code and modules.
-
 `Drupal' - use coding styles preferred for working with Drupal projects.
-
 `WordPress' - use coding styles preferred for working with WordPress projects.
-
-`Symfony2' - use coding styles preferred for working with Symfony2 projects.
-
-`PSR-2' - use coding styles preferred for working with projects using PSR-2 standards."
+`Symfony2' - use coding styles preferred for working with Symfony2 projects."
   :group 'php-mode
   :tag "PHP Mode Coding Style"
   :type '(choice (const :tag "Default" php)
@@ -337,13 +332,6 @@ In that case set to `NIL'."
   (let ((map (make-sparse-keymap "PHP Mode")))
     ;; Remove menu item for c-mode
     (define-key map [menu-bar C] nil)
-
-    ;; (define-key map [menu-bar php complete-function]
-    ;;   '("Complete function name" . php-complete-function))
-    ;; (define-key map [menu-bar php browse-manual]
-    ;;   '("Browse manual" . php-browse-manual))
-    ;; (define-key map [menu-bar php search-documentation]
-    ;;   '("Search documentation" . php-search-documentation))
 
     ;; By default PHP Mode binds C-M-h to c-mark-function, which it
     ;; inherits from cc-mode.  But there are situations where
@@ -570,8 +558,7 @@ PHP does not have an \"enum\"-like keyword."
     "strict_types"
 
     ;;; self for static references:
-    "self"
-    ))
+    "self"))
 
 ;; PHP does not have <> templates/generics
 (c-lang-defconst c-recognize-<>-arglists
