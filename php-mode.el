@@ -1564,6 +1564,9 @@ a completion list."
      ;; Method static modifier
      ("\\(static\\)\\(?:[[:space:]]private\\|[[:space:]]protected\\|[[:space:]]public\\|[[:space:]]final\\|[[:space:]]abstract\\)*\\(?:[[:space:]]function\\)" (1 'php-method-static))
 
+     ;; function keyword
+     ("\\(function\\)\\(?:[[:space:]]+[_[:word:]\\]+[[:space:]]*(\\)" (1 'php-function-keyword))
+     
      ;; Property constants
      ("\\(const\\)[[:space:]]\\(?:[^\$][[:word:]]\\)" (1 'php-property-const))
      

@@ -301,11 +301,15 @@
   :group 'php-faces
   :tag "PHP Type Op")
 
-
 (defface php-return-type-colon '((t (:inherit default)))
   "Face used to highlight : character in front of return type."
   :group 'php-faces
   :tag "PHP Return Type Colon")
+
+(defface php-function-keyword '((t (:inherit php-keyword)))
+  "Face used to highlight the 'function' keyword in declaration."
+  :group 'php-faces
+  :tag "PHP Function Keyword")
 
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
