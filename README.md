@@ -1,4 +1,5 @@
-# Emacs PHP Mode
+<div align="center">
+  <h1>Emacs PHP Mode</h1>
 
 [![Emacs: 26.3](https://img.shields.io/badge/Emacs-26.3-blue.svg)](https://www.gnu.org/software/emacs/)
 [![lang: PHP 7](https://img.shields.io/badge/lang-PHP%207-brightgreen.svg)](http://php.net/manual/migration70.php)
@@ -8,7 +9,9 @@
 [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
 [![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)](http://www.gnu.org/licenses/gpl-3.0.txt)
 
-This is a major mode development project to support PHP coding in GNU Emacs.
+A powerful and flexible Emacs major mode for editing PHP scripts
+
+</div>
 
 Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode][php-mode].
 
