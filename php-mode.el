@@ -1699,6 +1699,9 @@ a completion list."
      ;; Highlight the ? character for nullable type hints.
      ("\\(\\?\\)\\(:?\\sw\\|\\s_\\|\\\\\\)+\\s-+\\$" 1 font-lock-type-face)
 
+     ;; Highlight the : character in front of return types.
+     ("\\(?:function[[:space:]]+[[:word:]]+([[:word:][:space:],\$\\]*)\\)\\(:\\)" (1 'php-return-type-colon))
+
      ;; Class names without a namespace are not highlighted at all when they
      ;; are used as nullable type hints or return types (both nullable and
      ;; non-nullable). We have to use separate regular expressions, because
