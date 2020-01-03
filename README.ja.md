@@ -9,19 +9,6 @@
 [![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)](http://www.gnu.org/licenses/gpl-3.0.txt)
 
 GNU EmacsでのPHPコーディングを支援するメジャーモードの開発プロジェクトです。
-これまで、以下の人々の作業をもとにフォークされました。
-
- 1. Turadg Aleahmad (Original Author)
- 2. Aaron S. Hawley
- 3. Lennart Borgman
- 4. Eric James Michael Ritz
- 5. Syohei Yoshida
-
-リストアップされたすべての貢献者たちも同様にPHPモードを改善しました。
-
-現在のメンテナ：
-
- 1. USAMI Kenta (@zonuexe)
 
 [PHP ModeのGitHubプロジェクト][php-mode]にissueを作成してバグ報告や機能リクエストを送ってください。あるいは[PHP suite][php-suite]の[FeatHubページ][feathub]に機能リクエストを送っても構いません。
 
@@ -356,17 +343,41 @@ Wiki
 
 GitHubのプロジェクトページには[wiki][]があり、自由に編集して構いません。このWikiには今後追加する計画のある機能やバグが掲載されています。また、PHPモードをより使いやすくするためのTipsを追加できます。
 
-ライセンス
--------
+## 著作権
 
-PHP Mode uses the [GNU General Public License 3](http://www.gnu.org/copyleft/gpl.html).
+PHP Modeは[GNU General Public License Version 3][gpl-v3] (GPLv3) でライセンスされています。
 
-Contributors
-------------
+このプロジェクトは1999年に[Turadg Aleahmad][@turadg]が書いた`php-mode.el`に起源を持ちます。2013年に[Daniel Hackney][@haxney]がEmacs組み込みのCC Modeをもとに書き直し始めました。PHPモードの改善に協力した貢献者のリストは[Authors]と[Contributors]に掲載されています。
 
-PHPモードの改善に協力したすべての貢献者のリストは[README.md#contributors](https://github.com/emacs-php/php-mode/blob/master/README.md#contributors)に掲載されています。
+このプロジェクトは2017年まで[Eric James Michael Ritz][@ejmr]によりメンテナンスされていました。現在は[Friends of Emacs-PHP Development][@emacs-php]コミュニティが引き継いで開発しています。
 
+> ```
+> Copyright (C) 2018-2020  Friends of Emacs-PHP development
+> Copyright (C) 1999, 2000, 2001, 2003, 2004 Turadg Aleahmad
+>               2008 Aaron S. Hawley
+>               2011, 2012, 2013, 2014, 2015, 2016, 2017 Eric James Michael Ritz
+> ```
+>
+> This program is free software; you can redistribute it and/or modify
+> it under the terms of the GNU General Public License as published by
+> the Free Software Foundation, either version 3 of the License, or
+> (at your option) any later version.
+>
+> This program is distributed in the hope that it will be useful,
+> but WITHOUT ANY WARRANTY; without even the implied warranty of
+> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> GNU General Public License for more details.
+>
+> You should have received a copy of the GNU General Public License
+> along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+[@ejmr]: https://github.com/ejmr
+[@emacs-php]: https://github.com/emacs-php
+[@haxney]: https://github.com/haxney
+[@turadg]: https://github.com/turadg
+[Authors]: https://github.com/emacs-php/php-mode/wiki/Authors
 [Cask]: https://github.com/cask/cask
+[Contributors]: https://github.com/emacs-php/php-mode/graphs/contributors
 [MELPA Stable]: https://stable.melpa.org/
 [MELPA]: https://melpa.org/
 [Marmalade]: http://marmalade-repo.org/
@@ -389,6 +400,4 @@ PHPモードの改善に協力したすべての貢献者のリストは[README.
 [php-mode-packages]: https://repology.org/project/emacs:php-mode/versions
 [php-mode]: https://github.com/emacs-php/php-mode
 [php-suite]: https://github.com/emacs-php/php-suite
-[travis-badge]: https://travis-ci.org/emacs-php/php-mode.svg
-[travis-link]: https://travis-ci.org/emacs-php/php-mode
 [wiki]: https://github.com/emacs-php/php-mode/wiki

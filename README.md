@@ -9,19 +9,6 @@
 [![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)](http://www.gnu.org/licenses/gpl-3.0.txt)
 
 This is a major mode development project to support PHP coding in GNU Emacs.
-This fork builds on the work of:
-
-1. Turadg Aleahmad (Original Author)
-2. Aaron S. Hawley
-3. Lennart Borgman
-4. Eric James Michael Ritz
-5. Syohei Yoshida
-
-All contributors listed below improved PHP Mode as well.
-
-The current maintainer is:
-
-1. USAMI Kenta (@zonuexe)
 
 Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode][php-mode].  Alternatively you may also request features via [the FeatHub page][feathub] for the entire [PHP suite for GNU Emacs][php-suite].
 
@@ -337,97 +324,41 @@ The Wiki
 
 The GitHub project page has a [wiki][] that you should feel free to edit.  The wiki lists the features and bugs that are on plan to include in upcoming versions of PHP Mode.  It is also a place to add any tips to make the mode more useful.
 
-License
--------
+## Copyright
 
-PHP Mode uses the [GNU General Public License 3](http://www.gnu.org/copyleft/gpl.html).
+PHP Mode is licensed under [GNU General Public License Version 3][gpl-v3] (GPLv3).
 
+This project originated in `php-mode.el` written by [Turadg Aleahmad][@turadg] in 1999.  In 2013 [Daniel Hackney][@haxney] began rewriting parts of PHP Mode in terms of Emacs' built-in CC Mode.  Other contributors are listed in [Authors] and [Contributors].
 
-Contributors
-------------
+This project was maintained by [Eric James Michael Ritz][@ejmr] until 2017. Currently, the [Friends of Emacs-PHP Development][@emacs-php] community inherits PHP Mode.
 
-[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/0)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/0)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/1)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/1)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/2)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/2)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/3)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/3)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/4)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/4)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/5)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/5)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/6)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/6)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/7)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/7)
+> ```
+> Copyright (C) 2018-2020  Friends of Emacs-PHP development
+> Copyright (C) 1999, 2000, 2001, 2003, 2004 Turadg Aleahmad
+>               2008 Aaron S. Hawley
+>               2011, 2012, 2013, 2014, 2015, 2016, 2017 Eric James Michael Ritz
+> ```
+>
+> This program is free software; you can redistribute it and/or modify
+> it under the terms of the GNU General Public License as published by
+> the Free Software Foundation, either version 3 of the License, or
+> (at your option) any later version.
+>
+> This program is distributed in the hope that it will be useful,
+> but WITHOUT ANY WARRANTY; without even the implied warranty of
+> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> GNU General Public License for more details.
+>
+> You should have received a copy of the GNU General Public License
+> along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-In chronological order:
-
-1. Juanjo
-2. Torsten Martinsen
-3. Vinai Kopp
-4. Sean Champ
-5. Doug Marcey
-6. Kevin Blake
-7. Rex McMaster
-8. Mathias Meyer
-9. Boris Folgmann
-10. Roland
-11. Rosenfeld
-12. Fred Yankowski
-13. Craig Andrews
-14. John Keller
-15. Ryan
-16. Sammartino
-17. ppercot
-18. Valentin Funk
-19. Stig Bakken
-20. Gregory Stark
-21. Chris Morris
-22. Nils Rennebarth
-23. Gerrit Riessen
-24. Eric Mc Sween
-25. Ville Skytta
-26. Giacomo Tesio
-27. Urban Müller
-28. [Engelke Eschner](https://github.com/tekai)
-29. Lennart Borgman
-30. Stefan Monnier
-31. Aaron S. Hawley
-32. [Ian Eure](https://github.com/ieure)
-33. [Bill Lovett](https://github.com/lovett)
-34. Dias Badekas
-35. David House
-36. [Tom Willemse](https://github.com/ryuslash)
-37. [Olaf the Viking](https://github.com/olavTHEviking)
-38. [Maël Nison](https://github.com/arcanis)
-39. [flack](https://github.com/flack)
-40. [Michele Bini](https://github.com/rev22)
-41. Emanuele Tomasi
-42. [David Maus](https://github.com/dmj)
-43. [Jakub Jankiewicz](https://github.com/jcubic)
-44. [Marcin Antczak](https://github.com/marcinant)
-45. [顾伟刚](https://github.com/guweigang)
-46. [zapad](https://github.com/zargener)
-47. [Carl Groner](https://github.com/cgroner)
-48. [Michael Dwyer](https://github.com/kalifg)
-49. [Daniel Hackney](https://github.com/haxney)
-50. [Nate Eagleson](https://github.com/NateEag)
-51. [Steve Purcell](https://github.com/purcell)
-52. TatriX
-53. [François-Xavier Bois](https://github.com/fxbois)
-54. [James Laver](https://github.com/jjl)
-55. [Jacek Wysocki](https://github.com/exu)
-56. [Jon Dufrense](https://github.com/jdufresne)
-57. [Andrei Chițu](https://github.com/achitu)
-58. [phil-s](https://github.com/phil-s)
-59. [Bence Kalmar](https://github.com/brkalmar)
-60. [Elis Axelsson](https://github.com/etu)
-61. [Alan Pearce](https://github.com/alanpearce)
-62. Syohei Yoshida
-63. Joris Steyn
-64. l3msh0
-65. [Hernawan Fa'iz Abdillah](https://github.com/Abdillah)
-66. [Sebastian Wiesner](https://github.com/lunaryorn)
-67. [Michael Stolovitzsky](https://github.com/emestee)
-68. [David Arroyo Menéndez](https://github.com/davidam)
-69. [USAMI Kenta](https://tadsan.github.io/) (@zonuexe)
-70. [Tim Landscheidt](http://www.tim-landscheidt.de)
-71. [Fabian Wiget](https://github.com/fabacino)
-72. tangxifan
-73. [Serghei Iakovlev](https://github.com/sergeyklay)
-74. [Christian Albrecht](https://github.com/calbrecht)
-75. [Sebastian Fieber](https://github.com/fallchildren)
-76. [Mark A. Hershberger](https://github.com/hexmode)
-
+[@ejmr]: https://github.com/ejmr
+[@emacs-php]: https://github.com/emacs-php
+[@haxney]: https://github.com/haxney
+[@turadg]: https://github.com/turadg
+[Authors]: https://github.com/emacs-php/php-mode/wiki/Authors
 [Cask]: https://github.com/cask/cask
+[Contributors]: https://github.com/emacs-php/php-mode/graphs/contributors
 [MELPA Stable]: https://stable.melpa.org/
 [MELPA]: https://melpa.org/
 [Marmalade]: http://marmalade-repo.org/
