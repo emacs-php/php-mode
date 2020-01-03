@@ -10,7 +10,7 @@
 
 This is a major mode development project to support PHP coding in GNU Emacs.
 
-Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode][php-mode].  Alternatively you may also request features via [the FeatHub page][feathub] for the entire [PHP suite for GNU Emacs][php-suite].
+Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode][php-mode].
 
 Installation
 ------------
@@ -368,7 +368,6 @@ This project was maintained by [Eric James Michael Ritz][@ejmr] until 2017. Curr
 [camelCase]: https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%A1%E3%83%AB%E3%82%B1%E3%83%BC%E3%82%B9
 [cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
 [elpa-php-mode]: https://packages.debian.org/sid/elpa-php-mode
-[feathub]: https://feathub.com/emacs-php/php-suite
 [issue-430]: https://github.com/emacs-php/php-mode/issues/430
 [melpa-badge]: http://melpa.org/packages/php-mode-badge.svg
 [melpa-link]: http://melpa.org/#/php-mode
