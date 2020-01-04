@@ -1,4 +1,5 @@
-# Emacs PHP Mode
+<div align="center">
+  <h1>Emacs PHP Mode</h1>
 
 [![Emacs: 26.3](https://img.shields.io/badge/Emacs-26.3-blue.svg)](https://www.gnu.org/software/emacs/)
 [![lang: PHP 7](https://img.shields.io/badge/lang-PHP%207-brightgreen.svg)](http://php.net/manual/migration70.php)
@@ -8,22 +9,11 @@
 [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
 [![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)](http://www.gnu.org/licenses/gpl-3.0.txt)
 
-This is a major mode development project to support PHP coding in GNU Emacs.
-This fork builds on the work of:
+A powerful and flexible Emacs major mode for editing PHP scripts
 
-1. Turadg Aleahmad (Original Author)
-2. Aaron S. Hawley
-3. Lennart Borgman
-4. Eric James Michael Ritz
-5. Syohei Yoshida
+</div>
 
-All contributors listed below improved PHP Mode as well.
-
-The current maintainer is:
-
-1. USAMI Kenta (@zonuexe)
-
-Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode][php-mode].  Alternatively you may also request features via [the FeatHub page][feathub] for the entire [PHP suite for GNU Emacs][php-suite].
+Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode][php-mode].
 
 Installation
 ------------
@@ -40,64 +30,15 @@ With GNU Emacs 24 or later then you can use its [package][] feature (or [Cask][]
 
 ### Install using OS package system
 
-PHP Mode is available from [package systems provided by several OSs](https://repology.org/project/emacs:php-mode/versions).  On Debian, and operating systems derived from it, such as Ubuntu, the easiest way to add PHP support to Emacs is `sudo apt install elpa-php-mode`.  "Stable" releases of these operating systems include a well-tested frozen version of this package that is always older than the latest upstream version of PHP Mode.  Autoloads and byte-compilation are automatic.
+PHP Mode is available from [package systems provided by several OSs][php-mode-packages].  On Debian, and operating systems derived from it, such as Ubuntu, the easiest way to add PHP support to Emacs is `sudo apt install elpa-php-mode`.  "Stable" releases of these operating systems include a well-tested frozen version of this package that is always older than the latest upstream version of PHP Mode.  Autoloads and byte-compilation are automatic.
 
-Please consider installing the package provided in `sid` (aka: "unstable", a rolling release) in order to benefit from the latest PHP Mode features and performance improvements.  The latest version can be found here: [`elpa-php-mode`](https://packages.debian.org/sid/elpa-php-mode).  Investigate "apt-pinning" to make tracking this update stream automatic.
+Please consider installing the package provided in `sid` (aka: "unstable", a rolling release) in order to benefit from the latest PHP Mode features and performance improvements.  The latest version can be found here: [`elpa-php-mode`][elpa-php-mode].  Investigate "apt-pinning" to make tracking this update stream automatic.
 
-Also, the `php-elisp` package provided by [Debian 9 (stretch)](https://packages.debian.org/stretch/php-elisp) and [Ubuntu 18.10](https://packages.ubuntu.com/cosmic/php-elisp) and earlier is [extremely old](https://github.com/emacs-php/php-mode/issues/430), so **PLEASE DO NOT INSTALL IT**.
+Also, the `php-elisp` package provided by [Debian 9 (stretch)][php-elisp-stretch] and [Ubuntu 18.10][php-elisp-ubuntu1810] and earlier is [extremely old][issue-430], so **PLEASE DO NOT INSTALL IT**.
 
 ### Manual installation
 
-Please `git clone` this project or download and unarchive tar or zip file from [php-mode releases].
-
-You can choose one of the following **A**, **B**, **C** installation methods.
-
-#### **A**: `(load php-mode-autoloads.el)` *(RECOMMENDED)*
-
-This is an initialization method that achieves the same performance and ease of use as using a package manager.
-
-By moving the downloaded file to the extracted path of the current directory and executing the `make` command, byte compilation and `php-mode-autoloads.el` is generated.  Just load the file from `init.el` and you are ready to use.
-
-```el
-;; Put follow code into init.el
-(when (file-directory-p "~/path/to/php-mode")
-  (load "~/path/to/php-mode/php-mode-autoloads.el"))
-
-;; Any code below is *unnecessary*
-;; (require 'php-mode)
-;; (add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
-;; (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
-```
-#### **B**: `(autoload 'php-mode)`
-
-This is for advanced users who want to reduce the slight increase in reading when Emacs starts.
-
-Also in this case, it is recommended to byte compile with `make`.
-
-```el
-;; Put follow code into init.el
-(autoload 'php-mode (expand-file-name "~/path/to/php-mode/php-mode") "\
-Major mode for editing PHP code.
-
-\\{php-mode-map}
-
-\(fn)" t nil)
-
-(add-to-list 'auto-mode-alist '("\\.\\(?:php\\|phtml\\)\\'" . php-mode))
-
-;; Any code below is *unnecessary*
-;; (add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
-;; (require 'php-mode)
-```
-
-#### **C**: `(require 'php-mode)` *(NOT RECOMMENDED)*
-
-Load `php-mode` synchronously from a specific path.  It will load 10 times the size of the code compared to method **A**, and how much the startup time will depend on the performance of your machine's CPU and file system.
-
-```el
-(require 'php-mode "~/path/to/php-mode/php-mode")
-(add-to-list 'load-path (expand-file-name "~/path/to/php-mode"))
-```
+If you don't want to depend on a package manager, you can install Lisp files directly in the traditional way.  See [Manual installation][wiki-manual-installation] for our recommended setup method.
 
 ### Configuration
 
@@ -291,10 +232,6 @@ If you want to always use Subword Mode for PHP files then you can add this to yo
 
 The key-binding `C-c C-w` will also toggle Subword Mode on and off.
 
-### Amaka Support
-
-Viewing and editing build scripts for [Amaka](http://trashofmasters.github.io/amaka/) will automatically enable PHP Mode.
-
 ### Insert current class/namespace
 
 ```el
@@ -337,113 +274,59 @@ The Wiki
 
 The GitHub project page has a [wiki][] that you should feel free to edit.  The wiki lists the features and bugs that are on plan to include in upcoming versions of PHP Mode.  It is also a place to add any tips to make the mode more useful.
 
-License
--------
+## Copyright
 
-PHP Mode uses the [GNU General Public License 3](http://www.gnu.org/copyleft/gpl.html).
+PHP Mode is licensed under [GNU General Public License Version 3][gpl-v3] (GPLv3).
 
+This project originated in `php-mode.el` written by [Turadg Aleahmad][@turadg] in 1999.  In 2013 [Daniel Hackney][@haxney] began rewriting parts of PHP Mode in terms of Emacs' built-in CC Mode.  Other contributors are listed in [Authors] and [Contributors].
 
-Contributors
-------------
+This project was maintained by [Eric James Michael Ritz][@ejmr] until 2017. Currently, the [Friends of Emacs-PHP Development][@emacs-php] community inherits PHP Mode.
 
-[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/0)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/0)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/1)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/1)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/2)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/2)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/3)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/3)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/4)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/4)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/5)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/5)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/6)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/6)[![](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/images/7)](https://sourcerer.io/fame/ejmr/emacs-php/php-mode/links/7)
+> ```
+> Copyright (C) 2018-2020  Friends of Emacs-PHP development
+> Copyright (C) 1999, 2000, 2001, 2003, 2004 Turadg Aleahmad
+>               2008 Aaron S. Hawley
+>               2011, 2012, 2013, 2014, 2015, 2016, 2017 Eric James Michael Ritz
+> ```
+>
+> This program is free software; you can redistribute it and/or modify
+> it under the terms of the GNU General Public License as published by
+> the Free Software Foundation, either version 3 of the License, or
+> (at your option) any later version.
+>
+> This program is distributed in the hope that it will be useful,
+> but WITHOUT ANY WARRANTY; without even the implied warranty of
+> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> GNU General Public License for more details.
+>
+> You should have received a copy of the GNU General Public License
+> along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-In chronological order:
-
-1. Juanjo
-2. Torsten Martinsen
-3. Vinai Kopp
-4. Sean Champ
-5. Doug Marcey
-6. Kevin Blake
-7. Rex McMaster
-8. Mathias Meyer
-9. Boris Folgmann
-10. Roland
-11. Rosenfeld
-12. Fred Yankowski
-13. Craig Andrews
-14. John Keller
-15. Ryan
-16. Sammartino
-17. ppercot
-18. Valentin Funk
-19. Stig Bakken
-20. Gregory Stark
-21. Chris Morris
-22. Nils Rennebarth
-23. Gerrit Riessen
-24. Eric Mc Sween
-25. Ville Skytta
-26. Giacomo Tesio
-27. Urban Müller
-28. [Engelke Eschner](https://github.com/tekai)
-29. Lennart Borgman
-30. Stefan Monnier
-31. Aaron S. Hawley
-32. [Ian Eure](https://github.com/ieure)
-33. [Bill Lovett](https://github.com/lovett)
-34. Dias Badekas
-35. David House
-36. [Tom Willemse](https://github.com/ryuslash)
-37. [Olaf the Viking](https://github.com/olavTHEviking)
-38. [Maël Nison](https://github.com/arcanis)
-39. [flack](https://github.com/flack)
-40. [Michele Bini](https://github.com/rev22)
-41. Emanuele Tomasi
-42. [David Maus](https://github.com/dmj)
-43. [Jakub Jankiewicz](https://github.com/jcubic)
-44. [Marcin Antczak](https://github.com/marcinant)
-45. [顾伟刚](https://github.com/guweigang)
-46. [zapad](https://github.com/zargener)
-47. [Carl Groner](https://github.com/cgroner)
-48. [Michael Dwyer](https://github.com/kalifg)
-49. [Daniel Hackney](https://github.com/haxney)
-50. [Nate Eagleson](https://github.com/NateEag)
-51. [Steve Purcell](https://github.com/purcell)
-52. TatriX
-53. [François-Xavier Bois](https://github.com/fxbois)
-54. [James Laver](https://github.com/jjl)
-55. [Jacek Wysocki](https://github.com/exu)
-56. [Jon Dufrense](https://github.com/jdufresne)
-57. [Andrei Chițu](https://github.com/achitu)
-58. [phil-s](https://github.com/phil-s)
-59. [Bence Kalmar](https://github.com/brkalmar)
-60. [Elis Axelsson](https://github.com/etu)
-61. [Alan Pearce](https://github.com/alanpearce)
-62. Syohei Yoshida
-63. Joris Steyn
-64. l3msh0
-65. [Hernawan Fa'iz Abdillah](https://github.com/Abdillah)
-66. [Sebastian Wiesner](https://github.com/lunaryorn)
-67. [Michael Stolovitzsky](https://github.com/emestee)
-68. [David Arroyo Menéndez](https://github.com/davidam)
-69. [USAMI Kenta](https://tadsan.github.io/) (@zonuexe)
-70. [Tim Landscheidt](http://www.tim-landscheidt.de)
-71. [Fabian Wiget](https://github.com/fabacino)
-72. tangxifan
-73. [Serghei Iakovlev](https://github.com/sergeyklay)
-74. [Christian Albrecht](https://github.com/calbrecht)
-75. [Sebastian Fieber](https://github.com/fallchildren)
-76. [Mark A. Hershberger](https://github.com/hexmode)
-
-
+[@ejmr]: https://github.com/ejmr
+[@emacs-php]: https://github.com/emacs-php
+[@haxney]: https://github.com/haxney
+[@turadg]: https://github.com/turadg
+[Authors]: https://github.com/emacs-php/php-mode/wiki/Authors
 [Cask]: https://github.com/cask/cask
+[Contributors]: https://github.com/emacs-php/php-mode/graphs/contributors
 [MELPA Stable]: https://stable.melpa.org/
 [MELPA]: https://melpa.org/
-[Marmalade]: http://marmalade-repo.org/
 [Subword Mode]: https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
 [Supported Version]: https://github.com/emacs-php/php-mode/wiki/Supported-Version
 [Web Mode]: http://web-mode.org/
 [camelCase]: https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%A1%E3%83%AB%E3%82%B1%E3%83%BC%E3%82%B9
 [cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
-[feathub]: https://feathub.com/emacs-php/php-suite
+[elpa-php-mode]: https://packages.debian.org/sid/elpa-php-mode
+[issue-430]: https://github.com/emacs-php/php-mode/issues/430
 [melpa-badge]: http://melpa.org/packages/php-mode-badge.svg
 [melpa-link]: http://melpa.org/#/php-mode
 [melpa-stable-badge]: http://stable.melpa.org/packages/php-mode-badge.svg
 [melpa-stable-link]: http://stable.melpa.org/#/php-mode
 [package]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html
+[php-elisp-stretch]: https://packages.debian.org/stretch/php-elisp
+[php-elisp-ubuntu1810]: https://packages.ubuntu.com/cosmic/php-elisp
+[php-mode-packages]: https://repology.org/project/emacs:php-mode/versions
 [php-mode]: https://github.com/emacs-php/php-mode
-[php-mode releases]: https://github.com/emacs-php/php-mode/releases
 [php-suite]: https://github.com/emacs-php/php-suite
 [wiki]: https://github.com/emacs-php/php-mode/wiki
+[wiki-manual-installation]: https://github.com/emacs-php/php-mode/wiki/Manual-installation
