@@ -9,4 +9,5 @@
 
 (development
  (depends-on "pkg-info")
+ (depends-on "projectile")
  (depends-on "shut-up"))

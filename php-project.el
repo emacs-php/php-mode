@@ -68,6 +68,7 @@
 
 ;;; Code:
 (require 'cl-lib)
+(require 'projectile nil t)
 
 ;; Constants
 (defconst php-project-composer-autoloader "vendor/autoload.php")
@@ -82,6 +83,12 @@
 (defcustom php-project-auto-detect-etags-file nil
   "If `T', automatically detect etags file when file is opened."
   :tag "PHP Project Auto Detect Etags File"
+  :group 'php-project
+  :type 'boolean)
+
+(defcustom php-project-use-projectile-to-detect-root nil
+  "If `T' and projectile-mode is activated, use Projectile for root detection."
+  :tag "PHP Project Use Projectile To Detect Root"
   :group 'php-project
   :type 'boolean)
 
@@ -269,6 +276,14 @@ Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
   "Return path to current PHP project."
   (if (and (stringp php-project-root) (file-directory-p php-project-root))
       php-project-root
+    (php-project--detect-root-dir)))
+
+(defun php-project--detect-root-dir ()
+  "Return detected project root."
+  (if (and php-project-use-projectile-to-detect-root
+           (bound-and-true-p projectile-mode)
+           (fboundp 'projectile-project-root))
+      (projectile-project-root default-directory)
     (let ((detect-method
            (cond
             ((stringp php-project-root) (list php-project-root))
