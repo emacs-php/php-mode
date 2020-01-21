@@ -1693,6 +1693,7 @@ The output will appear in the buffer *PHP*."
 ;;;###autoload
 (progn
   (add-to-list 'auto-mode-alist '("/\\.php_cs\\(?:\\.dist\\)?\\'" . php-mode))
+  (add-to-list 'auto-mode-alist '("\\.\\(?:php\\.inc\\|stub\\)\\'" . php-mode))
   (add-to-list 'auto-mode-alist '("\\.\\(?:php[s345]?\\|phtml\\)\\'" . php-mode-maybe)))
 
 (provide 'php-mode)
