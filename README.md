@@ -317,6 +317,7 @@ This project was maintained by [Eric James Michael Ritz][@ejmr] until 2017. Curr
 [camelCase]: https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%A1%E3%83%AB%E3%82%B1%E3%83%BC%E3%82%B9
 [cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
 [elpa-php-mode]: https://packages.debian.org/sid/elpa-php-mode
+[gpl-v3]: https://www.gnu.org/licenses/quick-guide-gplv3.html
 [issue-430]: https://github.com/emacs-php/php-mode/issues/430
 [melpa-badge]: http://melpa.org/packages/php-mode-badge.svg
 [melpa-link]: http://melpa.org/#/php-mode
