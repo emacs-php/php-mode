@@ -1533,6 +1533,8 @@ a completion list."
       1 'php-class)
      ;; Support the ::class constant in PHP5.6
      ("\\sw+\\(::\\)\\(class\\)\\b" (1 'php-paamayim-nekudotayim) (2 'php-magical-constant))
+     ;; Class declaration keywords (class, trait, interface)
+     ("\\_<\\(class\\|trait\\|interface\\)\\_>" . 'php-class-declaration)
 
      ;; Highlight static method calls as such. This is necessary for method
      ;; names which are identical to keywords to be highlighted correctly.

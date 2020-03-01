@@ -1,7 +1,7 @@
 ;; -*- mode: emacs-lisp -*-
 (("<?php" . php-php-tag)
  ("\n\n")
- ("class" . php-keyword)
+ ("class" . php-class-declaration)
  (" ")
  ("Typed" . font-lock-type-face)
  ("\n{\n    ")

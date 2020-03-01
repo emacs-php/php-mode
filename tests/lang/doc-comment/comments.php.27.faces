@@ -65,7 +65,7 @@
  ("\n")
  ("final" . php-keyword)
  (" ")
- ("class" . php-keyword)
+ ("class" . php-class-declaration)
  (" ")
  ("SampleClass" . font-lock-type-face)
  ("\n{\n    ")
