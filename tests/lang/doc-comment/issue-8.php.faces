@@ -11,7 +11,7 @@
  ("@ORM\\Table" php-doc-annotation-tag font-lock-doc-face)
  ("(name=\"product\")\n */" . font-lock-doc-face)
  ("\n")
- ("class" . php-keyword)
+ ("class" . php-class-declaration)
  (" ")
  ("Product" . font-lock-type-face)
  ("\n{\n    ")
