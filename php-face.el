@@ -197,22 +197,22 @@
   :tag "PHPDoc $this Sigil")
 
 (defface php-doc-class-name '((t (:inherit php-string)))
-  "Face used to class names in doc-comment."
+  "PHP Mode Face used to class names in doc-comment."
   :group 'php-faces
   :tag "PHPDoc Class Name")
 
 (defface php-class-declaration '((t (:inherit php-keyword)))
-  "Face used to class declarations."
+  "PHP Mode Face used to class declarations."
   :group 'php-faces
   :tag "PHP Class Declaration")
 
 (defface php-class-declaration-spec '((t (:inherit php-keyword)))
-  "Face used to highlight class declaration specification keywords (implements, extends)"
+  "PHP Mode Face used to highlight class declaration specification keywords (implements, extends)"
   :group 'php-faces
   :tag "PHP Class Declaration Specification")
 
 (defface php-namespace-declaration '((t (:inherit php-keyword)))
-  "Face used to highlight namespace declaration keyword."
+  "PHP Mode Face used to highlight namespace declaration keyword."
   :group 'php-faces
   :tag "PHP Namespace Declaration")
 
