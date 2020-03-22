@@ -37,3 +37,14 @@ case $test:
     echo 'test'; // ###php-mode-test### ((indent (* c-basic-offset 2)))
     echo 'test'; // ###php-mode-test### ((indent (* c-basic-offset 2)))
 }
+
+const AAA = 'AAA';
+const bbb = 'bbb';
+
+switch (true) {
+case AAA:
+case bbb:
+case 111:
+    echo 'test'; // ###php-mode-test### ((indent (* c-basic-offset 2)))
+    echo 'test'; // ###php-mode-test### ((indent (* c-basic-offset 2)))
+}
