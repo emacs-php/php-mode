@@ -24,7 +24,7 @@
  (" ")
  ("Child" . font-lock-type-face)
  (" ")
- ("extends" . php-keyword)
+ ("extends" . php-class-declaration-spec)
  (" ")
  ("Parent_" . font-lock-type-face)
  ("\n{\n}\n"))

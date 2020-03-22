@@ -206,6 +206,41 @@
   :group 'php-faces
   :tag "PHP Class Declaration")
 
+(defface php-class-declaration-spec '((t (:inherit php-keyword)))
+  "Face used to highlight class declaration specification keywords (implements, extends)"
+  :group 'php-faces
+  :tag "PHP Class Declaration Specification")
+
+(defface php-namespace-declaration '((t (:inherit php-keyword)))
+  "Face used to highlight namespace declaration keyword."
+  :group 'php-faces
+  :tag "PHP Namespace Declaration")
+
+(defface php-import-declaration '((t (:inherit php-keyword)))
+  "PHP Mode Face used to highlight import statements (use ... as ...)."
+  :group 'php-faces
+  :tag "PHP Import Statement")
+
+(defface php-class-modifier '((t (:inherit php-keyword)))
+  "PHP Mode Face used to highlight class modifiers (final, abstract)."
+  :group 'php-faces
+  :tag "PHP Class Modifier")
+
+(defface php-method-modifier '((t (:inherit php-keyword)))
+  "PHP Mode Face used to highlight method modifiers (final, abstract)."
+  :group 'php-faces
+  :tag "PHP Method Modifier")
+
+(defface php-visibility-modifier '((t (:inherit php-keyword)))
+  "PHP Mode Face used to highlight access keywords (public, protected, private)."
+  :group 'php-faces
+  :tag "PHP Visibility Modifier")
+
+(defface php-control-structure '((t (:inherit php-keyword)))
+  "PHP Mode Face used to highlight control structures (if, foreach, while, switch, catch...)."
+  :group 'php-faces
+  :tag "PHP Control Structure")
+
 (define-obsolete-face-alias 'php-annotations-annotation-face 'php-doc-annotation-tag "1.19.0")
 
 (provide 'php-face)

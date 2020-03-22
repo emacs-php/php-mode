@@ -63,7 +63,7 @@
  ("@ORM\\Entity" php-doc-annotation-tag font-lock-doc-face)
  ("(repositoryClass=\"Emacs\\Repository\\MajorModeRepository\")\n */" . font-lock-doc-face)
  ("\n")
- ("final" . php-keyword)
+ ("final" . php-class-modifier)
  (" ")
  ("class" . php-class-declaration)
  (" ")
