@@ -21,7 +21,7 @@ switch (true) {
 case null:
 case false:
     echo 'test'; // ###php-mode-test### ((indent (* c-basic-offset 2)))
-    echo 'test'; // ###php-mode-test### ((indent (* c-basic-offset 2)))
+    echo 'test'; // Emacs27 breaks indentation in this case #612
 }
 
 switch (true) {
