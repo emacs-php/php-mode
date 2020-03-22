@@ -158,10 +158,12 @@ file name and check that the faces of the fonts in the buffer match."
                               (php-mode-test-process-magics))))
      ,(if faces
           `(should (equal
-                    (php-mode-test--parse-list-file
-                     (concat (expand-file-name ,file php-mode-test-dir)
-                             (if (eq t ,faces) ".faces" ,faces)))
-                    (php-mode-test--buffer-face-list (current-buffer)))))
+                    (cons ,file
+                          (php-mode-test--parse-list-file
+                           (concat (expand-file-name ,file php-mode-test-dir)
+                                   (if (eq t ,faces) ".faces" ,faces))))
+                    (cons ,file
+                          (php-mode-test--buffer-face-list (current-buffer))))))
      (goto-char (point-min))
      (let ((case-fold-search nil))
        ,@body)))
@@ -421,14 +423,16 @@ style from Drupal."
   (with-php-mode-test ("language-constructs.php")
     (while (search-forward "ClassName" nil t)
       (backward-char)
-      (should (eq 'font-lock-type-face
-                  (get-text-property (point) 'face)))))
+      (let ((token (symbol-at-point)))
+        (should (equal (list token 'font-lock-type-face)
+                       (list token (get-text-property (point) 'face)))))))
   (with-php-mode-test ("language-constructs.php")
     (search-forward "Start:")
     (while (not (= (line-number-at-pos) (count-lines (point-min) (point-max))))
       (forward-line 1)
-      (should (eq 'php-keyword
-                  (get-text-property (point) 'face))))))
+      (let ((token (symbol-at-point)))
+        (should (equal (list token 'php-keyword)
+                       (list token (get-text-property (point) 'face))))))))
 
 (ert-deftest php-mode-test-issue-178 ()
   "Highligth as keyword and following symbol"
