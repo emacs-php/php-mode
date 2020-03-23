@@ -7,10 +7,7 @@ Support alignment (e.g. `align`, `align-current`) for PHP.
 Put this file into your load-path.and the following code into your ~/.emacs
 
 ```el
-(add-hook 'php-mode-hook
-          (lambda ()
-            (require 'php-align)
-            (php-align-setup)))
+(add-hook 'php-mode-hook #'php-align-setup)
 ```
 
 ## Examples
