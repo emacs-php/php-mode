@@ -152,6 +152,10 @@ defines constants, and sets the class loaders.")
 Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
   (put 'php-project-coding-style 'safe-local-variable #'symbolp)
 
+  (defvar-local php-project-align-lines t
+    "If T, automatically turn on `php-align-mode' by `php-align-setup'.")
+  (put 'php-project-align-lines 'safe-local-variable #'booleanp)
+
   (defvar-local php-project-php-file-as-template 'auto
     "
 `auto' (default)
