@@ -40,7 +40,6 @@
 ;; - Add test codes using el-expectations.
 
 ;;; Code:
-(require 'php-mode)
 (require 'align)
 (require 'regexp-opt)
 
