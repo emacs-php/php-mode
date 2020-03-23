@@ -112,21 +112,5 @@
   (add-to-list 'align-dq-string-modes 'php-mode)
   (add-to-list 'align-sq-string-modes 'php-mode))
 
-;; Unused functions.
-(defsubst php-align-face-at-point-in-p (point face-list)
-  "Return t if the face of the current POINT is an element of FACE-LIST.
- otherwise nil."
-  (consp (memq (get-text-property point 'face) face-list)))
-
-(defun php-align-point-is-comment-p ()
-  "Return t if the face of the current position is on the comment syntax."
-  (php-align-face-at-point-in-p (point) '(font-lock-comment-face)))
-
-(defun php-align-point-is-string-p ()
-  "Return t if the face of the current position is on the string syntax."
-  (php-align-face-at-point-in-p (point) '(font-lock-string-face)))
-
-;; Provide:
 (provide 'php-align)
-
 ;;; php-align.el ends here
