@@ -102,6 +102,7 @@
      "\\(?:" "^\\s-*" "\\(?:" "\\w\\|[->\\: \t]" "\\)+" "(" "\\)"))
   "Regexp of a section of PHP for alignment.")
 
+;;;###autoload
 (defun php-align-setup ()
   "Setup alignment configuration for PHP code."
   (set (make-local-variable 'align-mode-rules-list) php-align-rules-list)
