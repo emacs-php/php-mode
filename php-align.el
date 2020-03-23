@@ -105,8 +105,8 @@
 ;;;###autoload
 (defun php-align-setup ()
   "Setup alignment configuration for PHP code."
-  (set (make-local-variable 'align-mode-rules-list) php-align-rules-list)
-  (set (make-local-variable 'align-region-separate) php-align-region-separate)
+  (setq-local align-mode-rules-list php-align-rules-list)
+  (setq-local align-region-separate php-align-region-separate)
   (add-to-list 'align-open-comment-modes 'php-mode)
   (add-to-list 'align-dq-string-modes 'php-mode)
   (add-to-list 'align-sq-string-modes 'php-mode))
