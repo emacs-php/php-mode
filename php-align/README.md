@@ -19,66 +19,82 @@ Put this file into your load-path.and the following code into your ~/.emacs
 
 #### before
 
-    $foo = "string"; // M-x align-current
-    $looooooooong = 1; //
+```php
+$foo = "string"; // M-x align-current
+$looooooooong = 1; //
+```
 
 #### after
 
-    $foo          = "string"; // M-x align-current
-    $looooooooong = 1;        //
+```php
+$foo          = "string"; // M-x align-current
+$looooooooong = 1;        //
+```
 
 ### 2.
 
 #### before
 
-    "$foo = 1";
-    $foo = "string"; // M-x align-current
-    $looooooooong = 1; //
+```php
+"$foo = 1";
+$foo = "string"; // M-x align-current
+$looooooooong = 1; //
 
-    $bar = 2; //
+$bar = 2; //
+```
 
 #### after
 
-    "$foo = 1";
-    $foo          = "string"; // M-x align-current
-    $looooooooong = 1;        //
+```php
+"$foo = 1";
+$foo          = "string"; // M-x align-current
+$looooooooong = 1;        //
 
-    $bar = 2; //
+$bar = 2; //
+```
 
 ### 3.
 
 #### before
 
-    $variable = 1;
-    $vars = array(); // M-x align-current
-    if ($variable == $vars) {
+```php
+$variable = 1;
+$vars = array(); // M-x align-current
+if ($variable == $vars) {
 
-    }
+}
+```
 
 #### after
 
-    $variable = 1;
-    $vars     = array(); // M-x align-current
-    if ($variable == $vars) {
+```php
+$variable = 1;
+$vars     = array(); // M-x align-current
+if ($variable == $vars) {
 
-    }
+}
+```
 
 ### 4.
 
 #### before
 
-    $vars = array(
-        1, 2, 3,
-        4, 5, 6,
-        7, 8, 9,
-        10, 11, 12, // C-u M-x align-current
-    );
+```php
+$vars = array(
+    1, 2, 3,
+    4, 5, 6,
+    7, 8, 9,
+    10, 11, 12, // C-u M-x align-current
+);
+```
 
 #### after
 
-    $vars = array(
-        1,  2,  3,
-        4,  5,  6,
-        7,  8,  9,
-        10, 11, 12, // C-u M-x align-current
-    );
+```php
+$vars = array(
+    1,  2,  3,
+    4,  5,  6,
+    7,  8,  9,
+    10, 11, 12, // C-u M-x align-current
+);
+```
