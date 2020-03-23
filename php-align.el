@@ -42,6 +42,7 @@
 ;;; Code:
 (require 'align)
 (require 'regexp-opt)
+(require 'php-project)
 
 (defvar php-align-rules-list
   `((php-comma-delimiter
@@ -105,7 +106,8 @@
 ;;;###autoload
 (defun php-align-setup ()
   "Setup alignment configuration for PHP code."
-  (php-align-mode 1))
+  (when php-project-align-lines
+    (php-align-mode 1)))
 
 (defvar php-align-mode-lighter " PHP-Align")
 
