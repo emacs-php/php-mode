@@ -72,8 +72,7 @@
                    (lambda ()
                      (save-excursion
                        (goto-char (match-end 2))
-                       (looking-at "\\s-*\\(/[*/]\\|$\\)"))))))
-  ))
+                       (looking-at "\\s-*\\(/[*/]\\|$\\)"))))))))
 
 (defvar php-align-region-separate
   (eval-when-compile
@@ -100,8 +99,7 @@
      "\\)"
      "\\|"
      ;; function or method call
-     "\\(?:" "^\\s-*" "\\(?:" "\\w\\|[->\\: \t]" "\\)+" "(" "\\)"
-     ))
+     "\\(?:" "^\\s-*" "\\(?:" "\\w\\|[->\\: \t]" "\\)+" "(" "\\)"))
   "Regexp of a section of PHP for alignment.")
 
 (defun php-align-setup ()
