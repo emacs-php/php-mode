@@ -113,12 +113,16 @@
 (define-minor-mode php-align-mode
   "Alignment lines for PHP script."
   :lighter php-align-mode-lighter
-  (setq-local align-region-separate php-align-region-separate)
-  (setq-local align-mode-rules-list nil)
-  (setq-local align-region-separate nil)
   (add-to-list 'align-open-comment-modes 'php-mode)
   (add-to-list 'align-dq-string-modes 'php-mode)
-  (add-to-list 'align-sq-string-modes 'php-mode))
+  (add-to-list 'align-sq-string-modes 'php-mode)
+
+  (if php-align-mode
+      (progn
+        (setq-local align-mode-rules-list php-align-rules-list)
+        (setq-local align-region-separate php-align-region-separate))
+    (setq-local align-mode-rules-list nil)
+    (setq-local align-region-separate nil)))
 
 (provide 'php-align)
 ;;; php-align.el ends here
