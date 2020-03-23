@@ -27,14 +27,9 @@
 ;; This extension provides alignment for PHP.
 ;; Note that you must have Font Lock mode enabled.
 ;;
-;; If you don't have php-mode then get from https://github.com/rradonic/php-mode
-;; This php-mode has various improvements than original it.
-;;
 ;; Put this file into your load-path.and the following code into your ~/.emacs
-;; (add-hook 'php-mode-hook
-;;           (lambda ()
-;;             (require 'php-align)
-;;             (php-align-setup)))
+;;
+;;     (add-hook 'php-mode-hook #'php-align-setup)
 
 ;;; TODO:
 ;; - Add test codes using el-expectations.
