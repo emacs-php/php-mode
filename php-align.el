@@ -1,11 +1,13 @@
 ;;; php-align.el --- Alignment configuration for PHP  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2011  tetsujin (Yusuke Segawa)
+;; Copyright (C) 2020  Friends of Emacs-PHP development
 
 ;; Author: tetsujin (Yusuke Segawa) <tetsujin85 (at) gmail.com>
+;; Maintainer: USAMI Kenta <tadsan@zonu.me>
 ;; Keywords: php languages convenience align
-;; URL: https://github.com/tetsujin/emacs-php-align
-;; Version: 0.0.1
+;; Homepage: https://github.com/emacs-php/php-mode
+;; Version: 1.22.2
 ;; Package-Requires: ((emacs "24.3"))
 ;; License: GPL-3.0-or-later
 
