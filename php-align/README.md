@@ -1,68 +1,72 @@
-# About #
+# php-align.el
+
 CAUTION!! this is still experimental.
 
-Support alignment (e.g. align, align-current) for PHP.
+Support alignment (e.g. `align`, `align-current`) for PHP.
 
 Put this file into your load-path.and the following code into your ~/.emacs
 
-<code>
+```el
 (add-hook 'php-mode-hook
           (lambda ()
             (require 'php-align)
             (php-align-setup)))
-</code>
+```
 
-# Examples #
+## Examples
 
-## 1. ##
+### 1.
 
-### before ###
+#### before
 
-    $foo = "string"; // M-x arign-current
+    $foo = "string"; // M-x align-current
     $looooooooong = 1; //
 
-### after ###
+#### after
 
-    $foo          = "string"; // M-x arign-current
+    $foo          = "string"; // M-x align-current
     $looooooooong = 1;        //
 
-## 2. ##
+### 2.
 
-### before ###
+#### before
 
     "$foo = 1";
-    $foo = "string"; // M-x arign-current
+    $foo = "string"; // M-x align-current
     $looooooooong = 1; //
 
     $bar = 2; //
 
-### after ###
+#### after
 
     "$foo = 1";
-    $foo          = "string"; // M-x arign-current
+    $foo          = "string"; // M-x align-current
     $looooooooong = 1;        //
 
     $bar = 2; //
 
-## 3. ##
+### 3.
 
-### before ###
+#### before
+
     $variable = 1;
     $vars = array(); // M-x align-current
     if ($variable == $vars) {
 
     }
 
-### after ###
+#### after
+
     $variable = 1;
     $vars     = array(); // M-x align-current
     if ($variable == $vars) {
 
     }
 
-## 4. ##
+### 4.
 
-### before ###
+#### before
+
     $vars = array(
         1, 2, 3,
         4, 5, 6,
@@ -70,7 +74,8 @@ Put this file into your load-path.and the following code into your ~/.emacs
         10, 11, 12, // C-u M-x align-current
     );
 
-### after ###
+#### after
+
     $vars = array(
         1,  2,  3,
         4,  5,  6,
