@@ -63,7 +63,7 @@
   (php-mode-debug--message "Pasting the following information on the issue will help us to investigate the cause.")
   (php-mode-debug--message "```")
   (php-mode-debug--message "--- PHP-MODE DEBUG BEGIN ---")
-  (php-mode-debug--message "versions: %s; %s" (emacs-version) (php-mode-version))
+  (php-mode-debug--message "versions: %s; %s; Cc Mode %s)" (emacs-version) (php-mode-version) c-version)
   (php-mode-debug--message "package-version: %s"
     (if (fboundp 'pkg-info)
         (pkg-info-version-info 'php-mode)
