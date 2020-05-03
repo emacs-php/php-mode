@@ -885,29 +885,19 @@ POS is a position on the line in question.
 This is was done due to the problem reported here:
 
   URL `https://answers.launchpad.net/nxhtml/+question/43320'"
-  (if (not php-template-compatibility)
-      nil
-    (setq pos (or pos (point)))
-    (let ((here (point))
-          ret)
-      (save-match-data
+  (save-excursion
+    (if pos
         (goto-char pos)
-        (beginning-of-line)
-        (setq ret (looking-at
-                   (rx
-                    (or (seq
-                         bol
-                         (0+ space)
-                         "<"
-                         (in "a-z\\?"))
-                        (seq
-                         (0+ not-newline)
-                         (in "a-z\\?")
-                         ">"
-                         (0+ space)
-                         eol))))))
-      (goto-char here)
-      ret)))
+      (setq pos (point)))
+    (unless (php-in-string-or-comment-p)
+      (or
+       ;; Detect HTML/XML tag and PHP tag (<?php, <?=, ?>)
+       (when php-mode-template-compatibility
+         (beginning-of-line)
+         (looking-at-p
+          (eval-when-compile
+            (rx (or (: bol (0+ space) "<" (in "a-z\\?"))
+                    (: (0+ not-newline) (in "a-z\\?") ">" (0+ space) eol))))))))))
 
 (defun php-c-vsemi-status-unknown-p ()
   "Always return NIL.  See `php-c-at-vsemi-p'."
