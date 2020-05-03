@@ -885,6 +885,7 @@ POS is a position on the line in question.
 This is was done due to the problem reported here:
 
   URL `https://answers.launchpad.net/nxhtml/+question/43320'"
+  ;; If this function could call c-beginning-of-statement-1, change php-c-vsemi-status-unknown-p.
   (save-excursion
     (if pos
         (goto-char pos)
@@ -900,7 +901,8 @@ This is was done due to the problem reported here:
                     (: (0+ not-newline) (in "a-z\\?") ">" (0+ space) eol))))))))))
 
 (defun php-c-vsemi-status-unknown-p ()
-  "Always return NIL.  See `php-c-at-vsemi-p'."
+  "Always return NIL.  See `c-vsemi-status-unknown-p'."
+  ;; Current implementation of php-c-at-vsemi-p never calls c-beginning-of-statement-1
   nil)
 
 (defun php-lineup-string-cont (langelem)
