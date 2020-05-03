@@ -879,7 +879,7 @@ reported, even if `c-report-syntactic-errors' is non-nil."
           (funcall 'c-indent-line)))))
 
 (defun php-c-at-vsemi-p (&optional pos)
-  "Return t on html lines (including php region border), otherwise nil.
+  "Return T on HTML lines (including php tag) or PHP8 Attribute, otherwise NIL.
 POS is a position on the line in question.
 
 This is was done due to the problem reported here:
@@ -892,6 +892,10 @@ This is was done due to the problem reported here:
       (setq pos (point)))
     (unless (php-in-string-or-comment-p)
       (or
+       ;; Detect PHP8 attribute: <<Attribute()>>
+       (when (and (< 2 pos) (< 2 (- pos (c-point 'bol))))
+         (backward-char 2)
+         (looking-at-p ">>\\s-*\\(?:<<\\|$\\)"))
        ;; Detect HTML/XML tag and PHP tag (<?php, <?=, ?>)
        (when php-mode-template-compatibility
          (beginning-of-line)
