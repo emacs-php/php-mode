@@ -879,38 +879,34 @@ reported, even if `c-report-syntactic-errors' is non-nil."
           (funcall 'c-indent-line)))))
 
 (defun php-c-at-vsemi-p (&optional pos)
-  "Return t on html lines (including php region border), otherwise nil.
+  "Return T on HTML lines (including php tag) or PHP8 Attribute, otherwise NIL.
 POS is a position on the line in question.
 
 This is was done due to the problem reported here:
 
   URL `https://answers.launchpad.net/nxhtml/+question/43320'"
-  (if (not php-template-compatibility)
-      nil
-    (setq pos (or pos (point)))
-    (let ((here (point))
-          ret)
-      (save-match-data
+  ;; If this function could call c-beginning-of-statement-1, change php-c-vsemi-status-unknown-p.
+  (save-excursion
+    (if pos
         (goto-char pos)
-        (beginning-of-line)
-        (setq ret (looking-at
-                   (rx
-                    (or (seq
-                         bol
-                         (0+ space)
-                         "<"
-                         (in "a-z\\?"))
-                        (seq
-                         (0+ not-newline)
-                         (in "a-z\\?")
-                         ">"
-                         (0+ space)
-                         eol))))))
-      (goto-char here)
-      ret)))
+      (setq pos (point)))
+    (unless (php-in-string-or-comment-p)
+      (or
+       ;; Detect PHP8 attribute: <<Attribute()>>
+       (when (and (< 2 pos) (< 2 (- pos (c-point 'bol))))
+         (backward-char 2)
+         (looking-at-p ">>\\s-*\\(?:<<\\|$\\)"))
+       ;; Detect HTML/XML tag and PHP tag (<?php, <?=, ?>)
+       (when php-mode-template-compatibility
+         (beginning-of-line)
+         (looking-at-p
+          (eval-when-compile
+            (rx (or (: bol (0+ space) "<" (in "a-z\\?"))
+                    (: (0+ not-newline) (in "a-z\\?") ">" (0+ space) eol))))))))))
 
 (defun php-c-vsemi-status-unknown-p ()
-  "Always return NIL.  See `php-c-at-vsemi-p'."
+  "Always return NIL.  See `c-vsemi-status-unknown-p'."
+  ;; Current implementation of php-c-at-vsemi-p never calls c-beginning-of-statement-1
   nil)
 
 (defun php-lineup-string-cont (langelem)
