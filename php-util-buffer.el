@@ -1,6 +1,6 @@
 ;;; php-util-buffer.el --- Utility function for buffer manipulation  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018-2019  Friends of Emacs-PHP development
+;; Copyright (C) 2020  Friends of Emacs-PHP development
 ;; Copyright 2013 The go-mode Authors.  All rights reserved.
 
 ;; Author: Dominik Honnef

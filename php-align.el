@@ -7,7 +7,7 @@
 ;; Maintainer: USAMI Kenta <tadsan@zonu.me>
 ;; Keywords: php languages convenience align
 ;; Homepage: https://github.com/emacs-php/php-mode
-;; Version: 1.22.2
+;; Version: 1.23.0
 ;; Package-Requires: ((emacs "24.3"))
 ;; License: GPL-3.0-or-later
 
