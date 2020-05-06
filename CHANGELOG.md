@@ -8,6 +8,50 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
  * Drop support for Emacs 24 and 25.1
 
+## [1.23.0] - 2020-05-06
+
+Initial support for PHP8 has been added.  PHPMode has some issues for compatibility with Emacs 27.0.
+
+The list of all past contributors has been moved to [`AUTHORS.md`](/AUTHORS.md).
+
+This release is positioned as the last minor version of the PHP Mode 1.x series.
+
+### Added
+
+ * Add `php-project-use-projectile-to-detect-root` ([#608])
+ * Add PHP file extensions to `auto-mode-alist` ([#609])
+   * `.php.inc` is file extension for [Rector](https://github.com/rectorphp/rector)'s test code.
+   * `.stub` is file extension for [PHPStan](https://github.com/phpstan/phpstan)'s stub file.
+ * Add `php-mode-disable-c-auto-align-backslashes` ([#621])
+ * Add PHP 8.0 Attribute syntax as vsemi (#)
+ * Add feature `php-align` from [tetsujin/emacs-php-align] ([#615], [melpa/melpa#6759])
+
+### Changed
+
+ * Disable `c-auto-align-backslashes` by default. ([#621])
+ * Add new faces and font locking ([#611], [#614])
+
+### Removed
+
+ * Remove `php-mode-extra-constants` variable and function. ([#605])
+   * This mechanism is for synchronizing the added user-defined constants with WebMode, but it hasn't worked since 2014.
+
+### Fixed
+
+ * Fix indentation of object operator (->) at the beginning of line ([#623], [#624])
+
+[#605]: https://github.com/emacs-php/php-mode/pull/605
+[#608]: https://github.com/emacs-php/php-mode/pull/608
+[#609]: https://github.com/emacs-php/php-mode/pull/609
+[#611]: https://github.com/emacs-php/php-mode/pull/611
+[#614]: https://github.com/emacs-php/php-mode/pull/614
+[#615]: https://github.com/emacs-php/php-mode/pull/615
+[#621]: https://github.com/emacs-php/php-mode/pull/621
+[#623]: https://github.com/emacs-php/php-mode/issues/623
+[#624]: https://github.com/emacs-php/php-mode/pull/624
+[melpa/melpa#6759]: https://github.com/melpa/melpa/pull/6759
+[tetsujin/emacs-php-align]: https://github.com/tetsujin/emacs-php-align
+
 ## [1.22.2] - 2019-12-23
 
 A face has been added for coloring PHP syntax. Thank you [@minikN]!
@@ -63,7 +107,7 @@ PHP Mode 2.0 is planned to be released in January 2020.
 
 ## [1.22.0] - 2019-09-27
 
-This release is positioned as the last minor version of the PHP Mode 1.x series.
+~~This release is positioned as the last minor version of the PHP Mode 1.x series.~~
 PHP Mode 2.0 is planned to be released in January 2020.
 
 ### Added
