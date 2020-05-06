@@ -10,7 +10,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
 ## [1.23.0] - 2020-05-06
 
-Initial support for PHP8 has been added.  PHPMode has some issues for compatibility with Emacs 27.0.
+Initial support for PHP 8 has been added.  PHP Mode has some issues for compatibility with Emacs 27.0.
 
 The list of all past contributors has been moved to [`AUTHORS.md`](/AUTHORS.md).
 
@@ -23,7 +23,7 @@ This release is positioned as the last minor version of the PHP Mode 1.x series.
    * `.php.inc` is file extension for [Rector](https://github.com/rectorphp/rector)'s test code.
    * `.stub` is file extension for [PHPStan](https://github.com/phpstan/phpstan)'s stub file.
  * Add `php-mode-disable-c-auto-align-backslashes` ([#621])
- * Add PHP 8.0 Attribute syntax as vsemi (#)
+ * Add PHP 8.0 Attribute syntax as vsemi ([#626])
  * Add feature `php-align` from [tetsujin/emacs-php-align] ([#615], [melpa/melpa#6759])
 
 ### Changed
