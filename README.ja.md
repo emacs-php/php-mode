@@ -1,3 +1,5 @@
+**お知らせ**: これはGNU Emacs 24.3, 24.4, 24.5, 25.1のためのメンテナンスブランチです。もしこれらのバージョンの保守を継続したければ気軽にこのブランチ(`v1`)にプルリクエストを送ってください。
+
 <div align="center">
   <h1>Emacs PHP Mode</h1>
 
@@ -5,8 +7,6 @@
 [![lang: PHP 7](https://img.shields.io/badge/lang-PHP%207-brightgreen.svg)](http://php.net/manual/migration70.php)
 [![lang: PHP 5](https://img.shields.io/badge/lang-PHP%205-green.svg)](http://php.net/downloads.php)
 [![Build Status](https://github.com/emacs-php/php-mode/workflows/CI/badge.svg)](https://github.com/emacs-php/php-mode/actions)
-[![melpa badge][melpa-badge]][melpa-link]
-[![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
 [![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)](http://www.gnu.org/licenses/gpl-3.0.txt)
 
 A powerful and flexible Emacs major mode for editing PHP scripts
@@ -19,20 +19,6 @@ A powerful and flexible Emacs major mode for editing PHP scripts
 ------------
 
 **PHP ModeはEmacs 24.3以降で動作します**。古いバージョンのEmacsでも動作するかもしれませんが、保証外です。 古いバージョンのEmacsのPHPモードを使用することによる問題のバグ報告は積極的に対応しません。現在のサポートポリシーは[Supported Version]のページをご覧ください。
-
-### **(推奨)** MELPAからのインストール
-
-[![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
-
-GNU Emacs 24以降では、[package][]機能(または[Cask][])を使って[MELPA][]/[MELPA Stable][]からPHP Modeをインストールできます。
-
-### OSのパッケージマネージャからのインストール
-
-PHP Modeは[いくつかのOSが提供するパッケージシステム][php-mode-packages]からインストール可能です。DebianおよびUbuntuのようなDebian派生のOSではEmacsにPHPを追加する最も簡単な方法で、`sudo apt install elpa-php-mode` で導入できます。これらの "Stable" リリースは最新のPHP Modeよりも古いものの、十分にテストされた固定バージョンが提供されます。オートロードとバイトコンパイルは自動で行われます。
-
-最新のPHP Modeの機能とパフォーマンス改善を活用するために**sid** ("unstable"としても知られるローリングリリース)で提供されるバージョンのインストールを検討してください。最新バージョンは[`elpa-php-mode`][elpa-php-mode]にあります。"apt-pinning"を使ってアップデートを自動化することもできます。
-
-また、[Debian 9 (stretch)][php-elisp-stretch]や[Ubuntu 18.10][php-elisp-ubuntu1810]以前で提供されていた `php-elisp` パッケージは[あまりにも古い][issue-430]ので、 **くれぐれもインストールしないでください**。
 
 ### 手動でインストール
 
@@ -329,24 +315,12 @@ PHP Modeは[GNU General Public License Version 3][gpl-v3] (GPLv3) でライセ�
 [Authors]: https://github.com/emacs-php/php-mode/wiki/Authors
 [Cask]: https://github.com/cask/cask
 [Contributors]: https://github.com/emacs-php/php-mode/graphs/contributors
-[MELPA Stable]: https://stable.melpa.org/
-[MELPA]: https://melpa.org/
 [Subword Mode]: https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
 [Supported Version]: https://github.com/emacs-php/php-mode/wiki/Supported-Version
 [Web Mode]: http://web-mode.org/
 [camelCase]: https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%A1%E3%83%AB%E3%82%B1%E3%83%BC%E3%82%B9
 [cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
-[elpa-php-mode]: https://packages.debian.org/sid/elpa-php-mode
 [gpl-v3]: https://www.gnu.org/licenses/quick-guide-gplv3.html
-[issue-430]: https://github.com/emacs-php/php-mode/issues/430
-[melpa-badge]: http://melpa.org/packages/php-mode-badge.svg
-[melpa-link]: http://melpa.org/#/php-mode
-[melpa-stable-badge]: http://stable.melpa.org/packages/php-mode-badge.svg
-[melpa-stable-link]: http://stable.melpa.org/#/php-mode
-[package]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html
-[php-elisp-stretch]: https://packages.debian.org/stretch/php-elisp
-[php-elisp-ubuntu1810]: https://packages.ubuntu.com/cosmic/php-elisp
-[php-mode-packages]: https://repology.org/project/emacs:php-mode/versions
 [php-mode]: https://github.com/emacs-php/php-mode
 [php-suite]: https://github.com/emacs-php/php-suite
 [wiki]: https://github.com/emacs-php/php-mode/wiki

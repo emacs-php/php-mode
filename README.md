@@ -1,3 +1,6 @@
+**NOTE**: This is maintenance branch for GNU Emacs 24.3, 24.4, 24.5, 25.1.  If you want to continue supporting these versions, feel free to send a Pull Request to this branch (`v1`).
+
+
 <div align="center">
   <h1>Emacs PHP Mode</h1>
 
@@ -5,8 +8,6 @@
 [![lang: PHP 7](https://img.shields.io/badge/lang-PHP%207-brightgreen.svg)](http://php.net/manual/migration70.php)
 [![lang: PHP 5](https://img.shields.io/badge/lang-PHP%205-green.svg)](http://php.net/downloads.php)
 [![Build Status](https://github.com/emacs-php/php-mode/workflows/CI/badge.svg)](https://github.com/emacs-php/php-mode/actions)
-[![melpa badge][melpa-badge]][melpa-link]
-[![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
 [![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)](http://www.gnu.org/licenses/gpl-3.0.txt)
 
 A powerful and flexible Emacs major mode for editing PHP scripts
@@ -21,20 +22,6 @@ Installation
 **PHP Mode works on Emacs 24.3 or later.**  PHP Mode may work with older versions of Emacs but this is not guaranteed.  Bug reports for problems related to using PHP Mode with older versions of Emacs will most like *not* be addressed.
 
 The current support policy can be found on the [Supported Version] page.
-
-### **(RECOMMENDED)** Install from MELPA
-
-[![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
-
-With GNU Emacs 24 or later then you can use its [package][] feature (or [Cask][]) to install PHP Mode from [MELPA][] or [MELPA Stable][].
-
-### Install using OS package system
-
-PHP Mode is available from [package systems provided by several OSs][php-mode-packages].  On Debian, and operating systems derived from it, such as Ubuntu, the easiest way to add PHP support to Emacs is `sudo apt install elpa-php-mode`.  "Stable" releases of these operating systems include a well-tested frozen version of this package that is always older than the latest upstream version of PHP Mode.  Autoloads and byte-compilation are automatic.
-
-Please consider installing the package provided in `sid` (aka: "unstable", a rolling release) in order to benefit from the latest PHP Mode features and performance improvements.  The latest version can be found here: [`elpa-php-mode`][elpa-php-mode].  Investigate "apt-pinning" to make tracking this update stream automatic.
-
-Also, the `php-elisp` package provided by [Debian 9 (stretch)][php-elisp-stretch] and [Ubuntu 18.10][php-elisp-ubuntu1810] and earlier is [extremely old][issue-430], so **PLEASE DO NOT INSTALL IT**.
 
 ### Manual installation
 
@@ -309,24 +296,12 @@ This project was maintained by [Eric James Michael Ritz][@ejmr] until 2017. Curr
 [Authors]: https://github.com/emacs-php/php-mode/wiki/Authors
 [Cask]: https://github.com/cask/cask
 [Contributors]: https://github.com/emacs-php/php-mode/graphs/contributors
-[MELPA Stable]: https://stable.melpa.org/
-[MELPA]: https://melpa.org/
 [Subword Mode]: https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
 [Supported Version]: https://github.com/emacs-php/php-mode/wiki/Supported-Version
 [Web Mode]: http://web-mode.org/
 [camelCase]: https://ja.wikipedia.org/wiki/%E3%82%AD%E3%83%A3%E3%83%A1%E3%83%AB%E3%82%B1%E3%83%BC%E3%82%B9
 [cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
-[elpa-php-mode]: https://packages.debian.org/sid/elpa-php-mode
 [gpl-v3]: https://www.gnu.org/licenses/quick-guide-gplv3.html
-[issue-430]: https://github.com/emacs-php/php-mode/issues/430
-[melpa-badge]: http://melpa.org/packages/php-mode-badge.svg
-[melpa-link]: http://melpa.org/#/php-mode
-[melpa-stable-badge]: http://stable.melpa.org/packages/php-mode-badge.svg
-[melpa-stable-link]: http://stable.melpa.org/#/php-mode
-[package]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html
-[php-elisp-stretch]: https://packages.debian.org/stretch/php-elisp
-[php-elisp-ubuntu1810]: https://packages.ubuntu.com/cosmic/php-elisp
-[php-mode-packages]: https://repology.org/project/emacs:php-mode/versions
 [php-mode]: https://github.com/emacs-php/php-mode
 [php-suite]: https://github.com/emacs-php/php-suite
 [wiki]: https://github.com/emacs-php/php-mode/wiki
