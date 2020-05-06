@@ -1,10 +1,10 @@
 ;;; php.el --- PHP support for friends               -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2019  Friends of Emacs-PHP development
+;; Copyright (C) 2020  Friends of Emacs-PHP development
 
 ;; Author: USAMI Kenta <tadsan@zonu.me>
 ;; Created: 5 Dec 2018
-;; Version: 1.22.2
+;; Version: 1.23.0
 ;; Keywords: languages, php
 ;; Homepage: https://github.com/emacs-php/php-mode
 ;; Package-Requires: ((emacs "24.3"))
