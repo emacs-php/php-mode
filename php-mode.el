@@ -10,7 +10,7 @@
 ;; URL: https://github.com/emacs-php/php-mode
 ;; Keywords: languages php
 ;; Version: 1.23.0
-;; Package-Requires: ((emacs "24.3"))
+;; Package-Requires: ((emacs "25.2"))
 ;; License: GPL-3.0-or-later
 
 (defconst php-mode-version-number "1.23.0"
@@ -73,7 +73,7 @@
 (require 'etags)
 (require 'speedbar)
 (require 'imenu)
-(require 'nadvice nil t)
+(require 'nadvice)
 
 (require 'cl-lib)
 (require 'mode-local)
@@ -199,12 +199,9 @@ enabled."
   :type 'string)
 
 ;;;###autoload
-(if (version< emacs-version "24.4")
-    (dolist (i '("php" "php5" "php7"))
-      (add-to-list 'interpreter-mode-alist (cons i 'php-mode)))
-  (add-to-list 'interpreter-mode-alist
-               ;; Match php, php-3, php5, php7, php5.5, php-7.0.1, etc.
-               (cons "php\\(?:-?[3457]\\(?:\\.[0-9]+\\)*\\)?" 'php-mode)))
+(add-to-list 'interpreter-mode-alist
+             ;; Match php, php-3, php5, php7, php5.5, php-7.0.1, etc.
+             '("php\\(?:-?[3457]\\(?:\\.[0-9]+\\)*\\)?" . php-mode))
 
 (defcustom php-mode-hook nil
   "List of functions to be executed on entry to `php-mode'."
@@ -1074,8 +1071,7 @@ After setting the stylevars run hooks according to STYLENAME
 (defun php-mode--disable-delay-set-style (&rest args)
   "Disable php-mode-set-style-delay on after hook.  `ARGS' be ignore."
   (setq php-mode--delayed-set-style nil)
-  (when (fboundp 'advice-remove)
-    (advice-remove #'php-mode--disable-delay-set-style #'c-set-style)))
+  (advice-remove #'php-mode--disable-delay-set-style #'c-set-style))
 
 (defun php-mode-set-style-delay ()
   "Set the current `php-mode' buffer to use the style by custom or local variables."
@@ -1154,8 +1150,7 @@ After setting the stylevars run hooks according to STYLENAME
       (progn
         (add-hook 'hack-local-variables-hook #'php-mode-set-style-delay t t)
         (setq php-mode--delayed-set-style t)
-        (when (fboundp 'advice-add)
-          (advice-add #'c-set-style :after #'php-mode--disable-delay-set-style '(local))))
+        (advice-add #'c-set-style :after #'php-mode--disable-delay-set-style '(local)))
     (let ((php-mode-enable-backup-style-variables nil))
       (php-set-style (symbol-name php-mode-coding-style))))
 
