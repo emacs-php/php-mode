@@ -68,7 +68,6 @@
   (c-add-language 'php-mode 'java-mode))
 
 (require 'font-lock)
-(require 'add-log)
 (require 'custom)
 (require 'etags)
 (require 'speedbar)
@@ -81,6 +80,8 @@
 
 (eval-when-compile
   (require 'regexp-opt)
+  (defvar add-log-current-defun-header-regexp)
+  (defvar add-log-current-defun-function)
   (defvar c-vsemi-status-unknown-p)
   (defvar syntax-propertize-via-font-lock))
 
@@ -1182,8 +1183,8 @@ After setting the stylevars run hooks according to STYLENAME
   (setq-local open-paren-in-column-0-is-defun-start nil)
   (setq-local defun-prompt-regexp
               "^\\s-*function\\s-+&?\\s-*\\(\\(\\sw\\|\\s_\\)+\\)\\s-*")
-  (setq-local add-log-current-defun-header-regexp
-              php-beginning-of-defun-regexp)
+  (setq-local add-log-current-defun-function nil)
+  (setq-local add-log-current-defun-header-regexp php-beginning-of-defun-regexp)
 
   (when (>= emacs-major-version 25)
     (with-silent-modifications
