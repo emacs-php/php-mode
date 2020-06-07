@@ -15,7 +15,7 @@ AUTHORS.md: AUTHORS.md.in
 	@printf "Generating AUTHORS.md file..."
 	@test -d .git \
 		&& (cat $< > $@ \
-			&& git log --pretty=format:'- %aN' | sort -u >> $@ \
+			&& git log --pretty=format:'- %aN' | LANG=C sort -u >> $@ \
 			&& printf "FINISHED\n" ; ) \
 		|| printf "FAILED (non-fatal)\n"
 
