@@ -12,3 +12,4 @@ real;
 string;
 object;
 resource;
+mixed;

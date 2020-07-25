@@ -472,7 +472,7 @@ In that case set to `NIL'."
 
 (c-lang-defconst c-primitive-type-kwds
   php '("int" "integer" "bool" "boolean" "float" "double" "real"
-        "string" "object" "void"))
+        "string" "object" "void" "mixed"))
 
 (c-lang-defconst c-class-decl-kwds
   "Keywords introducing declarations where the following block (if any)

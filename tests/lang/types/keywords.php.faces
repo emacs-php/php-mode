@@ -20,4 +20,6 @@
  ("string" . font-lock-type-face)
  (";\n")
  ("object" . font-lock-type-face)
- (";\nresource;\n"))
+ (";\nresource;\n")
+ ("mixed" . font-lock-type-face)
+ (";\n"))
