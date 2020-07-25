@@ -1,4 +1,5 @@
 /.cask/
+/.mailmap
 /php-mode-autoloads.el
 *~
 *.elc

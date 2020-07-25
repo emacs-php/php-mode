@@ -10,8 +10,11 @@ all: autoloads $(ELCS) authors
 
 authors: AUTHORS.md
 
+.mailmap:
+	ln -s etc/git/.mailmap
+
 .PHONY: AUTHORS.md
-AUTHORS.md: AUTHORS.md.in
+AUTHORS.md: etc/git/AUTHORS.md.in .mailmap
 	@printf "Generating AUTHORS.md file..."
 	@test -d .git \
 		&& (cat $< > $@ \
