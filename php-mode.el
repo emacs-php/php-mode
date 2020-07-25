@@ -1518,7 +1518,7 @@ a completion list."
      ("\\<\\(const\\)\\s-+\\(\\_<.+?\\_>\\)" (1 'php-keyword) (2 'php-constant-assign))
 
      ;; Logical operator (!)
-     ("\\(![^=]\\)" 1 'php-logical-op)
+     ("\\(!\\)[^=]" 1 'php-logical-op)
 
      ;; Highlight special variables
      ("\\(\\$\\)\\(this\\)\\>" (1 'php-$this-sigil) (2 'php-$this))
