@@ -1,0 +1,10 @@
+(source gnu melpa)
+
+(package
+ (php-mode
+  (recipe . (php-mode :fetcher github :repo "emacs-php/php-mode.el"
+                      :files (:defaults "lisp/*.el")))))
+
+(dev-dependency pkg-info)
+(dev-dependency projectile)
+(dev-dependency shut-up)
