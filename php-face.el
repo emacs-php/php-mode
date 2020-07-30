@@ -7,7 +7,6 @@
 ;; Version: 1.23.0
 ;; Keywords: faces, php
 ;; Homepage: https://github.com/emacs-php/php-mode
-;; Package-Requires: ((emacs "24.3"))
 ;; License: GPL-3.0-or-later
 
 ;; This program is free software; you can redistribute it and/or modify
