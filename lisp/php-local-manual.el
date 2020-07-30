@@ -7,7 +7,6 @@
 ;; URL: https://github.com/emacs-php/php-mode
 ;; Keywords: docs, php
 ;; Version: 2.0.0
-;; Package-Requires: ((emacs "25.2"))
 ;; License: GPL-3.0-or-later
 
 ;; This program is free software; you can redistribute it and/or modify
