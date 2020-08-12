@@ -1206,7 +1206,7 @@ After setting the stylevars run hooks according to STYLENAME
   (setq-local add-log-current-defun-function nil)
   (setq-local add-log-current-defun-header-regexp php-beginning-of-defun-regexp)
 
-  (when (fboundp #'c-looking-at-or-maybe-in-bracelist)
+  (when (fboundp 'c-looking-at-or-maybe-in-bracelist)
     (advice-add #'c-looking-at-or-maybe-in-bracelist
                 :override 'php-c-looking-at-or-maybe-in-bracelist))
 
