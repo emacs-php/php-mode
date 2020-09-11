@@ -97,7 +97,7 @@ $object->foo()
        ->baz();
 ```
 
-This behaviour is off by default, but you can customize the variable `php-lineup-cascaded-calls` to enable this.
+This behaviour is off by default, but you can customize the variable `php-mode-lineup-cascaded-calls` to enable this.
 
 **Note:** Alignment will only work if you use one of the php-mode coding styles or inherit one of the styles.
 
