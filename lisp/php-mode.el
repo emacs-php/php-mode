@@ -985,17 +985,42 @@ this ^ lineup"
   (string-match "\\_<.+?\\_>" heredoc-start)
   (concat "^\\s-*\\(" (match-string 0 heredoc-start) "\\)\\W"))
 
+(defvar php-syntax-propertize-functions
+  '(php-syntax-propertize-heredoc
+    php-syntax-propertize-quotes-in-comment
+    php-syntax-propertize-hash-line-comment)
+  "Syntax propertize functions for PHP script.")
+
 (defun php-syntax-propertize-function (start end)
   "Apply propertize rules from START to END."
-  (goto-char start)
+  (dolist (propertizer php-syntax-propertize-functions)
+    (goto-char start)
+    (funcall propertizer start end)))
+
+(defun php-syntax-propertize-heredoc (_start end)
+  "Apply propertize Heredoc and Nowdoc from START to END."
   (while (and (< (point) end)
               (re-search-forward php-heredoc-start-re end t))
-    (php-heredoc-syntax))
-  (goto-char start)
+    (php-heredoc-syntax)))
+
+(defun php-syntax-propertize-quotes-in-comment (_start end)
+  "Apply propertize quotes (' and \") from START to END."
   (while (re-search-forward "['\"]" end t)
     (when (php-in-comment-p)
       (c-put-char-property (match-beginning 0)
                            'syntax-table (string-to-syntax "_")))))
+
+(defun php-syntax-propertize-hash-line-comment (_start end)
+  "Apply propertize # comment (without PHP8 Attributes) from START to END."
+  (unless php-mode-use-php7-syntax-table
+    (while (< (point) (min end (point-max)))
+      (let ((line-end (line-end-position)))
+        (when (and (search-forward "#" line-end t)
+                   (not (php-in-string-or-comment-p))
+                   (not (looking-at "[[]")))
+          (c-put-char-property (1- (point)) 'syntax-table (string-to-syntax "<"))
+          (c-put-char-property line-end 'syntax-table (string-to-syntax ">")))
+        (move-beginning-of-line 2)))))
 
 (defun php-heredoc-syntax ()
   "Mark the boundaries of searched heredoc."
