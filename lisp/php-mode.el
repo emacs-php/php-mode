@@ -1127,7 +1127,6 @@ After setting the stylevars run hooks according to STYLENAME
     (modify-syntax-entry ?_  "_"   table)
     (modify-syntax-entry ?`  "\""  table)
     (modify-syntax-entry ?\" "\""  table)
-    (modify-syntax-entry ?#  "< b" table)
     (modify-syntax-entry ?\n "> b" table)
     (modify-syntax-entry ?$  "_"   table)
     table))
@@ -1180,6 +1179,9 @@ After setting the stylevars run hooks according to STYLENAME
 
   ;; PHP vars are case-sensitive
   (setq case-fold-search t)
+
+  (when php-mode-use-php7-syntax-table
+    (modify-syntax-entry ?#  "< b" php-mode-syntax-table))
 
   (when php-mode-enable-project-local-variable
     (add-hook 'hack-local-variables-hook #'php-mode-set-local-variable-delay t t))
