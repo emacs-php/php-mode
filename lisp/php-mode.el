@@ -318,6 +318,12 @@ In that case set to `NIL'."
   :tag "PHP Mode Enable Project Local Variable"
   :type 'boolean)
 
+(defcustom php-mode-use-php7-syntax-table t
+  "When set to `T', use a syntax table compatible with PHP 7."
+  :group 'php-mode
+  :tag "PHP Mode Enable Project Local Variable"
+  :type 'boolean)
+
 (defconst php-mode-cc-vertion
   (eval-when-compile c-version))
 
