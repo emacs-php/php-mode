@@ -318,6 +318,9 @@ In that case set to `NIL'."
   :tag "PHP Mode Enable Project Local Variable"
   :type 'boolean)
 
+(defconst php-mode-cc-vertion
+  (eval-when-compile c-version))
+
 (defun php-mode-version ()
   "Display string describing the version of PHP Mode."
   (interactive)
@@ -1131,6 +1134,13 @@ After setting the stylevars run hooks according to STYLENAME
   :syntax-table php-mode-syntax-table
   ;; :after-hook (c-update-modeline)
   ;; (setq abbrev-mode t)
+
+  (unless (string= php-mode-cc-vertion c-version)
+    (user-error "CC Mode has been updated.  %s"
+                (if (package-installed-p 'php-mode)
+                    "Please run `M-x package-reinstall php-mode' command."
+                  "Please byte recompile PHP Mode files.")))
+
   (when php-mode-disable-c-mode-hook
     (setq-local c-mode-hook nil)
     (setq-local java-mode-hook nil))
