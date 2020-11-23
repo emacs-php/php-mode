@@ -1013,14 +1013,17 @@ this ^ lineup"
 (defun php-syntax-propertize-hash-line-comment (_start end)
   "Apply propertize # comment (without PHP8 Attributes) from START to END."
   (unless php-mode-use-php7-syntax-table
-    (while (< (point) (min end (point-max)))
-      (let ((line-end (line-end-position)))
+    (let (line-end in-last-line)
+      (while (and (< (point) (min end (point-max)))
+                  (not in-last-line))
+        (setq line-end (line-end-position))
         (when (and (search-forward "#" line-end t)
                    (not (php-in-string-or-comment-p))
                    (not (looking-at "[[]")))
           (c-put-char-property (1- (point)) 'syntax-table (string-to-syntax "<"))
           (c-put-char-property line-end 'syntax-table (string-to-syntax ">")))
-        (move-beginning-of-line 2)))))
+        (move-beginning-of-line 2)
+        (setq in-last-line (>= line-end (point)))))))
 
 (defun php-heredoc-syntax ()
   "Mark the boundaries of searched heredoc."
