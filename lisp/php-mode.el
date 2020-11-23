@@ -987,8 +987,8 @@ this ^ lineup"
 
 (defvar php-syntax-propertize-functions
   '(php-syntax-propertize-heredoc
-    php-syntax-propertize-quotes-in-comment
-    php-syntax-propertize-hash-line-comment)
+    php-syntax-propertize-hash-line-comment
+    php-syntax-propertize-quotes-in-comment)
   "Syntax propertize functions for PHP script.")
 
 (defun php-syntax-propertize-function (start end)
