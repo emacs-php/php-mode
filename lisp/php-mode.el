@@ -1184,7 +1184,7 @@ After setting the stylevars run hooks according to STYLENAME
   (setq-local comment-start "// ")
   (setq-local comment-start-skip
               (eval-when-compile
-                (rx (group (or (: "#")
+                (rx (group (or (: "#" (not (any "[")))
                                (: "/" (+ "/"))
                                (: "/*")))
                     (* (syntax whitespace)))))
