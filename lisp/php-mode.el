@@ -1020,8 +1020,7 @@ this ^ lineup"
         (when (and (search-forward "#" line-end t)
                    (not (php-in-string-or-comment-p))
                    (not (looking-at "[[]")))
-          (c-put-char-property (1- (point)) 'syntax-table (string-to-syntax "<"))
-          (c-put-char-property line-end 'syntax-table (string-to-syntax ">")))
+          (c-put-char-property (1- (point)) 'syntax-table (string-to-syntax "< b")))
         (move-beginning-of-line 2)
         (setq in-last-line (>= line-end (point)))))))
 
