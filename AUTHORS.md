@@ -30,6 +30,7 @@ Names Sorted Alphabetically:
 - Carl Groner
 - Charlie McMackin
 - Christian Albrecht
+- Christian Weiske
 - Daniel Hackney
 - David Arroyo Menéndez
 - David Maus

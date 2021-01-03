@@ -10,12 +10,15 @@ all: autoloads $(ELCS) authors
 
 authors: AUTHORS.md
 
+.mailmap:
+	ln -s etc/git/.mailmap
+
 .PHONY: AUTHORS.md
-AUTHORS.md: AUTHORS.md.in
+AUTHORS.md: etc/git/AUTHORS.md.in .mailmap
 	@printf "Generating AUTHORS.md file..."
 	@test -d .git \
 		&& (cat $< > $@ \
-			&& git log --pretty=format:'- %aN' | sort -u >> $@ \
+			&& git log --pretty=format:'- %aN' | LANG=C sort -u >> $@ \
 			&& printf "FINISHED\n" ; ) \
 		|| printf "FAILED (non-fatal)\n"
 

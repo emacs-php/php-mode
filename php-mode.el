@@ -472,7 +472,7 @@ In that case set to `NIL'."
 
 (c-lang-defconst c-primitive-type-kwds
   php '("int" "integer" "bool" "boolean" "float" "double" "real"
-        "string" "object" "void"))
+        "string" "object" "void" "mixed"))
 
 (c-lang-defconst c-class-decl-kwds
   "Keywords introducing declarations where the following block (if any)
@@ -518,6 +518,9 @@ PHP does not have an \"enum\"-like keyword."
 
 (c-lang-defconst c-lambda-kwds
   php '("function" "use"))
+
+(c-lang-defconst c-inexpr-block-kwds
+  php '("match"))
 
 (c-lang-defconst c-other-block-decl-kwds
   php '("namespace"))
@@ -642,6 +645,23 @@ but only if the setting is enabled"
     (save-excursion
       (beginning-of-line)
       (if (looking-at-p "\\s-*->") '+ nil))))
+
+(defun php-c-looking-at-or-maybe-in-bracelist (&optional containing-sexp lim)
+  "Replace `c-looking-at-or-maybe-in-bracelist'.
+
+CONTAINING-SEXP is the position of the brace/paren/bracket enclosing
+POINT, or nil if there is no such position, or we do not know it.  LIM is
+a backward search limit."
+  (cond
+   ((looking-at-p "{")
+    (save-excursion
+      (c-backward-token-2 2 t lim)
+      ;; PHP 8.0 match expression
+      ;; echo match ($var) |{
+      ;;     ↑ matches   ↑ initial position
+      (when (looking-at-p (eval-when-compile (rx symbol-start "match" symbol-end)))
+        (cons (point) t))))
+   (t nil)))
 
 (c-add-style
  "php"
@@ -1185,6 +1205,10 @@ After setting the stylevars run hooks according to STYLENAME
               "^\\s-*function\\s-+&?\\s-*\\(\\(\\sw\\|\\s_\\)+\\)\\s-*")
   (setq-local add-log-current-defun-function nil)
   (setq-local add-log-current-defun-header-regexp php-beginning-of-defun-regexp)
+
+  (when (fboundp 'c-looking-at-or-maybe-in-bracelist)
+    (advice-add #'c-looking-at-or-maybe-in-bracelist
+                :override 'php-c-looking-at-or-maybe-in-bracelist))
 
   (when (>= emacs-major-version 25)
     (with-silent-modifications
