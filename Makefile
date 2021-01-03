@@ -1,10 +1,10 @@
 EMACS ?= emacs
-ELS = php.el php-align.el php-face.el php-project.el php-mode.el php-mode-debug.el
+ELS = lisp/php.el lisp/php-align.el lisp/php-face.el lisp/php-project.el lisp/php-mode.el lisp/php-mode-debug.el
 AUTOLOADS = php-mode-autoloads.el
 ELCS = $(ELS:.el=.elc)
 
 %.elc: %.el
-	$(EMACS) -Q -batch -L . -f batch-byte-compile $<
+	$(EMACS) -Q -batch -L lisp/ -f batch-byte-compile $<
 
 all: autoloads $(ELCS) authors
 
@@ -24,11 +24,11 @@ AUTHORS.md: etc/git/AUTHORS.md.in .mailmap
 
 autoloads: $(AUTOLOADS)
 
-$(AUTOLOADS): php.el php-align.el php-face.el php-project.el php-mode-debug.el php-mode.el
-	$(EMACS) -Q -batch -L . --eval \
+$(AUTOLOADS): lisp/php.el lisp/php-align.el lisp/php-face.el lisp/php-project.el lisp/php-mode-debug.el lisp/php-mode.el
+	$(EMACS) -Q -batch -L lisp/ --eval \
 	"(progn \
 	   (require 'package) \
-	   (package-generate-autoloads \"php-mode\" default-directory))"
+	   (package-generate-autoloads \"php-mode\" (expand-file-name \"lisp\")))"
 
 clean:
 	rm -f $(ELCS) $(AUTOLOADS)
@@ -52,6 +52,7 @@ dev:
 # command.
 test: clean all
 	touch tests/project/1/.git
-	$(EMACS) -Q -batch -L . -l tests/php-mode-test.el -f ert-run-tests-batch-and-exit
+	$(EMACS) -Q -batch -l lisp/php-mode-autoloads.el \
+	   -l tests/php-mode-test.el -f ert-run-tests-batch-and-exit
 
 .PHONY: all authors autoloads clean test
