@@ -10,7 +10,7 @@
 ;; URL: https://github.com/emacs-php/php-mode
 ;; Keywords: languages php
 ;; Version: 1.23.0
-;; Package-Requires: ((emacs "24.3"))
+;; Package-Requires: ((emacs "25.2"))
 ;; License: GPL-3.0-or-later
 
 (defconst php-mode-version-number "1.23.0"

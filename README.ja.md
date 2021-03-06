@@ -18,7 +18,7 @@ A powerful and flexible Emacs major mode for editing PHP scripts
 インストール
 ------------
 
-**PHP ModeはEmacs 24.3以降で動作します**。古いバージョンのEmacsでも動作するかもしれませんが、保証外です。 古いバージョンのEmacsのPHPモードを使用することによる問題のバグ報告は積極的に対応しません。現在のサポートポリシーは[Supported Version]のページをご覧ください。
+**PHP ModeはEmacs 25.2以降で動作します**。古いバージョンのEmacsでも動作するかもしれませんが、保証外です。 古いバージョンのEmacsのPHPモードを使用することによる問題のバグ報告は積極的に対応しません。現在のサポートポリシーは[Supported Version]のページをご覧ください。
 
 ### **(推奨)** MELPAからのインストール
 
