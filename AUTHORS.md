@@ -25,6 +25,7 @@ Names Sorted Alphabetically:
 - Alan Pearce
 - Andreas Röhler
 - Andrei Chițu
+- Antoine Brand
 - Bence Kalmar
 - Bob W. Hogg
 - Carl Groner
