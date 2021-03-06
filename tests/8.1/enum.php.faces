@@ -1,0 +1,85 @@
+;; -*- mode: emacs-lisp -*-
+(("<?php" . php-php-tag)
+ ("
+
+")
+ ("enum" . php-keyword)
+ (" ")
+ ("Size" . font-lock-type-face)
+ ("
+{
+    ")
+ ("case" . php-keyword)
+ (" ")
+ ("Small" . font-lock-type-face)
+ (";
+    ")
+ ("case" . php-keyword)
+ (" ")
+ ("Medium" . font-lock-type-face)
+ (";
+    ")
+ ("case" . php-keyword)
+ (" ")
+ ("Large" . font-lock-type-face)
+ (";
+
+    ")
+ ("public" . php-keyword)
+ (" ")
+ ("static" . php-keyword)
+ (" ")
+ ("function" . php-keyword)
+ (" ")
+ ("fromLength" . php-function-name)
+ ("(")
+ ("int" . font-lock-type-face)
+ (" ")
+ ("$" . php-variable-sigil)
+ ("cm" . php-variable-name)
+ (")
+    {
+        ")
+ ("return" . php-keyword)
+ (" ")
+ ("match" . php-keyword)
+ ("(")
+ ("true" . php-constant)
+ (") {
+            ")
+ ("$" . php-variable-sigil)
+ ("cm" . php-variable-name)
+ (" ")
+ ("<" . php-comparison-op)
+ (" 50 ")
+ ("=" . php-assignment-op)
+ (">" . php-comparison-op)
+ (" ")
+ ("static" . php-keyword)
+ ("::" . php-paamayim-nekudotayim)
+ ("Small,
+            ")
+ ("$" . php-variable-sigil)
+ ("cm" . php-variable-name)
+ (" ")
+ ("<" . php-comparison-op)
+ (" 100 ")
+ ("=" . php-assignment-op)
+ (">" . php-comparison-op)
+ (" ")
+ ("static" . php-keyword)
+ ("::" . php-paamayim-nekudotayim)
+ ("Medium,
+            ")
+ ("default" . php-keyword)
+ (" ")
+ ("=" . php-assignment-op)
+ (">" . php-comparison-op)
+ (" ")
+ ("static" . php-keyword)
+ ("::" . php-paamayim-nekudotayim)
+ ("Large,
+        };
+    }
+}
+"))
