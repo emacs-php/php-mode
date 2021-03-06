@@ -24,6 +24,10 @@ jobs:
           - "27.1"
           - snapshot
         include:
+          - emacs_version: "24.4"
+            allow_failure: true
+          - emacs_version: "24.5"
+            allow_failure: true
           - emacs_version: snapshot
             allow_failure: true
     steps:

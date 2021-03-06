@@ -480,7 +480,7 @@ In that case set to `NIL'."
 (c-lang-defconst c-class-decl-kwds
   "Keywords introducing declarations where the following block (if any)
 contains another declaration level that should be considered a class."
-  php '("class" "trait" "interface"))
+  php '("class" "trait" "interface" "enum"))
 
 (c-lang-defconst c-brace-list-decl-kwds
   "Keywords introducing declarations where the following block (if
@@ -493,7 +493,7 @@ PHP does not have an \"enum\"-like keyword."
   php (append (c-lang-const c-class-decl-kwds) '("function")))
 
 (c-lang-defconst c-modifier-kwds
-  php '("abstract" "const" "final" "static"))
+  php '("abstract" "const" "final" "static" "case"))
 
 (c-lang-defconst c-protection-kwds
   "Access protection label keywords in classes."
