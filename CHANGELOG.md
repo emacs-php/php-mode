@@ -4,9 +4,47 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
 ## Unreleased
 
+### Added
+
+ * Support new PHP 8.0 and 8.1 syntax hilighting and indentation
+    * [8.0] `#[Attributes]`
+
+## [1.24.0] - 2021-03-07
+
+### Added
+
+ * Support new PHP 8.0 and 8.1 syntax hilighting and indentation
+   * [8.0] `match` expression ([#632])
+   * [8.0] `mixed` pseudo type declaration ([#633])
+   * [8.1] `enum` statement ([#653])
+
 ### Changed
 
- * Drop support for Emacs 24 and 25.1
+ * Drop support for Emacs 24 and 25.1 ([#654])
+ * Raises an error when the byte-compiled Cc Mode version does not match that version at runtime.
+   * You will need to recompile php-mode after the GNU Emacs version changes.
+
+## Removed
+
+ * Remove `(require 'add-log)`
+
+### Fixed
+
+ * Fix font-lock highlighting
+   * `!=` ([#630])
+ * Fix Heredoc and Nowdoc highlighting ([])
+ * Fix documentation mistake
+   * `php-mode-lineup-cascaded-calls` in README.md ([#644] thanks [@cweiske]!)
+
+[#630]: https://github.com/emacs-php/php-mode/pull/630
+[#632]: https://github.com/emacs-php/php-mode/pull/632
+[#633]: https://github.com/emacs-php/php-mode/pull/633
+[#644]: https://github.com/emacs-php/php-mode/pull/644
+[#651]: https://github.com/emacs-php/php-mode/pull/651
+[#653]: https://github.com/emacs-php/php-mode/pull/653
+[#654]: https://github.com/emacs-php/php-mode/pull/654
+[@antoineB]: https://github.com/antoineB
+[@cweiske]: https://github.com/cweiske
 
 ## [1.23.0] - 2020-05-06
 
