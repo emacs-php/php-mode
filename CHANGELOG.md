@@ -32,7 +32,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
  * Fix font-lock highlighting
    * `!=` ([#630])
- * Fix Heredoc and Nowdoc highlighting ([])
+ * Fix Heredoc and Nowdoc highlighting ([#651] thanks [@antoineB])
  * Fix documentation mistake
    * `php-mode-lineup-cascaded-calls` in README.md ([#644] thanks [@cweiske]!)
 
