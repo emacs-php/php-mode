@@ -9,11 +9,11 @@
 ;; Maintainer: USAMI Kenta <tadsan@zonu.me>
 ;; URL: https://github.com/emacs-php/php-mode
 ;; Keywords: languages php
-;; Version: 1.23.0
+;; Version: 1.24.0
 ;; Package-Requires: ((emacs "25.2"))
 ;; License: GPL-3.0-or-later
 
-(defconst php-mode-version-number "1.23.0"
+(defconst php-mode-version-number "1.24.0"
   "PHP Mode version number.")
 
 ;; This program is free software; you can redistribute it and/or modify
