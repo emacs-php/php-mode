@@ -684,4 +684,15 @@ Meant for `php-mode-test-issue-503'."
   (with-php-mode-test ("lang/errorcontrol.php" :faces t))
   (with-php-mode-test ("lang/magical-constants/echo.php" :faces t)))
 
+;; For developers: How to make .faces list file.
+;;
+;; 1. Press `M-x eval-buffer' in this file bufffer.
+;; 2. Copy follows code snippet:
+;;     (setq x (php-mode-test--buffer-face-list (current-buffer)))
+;; 3. Visit target buffer of testing PHP file.
+;; 4. Press `M-:' (or `M-x eval-expression') and yank killed the code snippet.
+;; 5. Press `M-x ielm' and input `x' and RET key.
+;; 6. Kill output list and yank list to .faces file.
+;; 7. Execute `make test' in shell.
+
 ;;; php-mode-test.el ends here
