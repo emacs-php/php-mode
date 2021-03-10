@@ -1,0 +1,72 @@
+;; -*- mode: emacs-lisp -*-
+(("<?php" . php-php-tag)
+ ("
+
+")
+ ("# " . font-lock-comment-delimiter-face)
+ ("Comment
+" . font-lock-comment-face)
+ ("
+#[ExampleAttribute]
+#[Attr1, Attr2]
+")
+ ("class" . php-class-declaration)
+ (" ")
+ ("Klass" . font-lock-type-face)
+ ("
+{
+    #[ExampleAttribute]
+    ")
+ ("function" . php-keyword)
+ (" ")
+ ("f1" . php-function-name)
+ ("() { }
+
+    #[WithoutArgument]
+    #[")
+ ("SingleArgument" . php-function-call)
+ ("(0)]
+    #[")
+ ("FewArguments" . php-function-call)
+ ("(")
+ ("'Hello'" . php-string)
+ (", ")
+ ("'World'" . php-string)
+ (")]
+    ")
+ ("function" . php-keyword)
+ (" ")
+ ("foo" . php-function-name)
+ ("() {}
+
+    #[WithoutArgument] #[")
+ ("SingleArgument" . php-function-call)
+ ("(0)] #[")
+ ("FewArguments" . php-function-call)
+ ("(")
+ ("'Hello'" . php-string)
+ (", ")
+ ("'World'" . php-string)
+ (")]
+    ")
+ ("function" . php-keyword)
+ (" ")
+ ("bar" . php-function-name)
+ ("() {}
+
+    #[")
+ ("Attr2" . php-function-call)
+ ("(")
+ ("\"foo\"" . php-string)
+ ("), ")
+ ("Attr2" . php-function-call)
+ ("(")
+ ("\"bar\"" . php-string)
+ (")]
+    ")
+ ("function" . php-keyword)
+ (" ")
+ ("buz" . php-function-name)
+ ("() {}
+}
+"))

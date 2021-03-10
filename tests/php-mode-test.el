@@ -654,6 +654,12 @@ Meant for `php-mode-test-issue-503'."
   (with-php-mode-test ("7.4/arrow-function.php" :faces t))
   (with-php-mode-test ("7.4/typed-property.php" :faces t)))
 
+(ert-deftest php-mode-test-php80 ()
+  "Test highlighting language constructs added in PHP 8.0."
+  (with-php-mode-test ("8.0/attribute/class.php" :faces t))
+  (with-php-mode-test ("8.0/attribute/function.php" :faces t))
+  (with-php-mode-test ("8.0/attribute/function2.php" :faces t)))
+
 (ert-deftest php-mode-test-php81 ()
   "Test highlighting language constructs added in PHP 8.1."
   (with-php-mode-test ("8.1/enum.php" :faces t)))

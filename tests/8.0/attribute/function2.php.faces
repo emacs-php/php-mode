@@ -1,0 +1,23 @@
+;; -*- mode: emacs-lisp -*-
+(("<?php" . php-php-tag)
+ ("
+
+#[
+ Deprecated
+]
+")
+ ("function" . php-keyword)
+ (" ")
+ ("f" . php-function-name)
+ ("(")
+ ("$" . php-variable-sigil)
+ ("arg1" . php-variable-name)
+ (",
+ #[Deprecated] ")
+ ("$" . php-variable-sigil)
+ ("arg2" . php-variable-name)
+ ("){}
+")
+ ("#D" . font-lock-comment-delimiter-face)
+ ("eprecated
+" . font-lock-comment-face))
