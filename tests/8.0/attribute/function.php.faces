@@ -1,0 +1,43 @@
+;; -*- mode: emacs-lisp -*-
+(("<?php" . php-php-tag)
+ ("
+
+#[ExampleAttribute]
+")
+ ("function" . php-keyword)
+ (" ")
+ ("f1" . php-function-name)
+ ("() { }
+
+#[WithoutArgument]
+#[")
+ ("SingleArgument" . php-function-call)
+ ("(0)]
+#[")
+ ("FewArguments" . php-function-call)
+ ("(")
+ ("'Hello'" . php-string)
+ (", ")
+ ("'World'" . php-string)
+ (")]
+")
+ ("function" . php-keyword)
+ (" ")
+ ("foo" . php-function-name)
+ ("() {}
+
+#[WithoutArgument]#[")
+ ("SingleArgument" . php-function-call)
+ ("(0)]#[")
+ ("FewArguments" . php-function-call)
+ ("(")
+ ("'Hello'" . php-string)
+ (", ")
+ ("'World'" . php-string)
+ (")]
+")
+ ("function" . php-keyword)
+ (" ")
+ ("bar" . php-function-name)
+ ("() {}
+"))
