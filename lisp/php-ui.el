@@ -29,7 +29,7 @@
 (eval-when-compile
   (require 'php-ui-phpactor))
 
-(defvar php-ui-ui-alist
+(defvar php-ui-feature-alist
   '((phpactor :test (lambda () (and (require 'phpactor nil t) (featurep 'phpactor)))
               :activate php-ui-phpactor-activate
               :deactivate php-ui-phpactor-activate)
@@ -42,7 +42,7 @@
 (define-minor-mode php-ui-mode
   "Minor mode for integrate IDE-like tools."
   :tag "PHP-UI"
-  (let ((ui-plist (cdr-safe (assq 'phpactor php-ui-ui-alist))))
+  (let ((ui-plist (cdr-safe (assq 'phpactor php-ui-feature-alist))))
     (if php-ui-mode
         (php-ui--activate-buffer ui-plist)
       (php-ui--deactivate-buffer ui-plist))))
