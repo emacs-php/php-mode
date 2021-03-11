@@ -28,6 +28,7 @@
 ;;; Code:
 (require 'phpactor nil t)
 (require 'popup nil t)
+(require 'smart-jump nil t)
 
 (defvar-local php-ui-phpactor-buffer nil)
 (defvar-local php-ui-phpactor-hover-last-pos nil)
@@ -64,6 +65,11 @@
 (defun php-ui-phpactor-activate ()
   "Activate PHP-UI using phpactor.el."
   (interactive)
+  (if (not (fboundp 'smart-jump-go))
+      (local-set-key [remap xref-find-definitions] #'phpactor-goto-definition)
+    (local-set-key [remap xref-find-definitions] #'smart-jump-go)
+    (local-set-key [remap xref-pop-marker-stack] #'smart-jump-back)
+    (local-set-key [remap xref-find-references] #'smart-jump-references))
   (unless php-ui-phpactor-timer
     (setq php-ui-phpactor-timer (run-with-timer 1.0 1 #'php-ui-phpactor-hover)))
   (setq php-ui-phpactor-buffer t))
@@ -72,6 +78,10 @@
 (defun php-ui-phpactor-deactivate ()
   "Dectivate PHP-UI using phpactor.el."
   (interactive)
+  (local-unset-key [remap xref-find-definitions])
+  (local-unset-key [remap xref-pop-marker-stack])
+  (local-unset-key [remap xref-find-references])
+
   (when php-ui-phpactor-timer
     (cancel-timer php-ui-phpactor-timer)
     (setq php-ui-phpactor-timer nil))
