@@ -29,34 +29,52 @@
 (require 'phpactor nil t)
 (require 'popup nil t)
 
-(defvar-local php-ui-phpactor-buffer nil
-  ".")
+(defvar-local php-ui-phpactor-buffer nil)
+(defvar-local php-ui-phpactor-hover-last-pos nil)
+(defvar-local php-ui-phpactor-hover-last-msg nil)
 
-(defvar-local php-ui-phpactor-last-hover-pos nil
-  ".")
+(declare-function phpactor--command-argments (&rest arg-keys))
+(declare-function phpactor--parse-json (buffer))
+(declare-function phpactor--rpc-async "phpactor" (action arguments callback))
+(declare-function phpactor-goto-definition "phpactor" ())
+(declare-function popup-tip "popup" (string))
 
 (defvar php-ui-phpactor-timer nil
-  ".")
+  "Timer object for execute Phpactor and display hover message.")
 
 (defun php-ui-phpactor-hover ()
-  ""
+  "Show brief information about the symbol underneath the cursor."
   (interactive)
-  (when (and php-ui-phpactor-buffer (not (eq (point) php-ui-phpactor-last-hover-pos)))
-    (setq php-ui-phpactor-last-hover-pos (point))
-    (popup-tip (phpactor-hover))))
+  (when php-ui-phpactor-buffer
+    (if (eq (point) php-ui-phpactor-hover-last-pos)
+        (when php-ui-phpactor-hover-last-msg
+          (let ((msg php-ui-phpactor-hover-last-msg))
+            (setq php-ui-phpactor-hover-last-msg nil)
+            (popup-tip msg)))
+      (setq php-ui-phpactor-hover-last-pos (point))
+      (let ((main-buffer (current-buffer)))
+        (phpactor--rpc-async "hover" (phpactor--command-argments :source :offset)
+          (lambda (proc)
+            (let* ((response (phpactor--parse-json (process-buffer proc)))
+                   (msg (plist-get (plist-get response :parameters) :message)))
+              (with-current-buffer main-buffer
+                (setq php-ui-phpactor-hover-last-msg msg)))))))))
 
 ;;;###autoload
 (defun php-ui-phpactor-activate ()
-  ""
+  "Activate PHP-UI using phpactor.el."
   (interactive)
   (unless php-ui-phpactor-timer
-    (setq php-ui-phpactor-timer (run-with-timer 1.0 5 #'php-ui-phpactor-hover)))
+    (setq php-ui-phpactor-timer (run-with-timer 1.0 1 #'php-ui-phpactor-hover)))
   (setq php-ui-phpactor-buffer t))
 
 ;;;###autoload
 (defun php-ui-phpactor-deactivate ()
-  ""
+  "Dectivate PHP-UI using phpactor.el."
   (interactive)
+  (when php-ui-phpactor-timer
+    (cancel-timer php-ui-phpactor-timer)
+    (setq php-ui-phpactor-timer nil))
   (setq php-ui-phpactor-buffer nil))
 
 (provide 'php-ui-phpactor)
