@@ -154,4 +154,8 @@ class SomeClass
     public function getNullableCallable(
     ): ?callable {
     }
+
+    public function neverReturn(
+    ): never {
+    }
 }

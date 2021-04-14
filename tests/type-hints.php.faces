@@ -1,10 +1,14 @@
 ;; -*- mode: emacs-lisp -*-
 (("<?php" . php-php-tag)
- ("\n\n")
+ ("
+
+")
  ("class" . php-class-declaration)
  (" ")
  ("SomeClass" . font-lock-type-face)
- ("\n{\n    ")
+ ("
+{
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -15,7 +19,11 @@
  ("title" . php-variable-name)
  ("): ")
  ("void" . font-lock-type-face)
- ("\n    {\n    }\n\n    ")
+ ("
+    {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -28,7 +36,11 @@
  ("title" . php-variable-name)
  ("): ")
  ("string" . font-lock-type-face)
- ("\n    {\n    }\n\n    ")
+ ("
+    {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -41,7 +53,11 @@
  ("title" . php-variable-name)
  ("): ")
  ("?string" . font-lock-type-face)
- ("\n    {\n    }\n\n    ")
+ ("
+    {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -54,7 +70,11 @@
  ("number" . php-variable-name)
  ("): ")
  ("int" . font-lock-type-face)
- ("\n    {\n    }\n\n    ")
+ ("
+    {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -67,7 +87,11 @@
  ("number" . php-variable-name)
  ("): ")
  ("?int" . font-lock-type-face)
- ("\n    {\n    }\n\n    ")
+ ("
+    {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -80,7 +104,11 @@
  ("number" . php-variable-name)
  ("): ")
  ("float" . font-lock-type-face)
- ("\n    {\n    }\n\n    ")
+ ("
+    {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -93,7 +121,11 @@
  ("number" . php-variable-name)
  ("): ")
  ("?float" . font-lock-type-face)
- ("\n    {\n    }\n\n    ")
+ ("
+    {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -106,7 +138,11 @@
  ("flag" . php-variable-name)
  ("): ")
  ("bool" . font-lock-type-face)
- ("\n    {\n    }\n\n    ")
+ ("
+    {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -119,7 +155,11 @@
  ("flag" . php-variable-name)
  ("): ")
  ("?bool" . font-lock-type-face)
- ("\n    {\n    }\n\n    ")
+ ("
+    {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -132,7 +172,11 @@
  ("options" . php-variable-name)
  ("): ")
  ("array" . font-lock-type-face)
- ("\n    {\n    }\n\n    ")
+ ("
+    {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -145,7 +189,11 @@
  ("options" . php-variable-name)
  ("): ")
  ("?array" . font-lock-type-face)
- ("\n    {\n    }\n\n    ")
+ ("
+    {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -158,7 +206,11 @@
  ("object" . php-variable-name)
  ("): ")
  ("stdClass" . font-lock-type-face)
- ("\n    {\n    }\n\n    ")
+ ("
+    {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -171,7 +223,11 @@
  ("object" . php-variable-name)
  ("): ")
  ("?stdClass" . font-lock-type-face)
- ("\n    {\n    }\n\n    ")
+ ("
+    {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -184,7 +240,11 @@
  ("object" . php-variable-name)
  ("): ")
  ("\\path\\to\\my\\Object" . font-lock-type-face)
- ("\n    {\n    }\n\n    ")
+ ("
+    {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -197,7 +257,11 @@
  ("object" . php-variable-name)
  ("): ")
  ("?\\path\\to\\my\\Object" . font-lock-type-face)
- ("\n    {\n    }\n\n    ")
+ ("
+    {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -210,7 +274,11 @@
  ("callable" . php-variable-name)
  ("): ")
  ("callable" . font-lock-type-face)
- ("\n    {\n    }\n\n    ")
+ ("
+    {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
@@ -223,152 +291,219 @@
  ("callable" . php-variable-name)
  ("): ")
  ("?callable" . font-lock-type-face)
- ("\n    {\n    }\n\n    ")
+ ("
+    {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("someFunction" . php-function-name)
- ("(\n        ")
+ ("(
+        ")
  ("$" . php-variable-sigil)
  ("any" . php-variable-name)
- (",\n        ")
+ (",
+        ")
  ("string" . font-lock-type-face)
  (" ")
  ("$" . php-variable-sigil)
  ("name" . php-variable-name)
- (",\n        ")
+ (",
+        ")
  ("int" . font-lock-type-face)
  (" ")
  ("$" . php-variable-sigil)
  ("value" . php-variable-name)
- (",\n        ")
+ (",
+        ")
  ("bool" . font-lock-type-face)
  (" ")
  ("$" . php-variable-sigil)
  ("flag" . php-variable-name)
- (",\n        ")
+ (",
+        ")
  ("array" . font-lock-type-face)
  (" ")
  ("$" . php-variable-sigil)
  ("options" . php-variable-name)
- (",\n        ")
+ (",
+        ")
  ("stdClass" . font-lock-type-face)
  (" ")
  ("$" . php-variable-sigil)
  ("object" . php-variable-name)
- (",\n        ")
+ (",
+        ")
  ("\\path\\to\\my\\Object" . font-lock-type-face)
  (" ")
  ("$" . php-variable-sigil)
  ("nsObject" . php-variable-name)
- ("\n    ): ")
+ ("
+    ): ")
  ("void" . font-lock-type-face)
- (" {\n    }\n\n    ")
+ (" {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("getNone" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("void" . font-lock-type-face)
- (" {\n    }\n\n    ")
+ (" {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("getTitle" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("string" . font-lock-type-face)
- (" {\n    }\n\n    ")
+ (" {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("getNullableTitle" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("?string" . font-lock-type-face)
- (" {\n    }\n\n    ")
+ (" {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("getNumber" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("int" . font-lock-type-face)
- (" {\n    }\n\n    ")
+ (" {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("getNullableNumber" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("?int" . font-lock-type-face)
- (" {\n    }\n\n    ")
+ (" {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("getOtherNumber" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("float" . font-lock-type-face)
- (" {\n    }\n\n    ")
+ (" {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("getNullableOtherNumber" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("?float" . font-lock-type-face)
- (" {\n    }\n\n    ")
+ (" {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("getFlag" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("bool" . font-lock-type-face)
- (" {\n    }\n\n    ")
+ (" {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("getNullableFlag" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("?bool" . font-lock-type-face)
- (" {\n    }\n\n    ")
+ (" {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("getOptions" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("array" . font-lock-type-face)
- (" {\n    }\n\n    ")
+ (" {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("getNullableOptions" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("?array" . font-lock-type-face)
- (" {\n    }\n\n    ")
+ (" {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("getObject" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("stdClass" . font-lock-type-face)
- (" {\n    }\n\n    ")
+ (" {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("getNullableObject" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("?stdClass" . font-lock-type-face)
- (" {\n    }\n\n    ")
+ (" {
+    }
+
+    ")
  ("abstract" . php-keyword)
  (" ")
  ("public" . php-keyword)
@@ -376,9 +511,12 @@
  ("function" . php-keyword)
  (" ")
  ("getOtherObject" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("stdClass" . font-lock-type-face)
- (";\n\n    ")
+ (";
+
+    ")
  ("abstract" . php-keyword)
  (" ")
  ("public" . php-keyword)
@@ -386,39 +524,69 @@
  ("function" . php-keyword)
  (" ")
  ("getOtherNullableObject" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("?stdClass" . font-lock-type-face)
- (";\n\n    ")
+ (";
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("getNsObject" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("\\path\\to\\my\\Object" . font-lock-type-face)
- (" {\n    }\n\n    ")
+ (" {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("getNullableNsObject" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("?\\path\\to\\my\\Object" . font-lock-type-face)
+ (" {
+    }
 
- (" {\n    }\n\n    ")
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("getCallable" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("callable" . font-lock-type-face)
- (" {\n    }\n\n    ")
+ (" {
+    }
+
+    ")
  ("public" . php-keyword)
  (" ")
  ("function" . php-keyword)
  (" ")
  ("getNullableCallable" . php-function-name)
- ("(\n    ): ")
+ ("(
+    ): ")
  ("?callable" . font-lock-type-face)
- (" {\n    }\n}\n"))
+ (" {
+    }
+
+    ")
+ ("public" . php-keyword)
+ (" ")
+ ("function" . php-keyword)
+ (" ")
+ ("neverReturn" . php-function-name)
+ ("(
+    ): ")
+ ("never" . font-lock-type-face)
+ (" {
+    }
+}
+"))
