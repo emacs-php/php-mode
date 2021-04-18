@@ -71,7 +71,7 @@
     (local-set-key [remap xref-pop-marker-stack] #'smart-jump-back)
     (local-set-key [remap xref-find-references] #'smart-jump-references))
   (unless php-ui-phpactor-timer
-    (setq php-ui-phpactor-timer (run-with-timer 1.0 1 #'php-ui-phpactor-hover)))
+    (setq php-ui-phpactor-timer (run-with-idle-timer 1.0 1 #'php-ui-phpactor-hover)))
   (setq php-ui-phpactor-buffer t))
 
 ;;;###autoload
