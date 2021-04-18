@@ -1,11 +1,15 @@
 EMACS ?= emacs
 CASK ?= cask
-ELS = lisp/php.el lisp/php-align.el lisp/php-face.el lisp/php-project.el lisp/php-local-manual.el lisp/php-mode.el lisp/php-mode-debug.el
+ELS = lisp/php.el lisp/php-align.el lisp/php-face.el lisp/php-project.el lisp/php-local-manual.el lisp/php-mode.el lisp/php-ui.el lisp/php-ui-phpactor.el lisp/php-mode-debug.el
 AUTOLOADS = php-mode-autoloads.el
 ELCS = $(ELS:.el=.elc)
 
 %.elc: %.el
-	$(EMACS) -Q -batch -L lisp/ -f batch-byte-compile $<
+	$(EMACS) -Q -batch -L lisp/ --eval \
+	"(let ((default-directory (expand-file-name \".cask\" default-directory))) \
+	   (require 'package) \
+	   (normal-top-level-add-subdirs-to-load-path))" \
+	-f package-initialize -f batch-byte-compile $<
 
 all: autoloads $(ELCS) authors
 
