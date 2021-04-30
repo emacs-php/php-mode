@@ -46,7 +46,7 @@
   :tag "PHP Executable"
   :type 'string)
 
-(defcustom php-site-url "https://php.net/"
+(defcustom php-site-url "https://www.php.net/"
   "Default PHP.net site URL.
 
 The URL to use open PHP manual and search word."
