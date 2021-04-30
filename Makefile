@@ -1,5 +1,5 @@
 EMACS ?= emacs
-ELS = lisp/php.el lisp/php-align.el lisp/php-face.el lisp/php-project.el lisp/php-mode.el lisp/php-mode-debug.el
+ELS = lisp/php.el lisp/php-align.el lisp/php-face.el lisp/php-project.el lisp/php-local-manual.el lisp/php-mode.el lisp/php-mode-debug.el
 AUTOLOADS = php-mode-autoloads.el
 ELCS = $(ELS:.el=.elc)
 

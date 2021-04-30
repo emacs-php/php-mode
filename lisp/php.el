@@ -78,6 +78,70 @@ You can replace \"en\" with your ISO language code."
   :type '(choice (string :tag "URL to search PHP documentation")
                  (const  :tag "Use `php-site-url' variable" nil)))
 
+(defcustom php-completion-file ""
+  "Path to the file which contains the function names known to PHP."
+  :type 'string)
+
+(defcustom php-manual-path ""
+  "Path to the directory which contains the PHP manual."
+  :type 'string)
+
+(defcustom php-search-documentation-function #'php-search-web-documentation
+  "Function to search PHP Manual at cursor position."
+  :group 'php
+  :tag "PHP Search Documentation Function"
+  :type '(choice (const :tag "Use online documentation" #'php-search-web-documentation)
+                 (const :tag "Use local documentation" #'php-local-manual-search)
+                 (function :tag "Use other function")))
+
+(defcustom php-search-documentation-browser-function nil
+  "Function to display PHP documentation in a WWW browser.
+
+If non-nil, this shadows the value of `browse-url-browser-function' when
+calling `php-search-documentation' or `php-search-local-documentation'."
+  :group 'php
+  :tag "PHP Search Documentation Browser Function"
+  :type '(choice (const :tag "default" nil) function)
+  :link '(variable-link browse-url-browser-function))
+
+;; Define function for browsing manual
+(defun php-browse-documentation-url (url)
+  "Browse a documentation URL using the configured browser function.
+
+See `php-search-documentation-browser-function'."
+  (let ((browse-url-browser-function
+         (or php-search-documentation-browser-function
+             browse-url-browser-function)))
+    (browse-url url)))
+
+(defun php-browse-manual ()
+  "Bring up manual for PHP."
+  (interactive)
+  (browse-url (if (stringp php-manual-url)
+                  php-manual-url
+                (format "%smanual/%s/" php-site-url php-manual-url))))
+
+(defun php-search-web-documentation (word)
+  "Return URL to search PHP manual search by `WORD'."
+  (interactive (list (current-word)))
+  (php-browse-documentation-url (concat (or php-search-url php-site-url) word)))
+
+(defun php-search-documentation (&optional word)
+  "Search PHP documentation for the `WORD' at point.
+
+If `php-manual-path' has a non-empty string value then the command
+will first try searching the local documentation.  If the requested
+documentation does not exist it will fallback to searching the PHP
+website.
+
+With a prefix argument, prompt for a documentation word to search
+for.  If the local documentation is available, it is used to build
+a completion list."
+  (interactive)
+  (if (called-interactively-p 'interactive)
+      (call-interactively php-search-documentation-function)
+    (funcall php-search-documentation-function word)))
+
 (defcustom php-class-suffix-when-insert "::"
   "Suffix for inserted class."
   :group 'php

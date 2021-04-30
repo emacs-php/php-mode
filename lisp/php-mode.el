@@ -72,6 +72,7 @@
 (require 'etags)
 (require 'speedbar)
 (require 'imenu)
+(require 'package)
 (require 'nadvice nil t)
 
 (require 'cl-lib)
@@ -190,14 +191,6 @@ enabled."
   :group 'php-mode
   :tag "PHP Mode Do Not Use Semantic Imenu"
   :type 'boolean)
-
-(defcustom php-completion-file ""
-  "Path to the file which contains the function names known to PHP."
-  :type 'string)
-
-(defcustom php-manual-path ""
-  "Path to the directory which contains the PHP manual."
-  :type 'string)
 
 ;;;###autoload
 (if (version< emacs-version "24.4")
@@ -1398,130 +1391,6 @@ current `tags-file-name'."
     (if arglist
         (message "Arglist for %s: %s" tagname arglist)
       (message "Unknown function: %s" tagname))))
-
-(defcustom php-search-documentation-browser-function nil
-  "Function to display PHP documentation in a WWW browser.
-
-If non-nil, this shadows the value of `browse-url-browser-function' when
-calling `php-search-documentation' or `php-search-local-documentation'."
-  :group 'php
-  :tag "PHP Search Documentation Browser Function"
-  :type '(choice (const :tag "default" nil) function)
-  :link '(variable-link browse-url-browser-function))
-
-(defun php-browse-documentation-url (url)
-  "Browse a documentation URL using the configured browser function.
-
-See `php-search-documentation-browser-function'."
-  (let ((browse-url-browser-function
-         (or php-search-documentation-browser-function
-             browse-url-browser-function)))
-    (browse-url url)))
-
-(defvar php-search-local-documentation-types
-  (list "function" "control-structures" "class" "book")
-  ;; "intro" and "ref" also look interesting, but for all practical purposes
-  ;; their terms are sub-sets of the "book" terms (with the few exceptions
-  ;; being very unlikely search terms).
-  "The set (and priority sequence) of documentation file prefixes
-under which to search for files in the local documentation directory.")
-
-(defvar php-search-local-documentation-words-cache nil)
-
-(defun php--search-documentation-read-arg ()
-  "Obtain interactive argument for searching documentation."
-  ;; Cache the list of documentation words available for completion,
-  ;; based on the defined types-of-interest.
-  (let ((types-list php-search-local-documentation-types)
-        (words-cache php-search-local-documentation-words-cache)
-        (local-manual (and (stringp php-manual-path)
-                           (not (string= php-manual-path "")))))
-    (when (and local-manual
-               (not (assq types-list words-cache)))
-      ;; Generate the cache on the first run, or if the types changed.
-      ;; We read the filenames matching our types list in the local
-      ;; documentation directory, and extract the 'middle' component
-      ;; of each. e.g. "function.array-map.html" => "array_map".
-      (let* ((types-opt (regexp-opt types-list))
-             (pattern (concat "\\`" types-opt "\\.\\(.+\\)\\.html\\'"))
-             (collection
-              (mapcar (lambda (filename) (subst-char-in-string
-                                          ?- ?_ (replace-regexp-in-string
-                                                 pattern "\\1" filename)))
-                      (directory-files php-manual-path nil pattern))))
-        ;; Replace the entire cache. If the types changed, we don't need
-        ;; to retain the collection for the previous value.
-        (setq words-cache (list (cons types-list collection)))
-        (setq php-search-local-documentation-words-cache words-cache)))
-    ;; By default we search for (current-word) immediately, without prompting.
-    ;; With a prefix argument, or if there is no (current-word), we perform a
-    ;; completing read for a word from the cached collection.
-    (let* ((default (current-word))
-           (prompt (if default
-                       (format "Search PHP docs (%s): " default)
-                     "Search PHP docs: "))
-           (collection (and local-manual
-                            (cdr (assq types-list words-cache))))
-           (word (if (or current-prefix-arg (not default))
-                     (completing-read prompt collection nil nil nil nil default)
-                   default)))
-      ;; Return interactive argument list.
-      (list word))))
-
-(defun php-search-local-documentation (word)
-  "Search the local PHP documentation (i.e. in `php-manual-path') for
-the word at point.  The function returns t if the requested documentation
-exists, and nil otherwise.
-
-With a prefix argument, prompt (with completion) for a word to search for."
-  (interactive (php--search-documentation-read-arg))
-  (let ((file (catch 'found
-                (cl-loop for type in php-search-local-documentation-types do
-                         (let* ((doc-html (format "%s.%s.html"
-                                                  type
-                                                  (replace-regexp-in-string
-                                                   "_" "-" (downcase word))))
-                                (file (expand-file-name doc-html  php-manual-path)))
-                           (when (file-exists-p file)
-                             (throw 'found file)))))))
-    (when file
-      (let ((file-url (if (string-prefix-p "file://" file)
-                          file
-                        (concat "file://" file))))
-        (php-browse-documentation-url file-url))
-      t)))
-
-(defsubst php-search-web-documentation (word)
-  "Return URL to search PHP manual search by `WORD'."
-  (php-browse-documentation-url (concat (or php-search-url php-site-url) word)))
-
-;; Define function documentation function
-(defun php-search-documentation (word)
-  "Search PHP documentation for the `WORD' at point.
-
-If `php-manual-path' has a non-empty string value then the command
-will first try searching the local documentation.  If the requested
-documentation does not exist it will fallback to searching the PHP
-website.
-
-With a prefix argument, prompt for a documentation word to search
-for.  If the local documentation is available, it is used to build
-a completion list."
-  (interactive (php--search-documentation-read-arg))
-  (if (and (stringp php-manual-path)
-           (not (string= php-manual-path "")))
-      (or (php-search-local-documentation word)
-          (php-search-web-documentation word))
-    (php-search-web-documentation word)))
-
-;; Define function for browsing manual
-(defun php-browse-manual ()
-  "Bring up manual for PHP."
-  (interactive)
-  (browse-url (if (stringp php-manual-url)
-                  php-manual-url
-                (format "%smanual/%s/" php-site-url php-manual-url))))
-
 
 ;; Font Lock
 (defconst php-phpdoc-type-keywords
