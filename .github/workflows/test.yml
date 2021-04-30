@@ -24,11 +24,17 @@ jobs:
           - emacs_version: snapshot
             allow_failure: true
     steps:
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.6'
+        architecture: 'x64'
     - uses: purcell/setup-emacs@master
       with:
         version: ${{ matrix.emacs_version }}
-
-    - uses: actions/checkout@v1
+    - uses: conao3/setup-cask@master
+      with:
+        version: 'snapshot'
+    - uses: actions/checkout@v2
     - name: Run tests
       if: matrix.allow_failure != true
       run: 'make test'
