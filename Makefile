@@ -1,4 +1,5 @@
 EMACS ?= emacs
+CASK ?= cask
 ELS = lisp/php.el lisp/php-align.el lisp/php-face.el lisp/php-project.el lisp/php-local-manual.el lisp/php-mode.el lisp/php-mode-debug.el
 AUTOLOADS = php-mode-autoloads.el
 ELCS = $(ELS:.el=.elc)
@@ -24,11 +25,14 @@ AUTHORS.md: etc/git/AUTHORS.md.in .mailmap
 
 autoloads: $(AUTOLOADS)
 
-$(AUTOLOADS): lisp/php.el lisp/php-align.el lisp/php-face.el lisp/php-project.el lisp/php-mode-debug.el lisp/php-mode.el
+$(AUTOLOADS): lisp/php.el lisp/php-align.el lisp/php-face.el lisp/php-project.el lisp/php-local-manual.el lisp/php-mode-debug.el lisp/php-mode.el
 	$(EMACS) -Q -batch -L lisp/ --eval \
 	"(progn \
 	   (require 'package) \
 	   (package-generate-autoloads \"php-mode\" (expand-file-name \"lisp\")))"
+
+.cask: Cask
+	$(CASK) install
 
 clean:
 	rm -f $(ELCS) $(AUTOLOADS)
@@ -50,9 +54,13 @@ dev:
 #
 # for an example of using a script like this with the 'git bisect run'
 # command.
-test: clean all
+test: .cask clean all
 	touch tests/project/1/.git
-	$(EMACS) -Q -batch -l lisp/php-mode-autoloads.el \
-	   -l tests/php-mode-test.el -f ert-run-tests-batch-and-exit
+	$(EMACS) -Q -batch -L lisp/ --eval \
+	"(let ((default-directory (expand-file-name \".cask\" default-directory))) \
+	   (require 'package) \
+	   (normal-top-level-add-subdirs-to-load-path))" \
+	    -f package-initialize \
+	    -l tests/php-mode-test.el -f ert-run-tests-batch-and-exit
 
 .PHONY: all authors autoloads clean test
