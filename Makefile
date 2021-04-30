@@ -52,7 +52,11 @@ dev:
 # command.
 test: clean all
 	touch tests/project/1/.git
-	$(EMACS) -Q -batch -l lisp/php-mode-autoloads.el \
-	   -l tests/php-mode-test.el -f ert-run-tests-batch-and-exit
+	$(EMACS) -Q -batch -L lisp/ --eval \
+	"(let ((default-directory (expand-file-name \".cask\" default-directory))) \
+	   (require 'package) \
+	   (normal-top-level-add-subdirs-to-load-path))" \
+	    -f package-initialize \
+	    -l tests/php-mode-test.el -f ert-run-tests-batch-and-exit
 
 .PHONY: all authors autoloads clean test
