@@ -41,6 +41,8 @@
 ;;
 ;;  - none
 ;;      Does not launch any IDE features.
+;;  - eglot
+;;      https://github.com/joaotavora/eglot
 ;;  - lsp-mode
 ;;      https://emacs-lsp.github.io/lsp-mode/
 ;;      https://github.com/emacs-lsp/lsp-mode
@@ -95,6 +97,9 @@
     (phpactor :test (lambda () (and (require 'phpactor nil t) (featurep 'phpactor)))
               :activate php-ui-phpactor-activate
               :deactivate php-ui-phpactor-activate)
+    (eglot :test (lambda () (and (require 'eglot nil t) (featurep 'eglot)))
+           :activate eglot-ensure
+           :deactivate eglot--managed-mode-off)
     (lsp-mode :test (lambda () (and (require 'lsp nil t) (featurep 'lsp)))
               :activate lsp
               :deactivate lsp-workspace-shutdown)))
@@ -104,6 +109,13 @@
   :tag "PHP-UI"
   :prefix "php-ui-"
   :group 'php)
+
+(defcustom php-ui-eglot-executable nil
+  "A symbol of PHP-UI feature"
+  :tag "PHP-UI Eglot Executable"
+  :group 'php-ui
+  :type '(repeat string)
+  :safe (lambda (v) (or (stringp v) (listp v))))
 
 (defcustom php-ui-feature nil
   "A symbol of PHP-UI feature"
@@ -145,6 +157,16 @@
     (php-ui-mode -1))
   (let ((php-ui-feature feature))
     (php-ui-mode +1)))
+
+;;;###autoload
+(defun php-ui-eglot-server-program ()
+  "Return a list of command to execute LSP Server."
+  (if (stringp php-ui-eglot-executable)
+      (list php-ui-eglot-executable)
+    php-ui-eglot-executable))
+
+(defun php-ui--eglot-current-server ()
+  (php-project-get-root-dir))
 
 (defun php-ui--activate-buffer (ui-plist)
   "Activate php-ui implementation by UI-PLIST."
