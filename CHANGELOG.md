@@ -9,6 +9,8 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
  * Support new PHP 8.0 and 8.1 syntax hilighting and indentation
     * [8.0] `#[Attributes]`
  * Add `php-imenu-generic-expression-default` for default value or `php-imenu-generic-expression`
+   * Add `php-imenu-generic-expression-legacy` for compatibility
+   * Add `php-imenu-generic-expression-simple` for simple display
 
 ### Changed
 

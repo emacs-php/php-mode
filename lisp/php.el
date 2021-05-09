@@ -332,6 +332,70 @@ can be used to match against definitions for that classlike."
        ,(php-create-regexp-for-classlike "namespace") 1)))
   "Imenu generic expression for PHP Mode.  See `imenu-generic-expression'.")
 
+(defconst php-imenu-generic-expression-simple
+  (eval-when-compile
+    `(("Methods"
+       ,(php-create-regexp-for-method nil) 2)
+      ("Properties"
+       ,(rx line-start
+            (* (syntax whitespace))
+            (+ (or "public" "protected" "private" "static" "var")
+               (+ (syntax whitespace)))
+            (* (? (? (or "|" "?"))
+                  (or "\\" (syntax word) (syntax symbol))
+                  (+ (syntax whitespace))))
+            (group
+             "$" (+ (or (syntax word) (syntax symbol))))
+            word-boundary)
+       1)
+      ("Constants"
+       ,(rx line-start
+            (* (syntax whitespace))
+            (group
+             (* (or "public" "protected" "private")
+                (+ (syntax whitespace)))
+             "const"
+             (+ (syntax whitespace))
+             (+ (or (syntax word) (syntax symbol)))))
+       1)
+      ("Functions"
+       ,(rx line-start
+            (* (syntax whitespace))
+            "function"
+            (+ (syntax whitespace))
+            (group
+             (+ (or (syntax word) (syntax symbol)))))
+       1)
+      ("Classes"
+       ,(php-create-regexp-for-classlike "\\(?:class\\|interface\\|trait\\|enum\\)") 1)
+      ("Namespace"
+       ,(php-create-regexp-for-classlike "namespace") 1)))
+  "Imenu generic expression for PHP Mode.  See `imenu-generic-expression'.")
+
+(defconst php-imenu-generic-expression-legacy
+  (eval-when-compile
+    `(("Namespaces"
+       ,(php-create-regexp-for-classlike "namespace") 1)
+      ("Classes"
+       ,(php-create-regexp-for-classlike "class") 1)
+      ("Interfaces"
+       ,(php-create-regexp-for-classlike "interface") 1)
+      ("Traits"
+       ,(php-create-regexp-for-classlike "trait") 1)
+      ("All Methods"
+       ,(php-create-regexp-for-method) 1)
+      ("Private Methods"
+       ,(php-create-regexp-for-method '("private")) 2)
+      ("Protected Methods"
+       ,(php-create-regexp-for-method '("protected"))  2)
+      ("Public Methods"
+       ,(php-create-regexp-for-method '("public")) 2)
+      ("Anonymous Functions"
+       "\\<\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*=\\s-*f\\(unctio\\)?n\\s-*(" 1)
+      ("Named Functions"
+       "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1)))
+  "Imenu generic expression for PHP Mode.  See `imenu-generic-expression'.")
+
 (defcustom php-imenu-generic-expression php-imenu-generic-expression-default
   "Default Imenu generic expression for PHP Mode.  See `imenu-generic-expression'."
   :type '(alist :key-type string
