@@ -227,7 +227,7 @@ it is the character that will terminate the string, or t if the string should be
   "Regular expression for a PHP function.")
 
 (eval-when-compile
-  (defun php-create-regexp-for-method (&optional visibility)
+  (cl-defun php-create-regexp-for-method (&optional visibility &key include-args)
     "Make a regular expression for methods with the given VISIBILITY.
 
 VISIBILITY must be a string that names the visibility for a PHP
@@ -242,22 +242,25 @@ which will be the name of the method."
       (setq visibility (list visibility)))
     (rx-to-string `(: line-start
                       (* (syntax whitespace))
-                      ,@(if visibility
-                            `((* (or "abstract" "final" "static")
-                                 (+ (syntax whitespace)))
-                              (or ,@visibility)
-                              (+ (syntax whitespace))
-                              (* (or "abstract" "final" "static")
-                                 (+ (syntax whitespace))))
-                          '((* (* (or "abstract" "final" "static"
-                                      "private" "protected" "public")
-                                  (+ (syntax whitespace))))))
-                      "function"
-                      (+ (syntax whitespace))
-                      (? "&" (* (syntax whitespace)))
-                      (group (+ (or (syntax word) (syntax symbol))))
-                      (* (syntax whitespace))
-                      "(")))
+                      (group
+                       ,@(if visibility
+                             `((* (or "abstract" "final" "static")
+                                  (+ (syntax whitespace)))
+                               (or ,@visibility)
+                               (+ (syntax whitespace))
+                               (* (or "abstract" "final" "static")
+                                  (+ (syntax whitespace))))
+                           '((* (* (or "abstract" "final" "static"
+                                       "private" "protected" "public")
+                                   (+ (syntax whitespace))))))
+                       "function"
+                       (+ (syntax whitespace))
+                       (? "&" (* (syntax whitespace)))
+                       (group (+ (or (syntax word) (syntax symbol))))
+                       (* (syntax whitespace))
+                       "("
+                       ,@(when include-args
+                           '((* any) line-end))))))
 
   (defun php-create-regexp-for-classlike (type)
     "Accepts a `TYPE' of a 'classlike' object as a string, such as
@@ -275,29 +278,65 @@ can be used to match against definitions for that classlike."
      ;; this is not necessarily correct for all values of `type'.
      "\\s-+\\(\\(?:\\sw\\|\\\\\\|\\s_\\)+\\)")))
 
-(defconst php-imenu-generic-expression
+(defconst php-imenu-generic-expression-default
   (eval-when-compile
-    `(("Namespaces"
-       ,(php-create-regexp-for-classlike "namespace") 1)
+    `(("Methods"
+       ,(php-create-regexp-for-method nil :include-args t) 1)
+      ("Properties"
+       ,(rx line-start
+            (* (syntax whitespace))
+            (group
+             (+ (or "public" "protected" "private" "static" "var")
+                (+ (syntax whitespace)))
+             (* (? (? (or "|" "?"))
+                   (or "\\" (syntax word) (syntax symbol))
+                   (+ (syntax whitespace))))
+             "$" (+ (or (syntax word) (syntax symbol)))
+             word-boundary))
+       1)
+      ("Constants"
+       ,(rx line-start
+            (* (syntax whitespace))
+            (group
+             (* (or "public" "protected" "private")
+                (+ (syntax whitespace)))
+             "const"
+             (+ (syntax whitespace))
+             (+ (or (syntax word) (syntax symbol)))
+             (* (syntax whitespace))
+             (? "=" (* (syntax whitespace))
+                (repeat 0 40 any))))
+       1)
+      ("Functions"
+       ,(rx line-start
+            (* (syntax whitespace))
+            (group
+             "function"
+             (+ (syntax whitespace))
+             (+ (or (syntax word) (syntax symbol)))
+             (* (syntax whitespace))
+             "("
+             (repeat 0 100 any)))
+       1)
+      ("Import"
+       ,(rx line-start
+            ;; (* (syntax whitespace))
+            (group
+             "use"
+             (+ (syntax whitespace))
+             (repeat 0 100 any)))
+       1)
       ("Classes"
-       ,(php-create-regexp-for-classlike "class") 1)
-      ("Interfaces"
-       ,(php-create-regexp-for-classlike "interface") 1)
-      ("Traits"
-       ,(php-create-regexp-for-classlike "trait") 1)
-      ("All Methods"
-       ,(php-create-regexp-for-method) 1)
-      ("Private Methods"
-       ,(php-create-regexp-for-method '("private")) 1)
-      ("Protected Methods"
-       ,(php-create-regexp-for-method '("protected"))  1)
-      ("Public Methods"
-       ,(php-create-regexp-for-method '("public")) 1)
-      ("Anonymous Functions"
-       "\\<\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*=\\s-*f\\(unctio\\)?n\\s-*(" 1)
-      ("Named Functions"
-       "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1)))
+       ,(php-create-regexp-for-classlike "\\(?:class\\|interface\\|trait\\|enum\\)") 0)
+      ("Namespace"
+       ,(php-create-regexp-for-classlike "namespace") 1)))
   "Imenu generic expression for PHP Mode.  See `imenu-generic-expression'.")
+
+(defcustom php-imenu-generic-expression php-imenu-generic-expression-default
+  "Default Imenu generic expression for PHP Mode.  See `imenu-generic-expression'."
+  :type '(alist :key-type string
+                :value-type list)
+  :group 'php)
 
 (defconst php--re-namespace-pattern
   (eval-when-compile

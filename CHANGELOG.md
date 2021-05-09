@@ -8,6 +8,17 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
  * Support new PHP 8.0 and 8.1 syntax hilighting and indentation
     * [8.0] `#[Attributes]`
+ * Add `php-imenu-generic-expression-default` for default value or `php-imenu-generic-expression`
+
+### Changed
+
+ * Re-organized `php-imenu-generic-expression`
+   * Added `Import`, `Constants` and `Properties`
+   * Removed `Anonymous Functions`
+   * Renamed `Named Functions` to `Functions`
+   * Renamed `All Methods` to `Methods`
+   * Removed `Public Methods`, `Protected Methods` and `Provate Methods`
+   * Unified `Classes`, `Traits`, `Interfaces` into `Classes`
 
 ## [1.24.0] - 2021-03-07
 
