@@ -54,7 +54,7 @@ dev:
 #
 # for an example of using a script like this with the 'git bisect run'
 # command.
-test: .cask clean all
+test: clean all
 	touch tests/project/1/.git
 	$(EMACS) -Q -batch -L lisp/ --eval \
 	"(let ((default-directory (expand-file-name \".cask\" default-directory))) \
