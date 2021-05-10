@@ -1195,7 +1195,9 @@ After setting the stylevars run hooks according to STYLENAME
   (add-hook 'syntax-propertize-extend-region-functions
             #'php-syntax-propertize-extend-region t t)
 
-  (setq imenu-generic-expression php-imenu-generic-expression)
+  (setq imenu-generic-expression (if (symbolp php-imenu-generic-expression)
+                                     (symbol-value php-imenu-generic-expression)
+                                   php-imenu-generic-expression))
 
   ;; PHP vars are case-sensitive
   (setq case-fold-search t)

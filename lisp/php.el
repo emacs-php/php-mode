@@ -396,10 +396,12 @@ can be used to match against definitions for that classlike."
        "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1)))
   "Imenu generic expression for PHP Mode.  See `imenu-generic-expression'.")
 
-(defcustom php-imenu-generic-expression php-imenu-generic-expression-default
+(defcustom php-imenu-generic-expression 'php-imenu-generic-expression-default
   "Default Imenu generic expression for PHP Mode.  See `imenu-generic-expression'."
-  :type '(alist :key-type string
-                :value-type list)
+  :type '(choice (alist :key-type string :value-type list)
+                 (const 'php-imenu-generic-expression-legacy)
+                 (const 'php-imenu-generic-expression-simple)
+                 variable)
   :group 'php)
 
 (defconst php--re-namespace-pattern

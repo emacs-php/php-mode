@@ -320,8 +320,10 @@ style from Drupal."
   (with-php-mode-test ("issue-83.php")
     (let* ((index-alist (imenu--make-index-alist))
            (all-methods (mapcar 'car (cdr (assoc "Methods" index-alist)))))
-      (should (member "static public function staticBeforeVisibility()" all-methods))
-      (should (member "public static function staticAfterVisibility()" all-methods)))))
+      (should (equal all-methods
+                     (list
+                      "static public function staticBeforeVisibility()"
+                      "public static function staticAfterVisibility()"))))))
 
 (ert-deftest php-mode-test-issue-99 ()
   "Proper indentation for 'foreach' statements without braces."
