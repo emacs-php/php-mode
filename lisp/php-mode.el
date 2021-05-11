@@ -72,7 +72,7 @@
 (require 'speedbar)
 (require 'imenu)
 (require 'package)
-(require 'nadvice nil t)
+(require 'nadvice)
 
 (require 'cl-lib)
 (require 'mode-local)
@@ -84,29 +84,6 @@
   (defvar add-log-current-defun-function)
   (defvar c-vsemi-status-unknown-p)
   (defvar syntax-propertize-via-font-lock))
-
-;; Work around emacs bug#18845, cc-mode expects cl to be loaded
-;; while php-mode only uses cl-lib (without compatibility aliases)
-(eval-and-compile
-  (when (and (= emacs-major-version 24) (>= emacs-minor-version 4))
-    (require 'cl)))
-
-;; Work around https://github.com/emacs-php/php-mode/issues/310.
-;;
-;; In emacs 24.4 and 24.5, lines after functions with a return type
-;; are incorrectly analyzed as member-init-cont.
-;;
-;; Before emacs 24.4, c member initializers are not supported this
-;; way. Starting from emacs 25.1, cc-mode only detects member
-;; initializers when the major mode is c++-mode.
-(eval-and-compile
-  (if (and (= emacs-major-version 24) (or (= emacs-minor-version 4)
-                                          (= emacs-minor-version 5)))
-      (defun c-back-over-member-initializers ()
-        ;; Override of cc-engine.el, cc-mode in emacs 24.4 and 24.5 are too
-        ;; optimistic in recognizing c member initializers. Since we don't
-        ;; need it in php-mode, just return nil.
-        nil)))
 
 (autoload 'php-mode-debug "php-mode-debug"
   "Display informations useful for debugging PHP Mode." t)
@@ -1107,8 +1084,7 @@ After setting the stylevars run hooks according to STYLENAME
 (defun php-mode--disable-delay-set-style (&rest args)
   "Disable php-mode-set-style-delay on after hook.  `ARGS' be ignore."
   (setq php-mode--delayed-set-style nil)
-  (when (fboundp 'advice-remove)
-    (advice-remove #'php-mode--disable-delay-set-style #'c-set-style)))
+  (advice-remove #'php-mode--disable-delay-set-style #'c-set-style))
 
 (defun php-mode-set-style-delay ()
   "Set the current `php-mode' buffer to use the style by custom or local variables."
@@ -1196,8 +1172,7 @@ After setting the stylevars run hooks according to STYLENAME
       (progn
         (add-hook 'hack-local-variables-hook #'php-mode-set-style-delay t t)
         (setq php-mode--delayed-set-style t)
-        (when (fboundp 'advice-add)
-          (advice-add #'c-set-style :after #'php-mode--disable-delay-set-style '(local))))
+        (advice-add #'c-set-style :after #'php-mode--disable-delay-set-style '(local)))
     (let ((php-mode-enable-backup-style-variables nil))
       (php-set-style (symbol-name php-mode-coding-style))))
 
