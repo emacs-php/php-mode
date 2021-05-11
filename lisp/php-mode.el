@@ -69,7 +69,6 @@
 
 (require 'font-lock)
 (require 'custom)
-(require 'etags)
 (require 'speedbar)
 (require 'imenu)
 (require 'package)
@@ -1267,10 +1266,7 @@ After setting the stylevars run hooks according to STYLENAME
     #'semantic-create-imenu-index)
   "Imenu index function for PHP.")
 
-
-;; Define function name completion function
-(defvar php-completion-table nil
-  "Obarray of tag names defined in current tags table and functions known to PHP.")
+(autoload 'php-local-manual-complete-function "php-local-manual")
 
 (defun php-complete-function ()
   "Perform function completion on the text around point.
@@ -1279,81 +1275,7 @@ and the standard php functions.
 The string to complete is chosen in the same way as the default
 for \\[find-tag] (which see)."
   (interactive)
-  (let ((pattern (php-get-pattern))
-        beg
-        completion
-        (php-functions (php-completion-table)))
-    (if (not pattern) (message "Nothing to complete")
-        (if (not (search-backward pattern nil t))
-            (message "Can't complete here")
-          (setq beg (point))
-          (forward-char (length pattern))
-          (setq completion (try-completion pattern php-functions nil))
-          (cond ((eq completion t))
-                ((null completion)
-                 (message "Can't find completion for \"%s\"" pattern)
-                 (ding))
-                ((not (string= pattern completion))
-                 (delete-region beg (point))
-                 (insert completion))
-                (t
-                 (let ((selected (completing-read
-                                  "Select completion: "
-                                  (all-completions pattern php-functions)
-                                  nil t pattern)))
-                   (delete-region beg (point))
-                   (insert selected))))))))
-
-(defun php-completion-table ()
-  "Build variable `php-completion-table' on demand.
-The table includes the PHP functions and the tags from the
-current `tags-file-name'."
-  (or (and tags-file-name
-           (save-excursion (tags-verify-table tags-file-name))
-           php-completion-table)
-      (let ((tags-table
-             (when tags-file-name
-               (with-current-buffer (get-file-buffer tags-file-name)
-                 (etags-tags-completion-table))))
-            (php-table
-             (cond ((and (not (string= "" php-completion-file))
-                         (file-readable-p php-completion-file))
-                    (php-build-table-from-file php-completion-file))
-                   ((and (not (string= "" php-manual-path))
-                         (file-directory-p php-manual-path))
-                    (php-build-table-from-path php-manual-path))
-                   (t nil))))
-        (unless (or php-table tags-table)
-          (error
-           (concat "No TAGS file active nor are "
-                   "`php-completion-file' or `php-manual-path' set")))
-        (when tags-table
-          ;; Combine the tables.
-          (if (obarrayp tags-table)
-              (mapatoms (lambda (sym) (intern (symbol-name sym) php-table))
-                        tags-table)
-            (setq php-table (append tags-table php-table))))
-        (setq php-completion-table php-table))))
-
-(defun php-build-table-from-file (filename)
-  (let ((table (make-vector 1022 0))
-        (buf (find-file-noselect filename)))
-    (with-current-buffer buf
-      (goto-char (point-min))
-      (while (re-search-forward
-              "^\\([-a-zA-Z0-9_.]+\\)\n"
-              nil t)
-        (intern (buffer-substring (match-beginning 1) (match-end 1))
-                table)))
-    (kill-buffer buf)
-    table))
-
-(defun php-build-table-from-path (path)
-  "Return list of PHP function name from `PATH' directory."
-  (cl-loop for file in (directory-files path nil "^function\\..+\\.html$")
-           if (string-match "\\.\\([-a-zA-Z_0-9]+\\)\\.html$" file)
-           collect (replace-regexp-in-string
-                    "-" "_" (substring file (match-beginning 1) (match-end 1)) t)))
+  (php-local-manual-complete-function))
 
 (defun php-show-arglist ()
   "Show function arguments at cursor position."

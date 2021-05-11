@@ -47,6 +47,7 @@
 
 ;;; Code:
 (require 'php)
+(require 'etags)
 
 (defconst php-local-manual-documentation-types
   '("function" "control-structures" "class" "book")
@@ -124,6 +125,93 @@ With a prefix argument, prompt (with completion) for a word to search for."
 
 ;;;###autoload
 (define-obsolete-function-alias 'php-search-local-documentation #'php-local-manual-search "2.0.0")
+
+;; Define function name completion function
+(defvar php-local-manual--completion-table nil
+  "Obarray of tag names defined in current tags table and functions known to PHP.")
+
+(defun php-local-manual-complete-function ()
+  "Perform function completion on the text around point.
+Completes to the set of names listed in the current tags table
+and the standard php functions.
+The string to complete is chosen in the same way as the default
+for \\[find-tag] (which see)."
+  (interactive)
+  (let ((pattern (php-get-pattern))
+        beg
+        completion
+        (php-functions (php-local-manual-completion-table)))
+    (if (not pattern) (message "Nothing to complete")
+        (if (not (search-backward pattern nil t))
+            (message "Can't complete here")
+          (setq beg (point))
+          (forward-char (length pattern))
+          (setq completion (try-completion pattern php-functions nil))
+          (cond ((eq completion t))
+                ((null completion)
+                 (message "Can't find completion for \"%s\"" pattern)
+                 (ding))
+                ((not (string= pattern completion))
+                 (delete-region beg (point))
+                 (insert completion))
+                (t
+                 (let ((selected (completing-read
+                                  "Select completion: "
+                                  (all-completions pattern php-functions)
+                                  nil t pattern)))
+                   (delete-region beg (point))
+                   (insert selected))))))))
+
+(defun php-local-manual-completion-table ()
+  "Build variable `php-local-manual--completion-table' on demand.
+The table includes the PHP functions and the tags from the
+current `tags-file-name'."
+  (or (and tags-file-name
+           (save-excursion (tags-verify-table tags-file-name))
+           php-local-manual--completion-table)
+      (let ((tags-table
+             (when tags-file-name
+               (with-current-buffer (get-file-buffer tags-file-name)
+                 (etags-tags-completion-table))))
+            (php-table
+             (cond ((and (not (string= "" php-completion-file))
+                         (file-readable-p php-completion-file))
+                    (php-local-manual-build-table-from-file php-completion-file))
+                   ((and (not (string= "" php-manual-path))
+                         (file-directory-p php-manual-path))
+                    (php-local-manual-build-table-from-path php-manual-path))
+                   (t nil))))
+        (unless (or php-table tags-table)
+          (user-error
+           (concat "No TAGS file active nor are "
+                   "`php-completion-file' or `php-manual-path' set")))
+        (when tags-table
+          ;; Combine the tables.
+          (if (obarrayp tags-table)
+              (mapatoms (lambda (sym) (intern (symbol-name sym) php-table))
+                        tags-table)
+            (setq php-table (append tags-table php-table))))
+        (setq php-local-manual--completion-table php-table))))
+
+(defun php-local-manual-build-table-from-file (filename)
+  (let ((table (make-vector 1022 0))
+        (buf (find-file-noselect filename)))
+    (with-current-buffer buf
+      (goto-char (point-min))
+      (while (re-search-forward
+              "^\\([-a-zA-Z0-9_.]+\\)\n"
+              nil t)
+        (intern (buffer-substring (match-beginning 1) (match-end 1))
+                table)))
+    (kill-buffer buf)
+    table))
+
+(defun php-local-manual-build-table-from-path (path)
+  "Return list of PHP function name from `PATH' directory."
+  (cl-loop for file in (directory-files path nil "^function\\..+\\.html$")
+           if (string-match "\\.\\([-a-zA-Z_0-9]+\\)\\.html$" file)
+           collect (replace-regexp-in-string
+                    "-" "_" (substring file (match-beginning 1) (match-end 1)) t)))
 
 (provide 'php-local-manual)
 ;;; php-local-manual.el ends here
