@@ -419,6 +419,28 @@ can be used to match against definitions for that classlike."
       (when (re-search-backward re-pattern nil t)
         (match-string-no-properties 1)))))
 
+(defun php-get-pattern ()
+  "Find the pattern we want to complete.
+`find-tag-default' from GNU Emacs etags.el"
+  (save-excursion
+    (save-match-data
+      (while (looking-at "\\sw\\|\\s_")
+        (forward-char 1))
+      (when (or (re-search-backward "\\sw\\|\\s_"
+                                    (save-excursion (beginning-of-line) (point))
+                                    t)
+                (re-search-forward "\\(\\sw\\|\\s_\\)+"
+                                   (save-excursion (end-of-line) (point))
+                                   t))
+        (goto-char (match-end 0))
+        (buffer-substring-no-properties
+         (point)
+         (progn
+           (forward-sexp -1)
+           (while (looking-at "\\s'")
+             (forward-char 1))
+           (point)))))))
+
 ;;; Provide support for Flymake so that users can see warnings and
 ;;; errors in real-time as they write code.
 (defun php-flymake-php-init ()

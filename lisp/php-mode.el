@@ -1355,27 +1355,6 @@ current `tags-file-name'."
            collect (replace-regexp-in-string
                     "-" "_" (substring file (match-beginning 1) (match-end 1)) t)))
 
-;; Find the pattern we want to complete
-;; find-tag-default from GNU Emacs etags.el
-(defun php-get-pattern ()
-  (save-excursion
-    (while (looking-at "\\sw\\|\\s_")
-      (forward-char 1))
-    (if (or (re-search-backward "\\sw\\|\\s_"
-                                (save-excursion (beginning-of-line) (point))
-                                t)
-            (re-search-forward "\\(\\sw\\|\\s_\\)+"
-                               (save-excursion (end-of-line) (point))
-                               t))
-        (progn (goto-char (match-end 0))
-               (buffer-substring-no-properties
-                (point)
-                (progn (forward-sexp -1)
-                       (while (looking-at "\\s'")
-                         (forward-char 1))
-                       (point))))
-      nil)))
-
 (defun php-show-arglist ()
   "Show function arguments at cursor position."
   (interactive)
