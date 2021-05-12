@@ -310,12 +310,6 @@ In that case set to `NIL'."
   :tag "PHP Mode Enable Project Local Variable"
   :type 'boolean)
 
-(defcustom php-mode-use-php7-syntax-table nil
-  "When set to `T', use a syntax table compatible with PHP 7."
-  :group 'php-mode
-  :tag "PHP Mode Enable Project Local Variable"
-  :type 'boolean)
-
 (defconst php-mode-cc-vertion
   (eval-when-compile c-version))
 
@@ -968,7 +962,12 @@ this ^ lineup"
 
 (eval-and-compile
   (defconst php-heredoc-start-re
-    "<<<[ \t]*\\(?:\\_<.+?\\_>\\|'\\_<.+?\\_>'\\|\"\\_<.+?\\_>\"\\)$"
+    (rx "<<<"
+        (* (syntax whitespace))
+        (or (group (+ (or (syntax word) (syntax symbol))))
+            (: "\"" (group (+ (or (syntax word) (syntax symbol)))) "\"")
+            (: "'" (group (+ (or (syntax word) (syntax symbol)))) "'"))
+        line-end)
     "Regular expression for the start of a PHP heredoc."))
 
 (defun php-heredoc-end-re (heredoc-start)
@@ -977,54 +976,40 @@ this ^ lineup"
   (string-match "\\_<.+?\\_>" heredoc-start)
   (concat "^\\s-*\\(" (match-string 0 heredoc-start) "\\)\\W"))
 
-(defvar php-syntax-propertize-functions
-  '(php-syntax-propertize-heredoc
-    php-syntax-propertize-hash-line-comment
-    php-syntax-propertize-quotes-in-comment)
-  "Syntax propertize functions for PHP script.")
+(eval-and-compile
+  (defconst php-syntax-propertize-rules
+    `((php-heredoc-start-re
+       (0 (ignore (php--syntax-propertize-heredoc
+                   (match-beginning 0)
+                   (or (match-string 1) (match-string 2) (match-string 3))
+                   (null (match-string 3))))))
+      (,(rx "#[")
+       (0 (ignore (php--syntax-propertize-attributes (match-beginning 0)))))
+      (,(rx (or "'" "\"" ))
+       (0 (ignore (php--syntax-propertize-quotes-in-comment (match-beginning 0)))))))
 
-(defun php-syntax-propertize-function (start end)
-  "Apply propertize rules from START to END."
-  (dolist (propertizer php-syntax-propertize-functions)
-    (goto-char start)
-    (funcall propertizer start end)))
+  (defmacro php-build-propertize-function ()
+    `(syntax-propertize-rules ,@php-syntax-propertize-rules))
 
-(defun php-syntax-propertize-heredoc (_start end)
-  "Apply propertize Heredoc and Nowdoc from START to END."
-  (while (and (< (point) end)
-              (re-search-forward php-heredoc-start-re end t))
-    (php-heredoc-syntax)))
+  (defalias 'php-syntax-propertize-function (php-build-propertize-function)))
 
-(defun php-syntax-propertize-quotes-in-comment (_start end)
-  "Apply propertize quotes (' and \") from START to END."
-  (while (re-search-forward "['\"]" end t)
-    (when (php-in-comment-p)
-      (c-put-char-property (match-beginning 0)
-                           'syntax-table (string-to-syntax "_")))))
+(defun php--syntax-propertize-heredoc (start id is-heredoc)
+  "Apply propertize Heredoc and Nowdoc from START, with ID and IS-HEREDOC."
+  (let ((terminator (rx-to-string `(: line-start (* (syntax whitespace)) ,id word-boundary))))
+    (put-text-property start (1+ start) 'syntax-table (string-to-syntax "|"))
+    (re-search-forward terminator nil t)
+    (when (match-string 0)
+      (put-text-property (1- (point)) (point) 'syntax-table (string-to-syntax "|")))))
 
-(defun php-syntax-propertize-hash-line-comment (_start end)
-  "Apply propertize # comment (without PHP8 Attributes) from START to END."
-  (unless php-mode-use-php7-syntax-table
-    (let (line-end in-last-line)
-      (while (and (< (point) (min end (point-max)))
-                  (not in-last-line))
-        (setq line-end (line-end-position))
-        (when (and (search-forward "#" line-end t)
-                   (not (php-in-string-or-comment-p))
-                   (not (looking-at "[[]")))
-          (c-put-char-property (1- (point)) 'syntax-table (string-to-syntax "< b")))
-        (move-beginning-of-line 2)
-        (setq in-last-line (>= line-end (point)))))))
+(defun php--syntax-propertize-quotes-in-comment (pos)
+  "Apply propertize quotes (' and \") from POS."
+  (when (php-in-comment-p)
+    (put-text-property pos (1+ pos) 'syntax-table (string-to-syntax "_"))))
 
-(defun php-heredoc-syntax ()
-  "Mark the boundaries of searched heredoc."
-  (goto-char (match-beginning 0))
-  (c-put-char-property (point) 'syntax-table (string-to-syntax "|"))
-  (if (re-search-forward (php-heredoc-end-re (match-string 0)) nil t)
-      (goto-char (match-end 1))
-    ;; Did not find the delimiter so go to the end of the buffer.
-    (goto-char (point-max)))
-  (c-put-char-property (1- (point)) 'syntax-table (string-to-syntax "|")))
+(defun php--syntax-propertize-attributes (start)
+  "Apply propertize PHP8 #[Attributes] (without # comment) from START."
+  (unless (php-in-string-p)
+    (put-text-property start (1+ start) 'syntax-table (string-to-syntax "."))))
 
 (defvar-local php-mode--propertize-extend-region-current nil
   "Prevent undesirable recursion in PHP-SYNTAX-PROPERTIZE-EXTEND-REGION")
@@ -1146,6 +1131,7 @@ After setting the stylevars run hooks according to STYLENAME
     (modify-syntax-entry ?_  "_"   table)
     (modify-syntax-entry ?`  "\""  table)
     (modify-syntax-entry ?\" "\""  table)
+    (modify-syntax-entry ?#  "< b" table)
     (modify-syntax-entry ?\n "> b" table)
     (modify-syntax-entry ?$  "_"   table)
     table))
@@ -1200,9 +1186,6 @@ After setting the stylevars run hooks according to STYLENAME
 
   ;; PHP vars are case-sensitive
   (setq case-fold-search t)
-
-  (when php-mode-use-php7-syntax-table
-    (modify-syntax-entry ?#  "< b" php-mode-syntax-table))
 
   (when php-mode-enable-project-local-variable
     (add-hook 'hack-local-variables-hook #'php-mode-set-local-variable-delay t t))
