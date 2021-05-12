@@ -909,9 +909,9 @@ This is was done due to the problem reported here:
     (unless (php-in-string-or-comment-p)
       (or
        ;; Detect PHP8 attribute: <<Attribute()>>
-       (when (and (< 2 pos) (< 2 (- pos (c-point 'bol))))
-         (backward-char 2)
-         (looking-at-p ">>\\s-*\\(?:<<\\|$\\)"))
+       (when (and (< 1 pos) (< 1 (- pos (c-point 'bol))))
+         (backward-char 1)
+         (looking-at-p (eval-when-compile (rx "]" (* (syntax whitespace)) (or "#[" line-end)))))
        ;; Detect HTML/XML tag and PHP tag (<?php, <?=, ?>)
        (when php-mode-template-compatibility
          (beginning-of-line)
