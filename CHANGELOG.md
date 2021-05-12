@@ -14,6 +14,10 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
 ### Changed
 
+ * Optimized propertize process ([#669])
+   * Reimoplement `php-syntax-propertize-function` using `syntax-propertize-rules`
+   * Make propertize PHP 8 `#[Attribute]` always enabled
+   * Changed grouping of `php-heredoc-start-re`
  * Re-organized `php-imenu-generic-expression`
    * Added `Import`, `Constants` and `Properties`
    * Removed `Anonymous Functions`
@@ -21,6 +25,8 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
    * Renamed `All Methods` to `Methods`
    * Removed `Public Methods`, `Protected Methods` and `Provate Methods`
    * Unified `Classes`, `Traits`, `Interfaces` into `Classes`
+
+[#669]: https://github.com/emacs-php/php-mode/pull/669
 
 ## [1.24.0] - 2021-03-07
 
