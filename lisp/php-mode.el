@@ -906,19 +906,18 @@ This is was done due to the problem reported here:
     (if pos
         (goto-char pos)
       (setq pos (point)))
-    (unless (php-in-string-or-comment-p)
-      (or
-       ;; Detect PHP8 attribute: <<Attribute()>>
-       (when (and (< 1 pos) (< 1 (- pos (c-point 'bol))))
-         (backward-char 1)
-         (looking-at-p (eval-when-compile (rx "]" (* (syntax whitespace)) (or "#[" line-end)))))
-       ;; Detect HTML/XML tag and PHP tag (<?php, <?=, ?>)
-       (when php-mode-template-compatibility
-         (beginning-of-line)
-         (looking-at-p
-          (eval-when-compile
-            (rx (or (: bol (0+ space) "<" (in "a-z\\?"))
-                    (: (0+ not-newline) (in "a-z\\?") ">" (0+ space) eol))))))))))
+    (cond
+     ;; Detect PHP8 attribute: #[Attribute()]
+     ((and (< 1 pos) (< 1 (- pos (c-point 'bol))))
+      (backward-char 1)
+      (looking-at-p (eval-when-compile (rx "]" (* (syntax whitespace)) (or "#[" line-end)))))
+     ;; Detect HTML/XML tag and PHP tag (<?php, <?=, ?>)
+     (php-mode-template-compatibility
+      (beginning-of-line)
+      (looking-at-p
+       (eval-when-compile
+         (rx (or (: bol (0+ space) "<" (in "?a-z"))
+                 (: (0+ not-newline) (in "?a-z") ">" (0+ space) eol)))))))))
 
 (defun php-c-vsemi-status-unknown-p ()
   "Always return NIL.  See `c-vsemi-status-unknown-p'."
@@ -1516,7 +1515,6 @@ The output will appear in the buffer *PHP*."
       'php-mode
       `((php-string-intepolated-variable-font-lock-find))
       'append)))
-
 
 
 ;;; Correct the behavior of `delete-indentation' by modifying the
