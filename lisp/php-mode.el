@@ -56,9 +56,9 @@
 (require 'php)
 (require 'php-face)
 (require 'cc-mode)
-(require 'cc-langs)
 
 (eval-when-compile
+  (require 'cc-langs)
   (require 'cc-fonts))
 
 ;; Boilerplate from other `cc-mode' derived modes. See
@@ -73,12 +73,12 @@
 (require 'imenu)
 (require 'package)
 (require 'nadvice)
-
-(require 'cl-lib)
 (require 'mode-local)
 (require 'php-project)
 
 (eval-when-compile
+  (require 'rx)
+  (require 'cl-lib)
   (require 'regexp-opt)
   (defvar add-log-current-defun-header-regexp)
   (defvar add-log-current-defun-function)
