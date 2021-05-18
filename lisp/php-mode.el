@@ -999,8 +999,7 @@ this ^ lineup"
       ;; turn call this to be called again.
       (push pair php-mode--propertize-extend-region-current)
       (unwind-protect
-          (let ((new-start)
-                (new-end))
+          (let (new-start new-end)
             (goto-char start)
             (when (re-search-backward php-heredoc-start-re nil t)
               (let ((maybe (point)))
@@ -1479,7 +1478,7 @@ The output will appear in the buffer *PHP*."
 (defun php-string-intepolated-variable-font-lock-find (limit)
   (while (re-search-forward php-string-interpolated-variable-regexp limit t)
     (let ((quoted-stuff (nth 3 (syntax-ppss))))
-      (when (and quoted-stuff (member quoted-stuff '(?\" ?`)))
+      (when (or (eq ?\" quoted-stuff) (eq ?` quoted-stuff))
         (put-text-property (match-beginning 0) (match-end 0)
                            'face 'php-variable-name))))
   nil)
