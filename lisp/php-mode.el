@@ -1204,6 +1204,7 @@ After setting the stylevars run hooks according to STYLENAME
   (when (fboundp 'c-looking-at-or-maybe-in-bracelist)
     (advice-add #'c-looking-at-or-maybe-in-bracelist
                 :override 'php-c-looking-at-or-maybe-in-bracelist))
+  (advice-add #'fixup-whitespace :after #'php-mode--fixup-whitespace-after '(local))
 
   (when (>= emacs-major-version 25)
     (with-silent-modifications
@@ -1493,18 +1494,13 @@ The output will appear in the buffer *PHP*."
 
 ;;; Correct the behavior of `delete-indentation' by modifying the
 ;;; logic of `fixup-whitespace'.
-(defadvice fixup-whitespace (after php-mode-fixup-whitespace)
+(defun php-mode--fixup-whitespace-after ()
   "Remove whitespace before certain characters in PHP Mode."
-  (let* ((no-behind-space ";\\|,\\|->\\|::")
-         (no-front-space "->\\|::"))
-    (when (and (eq major-mode 'php-mode)
-               (or (looking-at-p (concat " \\(" no-behind-space "\\)"))
-                   (save-excursion
-                     (forward-char -2)
-                     (looking-at-p no-front-space))))
-      (delete-char 1))))
-
-(ad-activate 'fixup-whitespace)
+  (when (or (looking-at-p " \\(?:;\\|,\\|->\\|::\\)")
+            (save-excursion
+              (forward-char -2)
+              (looking-at-p "->\\|::")))
+    (delete-char 1)))
 
 ;;;###autoload
 (progn
