@@ -1203,7 +1203,7 @@ After setting the stylevars run hooks according to STYLENAME
 
   (when (fboundp 'c-looking-at-or-maybe-in-bracelist)
     (advice-add #'c-looking-at-or-maybe-in-bracelist
-                :override 'php-c-looking-at-or-maybe-in-bracelist))
+                :override 'php-c-looking-at-or-maybe-in-bracelist '(local)))
   (advice-add #'fixup-whitespace :after #'php-mode--fixup-whitespace-after '(local))
 
   (when (>= emacs-major-version 25)
