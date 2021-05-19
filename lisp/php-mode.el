@@ -1442,7 +1442,9 @@ for \\[find-tag] (which see)."
 
      ;; Logical operators (and, or, &&, ...)
      ;; Not operator (!) is defined in "before cc-mode" section above.
-     ("\\(&&\\|||\\)" 1 'php-logical-op)))
+     ("\\(&&\\|||\\)" 1 'php-logical-op)
+     ;; string interpolation ("$var, ${var}, {$var}")
+     (php-mode--string-interpolated-variable-font-lock-find 0 nil)))
   "Detailed highlighting for PHP Mode.")
 
 (defvar php-font-lock-keywords php-font-lock-keywords-3
@@ -1474,22 +1476,15 @@ The output will appear in the buffer *PHP*."
 (defconst php-string-interpolated-variable-regexp
   "{\\$[^}\n\\\\]*\\(?:\\\\.[^}\n\\\\]*\\)*}\\|\\${\\sw+}\\|\\$\\sw+")
 
-(defun php-string-intepolated-variable-font-lock-find (limit)
-  (while (re-search-forward php-string-interpolated-variable-regexp limit t)
-    (let ((quoted-stuff (nth 3 (syntax-ppss))))
+(defun php-mode--string-interpolated-variable-font-lock-find (limit)
+  "Apply text-property to LIMIT for string interpolation by font-lock."
+  (let (quoted-stuff)
+    (while (re-search-forward php-string-interpolated-variable-regexp limit t)
+      (setq quoted-stuff (php-in-string-p))
       (when (or (eq ?\" quoted-stuff) (eq ?` quoted-stuff))
-        (put-text-property (match-beginning 0) (match-end 0)
-                           'face 'php-variable-name))))
+        (put-text-property (match-beginning 0) (match-end 0) 'face 'php-variable-name))))
   nil)
-
-(eval-after-load 'php-mode
-  '(progn
-     (font-lock-add-keywords
-      'php-mode
-      `((php-string-intepolated-variable-font-lock-find))
-      'append)))
 
-
 ;;; Correct the behavior of `delete-indentation' by modifying the
 ;;; logic of `fixup-whitespace'.
 (defun php-mode--fixup-whitespace-after ()
