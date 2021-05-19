@@ -576,7 +576,8 @@ might be to handle switch and goto labels differently."
                        :test 'string-equal))))
 
 (c-lang-defconst c-basic-matchers-before
-  php (cl-remove-if (lambda (elm) (and (listp elm) (equal (car elm) "\\s|")))
+  php (cl-remove-if (lambda (elm) (or (and (consp elm) (equal (car elm) "\\s|"))
+                                      (functionp elm)))
                     (c-lang-const c-basic-matchers-before php)))
 
 (c-lang-defconst c-basic-matchers-after
