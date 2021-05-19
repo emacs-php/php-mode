@@ -11,6 +11,9 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
  * Add `php-imenu-generic-expression-default` for default value or `php-imenu-generic-expression`
    * Add `php-imenu-generic-expression-legacy` for compatibility
    * Add `php-imenu-generic-expression-simple` for simple display
+ * Add custom variables
+   * Add `php-mode-syntax-propertize-extend-region-limit` for optimize syntax propertization
+     * The number of search characters used to find the starting point of Heredoc and Nowdoc
 
 ### Changed
 
@@ -18,6 +21,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
    * Reimoplement `php-syntax-propertize-function` using `syntax-propertize-rules`
    * Make propertize PHP 8 `#[Attribute]` always enabled
    * Changed grouping of `php-heredoc-start-re`
+   * Use limits on `php-mode-syntax-propertize-extend-region-limit` variable to find the starting point of Heredoc and Nowdoc
  * Re-organized `php-imenu-generic-expression`
    * Added `Import`, `Constants` and `Properties`
    * Removed `Anonymous Functions`
