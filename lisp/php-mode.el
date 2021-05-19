@@ -56,9 +56,9 @@
 (require 'php)
 (require 'php-face)
 (require 'cc-mode)
-(require 'cc-langs)
 
 (eval-when-compile
+  (require 'cc-langs)
   (require 'cc-fonts))
 
 ;; Boilerplate from other `cc-mode' derived modes. See
@@ -73,12 +73,12 @@
 (require 'imenu)
 (require 'package)
 (require 'nadvice)
-
-(require 'cl-lib)
 (require 'mode-local)
 (require 'php-project)
 
 (eval-when-compile
+  (require 'rx)
+  (require 'cl-lib)
   (require 'regexp-opt)
   (defvar add-log-current-defun-header-regexp)
   (defvar add-log-current-defun-function)
@@ -169,12 +169,9 @@ enabled."
   :type 'boolean)
 
 ;;;###autoload
-(if (version< emacs-version "24.4")
-    (dolist (i '("php" "php5" "php7"))
-      (add-to-list 'interpreter-mode-alist (cons i 'php-mode)))
-  (add-to-list 'interpreter-mode-alist
-               ;; Match php, php-3, php5, php7, php5.5, php-7.0.1, etc.
-               (cons "php\\(?:-?[3457]\\(?:\\.[0-9]+\\)*\\)?" 'php-mode)))
+(add-to-list 'interpreter-mode-alist
+             ;; Match php, php-3, php5, php7, php5.5, php-7.0.1, etc.
+             (cons "php\\(?:-?[34578]\\(?:\\.[0-9]+\\)*\\)?" 'php-mode))
 
 (defcustom php-mode-hook nil
   "List of functions to be executed on entry to `php-mode'."

@@ -27,7 +27,8 @@
 ;; This file provides common variable and functions for PHP packages.
 
 ;;; Code:
-(require 'cl-lib)
+(eval-when-compile
+  (require 'cl-lib))
 (require 'flymake)
 (require 'php-project)
 (require 'rx)

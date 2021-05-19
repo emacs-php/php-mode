@@ -568,15 +568,13 @@ style from Drupal."
 
 (ert-deftest php-mode-test-issue-357 ()
   "Match version-specific interpreters."
-  (dolist (on (if (version< emacs-version "24.4")
-                  '("php" "php5" "php7")
-                '("php" "php3" "php5" "php7" "php-5" "php-5.5" "php7.0.1")))
+  (dolist (on '("php" "php3" "php5" "php7" "php-5" "php-5.5" "php7.0.1"))
     (with-temp-buffer
       (insert "#!" on)
       (set-auto-mode)
       (should (eq 'php-mode major-mode))))
 
-  (dolist (off '("php2" "xphp5" "foo" "php8" "php7x"))
+  (dolist (off '("php2" "xphp5" "foo" "php7x"))
     (with-temp-buffer
       (insert "#!" off)
       (set-auto-mode)
