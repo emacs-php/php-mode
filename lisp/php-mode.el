@@ -169,12 +169,9 @@ enabled."
   :type 'boolean)
 
 ;;;###autoload
-(if (version< emacs-version "24.4")
-    (dolist (i '("php" "php5" "php7"))
-      (add-to-list 'interpreter-mode-alist (cons i 'php-mode)))
-  (add-to-list 'interpreter-mode-alist
-               ;; Match php, php-3, php5, php7, php5.5, php-7.0.1, etc.
-               (cons "php\\(?:-?[3457]\\(?:\\.[0-9]+\\)*\\)?" 'php-mode)))
+(add-to-list 'interpreter-mode-alist
+             ;; Match php, php-3, php5, php7, php5.5, php-7.0.1, etc.
+             (cons "php\\(?:-?[34578]\\(?:\\.[0-9]+\\)*\\)?" 'php-mode))
 
 (defcustom php-mode-hook nil
   "List of functions to be executed on entry to `php-mode'."
