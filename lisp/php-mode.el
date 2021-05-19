@@ -386,8 +386,7 @@ In that case set to `NIL'."
   php "\\s-*\\(<\\?(=\\|\\sw+)\\)")
 
 (c-lang-defconst c-identifier-ops
-  php '(
-        (left-assoc "\\" "::" "->")
+  php '((left-assoc "\\" "::" "->")
         (prefix "\\" "::")))
 
 (c-lang-defconst c-operators
@@ -455,7 +454,7 @@ contains another declaration level that should be considered a class."
   "Keywords introducing declarations where the following block (if
 any) is a brace list.
 
-PHP does not have an \"enum\"-like keyword."
+PHP does not have an C-like \"enum\" keyword."
   php nil)
 
 (c-lang-defconst c-typeless-decl-kwds
@@ -500,8 +499,7 @@ PHP does not have an \"enum\"-like keyword."
 (c-lang-defconst c-other-kwds
   "Keywords not accounted for by any other `*-kwds' language constant."
   php
-  '(
-    "__halt_compiler"
+  '("__halt_compiler"
     "and"
     "array"
     "as"
@@ -1203,7 +1201,7 @@ After setting the stylevars run hooks according to STYLENAME
 
   (when (fboundp 'c-looking-at-or-maybe-in-bracelist)
     (advice-add #'c-looking-at-or-maybe-in-bracelist
-                :override 'php-c-looking-at-or-maybe-in-bracelist))
+                :override 'php-c-looking-at-or-maybe-in-bracelist '(local)))
   (advice-add #'fixup-whitespace :after #'php-mode--fixup-whitespace-after '(local))
 
   (when (>= emacs-major-version 25)
