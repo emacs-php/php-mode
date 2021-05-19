@@ -284,15 +284,6 @@ In that case set to `NIL'."
   :tag "PHP Mode Enable Project Local Variable"
   :type 'boolean)
 
-(defcustom php-mode-syntax-propertize-extend-region-limit (* 100 syntax-propertize-chunk-size)
-  "Boundary value of the number of search characters to propertize syntax.
-
-Smaller values can improve performance with large buffers.
-If the value is too small, the syntax will not be displayed properly."
-  :group 'php-mode
-  :tag "PHP Mode Syntax Propertize Extend Region Limit"
-  :type 'integer)
-
 (defconst php-mode-cc-vertion
   (eval-when-compile c-version))
 
@@ -997,24 +988,22 @@ this ^ lineup"
 
 (defun php-syntax-propertize-extend-region (start end)
   "Extend the propertize region if START or END falls inside a PHP heredoc."
-  (let ((pair (cons start end))
-        (limit (max syntax-propertize-chunk-size php-mode-syntax-propertize-extend-region-limit))
-        new-start new-end maybe)
+  (let ((pair (cons start end)))
     (when (not (member pair php-mode--propertize-extend-region-current))
       ;; re-search functions may trigger
       ;; syntax-propertize-extend-region-functions to be called again, which in
       ;; turn call this to be called again.
       (push pair php-mode--propertize-extend-region-current)
       (unwind-protect
-          (progn
+          (let (new-start new-end)
             (goto-char start)
-            (when (re-search-backward php-heredoc-start-re limit t)
-              (setq maybe (point))
-              (when (and (re-search-forward (php-heredoc-end-re (match-string 0)) nil t)
-                         (> (point) start))
-                (setq new-start maybe)))
+            (when (re-search-backward php-heredoc-start-re nil t)
+              (let ((maybe (point)))
+                (when (and (re-search-forward (php-heredoc-end-re (match-string 0)) nil t)
+                           (> (point) start))
+                  (setq new-start maybe))))
             (goto-char end)
-            (when (re-search-backward php-heredoc-start-re limit t)
+            (when (re-search-backward php-heredoc-start-re nil t)
               (if (re-search-forward (php-heredoc-end-re (match-string 0)) nil t)
                   (when (> (point) end)
                     (setq new-end (point)))
