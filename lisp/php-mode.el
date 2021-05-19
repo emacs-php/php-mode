@@ -1,4 +1,4 @@
-;;; php-mode.el --- Major mode for editing PHP code
+;;; php-mode.el --- Major mode for editing PHP code  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2020  Friends of Emacs-PHP development
 ;; Copyright (C) 1999, 2000, 2001, 2003, 2004 Turadg Aleahmad
