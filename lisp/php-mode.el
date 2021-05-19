@@ -72,7 +72,7 @@
 (require 'speedbar)
 (require 'imenu)
 (require 'package)
-(require 'nadvice nil t)
+(require 'nadvice)
 
 (require 'cl-lib)
 (require 'mode-local)
@@ -84,29 +84,6 @@
   (defvar add-log-current-defun-function)
   (defvar c-vsemi-status-unknown-p)
   (defvar syntax-propertize-via-font-lock))
-
-;; Work around emacs bug#18845, cc-mode expects cl to be loaded
-;; while php-mode only uses cl-lib (without compatibility aliases)
-(eval-and-compile
-  (when (and (= emacs-major-version 24) (>= emacs-minor-version 4))
-    (require 'cl)))
-
-;; Work around https://github.com/emacs-php/php-mode/issues/310.
-;;
-;; In emacs 24.4 and 24.5, lines after functions with a return type
-;; are incorrectly analyzed as member-init-cont.
-;;
-;; Before emacs 24.4, c member initializers are not supported this
-;; way. Starting from emacs 25.1, cc-mode only detects member
-;; initializers when the major mode is c++-mode.
-(eval-and-compile
-  (if (and (= emacs-major-version 24) (or (= emacs-minor-version 4)
-                                          (= emacs-minor-version 5)))
-      (defun c-back-over-member-initializers ()
-        ;; Override of cc-engine.el, cc-mode in emacs 24.4 and 24.5 are too
-        ;; optimistic in recognizing c member initializers. Since we don't
-        ;; need it in php-mode, just return nil.
-        nil)))
 
 (autoload 'php-mode-debug "php-mode-debug"
   "Display informations useful for debugging PHP Mode." t)
@@ -1022,8 +999,7 @@ this ^ lineup"
       ;; turn call this to be called again.
       (push pair php-mode--propertize-extend-region-current)
       (unwind-protect
-          (let ((new-start)
-                (new-end))
+          (let (new-start new-end)
             (goto-char start)
             (when (re-search-backward php-heredoc-start-re nil t)
               (let ((maybe (point)))
@@ -1107,8 +1083,7 @@ After setting the stylevars run hooks according to STYLENAME
 (defun php-mode--disable-delay-set-style (&rest args)
   "Disable php-mode-set-style-delay on after hook.  `ARGS' be ignore."
   (setq php-mode--delayed-set-style nil)
-  (when (fboundp 'advice-remove)
-    (advice-remove #'php-mode--disable-delay-set-style #'c-set-style)))
+  (advice-remove #'php-mode--disable-delay-set-style #'c-set-style))
 
 (defun php-mode-set-style-delay ()
   "Set the current `php-mode' buffer to use the style by custom or local variables."
@@ -1196,8 +1171,7 @@ After setting the stylevars run hooks according to STYLENAME
       (progn
         (add-hook 'hack-local-variables-hook #'php-mode-set-style-delay t t)
         (setq php-mode--delayed-set-style t)
-        (when (fboundp 'advice-add)
-          (advice-add #'c-set-style :after #'php-mode--disable-delay-set-style '(local))))
+        (advice-add #'c-set-style :after #'php-mode--disable-delay-set-style '(local)))
     (let ((php-mode-enable-backup-style-variables nil))
       (php-set-style (symbol-name php-mode-coding-style))))
 
@@ -1230,6 +1204,7 @@ After setting the stylevars run hooks according to STYLENAME
   (when (fboundp 'c-looking-at-or-maybe-in-bracelist)
     (advice-add #'c-looking-at-or-maybe-in-bracelist
                 :override 'php-c-looking-at-or-maybe-in-bracelist))
+  (advice-add #'fixup-whitespace :after #'php-mode--fixup-whitespace-after '(local))
 
   (when (>= emacs-major-version 25)
     (with-silent-modifications
@@ -1504,7 +1479,7 @@ The output will appear in the buffer *PHP*."
 (defun php-string-intepolated-variable-font-lock-find (limit)
   (while (re-search-forward php-string-interpolated-variable-regexp limit t)
     (let ((quoted-stuff (nth 3 (syntax-ppss))))
-      (when (and quoted-stuff (member quoted-stuff '(?\" ?`)))
+      (when (or (eq ?\" quoted-stuff) (eq ?` quoted-stuff))
         (put-text-property (match-beginning 0) (match-end 0)
                            'face 'php-variable-name))))
   nil)
@@ -1519,18 +1494,13 @@ The output will appear in the buffer *PHP*."
 
 ;;; Correct the behavior of `delete-indentation' by modifying the
 ;;; logic of `fixup-whitespace'.
-(defadvice fixup-whitespace (after php-mode-fixup-whitespace)
+(defun php-mode--fixup-whitespace-after ()
   "Remove whitespace before certain characters in PHP Mode."
-  (let* ((no-behind-space ";\\|,\\|->\\|::")
-         (no-front-space "->\\|::"))
-    (when (and (eq major-mode 'php-mode)
-               (or (looking-at-p (concat " \\(" no-behind-space "\\)"))
-                   (save-excursion
-                     (forward-char -2)
-                     (looking-at-p no-front-space))))
-      (delete-char 1))))
-
-(ad-activate 'fixup-whitespace)
+  (when (or (looking-at-p " \\(?:;\\|,\\|->\\|::\\)")
+            (save-excursion
+              (forward-char -2)
+              (looking-at-p "->\\|::")))
+    (delete-char 1)))
 
 ;;;###autoload
 (progn
