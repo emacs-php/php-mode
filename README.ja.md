@@ -166,7 +166,7 @@ PHPDocは[JavaDoc](https://en.wikipedia.org/wiki/Javadoc)に似たドキュメ�
 
 **アノテーション**と呼ばれる記法は部分的にサポートしています。アノテーションの文法はタグとは少し異なり、`@Annotation(attr1="vvv", attr2="zzz")` のような形式です。
 
-[Symfony](http://symfony.com/)プロジェクトや[Go! AOP](https://github.com/goaop/framework)などいくつかのプロジェクト・フレームワークは[Doctrine Annotations](http://docs.doctrine-project.org/projects/doctrine-common/en/latest/reference/annotations.html)の文法を元にしています。
+[Symfony](https://symfony.com/)プロジェクトや[Go! AOP](https://github.com/goaop/framework)などいくつかのプロジェクト・フレームワークは[Doctrine Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/latest/index.html)の文法を元にしています。
 
 ```php
 /**

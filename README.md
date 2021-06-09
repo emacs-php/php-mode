@@ -145,7 +145,7 @@ There are `@param`, `@return`, `@var`... etc in the notation called **tag**, loo
 
 In addition, it also partially supports notation called **annotation**.  Annotation has a slightly different grammar from tag, and the example is `@Annotation(attr1="vvv", attr2="zzz")`.
 
-[Symfony](http://symfony.com/) project and [Go! AOP](https://github.com/goaop/framework) and some projects/frameworks use annotation grammer based on [Doctrine Annotations](http://docs.doctrine-project.org/projects/doctrine-common/en/latest/reference/annotations.html).
+[Symfony](https://symfony.com/) project and [Go! AOP](https://github.com/goaop/framework) and some projects/frameworks use annotation grammer based on [Doctrine Annotations](https://www.doctrine-project.org/projects/doctrine-annotations/en/latest/index.html).
 
 ```php
 /**
