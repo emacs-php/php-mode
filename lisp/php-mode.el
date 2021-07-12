@@ -271,13 +271,6 @@ In that case set to `NIL'."
   :tag "PHP Mode Disable c-auto-align-backslashes"
   :type 'boolean)
 
-(define-obsolete-variable-alias 'php-mode-disable-parent-mode-hooks 'php-mode-disable-c-mode-hook "1.21.0")
-(defcustom php-mode-disable-c-mode-hook t
-  "When set to `T', do not run hooks of parent modes (`java-mode', `c-mode')."
-  :group 'php-mode
-  :tag "PHP Mode Disable C Mode Hook"
-  :type 'boolean)
-
 (defcustom php-mode-enable-project-local-variable t
   "When set to `T', apply project local variable to buffer local variable."
   :group 'php-mode
@@ -1120,9 +1113,6 @@ After setting the stylevars run hooks according to STYLENAME
                     "Please run `M-x package-reinstall php-mode' command."
                   "Please byte recompile PHP Mode files.")))
 
-  (when php-mode-disable-c-mode-hook
-    (setq-local c-mode-hook nil)
-    (setq-local java-mode-hook nil))
   (c-initialize-cc-mode t)
   (c-init-language-vars php-mode)
   (c-common-init 'php-mode)
