@@ -14,6 +14,9 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
 ### Changed
 
+ * `php-mode` no longer inherits `c-mode`
+   * The keymap continues to inherit from `c-mode-base-map`.
+   * This change has no effect on other CC Mode features
  * Optimized propertize process ([#669])
    * Reimoplement `php-syntax-propertize-function` using `syntax-propertize-rules`
    * Make propertize PHP 8 `#[Attribute]` always enabled
