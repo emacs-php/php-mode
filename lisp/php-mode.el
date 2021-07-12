@@ -299,6 +299,7 @@ In that case set to `NIL'."
 
 (defvar php-mode-map
   (let ((map (make-sparse-keymap "PHP Mode")))
+    (set-keymap-parent map c-mode-base-map)
     ;; Remove menu item for c-mode
     (define-key map [menu-bar C] nil)
 
@@ -1099,13 +1100,13 @@ After setting the stylevars run hooks according to STYLENAME
     table))
 
 ;;;###autoload
-(define-derived-mode php-mode c-mode "PHP"
+(define-derived-mode php-mode prog-mode "PHP"
   "Major mode for editing PHP code.
 
 \\{php-mode-map}"
+  :group 'php-mode
   :syntax-table php-mode-syntax-table
-  ;; :after-hook (c-update-modeline)
-  ;; (setq abbrev-mode t)
+  :after-hook (c-update-modeline)
 
   (unless (string= php-mode-cc-vertion c-version)
     (user-error "CC Mode has been updated.  %s"
