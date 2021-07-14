@@ -960,7 +960,7 @@ this ^ lineup"
        (0 (ignore (php--syntax-propertize-quotes-in-comment (match-beginning 0)))))))
 
   (defmacro php-build-propertize-function ()
-    `(syntax-propertize-rules ,@php-syntax-propertize-rules))
+    `(byte-compile (syntax-propertize-rules ,@php-syntax-propertize-rules)))
 
   (defalias 'php-syntax-propertize-function (php-build-propertize-function)))
 
