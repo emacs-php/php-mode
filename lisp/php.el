@@ -220,8 +220,7 @@ it is the character that will terminate the string, or t if the string should be
 
 (defsubst php-in-poly-php-html-mode ()
   "Return T if current buffer is in `poly-html-mode'."
-  (and (boundp 'poly-php-html-mode)
-       (symbol-value 'poly-php-html-mode)))
+  (bound-and-true-p poly-php-html-mode))
 
 (defconst php-beginning-of-defun-regexp
   "^\\s-*\\(?:\\(?:abstract\\|final\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(\\sw\\|\\s_\\)+\\)\\s-*("
