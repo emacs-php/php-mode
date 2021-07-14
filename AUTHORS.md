@@ -59,6 +59,7 @@ Names Sorted Alphabetically:
 - Michele Bini
 - Nate Eagleson
 - Nicholas D Steeves
+- Norio Suzuki
 - Olaf The Viking
 - Peter Oliver
 - Philippe Ivaldi
