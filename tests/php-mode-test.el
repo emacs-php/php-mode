@@ -348,12 +348,12 @@ style from Drupal."
   (with-php-mode-test ("issue-124.php" :indent t)
     (search-forward "Start of heredoc")
     ;; The heredoc should be recognized as a string.
-    (dolist (syntax (c-guess-basic-syntax))
-      (should (eq (car syntax) 'string)))
+    (should (equal (mapcar #'car (c-guess-basic-syntax))
+                   '(statement-cont)))
     (search-forward "function bar")
     ;; After the heredoc should *not* be recognized as a string.
-    (dolist (syntax (c-guess-basic-syntax))
-      (should (not (eq (car syntax) 'string))))))
+    (should (equal (mapcar #'car (c-guess-basic-syntax))
+                   '(topmost-intro-cont)))))
 
 (ert-deftest php-mode-test-issue-136 ()
   "Proper highlighting for variable interpolation."
