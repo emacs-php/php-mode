@@ -458,7 +458,7 @@ PHP does not have an C-like \"enum\" keyword."
   php (append (c-lang-const c-class-decl-kwds) '("function")))
 
 (c-lang-defconst c-modifier-kwds
-  php '("abstract" "const" "final" "static" "case"))
+  php '("abstract" "const" "final" "static" "case" "readonly"))
 
 (c-lang-defconst c-protection-kwds
   "Access protection label keywords in classes."

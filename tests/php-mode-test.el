@@ -659,7 +659,8 @@ Meant for `php-mode-test-issue-503'."
 
 (ert-deftest php-mode-test-php81 ()
   "Test highlighting language constructs added in PHP 8.1."
-  (with-php-mode-test ("8.1/enum.php" :faces t)))
+  (with-php-mode-test ("8.1/enum.php" :faces t))
+  (with-php-mode-test ("8.1/readonly.php" :faces t)))
 
 (ert-deftest php-mode-test-lang ()
   "Test highlighting for language constructs."
