@@ -30,7 +30,7 @@
 
 ;;;###autoload
 (defgroup php-faces nil
-  "Faces used in PHP Mode"
+  "Faces used in PHP Mode."
   :tag "PHP Faces"
   :group 'php-mode
   :group 'faces)
@@ -206,7 +206,7 @@
   :tag "PHP Class Declaration")
 
 (defface php-class-declaration-spec '((t (:inherit php-keyword)))
-  "PHP Mode Face used to highlight class declaration specification keywords (implements, extends)"
+  "PHP Mode Face used to highlight class declaration specification keywords (implements, extends)."
   :group 'php-faces
   :tag "PHP Class Declaration Specification")
 
