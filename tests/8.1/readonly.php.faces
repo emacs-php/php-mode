@@ -1,0 +1,84 @@
+;; -*- mode: emacs-lisp -*-
+(("<?php" . php-php-tag)
+ ("
+
+")
+ ("class" . php-class-declaration)
+ (" ")
+ ("Foo" . font-lock-type-face)
+ ("
+{
+    ")
+ ("private" . php-keyword)
+ (" ")
+ ("readonly" . php-keyword)
+ (" ")
+ ("string" . font-lock-type-face)
+ (" ")
+ ("$" . php-variable-sigil)
+ ("p1" . php-variable-name)
+ (";
+    ")
+ ("public" . php-keyword)
+ (" ")
+ ("readonly" . php-keyword)
+ (" ")
+ ("int" . font-lock-type-face)
+ (" ")
+ ("$" . php-variable-sigil)
+ ("p2" . php-variable-name)
+ (";
+
+    ")
+ ("public" . php-keyword)
+ (" ")
+ ("function" . php-keyword)
+ (" ")
+ ("__construct" . php-function-name)
+ ("(
+        ")
+ ("private" . php-keyword)
+ (" ")
+ ("readonly" . php-keyword)
+ (" ")
+ ("string" . font-lock-type-face)
+ (" ")
+ ("$" . php-variable-sigil)
+ ("a1" . php-variable-name)
+ (",
+        ")
+ ("public" . php-keyword)
+ (" ")
+ ("readonly" . php-keyword)
+ (" ")
+ ("int" . font-lock-type-face)
+ (" ")
+ ("$" . php-variable-sigil)
+ ("a2" . php-variable-name)
+ (",
+    ) {}
+}
+
+")
+ ("__halt_compiler" . php-keyword)
+ ("();
+
+")
+ ("claas" . font-lock-type-face)
+ (" ")
+ ("Err" . font-lock-variable-name-face)
+ ("
+{
+    ")
+ ("/** Readonly property must have type */" . font-lock-doc-face)
+ ("
+    ")
+ ("public" . php-keyword)
+ (" ")
+ ("readonly" . php-class)
+ (" ")
+ ("$" . php-variable-sigil)
+ ("e1" . php-variable-name)
+ (";
+}
+"))
