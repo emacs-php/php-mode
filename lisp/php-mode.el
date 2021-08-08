@@ -613,7 +613,7 @@ but only if the setting is enabled"
       (beginning-of-line)
       (if (looking-at-p "\\s-*->") '+ nil))))
 
-(defun php-c-looking-at-or-maybe-in-bracelist (&optional containing-sexp lim)
+(defun php-c-looking-at-or-maybe-in-bracelist (&optional _containing-sexp lim)
   "Replace `c-looking-at-or-maybe-in-bracelist'.
 
 CONTAINING-SEXP is the position of the brace/paren/bracket enclosing
@@ -964,7 +964,7 @@ this ^ lineup"
 
   (defalias 'php-syntax-propertize-function (php-build-propertize-function)))
 
-(defun php--syntax-propertize-heredoc (start id is-heredoc)
+(defun php--syntax-propertize-heredoc (start id _is-heredoc)
   "Apply propertize Heredoc and Nowdoc from START, with ID and IS-HEREDOC."
   (let ((terminator (rx-to-string `(: line-start (* (syntax whitespace)) ,id word-boundary))))
     (put-text-property start (1+ start) 'syntax-table (string-to-syntax "|"))
@@ -1075,7 +1075,7 @@ After setting the stylevars run hooks according to STYLENAME
         ((equal stylename "symfony2")  (run-hooks 'php-mode-symfony2-hook))
         ((equal stylename "psr2")      (run-hooks 'php-mode-psr2-hook))))
 
-(defun php-mode--disable-delay-set-style (&rest args)
+(defun php-mode--disable-delay-set-style (&rest _args)
   "Disable php-mode-set-style-delay on after hook.  `ARGS' be ignore."
   (setq php-mode--delayed-set-style nil)
   (advice-remove #'php-mode--disable-delay-set-style #'c-set-style))
