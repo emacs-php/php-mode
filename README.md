@@ -7,7 +7,9 @@
 [![Build Status](https://github.com/emacs-php/php-mode/workflows/CI/badge.svg)](https://github.com/emacs-php/php-mode/actions)
 [![melpa badge][melpa-badge]][melpa-link]
 [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
-[![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)](http://www.gnu.org/licenses/gpl-3.0.txt)
+[![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)](http://www.gnu.org/licenses/gpl-3.0.txt)<br>
+[![NonGNU ELPA][nongnu-elpa-badge]][nongnu-elpa]
+[![NonGNU-devel ELPA][nongnu-devel-elpa-badge]][nongnu-devel-elpa]
 
 A powerful and flexible Emacs major mode for editing PHP scripts
 
@@ -21,6 +23,22 @@ Installation
 **PHP Mode works on Emacs 25.2 or later.**  PHP Mode may work with older versions of Emacs but this is not guaranteed.  Bug reports for problems related to using PHP Mode with older versions of Emacs will most like *not* be addressed.
 
 The current support policy can be found on the [Supported Version] page.
+
+### Install from NonGNU ELPA
+
+[![NonGNU ELPA][nongnu-elpa-badge]][nongnu-elpa] [![NonGNU-devel ELPA][nongnu-devel-elpa-badge]][nongnu-devel-elpa]
+
+Emacs 28 (unreleased; next major version) includes [NonGNU ELPA](https://elpa.nongnu.org/) as the default package repository.
+
+```el
+;; For Emacs < 28
+(when (< emacs-major-version 28)
+  (with-eval-after-load 'package
+    (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/"))))
+
+(unless (package-installed-p 'php-mode)
+  (package-install 'php-mode))
+```
 
 ### **(RECOMMENDED)** Install from MELPA
 
@@ -319,6 +337,10 @@ This project was maintained by [Eric James Michael Ritz][@ejmr] until 2017. Curr
 [elpa-php-mode]: https://packages.debian.org/sid/elpa-php-mode
 [gpl-v3]: https://www.gnu.org/licenses/quick-guide-gplv3.html
 [issue-430]: https://github.com/emacs-php/php-mode/issues/430
+[nongnu-devel-elpa-badge]: https://elpa.nongnu.org/nongnu-devel/php-mode.svg
+[nongnu-devel-elpa]: https://elpa.nongnu.org/nongnu-devel/php-mode.html
+[nongnu-elpa-badge]: https://elpa.nongnu.org/nongnu/php-mode.svg
+[nongnu-elpa]: https://elpa.nongnu.org/nongnu/php-mode.html
 [melpa-badge]: http://melpa.org/packages/php-mode-badge.svg
 [melpa-link]: http://melpa.org/#/php-mode
 [melpa-stable-badge]: http://stable.melpa.org/packages/php-mode-badge.svg
