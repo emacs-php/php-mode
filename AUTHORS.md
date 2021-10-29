@@ -22,26 +22,40 @@ All contributors listed below improved PHP Mode as well.
 
 Names Sorted Alphabetically:
 
+- Aaron S. Hawley
 - Alan Pearce
 - Andreas Röhler
 - Andrei Chițu
 - Antoine Brand
 - Bence Kalmar
+- Bill Lovett
 - Bob W. Hogg
+- Boris Folgmann
 - Carl Groner
 - Charlie McMackin
+- Chris Morris
 - Christian Albrecht
 - Christian Weiske
+- Craig Andrews
 - Daniel Hackney
 - David Arroyo Menéndez
+- David House
 - David Maus
 - Demis Balbach
+- Dias Badekas
+- Doug Marcey
 - Elis Axelsson
 - Emanuele Tomasi
 - Engelke Eschner
 - Eric James Michael Ritz
+- Eric Mc Sween
+- Fred Yankowski
 - François-Xavier Bois
+- Gerrit Riessen
+- Giacomo Tesio
+- Gregory Stark
 - Gu Weigang
+- Ian Eure
 - Herbert Jones
 - Hernawan Fa'iz Abdillah
 - Jacek Wysocki
@@ -49,32 +63,51 @@ Names Sorted Alphabetically:
 - James Laver
 - Jeff Beeman
 - Joe Wreschnig
+- John Keller
 - Jon Dufresne
 - Joris Steyn
+- Juanjo
+- Kevin Blake
+- Lennart Borgman
 - Marcin Antczak
 - Mark A. Hershberger
+- Mathias Meyer
 - Maël Nison
 - Michael Dwyer
 - Michael Stolovitzsky
 - Michele Bini
 - Nate Eagleson
 - Nicholas D Steeves
+- Nils Rennebarth
 - Norio Suzuki
 - Olaf The Viking
 - Peter Oliver
 - Philippe Ivaldi
+- Rex McMaster
+- Roland
+- Rosenfeld
+- Ryan
+- Sammartino
+- Sean Champ
 - Sebastian Wiesner
 - Serghei Iakovlev
 - Syohei YOSHIDA
+- Stefan Monnier
+- Stig Bakken
+- Torsten Martinsen
 - Tim Landscheidt
 - Tom Willemsen
 - U-CPT\deb
 - USAMI Kenta
+- Valentin Funk
+- Ville Skytta
+- Vinai Kopp
 - fabacino
 - fallchildren
 - flack
 - l3msh0
 - phil-s
+- ppercot
 - takeokunn
 - tangxinfa
 - tetsujin
