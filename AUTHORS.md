@@ -114,3 +114,7 @@ Names Sorted Alphabetically:
 - tijsmallaerts
 - zapad
 - 顾伟刚
+
+A chronological list of pre-2019 contributors can be found at [wiki/Authors](https://github.com/emacs-php/php-mode/wiki/Authors).
+
+Contributors since 2011, where this project was hosted, can also be found at [graphs/contributors](https://github.com/emacs-php/php-mode/graphs/contributors), except for accounts that have been withdrawn from GitHub.
