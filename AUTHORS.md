@@ -49,15 +49,15 @@ Names Sorted Alphabetically:
 - Engelke Eschner
 - Eric James Michael Ritz
 - Eric Mc Sween
-- Fred Yankowski
 - François-Xavier Bois
+- Fred Yankowski
 - Gerrit Riessen
 - Giacomo Tesio
 - Gregory Stark
 - Gu Weigang
-- Ian Eure
 - Herbert Jones
 - Hernawan Fa'iz Abdillah
+- Ian Eure
 - Jacek Wysocki
 - Jakub Jankiewicz
 - James Laver
@@ -91,12 +91,12 @@ Names Sorted Alphabetically:
 - Sean Champ
 - Sebastian Wiesner
 - Serghei Iakovlev
-- Syohei YOSHIDA
 - Stefan Monnier
 - Stig Bakken
-- Torsten Martinsen
+- Syohei YOSHIDA
 - Tim Landscheidt
 - Tom Willemsen
+- Torsten Martinsen
 - U-CPT\deb
 - USAMI Kenta
 - Valentin Funk
@@ -114,3 +114,7 @@ Names Sorted Alphabetically:
 - tijsmallaerts
 - zapad
 - 顾伟刚
+
+A chronological list of pre-2019 contributors can be found at [wiki/Authors](https://github.com/emacs-php/php-mode/wiki/Authors).
+
+Contributors since 2011, where this project was hosted, can also be found at [graphs/contributors](https://github.com/emacs-php/php-mode/graphs/contributors), except for accounts that have been withdrawn from GitHub.
