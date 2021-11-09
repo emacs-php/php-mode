@@ -49,15 +49,15 @@ Names Sorted Alphabetically:
 - Engelke Eschner
 - Eric James Michael Ritz
 - Eric Mc Sween
-- Fred Yankowski
 - François-Xavier Bois
+- Fred Yankowski
 - Gerrit Riessen
 - Giacomo Tesio
 - Gregory Stark
 - Gu Weigang
-- Ian Eure
 - Herbert Jones
 - Hernawan Fa'iz Abdillah
+- Ian Eure
 - Jacek Wysocki
 - Jakub Jankiewicz
 - James Laver
@@ -91,12 +91,12 @@ Names Sorted Alphabetically:
 - Sean Champ
 - Sebastian Wiesner
 - Serghei Iakovlev
-- Syohei YOSHIDA
 - Stefan Monnier
 - Stig Bakken
-- Torsten Martinsen
+- Syohei YOSHIDA
 - Tim Landscheidt
 - Tom Willemsen
+- Torsten Martinsen
 - U-CPT\deb
 - USAMI Kenta
 - Valentin Funk

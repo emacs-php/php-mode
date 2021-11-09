@@ -16,7 +16,8 @@ AUTHORS.md: etc/git/AUTHORS.md.in .mailmap
 	@printf "Generating AUTHORS.md file..."
 	@test -d .git \
 		&& (cat $< > $@ \
-			&& git log --pretty=format:'- %aN' | LANG=C sort -u >> $@ \
+			&& git log --pretty=format:'- %aN' | \
+			cat etc/git/former-contributors - | LANG=C sort -u >> $@ \
 			&& printf "FINISHED\n" ; ) \
 		|| printf "FAILED (non-fatal)\n"
 
