@@ -210,7 +210,7 @@ enabled."
   :type 'hook)
 
 (defcustom php-mode-force-pear nil
-  "Normally PEAR coding rules are enforced only when the filename contains \"PEAR.\"
+  "Normally PEAR coding rules are enforced only when the filename contains \"PEAR\".
 Turning this on will force PEAR rules on all PHP files."
   :group 'php-mode
   :tag "PHP Mode Force Pear"
@@ -226,7 +226,7 @@ have any tags inside a PHP string, it will be fooled."
   :type '(choice (const :tag "Warn" t) (const "Don't warn" nil)))
 
 (defcustom php-mode-coding-style 'pear
-  "Select default coding style to use with php-mode.
+  "Select default coding style to use with `php-mode'.
 This variable can take one of the following symbol values:
 
 `Default' - use a reasonable default style for PHP.
@@ -248,7 +248,7 @@ This variable can take one of the following symbol values:
 ;; Since this function has a bad influence on the environment of many users,
 ;; temporarily disable it
 (defcustom php-mode-enable-project-coding-style nil
-  "When set to true override php-mode-coding-style by php-project-coding-style.
+  "When set to true override `php-mode-coding-style' by `php-project-coding-style'.
 
 If you want to suppress styles from being overwritten by directory / file
 local variables, set NIL."
@@ -591,7 +591,8 @@ might be to handle switch and goto labels differently."
                (group "{"))))
 
 (defun php-c-lineup-arglist (langelem)
-  "Line up the current argument line under the first argument using `c-lineup-arglist' LANGELEM."
+  "Line up the current argument line under the first argument using
+`c-lineup-arglist' LANGELEM."
   (let (in-return-typed-closure)
     (when (and (consp langelem)
                (eq 'arglist-cont-nonempty (car langelem)))
@@ -606,7 +607,7 @@ might be to handle switch and goto labels differently."
 
 (defun php-lineup-cascaded-calls (langelem)
   "Line up chained methods using `c-lineup-cascaded-calls',
-but only if the setting is enabled"
+but only if the setting is enabled."
   (if php-mode-lineup-cascaded-calls
       (c-lineup-cascaded-calls langelem)
     (save-excursion
@@ -669,7 +670,7 @@ a backward search limit."
    (tab-width . 4)))
 
 (defun php-enable-pear-coding-style ()
-  "Set up php-mode to use the coding styles preferred for PEAR code and modules."
+  "Set up `php-mode' to use the coding styles preferred for PEAR code and modules."
   (interactive)
   (php-set-style "pear"))
 
@@ -684,7 +685,7 @@ a backward search limit."
    (php-style-delete-trailing-whitespace . t)))
 
 (defun php-enable-drupal-coding-style ()
-  "Make php-mode use coding styles that are preferable for working with Drupal."
+  "Make `php-mode' use coding styles that are preferable for working with Drupal."
   (interactive)
   (php-set-style "drupal"))
 
@@ -698,7 +699,8 @@ a backward search limit."
     (fill-column . 78)))
 
 (defun php-enable-wordpress-coding-style ()
-  "Make php-mode use coding styles that are preferable for working with Wordpress."
+  "Make `php-mode' use coding styles that are preferable for working with
+Wordpress."
   (interactive)
   (php-set-style "wordpress"))
 
@@ -711,7 +713,7 @@ a backward search limit."
     (fill-column . 78)))
 
 (defun php-enable-symfony2-coding-style ()
-  "Make php-mode use coding styles that are preferable for working with Symfony2."
+  "Make `php-mode' use coding styles that are preferable for working with Symfony2."
   (interactive)
   (php-set-style "symfony2"))
 
@@ -726,7 +728,7 @@ a backward search limit."
     (php-style-delete-trailing-whitespace . t)))
 
 (defun php-enable-psr2-coding-style ()
-  "Make php-mode comply to the PSR-2 coding style."
+  "Make `php-mode' comply to the PSR-2 coding style."
   (interactive)
   (php-set-style "psr2"))
 
@@ -942,7 +944,8 @@ this ^ lineup"
     "Regular expression for the start of a PHP heredoc."))
 
 (defun php-heredoc-end-re (heredoc-start)
-  "Build a regular expression for the end of a heredoc started by the string HEREDOC-START."
+  "Build a regular expression for the end of a heredoc started by the string
+HEREDOC-START."
   ;; Extract just the identifier without <<< and quotes.
   (string-match "\\_<.+?\\_>" heredoc-start)
   (concat "^\\s-*\\(" (match-string 0 heredoc-start) "\\)\\W"))
@@ -983,7 +986,7 @@ this ^ lineup"
     (put-text-property start (1+ start) 'syntax-table (string-to-syntax "."))))
 
 (defvar-local php-mode--propertize-extend-region-current nil
-  "Prevent undesirable recursion in PHP-SYNTAX-PROPERTIZE-EXTEND-REGION")
+  "Prevent undesirable recursion in PHP-SYNTAX-PROPERTIZE-EXTEND-REGION.")
 
 (defun php-syntax-propertize-extend-region (start end)
   "Extend the propertize region if START or END falls inside a PHP heredoc."
@@ -1013,7 +1016,7 @@ this ^ lineup"
         (setq php-mode--propertize-extend-region-current
               (delete pair php-mode--propertize-extend-region-current))))))
 
-(easy-menu-define php-mode-menu php-mode-map "PHP Mode Commands"
+(easy-menu-define php-mode-menu php-mode-map "PHP Mode Commands."
   (cons "PHP" (c-lang-const c-mode-menu php)))
 
 (defun php-mode-get-style-alist ()
@@ -1076,7 +1079,7 @@ After setting the stylevars run hooks according to STYLENAME
         ((equal stylename "psr2")      (run-hooks 'php-mode-psr2-hook))))
 
 (defun php-mode--disable-delay-set-style (&rest _args)
-  "Disable php-mode-set-style-delay on after hook.  `ARGS' be ignore."
+  "Disable `php-mode-set-style-delay' on after hook.  ARGS be ignore."
   (setq php-mode--delayed-set-style nil)
   (advice-remove #'php-mode--disable-delay-set-style #'c-set-style))
 

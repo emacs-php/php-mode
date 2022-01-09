@@ -207,11 +207,13 @@ see https://www.php.net/manual/language.constants.predefined.php")
 ;;; Utillity for locate language construction
 (defsubst php-in-string-p ()
   "Return non-nil if inside a string.
-it is the character that will terminate the string, or t if the string should be terminated by a generic string delimiter."
+It is the character that will terminate the string, or t if the string should
+be terminated by a generic string delimiter."
   (nth 3 (syntax-ppss)))
 
 (defsubst php-in-comment-p ()
-  "Return nil if outside a comment, t if inside a non-nestable comment, else an integer (the current comment nesting)."
+  "Return NIL if outside a comment, T if inside a non-nestable comment, else
+an integer (the current comment nesting)."
   (nth 4 (syntax-ppss)))
 
 (defsubst php-in-string-or-comment-p ()
