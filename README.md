@@ -1,8 +1,8 @@
 <div align="center">
   <h1>Emacs PHP Mode</h1>
 
-[![Emacs: 27.1](https://img.shields.io/badge/Emacs-27.1-blue.svg)](https://www.gnu.org/software/emacs/)
-[![lang: PHP 8.0](https://img.shields.io/badge/lang-PHP%208.0-brightgreen.svg)](https://php.net/manual/migration80.php)
+[![Emacs: 28.0](https://img.shields.io/badge/Emacs-28.0-blue.svg)](https://www.gnu.org/software/emacs/)
+[![lang: PHP 8.1](https://img.shields.io/badge/lang-PHP%208.1-brightgreen.svg)](https://php.net/manual/migration81.php)
 [![lang: PHP 7](https://img.shields.io/badge/lang-PHP%207-green.svg)](https://php.net/downloads.php)
 [![Build Status](https://github.com/emacs-php/php-mode/workflows/CI/badge.svg)](https://github.com/emacs-php/php-mode/actions)
 [![melpa badge][melpa-badge]][melpa-link]
