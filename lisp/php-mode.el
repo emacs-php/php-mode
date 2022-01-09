@@ -591,6 +591,15 @@ PHP does not have an C-like \"enum\" keyword."
 (c-lang-defconst c-enums-contain-decls
   php nil)
 
+(c-lang-defconst c-paragraph-start
+  php (eval-when-compile
+        (rx (group (or (: "@" (in "a-zA-Z" "\\") word-end)
+                       (: "#[")
+                       eol)))))
+
+(c-lang-defconst c-other-decl-kwds
+  php nil)
+
 (c-lang-defconst c-nonlabel-token-key
   "Regexp matching things that can't occur in generic colon labels.
 
