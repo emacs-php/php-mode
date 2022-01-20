@@ -12,6 +12,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
  * Add `php-imenu-generic-expression-default` for default value or `php-imenu-generic-expression`
    * Add `php-imenu-generic-expression-legacy` for compatibility
    * Add `php-imenu-generic-expression-simple` for simple display
+ * Add `php-project-project-find-function` compatible with `project-find-functions`
 
 ### Changed
 

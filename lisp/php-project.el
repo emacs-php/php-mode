@@ -282,6 +282,17 @@ Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
       php-project-root
     (php-project--detect-root-dir)))
 
+;;;###autoload
+(defun php-project-project-find-function (dir)
+  "Return path to current PHP project from DIR.
+
+This function is compatible with `project-find-functions'."
+  (let ((default-directory dir))
+    (when-let (root (php-project-get-root-dir))
+      (if (file-exists-p (expand-file-name ".git" root))
+          (cons 'vc root)
+        (cons 'transient root)))))
+
 (defun php-project--detect-root-dir ()
   "Return detected project root."
   (if (and php-project-use-projectile-to-detect-root
