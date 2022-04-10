@@ -1,7 +1,7 @@
 <div align="center">
   <h1>Emacs PHP Mode</h1>
 
-[![Emacs: 28.0](https://img.shields.io/badge/Emacs-28.0-blue.svg)](https://www.gnu.org/software/emacs/)
+[![Emacs: 28.1](https://img.shields.io/badge/Emacs-28.1-blue.svg)](https://www.gnu.org/software/emacs/)
 [![lang: PHP 8.1](https://img.shields.io/badge/lang-PHP%208.1-brightgreen.svg)](https://php.net/manual/migration81.php)
 [![lang: PHP 7](https://img.shields.io/badge/lang-PHP%207-green.svg)](https://php.net/downloads.php)
 [![Build Status](https://github.com/emacs-php/php-mode/workflows/CI/badge.svg)](https://github.com/emacs-php/php-mode/actions)
@@ -28,7 +28,7 @@ The current support policy can be found on the [Supported Version] page.
 
 [![NonGNU ELPA][nongnu-elpa-badge]][nongnu-elpa] [![NonGNU-devel ELPA][nongnu-devel-elpa-badge]][nongnu-devel-elpa]
 
-Emacs 28 (unreleased; next major version) includes [NonGNU ELPA](https://elpa.nongnu.org/) as the default package repository.
+Emacs 28 (latest stable release) includes [NonGNU ELPA](https://elpa.nongnu.org/) as the default package repository.
 
 ```el
 ;; For Emacs < 28
