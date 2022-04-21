@@ -5,11 +5,9 @@
 [![lang: PHP 8.1](https://img.shields.io/badge/lang-PHP%208.1-brightgreen.svg)](https://php.net/manual/migration81.php)
 [![lang: PHP 7](https://img.shields.io/badge/lang-PHP%207-green.svg)](https://php.net/downloads.php)
 [![Build Status](https://github.com/emacs-php/php-mode/workflows/CI/badge.svg)](https://github.com/emacs-php/php-mode/actions)
-[![melpa badge][melpa-badge]][melpa-link]
-[![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
 [![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)](http://www.gnu.org/licenses/gpl-3.0.txt)<br>
 [![NonGNU ELPA][nongnu-elpa-badge]][nongnu-elpa]
-[![NonGNU-devel ELPA][nongnu-devel-elpa-badge]][nongnu-devel-elpa]
+[![melpa badge][melpa-badge]][melpa-link]
 
 A powerful and flexible Emacs major mode for editing PHP scripts
 
@@ -24,23 +22,13 @@ Installation
 
 The current support policy can be found on the [Supported Version] page.
 
-### Install from NonGNU ELPA
+### **(RECOMMENDED)** Install from NonGNU ELPA
 
 [![NonGNU ELPA][nongnu-elpa-badge]][nongnu-elpa] [![NonGNU-devel ELPA][nongnu-devel-elpa-badge]][nongnu-devel-elpa]
 
 Emacs 28 (latest stable release) includes [NonGNU ELPA](https://elpa.nongnu.org/) as the default package repository.
 
-```el
-;; For Emacs < 28
-(when (< emacs-major-version 28)
-  (with-eval-after-load 'package
-    (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/"))))
-
-(unless (package-installed-p 'php-mode)
-  (package-install 'php-mode))
-```
-
-### **(RECOMMENDED)** Install from MELPA
+### Install from MELPA
 
 [![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
 
