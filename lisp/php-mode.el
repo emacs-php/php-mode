@@ -290,13 +290,11 @@ In that case set to `NIL'."
 (defun php-mode-version ()
   "Display string describing the version of PHP Mode."
   (interactive)
-  (let ((fmt
-         (eval-when-compile
-           (let ((id "$Id$"))
-             (concat "PHP Mode %s"
-                     (if (string= id (concat [?$ ?I ?d ?$]))
-                         ""
-                       (concat " " id)))))))
+  (let ((fmt (eval-when-compile (let ((id "$Id$"))
+                                  (concat "PHP Mode %s"
+                                          (if (string= id (concat [?$ ?I ?d ?$]))
+                                              ""
+                                            (concat " " id)))))))
     (funcall
      (if (called-interactively-p 'interactive) #'message #'format)
      fmt php-mode-version-number)))
@@ -774,9 +772,8 @@ See `php-beginning-of-defun'."
             (save-match-data
               (not (or (re-search-forward html-tag-re (line-end-position) t)
                        (re-search-backward html-tag-re (line-beginning-position) t)))))
-        (progn
-          (goto-char here)
-          t)
+        (prog1 t
+          (goto-char here))
       (goto-char here)
       (setq php-warned-bad-indent t)
       (let* ((known-multi-libs '(("mumamo" mumamo (lambda () (nxhtml-mumamo)))
@@ -837,9 +834,9 @@ example `html-mode'.  Known such libraries are:\n\t"
         nil))))
 
 (defun php-cautious-indent-region (start end &optional quiet)
-  "Carefully indent region `START' `END' in contexts other than HTML templates.
+  "Carefully indent region START to END in contexts other than HTML templates.
 
-If the optional argument `QUIET' is non-nil then no syntactic errors are
+If the optional argument QUIET is non-nil then no syntactic errors are
 reported, even if `c-report-syntactic-errors' is non-nil."
   (if (or (not php-mode-warn-if-mumamo-off)
           (not (php-in-poly-php-html-mode))
