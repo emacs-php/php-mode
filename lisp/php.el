@@ -602,8 +602,8 @@ When `DOCUMENT-ROOT' is NIL, the document root is obtained from `ROUTER-OR-DIR'.
                            port
                            short-dirname
                            (if document-root short-filename "")))
-         (args (cl-remove-if
-                #'null
+         (args (delq
+                nil
                 (list "-S"
                       (format "%s:%d" hostname port)
                       "-t"
