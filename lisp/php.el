@@ -60,16 +60,16 @@ The URL to use open PHP manual and search word."
 You can replace \"en\" with your ISO language code."
   :group 'php
   :tag "PHP Manual URL"
-  :type '(choice (const  :tag "English" 'en)
-                 (const  :tag "Brazilian Portuguese" 'pt_BR)
-                 (const  :tag "Chinese (Simplified)" 'zh)
-                 (const  :tag "French" 'fr)
-                 (const  :tag "German" 'de)
-                 (const  :tag "Japanese" 'ja)
-                 (const  :tag "Romanian" 'ro)
-                 (const  :tag "Russian" 'ru)
-                 (const  :tag "Spanish" 'es)
-                 (const  :tag "Turkish" 'tr)
+  :type '(choice (const  :tag "English" en)
+                 (const  :tag "Brazilian Portuguese" pt_BR)
+                 (const  :tag "Chinese (Simplified)" zh)
+                 (const  :tag "French" fr)
+                 (const  :tag "German" de)
+                 (const  :tag "Japanese" ja)
+                 (const  :tag "Romanian" ro)
+                 (const  :tag "Russian" ru)
+                 (const  :tag "Spanish" es)
+                 (const  :tag "Turkish" tr)
                  (string :tag "PHP manual URL")))
 
 (defcustom php-search-url nil
@@ -411,8 +411,8 @@ can be used to match against definitions for that classlike."
 (defcustom php-imenu-generic-expression 'php-imenu-generic-expression-default
   "Default Imenu generic expression for PHP Mode.  See `imenu-generic-expression'."
   :type '(choice (alist :key-type string :value-type list)
-                 (const 'php-imenu-generic-expression-legacy)
-                 (const 'php-imenu-generic-expression-simple)
+                 (const php-imenu-generic-expression-legacy)
+                 (const php-imenu-generic-expression-simple)
                  variable)
   :group 'php)
 
@@ -492,8 +492,8 @@ Look at the `php-executable' variable instead of the constant \"php\" command."
   "Regexp pattern variable-name of HTML detection."
   :group 'php
   :tag "PHP Re Detect HTML Tag"
-  :type '(choice (const :tag "Default pattern" 'php-re-detect-html-tag-default)
-                 (const :tag "Aggressive pattern" 'php-re-detect-html-tag-aggressive)
+  :type '(choice (const :tag "Default pattern" php-re-detect-html-tag-default)
+                 (const :tag "Aggressive pattern" php-re-detect-html-tag-aggressive)
                  (variable :tag "Variable name of RegExp pattern")))
 
 (defsubst php-re-detect-html-tag ()
