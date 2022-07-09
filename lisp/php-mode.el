@@ -483,7 +483,7 @@ PHP does not have an C-like \"enum\" keyword."
   php '("true" "false" "null"))
 
 (c-lang-defconst c-lambda-kwds
-  php '("function" "use"))
+  php '("function" "use" "fn"))
 
 (c-lang-defconst c-inexpr-block-kwds
   php '("match"))
@@ -510,7 +510,6 @@ PHP does not have an C-like \"enum\" keyword."
     "endswitch"
     "endwhile"
     "eval"
-    "fn" ;; NOT c-lambda-kwds
     "global"
     "isset"
     "list"
