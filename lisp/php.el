@@ -585,7 +585,8 @@ When `DOCUMENT-ROOT' is NIL, the document root is obtained from `ROUTER-OR-DIR'.
       (read-number "Port: " php-default-builtin-web-server-port)
       (if (file-directory-p d-o-r)
           nil
-        (let ((root-input (read-file-name "Document root: " (directory-file-name d-o-r))))
+        (let ((root-input (expand-file-name
+                           (read-file-name "Document root: " (directory-file-name d-o-r)))))
           (file-name-directory
            (if (file-directory-p root-input)
                root-input
