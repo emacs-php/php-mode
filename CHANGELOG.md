@@ -2,7 +2,9 @@
 
 All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## Unreleased
+<!-- ## Unreleased -->
+
+## [1.24.1] - 2022-10-08
 
 ### Added
 
@@ -12,7 +14,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
  * Add `php-imenu-generic-expression-default` for default value or `php-imenu-generic-expression`
    * Add `php-imenu-generic-expression-legacy` for compatibility
    * Add `php-imenu-generic-expression-simple` for simple display
- * Add `php-project-project-find-function` compatible with `project-find-functions`
+ * Add `php-project-project-find-function` compatible with `project-find-functions` ([#693])
 
 ### Changed
 
@@ -27,9 +29,21 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
    * Renamed `All Methods` to `Methods`
    * Removed `Public Methods`, `Protected Methods` and `Provate Methods`
    * Unified `Classes`, `Traits`, `Interfaces` into `Classes`
+ * Modified regexp patterns ([#681])
+ * Suppress compile-time warnings ([#683], [#690], [#697])
+
+### Fixed
+
+ * Fix `php-run-builtin-web-server` to expand root path (#699)
 
 [#669]: https://github.com/emacs-php/php-mode/pull/669
 [#680]: https://github.com/emacs-php/php-mode/pull/680
+[#681]: https://github.com/emacs-php/php-mode/pull/681
+[#683]: https://github.com/emacs-php/php-mode/pull/683
+[#690]: https://github.com/emacs-php/php-mode/pull/690
+[#693]: https://github.com/emacs-php/php-mode/pull/693
+[#697]: https://github.com/emacs-php/php-mode/pull/697
+[#699]: https://github.com/emacs-php/php-mode/pull/699
 
 ## [1.24.0] - 2021-03-07
 

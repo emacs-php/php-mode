@@ -289,7 +289,7 @@ This project originated in `php-mode.el` written by [Turadg Aleahmad][@turadg] i
 This project was maintained by [Eric James Michael Ritz][@ejmr] until 2017. Currently, the [Friends of Emacs-PHP Development][@emacs-php] community inherits PHP Mode.
 
 > ```
-> Copyright (C) 2018-2020  Friends of Emacs-PHP development
+> Copyright (C) 2022  Friends of Emacs-PHP development
 > Copyright (C) 1999, 2000, 2001, 2003, 2004 Turadg Aleahmad
 >               2008 Aaron S. Hawley
 >               2011, 2012, 2013, 2014, 2015, 2016, 2017 Eric James Michael Ritz

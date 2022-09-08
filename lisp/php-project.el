@@ -1,11 +1,11 @@
 ;;; php-project.el --- Project support for PHP application  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2020  Friends of Emacs-PHP development
+;; Copyright (C) 2022  Friends of Emacs-PHP development
 
 ;; Author: USAMI Kenta <tadsan@zonu.me>
 ;; Keywords: tools, files
 ;; URL: https://github.com/emacs-php/php-mode
-;; Version: 1.24.0
+;; Version: 1.24.1
 ;; License: GPL-3.0-or-later
 
 ;; This program is free software; you can redistribute it and/or modify
