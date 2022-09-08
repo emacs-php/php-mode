@@ -1,6 +1,6 @@
 ;;; php-local-manual.el --- Tools for local PHP manual -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2020  Friends of Emacs-PHP development
+;; Copyright (C) 2022  Friends of Emacs-PHP development
 
 ;; Author: phil-s
 ;; Maintainer: USAMI Kenta <tadsan@zonu.me>
