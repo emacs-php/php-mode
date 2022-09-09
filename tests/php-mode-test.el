@@ -649,6 +649,10 @@ Meant for `php-mode-test-issue-503'."
   "Proper alignment object -> accessor."
   (with-php-mode-test ("indent/issue-623.php" :indent t :magic t)))
 
+(ert-deftest php-mode-test-issue-702 ()
+  "Proper alignment arglist."
+  (with-php-mode-test ("indent/issue-702.php" :indent t :magic t)))
+
 (ert-deftest php-mode-test-php74 ()
   "Test highlighting language constructs added in PHP 7.4."
   (with-php-mode-test ("7.4/arrow-function.php" :faces t))

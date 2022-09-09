@@ -12,6 +12,6 @@ var_dump(
 
 $arr = [
     $object->something() // ###php-mode-test### ((indent 4))
-    /* comment */ ->something() // ###php-mode-test### ((indent 4))
+        /* comment */ ->something() // ###php-mode-test### ((indent 8))
         ->something(), // ###php-mode-test### ((indent 8))
 ]; // ###php-mode-test### ((indent 0))
