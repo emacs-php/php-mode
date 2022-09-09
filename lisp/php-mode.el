@@ -895,8 +895,8 @@ This is was done due to the problem reported here:
 (defun php-lineup-string-cont (langelem)
   "Line up string toward equal sign or dot.
 e.g.
-$str = 'some'
-     . 'string';
+$str \= \'some\'
+     . \'string\';
 this ^ lineup"
   (save-excursion
     (goto-char (cdr langelem))
