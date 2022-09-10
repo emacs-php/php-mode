@@ -572,9 +572,6 @@ might be to handle switch and goto labels differently."
   php (cl-remove-if (lambda (elm) (and (listp elm) (memq 'c-annotation-face elm)))
                     (c-lang-const c-basic-matchers-after php)))
 
-(c-lang-defconst c-opt-<>-sexp-key
-  php nil)
-
 (defconst php-mode--re-return-typed-closure
   (eval-when-compile
     (rx symbol-start "function" symbol-end
