@@ -91,6 +91,7 @@ Names Sorted Alphabetically:
 - Sean Champ
 - Sebastian Wiesner
 - Serghei Iakovlev
+- Shohei YOSHIDA
 - Stefan Monnier
 - Stig Bakken
 - Syohei YOSHIDA
