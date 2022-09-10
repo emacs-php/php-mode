@@ -1,5 +1,7 @@
-/.cask/
-/.keg/
-php-mode-autoloads.el
-*~
 *.elc
+*~
+.dir-locals-2.el
+/.cask/*
+/.keg/*
+/.php-cs-fixer.cache
+php-mode-autoloads.el
