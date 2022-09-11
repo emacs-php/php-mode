@@ -5,7 +5,7 @@ AUTOLOADS = php-mode-autoloads.el
 ELCS = $(ELS:.el=.elc)
 
 %.elc: %.el
-	$(EMACS) -Q -batch -L lisp/ -f batch-byte-compile $<
+	$(EMACS) --batch -L lisp/ -f batch-byte-compile $<
 
 all: autoloads $(ELCS) authors
 
@@ -25,8 +25,8 @@ AUTHORS.md: etc/git/AUTHORS.md.in .mailmap
 autoloads: $(AUTOLOADS)
 
 $(AUTOLOADS): lisp/php.el lisp/php-align.el lisp/php-face.el lisp/php-project.el lisp/php-local-manual.el lisp/php-mode-debug.el lisp/php-mode.el
-	$(EMACS) -Q -batch -L lisp/ --eval \
-	"(progn \
+	$(EMACS) --batch -L lisp/ --eval \
+	"(let ((user-emacs-directory default-directory)) \
 	   (require 'package) \
 	   (package-generate-autoloads \"php-mode\" (expand-file-name \"lisp\")))"
 
@@ -55,11 +55,9 @@ dev:
 # command.
 test: clean all
 	touch tests/project/1/.git
-	$(EMACS) -Q -batch -L lisp/ --eval \
+	$(EMACS) --batch -l lisp/php-mode-autoloads.el --eval \
 	"(let ((default-directory (expand-file-name \".cask\" default-directory))) \
-	   (require 'package) \
 	   (normal-top-level-add-subdirs-to-load-path))" \
-	    -f package-initialize \
 	    -l tests/php-mode-test.el -f ert-run-tests-batch-and-exit
 
 .PHONY: all authors autoloads clean test
