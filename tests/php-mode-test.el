@@ -63,22 +63,24 @@ These are the ###php-mode-test### comments. Valid magics are
 listed in `php-mode-test-valid-magics'; no other directives will
 be processed."
   (cl-letf (((symbol-function 'indent)
-             (lambda (offset) (equal (current-indentation) offset))))
+             (lambda (offset)
+               (let ((current-offset (current-indentation)))
+                 (unless (eq current-offset offset)
+                   (list :line (line-number-at-pos)
+                         :expected offset
+                         :actual current-offset))))))
     (let (directives answers)
       (save-excursion
         (goto-char (point-min))
-        (while (re-search-forward php-mode-test-magic-regexp nil t)
-          (setq directives (read (buffer-substring (match-beginning 1)
-                                                   (match-end 1))))
-          (setq answers
-                (append (mapcar (lambda (curr)
-                                  (let ((fn (car curr))
-                                        (args (mapcar 'eval (cdr-safe curr))))
-                                    (if (memq fn php-mode-test-valid-magics)
-                                        (apply fn args))))
-                                directives)
-                        answers))))
-      answers)))
+        (cl-loop while (re-search-forward php-mode-test-magic-regexp nil t)
+                 for directives = (read (buffer-substring (match-beginning 1) (match-end 1)))
+                 for result = (mapcar (lambda (expr)
+                                        (let ((fn (car expr))
+                                              (args (mapcar 'eval (cdr-safe expr))))
+                                          (if (memq fn php-mode-test-valid-magics)
+                                              (apply fn args))))
+                                      directives)
+                 append (cl-remove-if #'null result))))))
 
 (defun php-mode-test--buffer-face-list (buffer)
   "Return list of (STRING . FACE) from `BUFFER'."
@@ -154,8 +156,9 @@ file name and check that the faces of the fonts in the buffer match."
      ,(if indent
           '(let ((inhibit-message t)) (indent-region (point-min) (point-max))))
      ,(if magic
-          '(should (cl-reduce (lambda (l r) (and l r))
-                              (php-mode-test-process-magics))))
+          `(should (equal
+                    (cons ,file nil)
+                    (cons ,file (php-mode-test-process-magics)))))
      ,(if faces
           `(should (equal
                     (cons ,file
