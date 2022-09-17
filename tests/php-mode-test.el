@@ -66,6 +66,7 @@ be processed."
              (lambda (offset)
                (let ((current-offset (current-indentation)))
                  (unless (eq current-offset offset)
+                   (warn "line: %d context: %s\n" (line-number-at-pos) (c-guess-basic-syntax))
                    (list :line (line-number-at-pos)
                          :expected offset
                          :actual current-offset))))))
@@ -648,6 +649,10 @@ Meant for `php-mode-test-issue-503'."
 (ert-deftest php-mode-test-issue-623 ()
   "Proper alignment object -> accessor."
   (with-php-mode-test ("indent/issue-623.php" :indent t :magic t)))
+
+(ert-deftest php-mode-test-issue-702 ()
+  "Proper alignment arglist."
+  (with-php-mode-test ("indent/issue-702.php" :indent t :magic t)))
 
 (ert-deftest php-mode-test-php74 ()
   "Test highlighting language constructs added in PHP 7.4."

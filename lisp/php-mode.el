@@ -82,6 +82,7 @@
   (require 'regexp-opt)
   (defvar add-log-current-defun-header-regexp)
   (defvar add-log-current-defun-function)
+  (defvar c-syntactic-context)
   (defvar c-vsemi-status-unknown-p)
   (defvar syntax-propertize-via-font-lock))
 
@@ -603,11 +604,39 @@ might be to handle switch and goto labels differently."
 (defun php-lineup-cascaded-calls (langelem)
   "Line up chained methods using `c-lineup-cascaded-calls',
 but only if the setting is enabled."
-  (if php-mode-lineup-cascaded-calls
-      (c-lineup-cascaded-calls langelem)
+  (cond
+   (php-mode-lineup-cascaded-calls (c-lineup-cascaded-calls langelem))
+   ((assq 'arglist-cont-nonempty c-syntactic-context) nil)
+   ((assq 'defun-block-intro c-syntactic-context) nil)
+   ((assq 'defun-close c-syntactic-context) nil)
+   ((assq 'statement-cont c-syntactic-context) nil)
+   (t
     (save-excursion
       (beginning-of-line)
-      (if (looking-at-p "\\s-*->") '+ nil))))
+      (let ((beginning-of-langelem (cdr langelem))
+            (beginning-of-current-line (point))
+            start)
+        (skip-chars-forward " 	")
+        (cond
+         ((looking-at-p "->") '+)
+         ((looking-at-p "[:?]") '+)
+         ((looking-at-p "[,;]") nil)
+         ;; Is the previous line terminated with `,' ?
+         ((progn
+            (forward-line -1)
+            (end-of-line)
+            (skip-chars-backward " 	")
+            (backward-char 1)
+            (while (and (< beginning-of-langelem (point))
+                        (setq start (php-in-string-or-comment-p)))
+              (goto-char start)
+              (skip-chars-backward " 	")
+              (backward-char 1))
+            (and (not (eq (point) beginning-of-current-line))
+                 (not (looking-at-p ","))
+                 (not (php-in-string-or-comment-p))))
+          '+)
+         (t nil)))))))
 
 (defun php-c-looking-at-or-maybe-in-bracelist (&optional _containing-sexp lim)
   "Replace `c-looking-at-or-maybe-in-bracelist'.
