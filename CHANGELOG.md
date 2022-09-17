@@ -2,7 +2,20 @@
 
 All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-<!-- ## Unreleased -->
+## Unreleased
+
+### Changed
+
+ * Make continued expressions inside lists (arguments and arrays, etc.) have the same indent width as outside the list ([#703])
+ * (internal) Improved readability of test failures about indentation ([#707])
+
+### Fixed
+
+ * Removed invalid definitions that caused errors in some expressions ([#704])
+
+[#703]: https://github.com/emacs-php/php-mode/pull/703
+[#704]: https://github.com/emacs-php/php-mode/pull/704
+[#707]: https://github.com/emacs-php/php-mode/pull/707
 
 ## [1.24.1] - 2022-10-08
 
