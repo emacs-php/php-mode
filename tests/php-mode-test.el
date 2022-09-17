@@ -66,6 +66,7 @@ be processed."
              (lambda (offset)
                (let ((current-offset (current-indentation)))
                  (unless (eq current-offset offset)
+                   (warn "line: %d context: %s\n" (line-number-at-pos) (c-guess-basic-syntax))
                    (list :line (line-number-at-pos)
                          :expected offset
                          :actual current-offset))))))
