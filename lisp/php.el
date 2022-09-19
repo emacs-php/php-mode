@@ -1,6 +1,7 @@
 ;;; php.el --- PHP support for friends               -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2022  Friends of Emacs-PHP development
+;; Copyright (C) 1985, 1987, 1992-2022 Free Software Foundation, Inc.
 
 ;; Author: USAMI Kenta <tadsan@zonu.me>
 ;; Created: 5 Dec 2018
@@ -26,9 +27,16 @@
 
 ;; This file provides common variable and functions for PHP packages.
 
+;; These functions are copied function from GNU Emacs.
+;;
+;; - c-end-of-token (cc-engine.el)
+;;
+
 ;;; Code:
 (eval-when-compile
+  (require 'cc-mode)
   (require 'cl-lib))
+(require 'cc-engine)
 (require 'flymake)
 (require 'php-project)
 (require 'rx)
@@ -430,6 +438,36 @@ can be used to match against definitions for that classlike."
     (save-match-data
       (when (re-search-backward re-pattern nil t)
         (match-string-no-properties 1)))))
+
+(eval-and-compile
+  (if (eval-when-compile (fboundp 'c-end-of-token))
+      (defalias 'php--c-end-of-token #'c-end-of-token)
+    ;; Copyright (C) 1985, 1987, 1992-2022 Free Software Foundation, Inc.
+    ;; Follows function is copied from Emacs 27's cc-engine.el.
+    ;; https://emba.gnu.org/emacs/emacs/-/commit/95fb826dc58965eac287c0826831352edf2e56f7
+    (defun php--c-end-of-token (&optional back-limit)
+      ;; Move to the end of the token we're just before or in the middle of.
+      ;; BACK-LIMIT may be used to bound the backward search; if given it's
+      ;; assumed to be at the boundary between two tokens.  Return non-nil if the
+      ;; point is moved, nil otherwise.
+      ;;
+      ;; This function might do hidden buffer changes.
+      (let ((start (point)))
+        (cond ;; ((< (skip-syntax-backward "w_" (1- start)) 0)
+         ;;  (skip-syntax-forward "w_"))
+         ((> (skip-syntax-forward "w_") 0))
+         ((< (skip-syntax-backward ".()" back-limit) 0)
+          (while (< (point) start)
+	    (if (looking-at c-nonsymbol-token-regexp)
+	        (goto-char (match-end 0))
+	      ;; `c-nonsymbol-token-regexp' should always match since
+	      ;; we've skipped backward over punctuation or paren
+	      ;; syntax, but move forward in case it doesn't so that
+	      ;; we don't leave point earlier than we started with.
+	      (forward-char))))
+         (t (if (looking-at c-nonsymbol-token-regexp)
+	        (goto-char (match-end 0)))))
+        (> (point) start)))))
 
 (defun php-get-pattern ()
   "Find the pattern we want to complete.
