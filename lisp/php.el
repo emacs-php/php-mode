@@ -211,6 +211,16 @@ a completion list."
 
 These are different from \"constants\" in strict terms.
 see https://www.php.net/manual/language.constants.predefined.php")
+
+(defconst php-re-token-symbols
+  (eval-when-compile
+    (regexp-opt (list "&" "&=" "array(" "(array)" "&&" "||" "(bool)" "(boolean)" "break;" "?>" "%>"
+                      "??" "??=" ".=" "--" "/=" "=>" "(real)" "(double)" "(float)" "::" "..."
+                      "__halt_compiler()" "++" "(int)" "(integer)" "==" ">=" "===" "!=" "<>" "!=="
+                      "<=" "-=" "%=" "*=" "\\" "(object)" "->" "?->" "<?php" "<?" "<?=" "|=" "+="
+                      "**" "**=" "<<" "<<=" "<=>" ">>" ">>=" "<<<" "(string)" "^=" "yield from"
+                      "[" "]" "(" ")" "{" "}" ";")
+                t)))
 
 ;;; Utillity for locate language construction
 (defsubst php-in-string-p ()
@@ -432,6 +442,17 @@ can be used to match against definitions for that classlike."
   (eval-when-compile
     (php-create-regexp-for-classlike (regexp-opt '("class" "interface" "trait")))))
 
+(defvar php--analysis-syntax-table
+  (eval-when-compile
+    (let ((table (make-syntax-table)))
+      (c-populate-syntax-table table)
+      (modify-syntax-entry ?_ "w" table)
+      (modify-syntax-entry ?`  "\""  table)
+      (modify-syntax-entry ?\" "\""  table)
+      (modify-syntax-entry ?#  "< b" table)
+      (modify-syntax-entry ?\n "> b" table)
+      table)))
+
 (defun php-get-current-element (re-pattern)
   "Return backward matched element by RE-PATTERN."
   (save-excursion
@@ -469,27 +490,36 @@ can be used to match against definitions for that classlike."
 	        (goto-char (match-end 0)))))
         (> (point) start)))))
 
-(defun php-get-pattern ()
-  "Find the pattern we want to complete.
-`find-tag-default' from GNU Emacs etags.el"
+(defun php-leading-tokens (length)
+  "Return a list of leading LENGTH tokens from cursor point.
+
+The token list is lined up in the opposite side of the visual arrangement.
+The order is reversed by calling as follows:
+     \(nreverse \(php-leading-tokens 3\)\)"
   (save-excursion
     (save-match-data
-      (while (looking-at "\\sw\\|\\s_")
-        (forward-char 1))
-      (when (or (re-search-backward "\\sw\\|\\s_"
-                                    (save-excursion (beginning-of-line) (point))
-                                    t)
-                (re-search-forward "\\(\\sw\\|\\s_\\)+"
-                                   (save-excursion (end-of-line) (point))
-                                   t))
-        (goto-char (match-end 0))
-        (buffer-substring-no-properties
-         (point)
-         (progn
-           (forward-sexp -1)
-           (while (looking-at "\\s'")
-             (forward-char 1))
-           (point)))))))
+      (with-syntax-table php--analysis-syntax-table
+        (cl-loop
+         repeat length
+         do (progn
+              (forward-comment (- (point)))
+              (c-backward-token-2 1 nil))
+         collect
+         (cond
+          ((when-let (bounds (php--thing-at-point-bounds-of-string-at-point))
+             (prog1 (buffer-substring-no-properties (car bounds) (cdr bounds))
+               (goto-char (car bounds)))))
+          ((looking-at php-re-token-symbols)
+           (prog1 (match-string-no-properties 0)
+             (goto-char (match-beginning 0))))
+          (t
+             (buffer-substring-no-properties (point)
+                                             (save-excursion (php--c-end-of-token) (point))))))))))
+
+(defun php-get-pattern ()
+  "Find the pattern we want to complete.
+`find-tag-default' from GNU Emacs etags.el."
+  (car (php-leading-tokens 1)))
 
 ;;; Provide support for Flymake so that users can see warnings and
 ;;; errors in real-time as they write code.
