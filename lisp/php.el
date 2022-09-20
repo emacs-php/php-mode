@@ -461,6 +461,28 @@ can be used to match against definitions for that classlike."
         (match-string-no-properties 1)))))
 
 (eval-and-compile
+  (if (eval-when-compile (fboundp 'thing-at-point-bounds-of-string-at-point))
+      (defalias 'php--thing-at-point-bounds-of-string-at-point #'thing-at-point-bounds-of-string-at-point)
+    ;; Copyright (C) 1991-1998, 2000-2022 Free Software Foundation, Inc.
+    ;; Follows function is copied from Emacs 28's thingatpt.el.
+    ;; https://github.com/emacs-mirror/emacs/commit/2abf143f8185fced544c4f8d144ea710142d7a59
+    (defun php--thing-at-point-bounds-of-string-at-point ()
+      "Return the bounds of the string at point.
+Prefer the enclosing string with fallback on sexp at point.
+\[Internal function used by `bounds-of-thing-at-point'.]"
+      (save-excursion
+        (let ((ppss (syntax-ppss)))
+          (if (nth 3 ppss)
+              ;; Inside the string
+              (ignore-errors
+                (goto-char (nth 8 ppss))
+                (cons (point) (progn (forward-sexp) (point))))
+            ;; At the beginning of the string
+            (if (eq (char-syntax (char-after)) ?\")
+                (let ((bound (bounds-of-thing-at-point 'sexp)))
+	          (and bound
+	               (<= (car bound) (point)) (< (point) (cdr bound))
+	               bound))))))))
   (if (eval-when-compile (fboundp 'c-end-of-token))
       (defalias 'php--c-end-of-token #'c-end-of-token)
     ;; Copyright (C) 1985, 1987, 1992-2022 Free Software Foundation, Inc.
