@@ -411,7 +411,8 @@ In that case set to `NIL'."
         (left-assoc "and")
         (left-assoc "xor")
         (left-assoc "or")
-        (left-assoc ",")))
+        (left-assoc ",")
+        (left-assoc "=>")))
 
 ;; Allow '\' when scanning from open brace back to defining
 ;; construct like class
