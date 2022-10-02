@@ -33,6 +33,13 @@ $subcommands = [
     'functions' => function (array $extracted) {
         echo json_encode(array_map(array_keys(...), $extracted), JSON_PRETTY_PRINT), PHP_EOL;
     },
+    'functions-txt' => function (array $extracted) {
+        foreach ($extracted as $functions) {
+            foreach ($functions as $name => $_) {
+                echo $name, PHP_EOL;
+            }
+        }
+    },
     'functions-sexp' => function (array $extracted) {
         echo "  '(";
         foreach ($extracted as $module => $functions) {
