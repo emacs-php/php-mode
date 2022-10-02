@@ -4,6 +4,11 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
 ## Unreleased
 
+### Added
+
+ * **New feature: `php-complete`**
+   * Add `php-complete-complete-function` to autocomplete function names ([#708])
+
 ### Changed
 
  * Make continued expressions inside lists (arguments and arrays, etc.) have the same indent width as outside the list ([#703])
@@ -16,6 +21,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 [#703]: https://github.com/emacs-php/php-mode/pull/703
 [#704]: https://github.com/emacs-php/php-mode/pull/704
 [#707]: https://github.com/emacs-php/php-mode/pull/707
+[#708]: https://github.com/emacs-php/php-mode/pull/708
 
 ## [1.24.1] - 2022-10-08
 

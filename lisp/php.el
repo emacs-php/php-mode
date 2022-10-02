@@ -1,6 +1,7 @@
 ;;; php.el --- PHP support for friends               -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2022  Friends of Emacs-PHP development
+;; Copyright (C) 1985, 1987, 1992-2022 Free Software Foundation, Inc.
 
 ;; Author: USAMI Kenta <tadsan@zonu.me>
 ;; Created: 5 Dec 2018
@@ -26,9 +27,16 @@
 
 ;; This file provides common variable and functions for PHP packages.
 
+;; These functions are copied function from GNU Emacs.
+;;
+;; - c-end-of-token (cc-engine.el)
+;;
+
 ;;; Code:
 (eval-when-compile
+  (require 'cc-mode)
   (require 'cl-lib))
+(require 'cc-engine)
 (require 'flymake)
 (require 'php-project)
 (require 'rx)
@@ -203,6 +211,16 @@ a completion list."
 
 These are different from \"constants\" in strict terms.
 see https://www.php.net/manual/language.constants.predefined.php")
+
+(defconst php-re-token-symbols
+  (eval-when-compile
+    (regexp-opt (list "&" "&=" "array(" "(array)" "&&" "||" "(bool)" "(boolean)" "break;" "?>" "%>"
+                      "??" "??=" ".=" "--" "/=" "=>" "(real)" "(double)" "(float)" "::" "..."
+                      "__halt_compiler()" "++" "(int)" "(integer)" "==" ">=" "===" "!=" "<>" "!=="
+                      "<=" "-=" "%=" "*=" "\\" "(object)" "->" "?->" "<?php" "<?" "<?=" "|=" "+="
+                      "**" "**=" "<<" "<<=" "<=>" ">>" ">>=" "<<<" "(string)" "^=" "yield from"
+                      "[" "]" "(" ")" "{" "}" ";")
+                t)))
 
 ;;; Utillity for locate language construction
 (defsubst php-in-string-p ()
@@ -424,6 +442,17 @@ can be used to match against definitions for that classlike."
   (eval-when-compile
     (php-create-regexp-for-classlike (regexp-opt '("class" "interface" "trait")))))
 
+(defvar php--analysis-syntax-table
+  (eval-when-compile
+    (let ((table (make-syntax-table)))
+      (c-populate-syntax-table table)
+      (modify-syntax-entry ?_ "w" table)
+      (modify-syntax-entry ?`  "\""  table)
+      (modify-syntax-entry ?\" "\""  table)
+      (modify-syntax-entry ?#  "< b" table)
+      (modify-syntax-entry ?\n "> b" table)
+      table)))
+
 (defun php-get-current-element (re-pattern)
   "Return backward matched element by RE-PATTERN."
   (save-excursion
@@ -431,27 +460,88 @@ can be used to match against definitions for that classlike."
       (when (re-search-backward re-pattern nil t)
         (match-string-no-properties 1)))))
 
-(defun php-get-pattern ()
-  "Find the pattern we want to complete.
-`find-tag-default' from GNU Emacs etags.el"
+(eval-and-compile
+  (if (eval-when-compile (fboundp 'thing-at-point-bounds-of-string-at-point))
+      (defalias 'php--thing-at-point-bounds-of-string-at-point #'thing-at-point-bounds-of-string-at-point)
+    ;; Copyright (C) 1991-1998, 2000-2022 Free Software Foundation, Inc.
+    ;; Follows function is copied from Emacs 28's thingatpt.el.
+    ;; https://github.com/emacs-mirror/emacs/commit/2abf143f8185fced544c4f8d144ea710142d7a59
+    (defun php--thing-at-point-bounds-of-string-at-point ()
+      "Return the bounds of the string at point.
+Prefer the enclosing string with fallback on sexp at point.
+\[Internal function used by `bounds-of-thing-at-point'.]"
+      (save-excursion
+        (let ((ppss (syntax-ppss)))
+          (if (nth 3 ppss)
+              ;; Inside the string
+              (ignore-errors
+                (goto-char (nth 8 ppss))
+                (cons (point) (progn (forward-sexp) (point))))
+            ;; At the beginning of the string
+            (if (eq (char-syntax (char-after)) ?\")
+                (let ((bound (bounds-of-thing-at-point 'sexp)))
+	          (and bound
+	               (<= (car bound) (point)) (< (point) (cdr bound))
+	               bound))))))))
+  (if (eval-when-compile (fboundp 'c-end-of-token))
+      (defalias 'php--c-end-of-token #'c-end-of-token)
+    ;; Copyright (C) 1985, 1987, 1992-2022 Free Software Foundation, Inc.
+    ;; Follows function is copied from Emacs 27's cc-engine.el.
+    ;; https://emba.gnu.org/emacs/emacs/-/commit/95fb826dc58965eac287c0826831352edf2e56f7
+    (defun php--c-end-of-token (&optional back-limit)
+      ;; Move to the end of the token we're just before or in the middle of.
+      ;; BACK-LIMIT may be used to bound the backward search; if given it's
+      ;; assumed to be at the boundary between two tokens.  Return non-nil if the
+      ;; point is moved, nil otherwise.
+      ;;
+      ;; This function might do hidden buffer changes.
+      (let ((start (point)))
+        (cond ;; ((< (skip-syntax-backward "w_" (1- start)) 0)
+         ;;  (skip-syntax-forward "w_"))
+         ((> (skip-syntax-forward "w_") 0))
+         ((< (skip-syntax-backward ".()" back-limit) 0)
+          (while (< (point) start)
+	    (if (looking-at c-nonsymbol-token-regexp)
+	        (goto-char (match-end 0))
+	      ;; `c-nonsymbol-token-regexp' should always match since
+	      ;; we've skipped backward over punctuation or paren
+	      ;; syntax, but move forward in case it doesn't so that
+	      ;; we don't leave point earlier than we started with.
+	      (forward-char))))
+         (t (if (looking-at c-nonsymbol-token-regexp)
+	        (goto-char (match-end 0)))))
+        (> (point) start)))))
+
+(defun php-leading-tokens (length)
+  "Return a list of leading LENGTH tokens from cursor point.
+
+The token list is lined up in the opposite side of the visual arrangement.
+The order is reversed by calling as follows:
+     \(nreverse \(php-leading-tokens 3\)\)"
   (save-excursion
     (save-match-data
-      (while (looking-at "\\sw\\|\\s_")
-        (forward-char 1))
-      (when (or (re-search-backward "\\sw\\|\\s_"
-                                    (save-excursion (beginning-of-line) (point))
-                                    t)
-                (re-search-forward "\\(\\sw\\|\\s_\\)+"
-                                   (save-excursion (end-of-line) (point))
-                                   t))
-        (goto-char (match-end 0))
-        (buffer-substring-no-properties
-         (point)
-         (progn
-           (forward-sexp -1)
-           (while (looking-at "\\s'")
-             (forward-char 1))
-           (point)))))))
+      (with-syntax-table php--analysis-syntax-table
+        (cl-loop
+         repeat length
+         do (progn
+              (forward-comment (- (point)))
+              (c-backward-token-2 1 nil))
+         collect
+         (cond
+          ((when-let (bounds (php--thing-at-point-bounds-of-string-at-point))
+             (prog1 (buffer-substring-no-properties (car bounds) (cdr bounds))
+               (goto-char (car bounds)))))
+          ((looking-at php-re-token-symbols)
+           (prog1 (match-string-no-properties 0)
+             (goto-char (match-beginning 0))))
+          (t
+             (buffer-substring-no-properties (point)
+                                             (save-excursion (php--c-end-of-token) (point))))))))))
+
+(defun php-get-pattern ()
+  "Find the pattern we want to complete.
+`find-tag-default' from GNU Emacs etags.el."
+  (car (php-leading-tokens 1)))
 
 ;;; Provide support for Flymake so that users can see warnings and
 ;;; errors in real-time as they write code.

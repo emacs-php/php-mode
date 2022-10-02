@@ -1,6 +1,6 @@
 EMACS ?= emacs
 CASK ?= cask
-ELS = lisp/php.el lisp/php-align.el lisp/php-face.el lisp/php-project.el lisp/php-local-manual.el lisp/php-mode.el lisp/php-mode-debug.el
+ELS = lisp/php.el lisp/php-align.el lisp/php-complete.el lisp/php-defs.el lisp/php-face.el lisp/php-project.el lisp/php-local-manual.el lisp/php-mode.el lisp/php-mode-debug.el
 AUTOLOADS = php-mode-autoloads.el
 ELCS = $(ELS:.el=.elc)
 
@@ -24,7 +24,7 @@ AUTHORS.md: etc/git/AUTHORS.md.in .mailmap
 
 autoloads: $(AUTOLOADS)
 
-$(AUTOLOADS): lisp/php.el lisp/php-align.el lisp/php-face.el lisp/php-project.el lisp/php-local-manual.el lisp/php-mode-debug.el lisp/php-mode.el
+$(AUTOLOADS): $(ELS)
 	$(EMACS) --batch -L lisp/ --eval \
 	"(let ((user-emacs-directory default-directory)) \
 	   (require 'package) \
