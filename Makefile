@@ -1,6 +1,15 @@
 EMACS ?= emacs
 CASK ?= cask
-ELS = lisp/php.el lisp/php-align.el lisp/php-complete.el lisp/php-defs.el lisp/php-face.el lisp/php-flymake.el lisp/php-project.el lisp/php-local-manual.el lisp/php-mode.el lisp/php-mode-debug.el
+ELS  = lisp/php.el
+ELS += lisp/php-align.el
+ELS += lisp/php-complete.el
+ELS += lisp/php-defs.el
+ELS += lisp/php-face.el
+ELS += lisp/php-flymake.el
+ELS += lisp/php-local-manual.el
+ELS += lisp/php-mode-debug.el
+ELS += lisp/php-mode.el
+ELS += lisp/php-project.el
 AUTOLOADS = php-mode-autoloads.el
 ELCS = $(ELS:.el=.elc)
 
