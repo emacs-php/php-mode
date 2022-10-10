@@ -9,6 +9,7 @@ ELS += lisp/php-face.el
 ELS += lisp/php-flymake.el
 ELS += lisp/php-format.el
 ELS += lisp/php-ide-phpactor.el
+ELS += lisp/php-ide.el
 ELS += lisp/php-local-manual.el
 ELS += lisp/php-mode-debug.el
 ELS += lisp/php-mode.el

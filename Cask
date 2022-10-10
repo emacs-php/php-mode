@@ -13,9 +13,11 @@
  "lisp/php-project.el"
  "lisp/php-local-manual.el"
  "lisp/php-ide-phpactor.el"
+ "lisp/php-ide.el"
  "lisp/php-mode-debug.el")
 
 (development
+ ;;(depends-on "lsp-mode")
  (depends-on "phpactor")
  (depends-on "pkg-info")
  (depends-on "projectile")
