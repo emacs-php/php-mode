@@ -175,7 +175,10 @@
   :group 'php-faces
   :tag "PHP php Tag")
 
-(defface php-doc-annotation-tag '((t . (:inherit font-lock-constant-face)))
+(defface php-doc-annotation-tag (eval-when-compile
+                                  (if (eval-when-compile (boundp 'font-lock-doc-markup-face))
+                                      '((t . (:inherit font-lock-doc-markup-face)))
+                                    '((t . (:inherit font-lock-constant-face)))))
   "Face used to highlight annotation tags in doc-comment."
   :group 'php-faces
   :tag "PHPDoc Annotation Tag")
