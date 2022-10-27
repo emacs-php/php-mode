@@ -14,6 +14,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
  * Make continued expressions inside lists (arguments and arrays, etc.) have the same indent width as outside the list ([#703])
  * (internal) Improved readability of test failures about indentation ([#707])
+ * `php-doc-annotation-tag` inherits `font-lock-doc-markup-face` if defined in Emacs 28 ([#711])
 
 ### Fixed
 
@@ -24,6 +25,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 [#707]: https://github.com/emacs-php/php-mode/pull/707
 [#708]: https://github.com/emacs-php/php-mode/pull/708
 [#710]: https://github.com/emacs-php/php-mode/pull/710
+[#711]: https://github.com/emacs-php/php-mode/pull/711
 
 ## [1.24.1] - 2022-10-08
 
