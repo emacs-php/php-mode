@@ -8,6 +8,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
  * **New feature: `php-complete`**
    * Add `php-complete-complete-function` to autocomplete function names ([#708])
+ * Supports PHPDoc tags and types for static analysis tools ([#710])
 
 ### Changed
 
@@ -22,6 +23,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 [#704]: https://github.com/emacs-php/php-mode/pull/704
 [#707]: https://github.com/emacs-php/php-mode/pull/707
 [#708]: https://github.com/emacs-php/php-mode/pull/708
+[#710]: https://github.com/emacs-php/php-mode/pull/710
 
 ## [1.24.1] - 2022-10-08
 

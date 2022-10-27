@@ -1279,7 +1279,15 @@ for \\[find-tag] (which see)."
   (list "string" "integer" "int" "boolean" "bool" "float"
         "double" "object" "mixed" "array" "resource"
         "void" "null" "false" "true" "self" "static"
-        "callable" "iterable" "number"))
+        "callable" "iterable" "number"
+        ;; PHPStan and Psalm types
+        "array-key" "associative-array" "callable-array" "callable-object"
+        "callable-string" "class-string" "empty" "enum-string" "list"
+        "literal-string" "negative-int" "non-positive-int" "non-negative-int"
+        "never" "never-return" "never-returns" "no-return" "non-empty-array"
+        "non-empty-list" "non-empty-string" "non-falsy-string"
+        "numeric" "numeric-string" "positive-int" "scalar"
+        "trait-string" "truthy-string"))
 
 (defconst php-phpdoc-type-tags
   (list "package" "param" "property" "property-read" "property-write"
@@ -1293,7 +1301,7 @@ for \\[find-tag] (which see)."
      (1 'php-doc-variable-sigil prepend nil)
      (2 'php-variable-name prepend nil))
     ("\\(\\$\\)\\(this\\)\\>" (1 'php-doc-$this-sigil prepend nil) (2 'php-doc-$this prepend nil))
-    (,(concat "\\s-@" (regexp-opt php-phpdoc-type-tags) "\\s-+"
+    (,(concat "\\s-@" (rx (? (or "phpstan" "psalm") "-")) (regexp-opt php-phpdoc-type-tags) "\\s-+"
               "\\(" (rx (+ (? "?") (? "\\") (+ (in "0-9A-Z_a-z")) (? "[]") (? "|"))) "\\)+")
      1 'php-string prepend nil)
     (,(concat "\\(?:|\\|\\?\\|\\s-\\)\\("
