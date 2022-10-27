@@ -1301,7 +1301,7 @@ for \\[find-tag] (which see)."
      (1 'php-doc-variable-sigil prepend nil)
      (2 'php-variable-name prepend nil))
     ("\\(\\$\\)\\(this\\)\\>" (1 'php-doc-$this-sigil prepend nil) (2 'php-doc-$this prepend nil))
-    (,(concat "\\s-@" (regexp-opt php-phpdoc-type-tags) "\\s-+"
+    (,(concat "\\s-@" (rx (? (or "phpstan" "psalm") "-")) (regexp-opt php-phpdoc-type-tags) "\\s-+"
               "\\(" (rx (+ (? "?") (? "\\") (+ (in "0-9A-Z_a-z")) (? "[]") (? "|"))) "\\)+")
      1 'php-string prepend nil)
     (,(concat "\\(?:|\\|\\?\\|\\s-\\)\\("
