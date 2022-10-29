@@ -90,9 +90,16 @@
 
 (defconst php-mode-version-id
   (eval-when-compile
-    (let* ((fallback-version (format "%s-non-vcs" (with-no-warnings php-mode-version-number))))
+    (let ((fallback-version (format "%s-non-vcs" (with-no-warnings php-mode-version-number))))
       (if (locate-dominating-file default-directory ".git")
-          (string-trim-left (string-trim-right (shell-command-to-string "git describe --tags")) "v")
+          (save-match-data
+            (let ((tag (replace-regexp-in-string
+                        (rx bos "v") ""
+                        (shell-command-to-string "git describe --tags")))
+                  (pattern (rx (group (+ any)) eol)))
+              (if (string-match pattern tag)
+                  (match-string 0 tag)
+                (error "Faild to obtain git tag"))))
         fallback-version)))
   "PHP Mode build ID.
 
