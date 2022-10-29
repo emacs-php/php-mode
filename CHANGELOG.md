@@ -21,7 +21,14 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
  * Make continued expressions inside lists (arguments and arrays, etc.) have the same indent width as outside the list ([#703])
  * (internal) Improved readability of test failures about indentation ([#707])
  * `php-doc-annotation-tag` inherits `font-lock-doc-markup-face` if defined in Emacs 28 ([#711])
+ * Make `php-mode-version` function include a Git tag and revision ([#713])
+   * Like `"1.23.4-56-xxxxxx"` for example.
  * Change `php-phpdoc-type-keywords` to `php-phpdoc-type-names` to avoid confusion ([#717])
+
+### Deprecated
+
+ * Make obsolete `php-mode-version-number` contstant variable ([#712])
+   * `(php-mode-version :as-number t)` is provided for use cases comparing as versions, but generally SHOULD NOT be dependent on the PHP Mode version.
 
 ### Fixed
 
@@ -33,6 +40,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 [#708]: https://github.com/emacs-php/php-mode/pull/708
 [#710]: https://github.com/emacs-php/php-mode/pull/710
 [#711]: https://github.com/emacs-php/php-mode/pull/711
+[#713]: https://github.com/emacs-php/php-mode/pull/713
 [#715]: https://github.com/emacs-php/php-mode/pull/715
 [#716]: https://github.com/emacs-php/php-mode/pull/716
 [#717]: https://github.com/emacs-php/php-mode/pull/717
