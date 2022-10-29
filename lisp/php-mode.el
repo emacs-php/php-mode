@@ -10,7 +10,7 @@
 ;; URL: https://github.com/emacs-php/php-mode
 ;; Keywords: languages php
 ;; Version: 1.24.1
-;; Package-Requires: ((emacs "25.2"))
+;; Package-Requires: ((emacs "25.2") (compat "28.1.1.0"))
 ;; License: GPL-3.0-or-later
 
 (eval-and-compile
@@ -82,6 +82,7 @@
   (require 'rx)
   (require 'cl-lib)
   (require 'regexp-opt)
+  (require 'compat-26 nil t)
   (defvar add-log-current-defun-header-regexp)
   (defvar add-log-current-defun-function)
   (defvar c-syntactic-context)
@@ -92,7 +93,11 @@
   (eval-when-compile
     (let* ((fallback-version (format "%s-non-vcs" (with-no-warnings php-mode-version-number))))
       (if (locate-dominating-file default-directory ".git")
-          (string-trim-left (string-trim-right (shell-command-to-string "git describe --tags")) "v")
+          (funcall
+           (if (and (boundp 'string-trim-left) (boundp 'string-trim-right))
+               (lambda (s) (string-trim-left (string-trim-right s) "v"))
+             (lambda (s) (compat-string-trim-left (compat-string-trim-right s) "v")))
+           (shell-command-to-string "git describe --tags"))
         fallback-version)))
   "PHP Mode build ID.
 

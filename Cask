@@ -1,4 +1,5 @@
 (package "php-mode" "1.24.1" "Major mode for editing PHP code")
+(source gnu)
 (source melpa)
 
 (package-file "lisp/php-mode.el")

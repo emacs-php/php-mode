@@ -5,7 +5,10 @@ AUTOLOADS = php-mode-autoloads.el
 ELCS = $(ELS:.el=.elc)
 
 %.elc: %.el
-	$(EMACS) --batch -L lisp/ -f batch-byte-compile $<
+	$(EMACS) --batch -L lisp/ --eval \
+	"(let ((default-directory (expand-file-name \".cask\" default-directory))) \
+	   (normal-top-level-add-subdirs-to-load-path))" \
+	    -f batch-byte-compile $<
 
 all: autoloads $(ELCS) authors
 
