@@ -43,6 +43,8 @@
 ;;      Does not launch any IDE features.
 ;;  - eglot
 ;;      https://github.com/joaotavora/eglot
+;;  - lsp-bridge
+;;      https://github.com/manateelazycat/lsp-bridge
 ;;  - lsp-mode
 ;;      https://emacs-lsp.github.io/lsp-mode/
 ;;      https://github.com/emacs-lsp/lsp-mode
@@ -88,6 +90,7 @@
   (require 'cl-lib)
   (require 'php-ide-phpactor)
   (defvar eglot-server-programs)
+  (declare-function lsp-bridge-mode "ext:lsp-bridge" ())
   (declare-function eglot-ensure "ext:eglot" ())
   (declare-function eglot--managed-mode-off "ext:eglot" ())
   (declare-function phpactor--find-executable "ext:phpactor" ()))
@@ -102,6 +105,9 @@
     (eglot :test (lambda () (and (require 'eglot nil t) (featurep 'eglot)))
            :activate eglot-ensure
            :deactivate eglot--managed-mode-off)
+    (lsp-bridge :test (lambda () (and (require 'lsp-bridge nil t) (featurep 'lsp-bridge)))
+                :activate (lambda () (lsp-bridge-mode +1))
+                :deactivate (lambda () (lsp-bridge-mode -1)))
     (lsp-mode :test (lambda () (and (require 'lsp nil t) (featurep 'lsp)))
               :activate lsp
               :deactivate lsp-workspace-shutdown)))
@@ -161,7 +167,7 @@
 (defun php-ide-turn-on ()
   "Turn on PHP IDE-FEATURES and execute `php-ide-mode'."
   (unless php-ide-features
-    (user-error "No PHP-IDE feature is installed.  Install the lsp-mode, eglot or phpactor package"))
+    (user-error "No PHP-IDE feature is installed.  Install the lsp-mode, lsp-bridge, eglot or phpactor package"))
   (php-ide-mode +1))
 
 (defun php-ide--activate-buffer (name ide-plist)
