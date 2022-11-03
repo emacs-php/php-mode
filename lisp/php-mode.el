@@ -1275,7 +1275,7 @@ for \\[find-tag] (which see)."
       (message "Unknown function: %s" tagname))))
 
 ;; Font Lock
-(defconst php-phpdoc-type-keywords
+(defconst php-phpdoc-type-names
   (list "string" "integer" "int" "boolean" "bool" "float"
         "double" "object" "mixed" "array" "resource"
         "void" "null" "false" "true" "self" "static"
@@ -1287,7 +1287,10 @@ for \\[find-tag] (which see)."
         "never" "never-return" "never-returns" "no-return" "non-empty-array"
         "non-empty-list" "non-empty-string" "non-falsy-string"
         "numeric" "numeric-string" "positive-int" "scalar"
-        "trait-string" "truthy-string" "key-of" "value-of"))
+        "trait-string" "truthy-string" "key-of" "value-of")
+  "A list of type and pseudotype names that can be used in PHPDoc.")
+
+(make-obsolete-variable 'php-phpdoc-type-keywords 'php-phpdoc-type-names "1.24.2")
 
 (defconst php-phpdoc-type-tags
   (list "package" "param" "property" "property-read" "property-write"
@@ -1305,7 +1308,7 @@ for \\[find-tag] (which see)."
               "\\(" (rx (+ (? "?") (? "\\") (+ (in "0-9A-Z_a-z")) (? "[]") (? "|"))) "\\)+")
      1 'php-string prepend nil)
     (,(concat "\\(?:|\\|\\?\\|\\s-\\)\\("
-              (regexp-opt php-phpdoc-type-keywords 'words)
+              (regexp-opt php-phpdoc-type-names 'words)
               "\\)")
      1 font-lock-type-face prepend nil)
     ("https?://[^\n\t ]+"
