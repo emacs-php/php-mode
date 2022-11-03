@@ -1275,7 +1275,7 @@ for \\[find-tag] (which see)."
       (message "Unknown function: %s" tagname))))
 
 ;; Font Lock
-(defconst php-phpdoc-type-keywords
+(defconst php-phpdoc-type-names
   (list "string" "integer" "int" "boolean" "bool" "float"
         "double" "object" "mixed" "array" "resource"
         "void" "null" "false" "true" "self" "static"
@@ -1287,11 +1287,18 @@ for \\[find-tag] (which see)."
         "never" "never-return" "never-returns" "no-return" "non-empty-array"
         "non-empty-list" "non-empty-string" "non-falsy-string"
         "numeric" "numeric-string" "positive-int" "scalar"
-        "trait-string" "truthy-string" "key-of" "value-of"))
+        "trait-string" "truthy-string" "key-of" "value-of")
+  "A list of type and pseudotype names that can be used in PHPDoc.")
+
+(make-obsolete-variable 'php-phpdoc-type-keywords 'php-phpdoc-type-names "1.24.2")
 
 (defconst php-phpdoc-type-tags
   (list "package" "param" "property" "property-read" "property-write"
-        "return" "throws" "var" "self-out" "this-out" "param-out"))
+        "return" "throws" "var" "self-out" "this-out" "param-out"
+        "type" "extends" "require-extends" "implemtents" "require-implements"
+        "template" "template-covariant" "template-extends" "template-implements"
+        "assert" "assert-if-true" "assert-if-false" "if-this-is")
+  "A list of tags specifying type names.")
 
 (defconst php-phpdoc-font-lock-doc-comments
   `(("{@[-[:alpha:]]+\\s-*\\([^}]*\\)}" ; "{@foo ...}" markup.
@@ -1301,11 +1308,11 @@ for \\[find-tag] (which see)."
      (1 'php-doc-variable-sigil prepend nil)
      (2 'php-variable-name prepend nil))
     ("\\(\\$\\)\\(this\\)\\>" (1 'php-doc-$this-sigil prepend nil) (2 'php-doc-$this prepend nil))
-    (,(concat "\\s-@" (rx (? (or "phpstan" "psalm") "-")) (regexp-opt php-phpdoc-type-tags) "\\s-+"
+    (,(concat "\\s-@" (rx (? (or "phan" "phpstan" "psalm") "-")) (regexp-opt php-phpdoc-type-tags) "\\s-+"
               "\\(" (rx (+ (? "?") (? "\\") (+ (in "0-9A-Z_a-z")) (? "[]") (? "|"))) "\\)+")
      1 'php-string prepend nil)
     (,(concat "\\(?:|\\|\\?\\|\\s-\\)\\("
-              (regexp-opt php-phpdoc-type-keywords 'words)
+              (regexp-opt php-phpdoc-type-names 'words)
               "\\)")
      1 font-lock-type-face prepend nil)
     ("https?://[^\n\t ]+"
