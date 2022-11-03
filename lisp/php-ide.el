@@ -143,6 +143,8 @@
   :type 'string
   :safe #'stringp)
 
+(defvar php-ide-mode-hooks nil)
+
 ;;;###autoload
 (define-minor-mode php-ide-mode
   "Minor mode for integrate IDE-like tools."
@@ -155,6 +157,7 @@
                   ide-features
                   (mapconcat (lambda (feature) (concat "'" (symbol-name feature)))
                              (php-ide--avilable-features) ", ")))
+    (run-hooks 'php-ide-mode-hooks)
     (cl-loop for feature in ide-features
              for ide-plist = (cdr-safe (assq feature php-ide-feature-alist))
              do (if (null ide-plist)
