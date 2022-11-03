@@ -8,13 +8,20 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
  * **New feature: `php-complete`**
    * Add `php-complete-complete-function` to autocomplete function names ([#708])
- * Supports PHPDoc tags and types for static analysis tools ([#710])
+ * Supports PHPDoc tags and types for static analysis tools ([#710], [#715], [#716], [#717], thanks to [@takeokunn])
+     * Please refer to the article below
+       * PHPStan: [PHPDoc Types](https://phpstan.org/writing-php-code/phpdoc-types)
+       * PHPStan: [PHPDocs Basics](https://phpstan.org/writing-php-code/phpdocs-basics)
+       * Psalm: [Atomic Type Reference](https://psalm.dev/docs/annotating_code/type_syntax/atomic_types/)
+       * Psalm: [Supported Annotations](https://psalm.dev/docs/annotating_code/supported_annotations/)
+       * Psalm: [Template Annotations](https://psalm.dev/docs/annotating_code/templated_annotations/)
 
 ### Changed
 
  * Make continued expressions inside lists (arguments and arrays, etc.) have the same indent width as outside the list ([#703])
  * (internal) Improved readability of test failures about indentation ([#707])
  * `php-doc-annotation-tag` inherits `font-lock-doc-markup-face` if defined in Emacs 28 ([#711])
+ * Change `php-phpdoc-type-keywords` to `php-phpdoc-type-names` to avoid confusion ([#717])
 
 ### Fixed
 
@@ -26,6 +33,9 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 [#708]: https://github.com/emacs-php/php-mode/pull/708
 [#710]: https://github.com/emacs-php/php-mode/pull/710
 [#711]: https://github.com/emacs-php/php-mode/pull/711
+[#715]: https://github.com/emacs-php/php-mode/pull/715
+[#716]: https://github.com/emacs-php/php-mode/pull/716
+[#717]: https://github.com/emacs-php/php-mode/pull/717
 
 ## [1.24.1] - 2022-10-08
 
