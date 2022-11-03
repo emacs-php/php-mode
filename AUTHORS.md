@@ -109,6 +109,7 @@ Names Sorted Alphabetically:
 - l3msh0
 - phil-s
 - ppercot
+- take
 - takeokunn
 - tangxinfa
 - tetsujin
