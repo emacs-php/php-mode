@@ -1287,7 +1287,7 @@ for \\[find-tag] (which see)."
         "never" "never-return" "never-returns" "no-return" "non-empty-array"
         "non-empty-list" "non-empty-string" "non-falsy-string"
         "numeric" "numeric-string" "positive-int" "scalar"
-        "trait-string" "truthy-string"))
+        "trait-string" "truthy-string" "key-of" "value-of"))
 
 (defconst php-phpdoc-type-tags
   (list "package" "param" "property" "property-read" "property-write"
