@@ -1294,7 +1294,9 @@ for \\[find-tag] (which see)."
 
 (defconst php-phpdoc-type-tags
   (list "package" "param" "property" "property-read" "property-write"
-        "return" "throws" "var" "self-out" "this-out" "param-out"))
+        "return" "throws" "var" "self-out" "this-out" "param-out"
+        "type")
+  "A list of tags specifying type names.")
 
 (defconst php-phpdoc-font-lock-doc-comments
   `(("{@[-[:alpha:]]+\\s-*\\([^}]*\\)}" ; "{@foo ...}" markup.
