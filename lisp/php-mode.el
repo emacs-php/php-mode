@@ -1295,7 +1295,9 @@ for \\[find-tag] (which see)."
 (defconst php-phpdoc-type-tags
   (list "package" "param" "property" "property-read" "property-write"
         "return" "throws" "var" "self-out" "this-out" "param-out"
-        "type")
+        "type" "extends" "require-extends" "implemtents" "require-implements"
+        "template" "template-covariant" "template-extends" "template-implements"
+        "assert" "assert-if-true" "assert-if-false" "if-this-is")
   "A list of tags specifying type names.")
 
 (defconst php-phpdoc-font-lock-doc-comments
