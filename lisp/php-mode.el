@@ -13,8 +13,10 @@
 ;; Package-Requires: ((emacs "25.2"))
 ;; License: GPL-3.0-or-later
 
-(defconst php-mode-version-number "1.24.1"
-  "PHP Mode version number.")
+(eval-and-compile
+  (make-obsolete-variable
+   (defconst php-mode-version-number "1.24.1" "PHP Mode version number.")
+   "Please call (php-mode-version :as-number t) for compatibility." "1.24.2"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -85,6 +87,27 @@
   (defvar c-syntactic-context)
   (defvar c-vsemi-status-unknown-p)
   (defvar syntax-propertize-via-font-lock))
+
+(defconst php-mode-version-id
+  (eval-when-compile
+    (let ((fallback-version (format "%s-non-vcs" (with-no-warnings php-mode-version-number))))
+      (if (locate-dominating-file default-directory ".git")
+          (save-match-data
+            (let ((tag (replace-regexp-in-string
+                        (rx bos "v") ""
+                        (shell-command-to-string "git describe --tags")))
+                  (pattern (rx (group (+ any)) eol)))
+              (if (string-match pattern tag)
+                  (match-string 0 tag)
+                (error "Faild to obtain git tag"))))
+        fallback-version)))
+  "PHP Mode build ID.
+
+The format is follows:
+
+\"1.23.4\": Tagged revision, compiled under Git VCS.
+\"1.23.4-56-xxxxxx\": 56 commits after the last tag release, compiled under Git.
+\"1.23.4-non-vcs\": Compiled in an environment not managed by Git VCS.")
 
 (autoload 'php-mode-debug "php-mode-debug"
   "Display informations useful for debugging PHP Mode." t)
@@ -288,17 +311,20 @@ In that case set to `NIL'."
 (defconst php-mode-cc-vertion
   (eval-when-compile c-version))
 
-(defun php-mode-version ()
-  "Display string describing the version of PHP Mode."
-  (interactive)
-  (let ((fmt (eval-when-compile (let ((id "$Id$"))
-                                  (concat "PHP Mode %s"
-                                          (if (string= id (concat [?$ ?I ?d ?$]))
-                                              ""
-                                            (concat " " id)))))))
+(cl-defun php-mode-version (&key as-number)
+  "Display string describing the version of PHP Mode.
+
+Although this is an interactive command, it returns a string when called
+as a function.  Call with AS-NUMBER keyword to compare by `version<'.
+
+\(version<= \"1.24.1\" (php-mode-version :as-number t))"
+  (interactive (list :as-number nil))
+  (if as-number
+      (save-match-data (and (string-match (rx (group (+ (in ".0-9")))) php-mode-version-id)
+                            (match-string 0 php-mode-version-id)))
     (funcall
      (if (called-interactively-p 'interactive) #'message #'format)
-     fmt php-mode-version-number)))
+     "PHP Mode v%s" php-mode-version-id)))
 
 ;;;###autoload
 (define-obsolete-variable-alias 'php-available-project-root-files 'php-project-available-root-files "1.19.0")
