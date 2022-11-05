@@ -35,6 +35,10 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
    * `(php-mode-version :as-number t)` is provided for use cases comparing as versions, but generally SHOULD NOT be dependent on the PHP Mode version.
  * Make obsolete `php-mode-disable-c-mode-hook` customize variable ([#718])
 
+### Removed
+
+ * Remove `php-mode-disable-c-auto-align-backslashes` as it doesn't make sense and is always disabled
+
 ### Fixed
 
  * Removed invalid definitions that caused errors in some expressions ([#704])
@@ -50,6 +54,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 [#716]: https://github.com/emacs-php/php-mode/pull/716
 [#717]: https://github.com/emacs-php/php-mode/pull/717
 [#718]: https://github.com/emacs-php/php-mode/pull/718
+[#719]: https://github.com/emacs-php/php-mode/pull/719
 
 ## [1.24.1] - 2022-10-08
 

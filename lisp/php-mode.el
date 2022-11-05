@@ -300,12 +300,6 @@ In that case set to `NIL'."
   :tag "PHP Mode Enable Backup Style Variables"
   :type 'boolean)
 
-(defcustom php-mode-disable-c-auto-align-backslashes t
-  "When set to non-NIL, override `c-auto-align-backslashes' to NIL."
-  :group 'php-mode
-  :tag "PHP Mode Disable c-auto-align-backslashes"
-  :type 'boolean)
-
 (define-obsolete-variable-alias 'php-mode-disable-parent-mode-hooks 'php-mode-disable-c-mode-hook "1.21.0")
 (defcustom php-mode-disable-c-mode-hook t
   "When set to `T', do not run hooks of parent modes (`java-mode', `c-mode')."
@@ -916,9 +910,6 @@ reported, even if `c-report-syntactic-errors' is non-nil."
           php-warned-bad-indent
           (php-check-html-for-indentation))
       (let ((here (point))
-            (c-auto-align-backslashes
-             (unless php-mode-disable-c-auto-align-backslashes
-               c-auto-align-backslashes))
             doit)
         (move-beginning-of-line nil)
         ;; Don't indent heredoc end mark
@@ -1202,6 +1193,7 @@ After setting the stylevars run hooks according to STYLENAME
   (c-initialize-cc-mode t)
   (c-init-language-vars php-mode)
   (c-common-init 'php-mode)
+  (setq-local c-auto-align-backslashes nil)
 
   (setq-local comment-start "// ")
   (setq-local comment-start-skip
