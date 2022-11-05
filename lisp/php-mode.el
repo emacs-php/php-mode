@@ -1542,12 +1542,10 @@ for \\[find-tag] (which see)."
 (defvar php-font-lock-keywords php-font-lock-keywords-3
   "Default expressions to highlight in PHP Mode.")
 
-(add-to-list
- (eval-when-compile
-   (if (boundp 'flymake-proc-allowed-file-name-masks)
-       'flymake-proc-allowed-file-name-masks
-     'flymake-allowed-file-name-masks))
- '("\\.php[345s]?\\'" php-flymake-php-init))
+(eval-when-compile
+   (unless (boundp 'flymake-proc-allowed-file-name-masks)
+     (add-to-list 'flymake-allowed-file-name-masks
+                  '("\\.php[345s]?\\'" php-flymake-php-init))))
 
 
 (defun php-send-region (start end)

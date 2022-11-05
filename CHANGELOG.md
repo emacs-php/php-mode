@@ -27,6 +27,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
  * Make `php-mode-version` function include a Git tag and revision ([#713])
    * Like `"1.23.4-56-xxxxxx"` for example.
  * Change `php-phpdoc-type-keywords` to `php-phpdoc-type-names` to avoid confusion ([#717])
+ * Make `php-flymake-php-init` append to `flymake-allowed-file-name-masks` only in legacy Flymake ([#718])
 
 ### Deprecated
 
