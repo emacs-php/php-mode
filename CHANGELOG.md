@@ -8,6 +8,8 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
  * **New feature: `php-complete`**
    * Add `php-complete-complete-function` to autocomplete function names ([#708])
+ * **New feature: `php-flymake`**
+   * Add `php-flymake` as a flymake backend compatible with Emacs 26 and above ([#718])
  * Supports PHPDoc tags and types for static analysis tools ([#710], [#715], [#716], [#717], thanks to [@takeokunn])
      * Please refer to the article below
        * PHPStan: [PHPDoc Types](https://phpstan.org/writing-php-code/phpdoc-types)
