@@ -81,6 +81,8 @@
 (eval-when-compile
   (require 'rx)
   (require 'cl-lib)
+  (require 'flymake)
+  (require 'php-flymake)
   (require 'regexp-opt)
   (defvar add-log-current-defun-header-regexp)
   (defvar add-log-current-defun-function)
@@ -178,6 +180,15 @@ Turning this on will open it whenever `php-mode' is loaded."
   :group 'php-mode
   :tag "PHP Mode Page Delimiter"
   :type 'regexp)
+
+(defcustom php-mode-replace-flymake-diag-function
+  (eval-when-compile (when (boundp 'flymake-diagnostic-functions)
+                       #'php-flymake))
+  "Flymake function to replace, if NIL do not replace."
+  :group 'php-mode
+  :tag "PHP Mode Replace Flymake Diag Function"
+  :type '(choice 'function
+                 (const :tag "Disable to replace" nil)))
 
 (define-obsolete-variable-alias 'php-do-not-use-semantic-imenu 'php-mode-do-not-use-semantic-imenu "1.20.0")
 (defcustom php-mode-do-not-use-semantic-imenu t
@@ -301,6 +312,7 @@ In that case set to `NIL'."
   :group 'php-mode
   :tag "PHP Mode Disable C Mode Hook"
   :type 'boolean)
+(make-obsolete-variable 'php-mode-disable-c-mode-hook nil "1.24.2")
 
 (defcustom php-mode-enable-project-local-variable t
   "When set to `T', apply project local variable to buffer local variable."
@@ -1147,6 +1159,14 @@ After setting the stylevars run hooks according to STYLENAME
   (php-project-apply-local-variables)
   (remove-hook 'hack-local-variables-hook #'php-mode-set-local-variable-delay))
 
+(defun php-mode-neutralize-cc-mode-effect ()
+  "Reset PHP-irrelevant variables set by Cc Mode initialization."
+  (setq-local c-mode-hook nil)
+  (setq-local java-mode-hook nil)
+  (when (eval-when-compile (boundp 'flymake-diagnostic-functions))
+    (remove-hook 'flymake-diagnostic-functions 'flymake-cc t))
+  t)
+
 (defvar php-mode-syntax-table
   (let ((table (make-syntax-table)))
     (c-populate-syntax-table table)
@@ -1173,9 +1193,12 @@ After setting the stylevars run hooks according to STYLENAME
                     "Please run `M-x package-reinstall php-mode' command."
                   "Please byte recompile PHP Mode files.")))
 
-  (when php-mode-disable-c-mode-hook
-    (setq-local c-mode-hook nil)
-    (setq-local java-mode-hook nil))
+  (if php-mode-disable-c-mode-hook
+      (php-mode-neutralize-cc-mode-effect)
+    (display-warning 'php-mode
+                     "`php-mode-disable-c-mode-hook' will be removed.  Do not depends on this variable."
+                     :warning))
+
   (c-initialize-cc-mode t)
   (c-init-language-vars php-mode)
   (c-common-init 'php-mode)
@@ -1248,6 +1271,10 @@ After setting the stylevars run hooks according to STYLENAME
               "^\\s-*function\\s-+&?\\s-*\\(\\(\\sw\\|\\s_\\)+\\)\\s-*")
   (setq-local add-log-current-defun-function nil)
   (setq-local add-log-current-defun-header-regexp php-beginning-of-defun-regexp)
+
+  (when (and (eval-when-compile (boundp 'flymake-diagnostic-functions))
+             php-mode-replace-flymake-diag-function)
+    (add-hook 'flymake-diagnostic-functions php-mode-replace-flymake-diag-function nil t))
 
   (when (fboundp 'c-looking-at-or-maybe-in-bracelist)
     (advice-add #'c-looking-at-or-maybe-in-bracelist
@@ -1515,12 +1542,10 @@ for \\[find-tag] (which see)."
 (defvar php-font-lock-keywords php-font-lock-keywords-3
   "Default expressions to highlight in PHP Mode.")
 
-(add-to-list
- (eval-when-compile
-   (if (boundp 'flymake-proc-allowed-file-name-masks)
-       'flymake-proc-allowed-file-name-masks
-     'flymake-allowed-file-name-masks))
- '("\\.php[345s]?\\'" php-flymake-php-init))
+(eval-when-compile
+   (unless (boundp 'flymake-proc-allowed-file-name-masks)
+     (add-to-list 'flymake-allowed-file-name-masks
+                  '("\\.php[345s]?\\'" php-flymake-php-init))))
 
 
 (defun php-send-region (start end)

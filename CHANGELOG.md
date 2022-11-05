@@ -8,6 +8,8 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
  * **New feature: `php-complete`**
    * Add `php-complete-complete-function` to autocomplete function names ([#708])
+ * **New feature: `php-flymake`**
+   * Add `php-flymake` as a flymake backend compatible with Emacs 26 and above ([#718])
  * Supports PHPDoc tags and types for static analysis tools ([#710], [#715], [#716], [#717], thanks to [@takeokunn])
      * Please refer to the article below
        * PHPStan: [PHPDoc Types](https://phpstan.org/writing-php-code/phpdoc-types)
@@ -15,6 +17,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
        * Psalm: [Atomic Type Reference](https://psalm.dev/docs/annotating_code/type_syntax/atomic_types/)
        * Psalm: [Supported Annotations](https://psalm.dev/docs/annotating_code/supported_annotations/)
        * Psalm: [Template Annotations](https://psalm.dev/docs/annotating_code/templated_annotations/)
+ * Add `php-mode-replace-flymake-diag-function` custom variable and default activated it ([#718])
 
 ### Changed
 
@@ -24,11 +27,13 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
  * Make `php-mode-version` function include a Git tag and revision ([#713])
    * Like `"1.23.4-56-xxxxxx"` for example.
  * Change `php-phpdoc-type-keywords` to `php-phpdoc-type-names` to avoid confusion ([#717])
+ * Make `php-flymake-php-init` append to `flymake-allowed-file-name-masks` only in legacy Flymake ([#718])
 
 ### Deprecated
 
  * Make obsolete `php-mode-version-number` contstant variable ([#712])
    * `(php-mode-version :as-number t)` is provided for use cases comparing as versions, but generally SHOULD NOT be dependent on the PHP Mode version.
+ * Make obsolete `php-mode-disable-c-mode-hook` customize variable ([#718])
 
 ### Fixed
 
@@ -44,6 +49,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 [#715]: https://github.com/emacs-php/php-mode/pull/715
 [#716]: https://github.com/emacs-php/php-mode/pull/716
 [#717]: https://github.com/emacs-php/php-mode/pull/717
+[#718]: https://github.com/emacs-php/php-mode/pull/718
 
 ## [1.24.1] - 2022-10-08
 
