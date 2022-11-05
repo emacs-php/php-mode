@@ -82,6 +82,7 @@
   (require 'rx)
   (require 'cl-lib)
   (require 'flymake)
+  (require 'php-flymake)
   (require 'regexp-opt)
   (defvar add-log-current-defun-header-regexp)
   (defvar add-log-current-defun-function)
@@ -179,6 +180,15 @@ Turning this on will open it whenever `php-mode' is loaded."
   :group 'php-mode
   :tag "PHP Mode Page Delimiter"
   :type 'regexp)
+
+(defcustom php-mode-replace-flymake-diag-function
+  (eval-when-compile (when (boundp 'flymake-diagnostic-functions)
+                       #'php-flymake))
+  "Flymake function to replace, if NIL do not replace."
+  :group 'php-mode
+  :tag "PHP Mode Replace Flymake Diag Function"
+  :type '(choice 'function
+                 (const :tag "Disable to replace" nil)))
 
 (define-obsolete-variable-alias 'php-do-not-use-semantic-imenu 'php-mode-do-not-use-semantic-imenu "1.20.0")
 (defcustom php-mode-do-not-use-semantic-imenu t
@@ -1261,6 +1271,10 @@ After setting the stylevars run hooks according to STYLENAME
               "^\\s-*function\\s-+&?\\s-*\\(\\(\\sw\\|\\s_\\)+\\)\\s-*")
   (setq-local add-log-current-defun-function nil)
   (setq-local add-log-current-defun-header-regexp php-beginning-of-defun-regexp)
+
+  (when (and (eval-when-compile (boundp 'flymake-diagnostic-functions))
+             php-mode-replace-flymake-diag-function)
+    (add-hook 'flymake-diagnostic-functions php-mode-replace-flymake-diag-function nil t))
 
   (when (fboundp 'c-looking-at-or-maybe-in-bracelist)
     (advice-add #'c-looking-at-or-maybe-in-bracelist

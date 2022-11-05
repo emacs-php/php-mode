@@ -17,6 +17,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
        * Psalm: [Atomic Type Reference](https://psalm.dev/docs/annotating_code/type_syntax/atomic_types/)
        * Psalm: [Supported Annotations](https://psalm.dev/docs/annotating_code/supported_annotations/)
        * Psalm: [Template Annotations](https://psalm.dev/docs/annotating_code/templated_annotations/)
+ * Add `php-mode-replace-flymake-diag-function` custom variable and default activated it ([#718])
 
 ### Changed
 
