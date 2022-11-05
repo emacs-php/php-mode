@@ -550,11 +550,9 @@ The order is reversed by calling as follows:
 
 This is an alternative function of `flymake-php-init'.
 Look at the `php-executable' variable instead of the constant \"php\" command."
-  (let* ((init (funcall (eval-when-compile
-                          (if (fboundp 'flymake-proc-php-init)
-                              'flymake-proc-php-init
-                            'flymake-php-init)))))
-    (list php-executable (cdr init))))
+  (let ((init (with-no-warnings (flymake-php-init))))
+    (setf (car init) php-executable)
+    init))
 
 (defconst php-re-detect-html-tag-aggressive
   (eval-when-compile
