@@ -81,6 +81,7 @@
 (eval-when-compile
   (require 'rx)
   (require 'cl-lib)
+  (require 'flymake)
   (require 'regexp-opt)
   (defvar add-log-current-defun-header-regexp)
   (defvar add-log-current-defun-function)
@@ -301,6 +302,7 @@ In that case set to `NIL'."
   :group 'php-mode
   :tag "PHP Mode Disable C Mode Hook"
   :type 'boolean)
+(make-obsolete-variable 'php-mode-disable-c-mode-hook nil "1.24.2")
 
 (defcustom php-mode-enable-project-local-variable t
   "When set to `T', apply project local variable to buffer local variable."
@@ -1147,6 +1149,12 @@ After setting the stylevars run hooks according to STYLENAME
   (php-project-apply-local-variables)
   (remove-hook 'hack-local-variables-hook #'php-mode-set-local-variable-delay))
 
+(defun php-mode-neutralize-cc-mode-effect ()
+  "Reset PHP-irrelevant variables set by Cc Mode initialization."
+  (setq-local c-mode-hook nil)
+  (setq-local java-mode-hook nil)
+  t)
+
 (defvar php-mode-syntax-table
   (let ((table (make-syntax-table)))
     (c-populate-syntax-table table)
@@ -1173,9 +1181,12 @@ After setting the stylevars run hooks according to STYLENAME
                     "Please run `M-x package-reinstall php-mode' command."
                   "Please byte recompile PHP Mode files.")))
 
-  (when php-mode-disable-c-mode-hook
-    (setq-local c-mode-hook nil)
-    (setq-local java-mode-hook nil))
+  (if php-mode-disable-c-mode-hook
+      (php-mode-neutralize-cc-mode-effect)
+    (display-warning 'php-mode
+                     "`php-mode-disable-c-mode-hook' will be removed.  Do not depends on this variable."
+                     :warning))
+
   (c-initialize-cc-mode t)
   (c-init-language-vars php-mode)
   (c-common-init 'php-mode)
