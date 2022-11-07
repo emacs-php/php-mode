@@ -84,6 +84,8 @@
   (require 'flymake)
   (require 'php-flymake)
   (require 'regexp-opt)
+  (declare-function 'acm-backend-tabnine-candidate-expand "ext:acm-backend-tabnine"
+                    (candidate-info bound-start))
   (defvar add-log-current-defun-header-regexp)
   (defvar add-log-current-defun-function)
   (defvar c-syntactic-context)
@@ -1273,6 +1275,11 @@ After setting the stylevars run hooks according to STYLENAME
                 :override 'php-c-looking-at-or-maybe-in-bracelist '(local)))
   (advice-add #'fixup-whitespace :after #'php-mode--fixup-whitespace-after '(local))
 
+  (when (fboundp #'acm-backend-tabnine-candidate-expand)
+    (advice-add #'acm-backend-tabnine-candidate-expand
+                :filter-args #'php-acm-backend-tabnine-candidate-expand-filter-args
+                '(local)))
+
   (when (>= emacs-major-version 25)
     (with-silent-modifications
       (save-excursion
@@ -1576,6 +1583,17 @@ The output will appear in the buffer *PHP*."
               (forward-char -2)
               (looking-at-p "->\\|::")))
     (delete-char 1)))
+
+;; Advice for lsp-bridge' acm-backend-tabnine
+;; see https://github.com/manateelazycat/lsp-bridge/issues/402#issuecomment-1305653058
+(defun php-acm-backend-tabnine-candidate-expand-filter-args (args)
+  "Adjust to replace bound-start ARGS for Tabnine in PHP."
+  (cl-multiple-value-bind (candidate-info bound-start) args
+    (save-excursion
+      (goto-char bound-start)
+      (when (looking-at-p (eval-when-compile (regexp-quote "$")))
+        (setq bound-start (1+ bound-start))))
+    (list candidate-info bound-start)))
 
 ;;;###autoload
 (progn
