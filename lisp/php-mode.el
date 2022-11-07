@@ -84,7 +84,7 @@
   (require 'flymake)
   (require 'php-flymake)
   (require 'regexp-opt)
-  (declare-function 'acm-backend-tabnine-candidate-expand "ext:acm-backend-tabnine"
+  (declare-function acm-backend-tabnine-candidate-expand "ext:acm-backend-tabnine"
                     (candidate-info bound-start))
   (defvar add-log-current-defun-header-regexp)
   (defvar add-log-current-defun-function)
