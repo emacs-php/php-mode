@@ -31,8 +31,51 @@
 (require 'php-mode)
 (require 'package)
 (require 'pkg-info nil t)
+(require 'el-get nil t)
 
 (declare-function pkg-info-version-info "pkg-info" (library &optional package show))
+
+(defun php-mode-debug-reinstall (force &optional called-interactive)
+  "Reinstall PHP Mode to solve Cc Mode version mismatch.
+
+When FORCE, try to reinstall without interactively asking.
+When CALLED-INTERACTIVE then message the result."
+  (interactive (list (yes-or-no-p (if (string= php-mode-cc-version c-version)
+                                      "No need to recompile, but force PHP Mode to reinstall? "
+                                    "Force reinstall PHP Mode? "))
+                     t))
+  (let* ((cc-version-mismatched (string= php-mode-cc-version c-version))
+         (preface (if cc-version-mismatched
+                      ""
+                    "CC Mode has been updated.  ")))
+    (if (catch 'success
+          (cond
+           ((and (not called-interactive)
+                 (not force)
+                 cc-version-mismatched)
+            nil)
+           ((and (package-installed-p 'php-mode)
+                 (or force
+                     (yes-or-no-p (format "%sReinstall `php-mode' package? " preface))))
+            (package-reinstall 'php-mode)
+            (throw 'success t))
+           ;; This clause is not included in the byte-compiled code when compiled without El-Get
+           ((and (eval-when-compile (and (fboundp 'el-get-package-is-installed)
+                                         (fboundp 'el-get-reinstall)))
+                 (el-get-package-is-installed 'php-mode)
+                 (or force
+                     (yes-or-no-p (format "%sReinstall `php-mode' package by El-Get? " preface))))
+            (el-get-reinstall 'php-mode)
+            (throw 'success t))
+           ((not called-interactive)
+            (user-error
+             (if cc-version-mismatched
+                 "PHP Mode cannot be reinstalled automatically.  Please try manually if necessary"
+               "Please reinstall or byte recompile PHP Mode files manually")))))
+        (user-error "PHP Mode reinstalled successfully.  Please restart Emacs")
+      (prog1 t
+        (when called-interactive
+          (message "PHP Mode was not reinstalled"))))))
 
 (defun php-mode-debug--buffer (&optional command &rest args)
   "Return buffer for php-mode-debug, and execute `COMMAND' with `ARGS'."
