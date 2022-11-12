@@ -18,6 +18,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
        * Psalm: [Supported Annotations](https://psalm.dev/docs/annotating_code/supported_annotations/)
        * Psalm: [Template Annotations](https://psalm.dev/docs/annotating_code/templated_annotations/)
  * Add `php-mode-replace-flymake-diag-function` custom variable and default activated it ([#718])
+ * Add `php-mode-debug-reinstall` command to help users who update Emacs themselves ([#721])
 
 ### Changed
 
@@ -55,6 +56,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 [#717]: https://github.com/emacs-php/php-mode/pull/717
 [#718]: https://github.com/emacs-php/php-mode/pull/718
 [#719]: https://github.com/emacs-php/php-mode/pull/719
+[#721]: https://github.com/emacs-php/php-mode/pull/721
 
 ## [1.24.1] - 2022-10-08
 
