@@ -33,7 +33,7 @@
 (require 'pkg-info nil t)
 (require 'el-get nil t)
 
-(declare-function pkg-info-version-info "pkg-info" (library &optional package show))
+(declare-function pkg-info-version-info "ext:pkg-info" (library &optional package show))
 
 (defun php-mode-debug-reinstall (force &optional called-interactive)
   "Reinstall PHP Mode to solve Cc Mode version mismatch.
