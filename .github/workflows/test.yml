@@ -28,7 +28,7 @@ jobs:
     steps:
     - uses: actions/setup-python@v2
       with:
-        python-version: '3.6'
+        python-version: '3.11'
         architecture: 'x64'
     - uses: purcell/setup-emacs@master
       with:
