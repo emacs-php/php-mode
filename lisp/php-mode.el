@@ -1371,8 +1371,6 @@ for \\[find-tag] (which see)."
               (regexp-opt php-phpdoc-type-names 'words)
               "\\)")
      1 font-lock-type-face prepend nil)
-    ("https?://[^\n\t ]+"
-     0 'link prepend nil)
     ("^\\(?:/\\*\\)?\\(?:\\s \\|\\*\\)*\\(@[[:alpha:]][-[:alpha:]\\]*\\)" ; "@foo ..." markup.
      1 'php-doc-annotation-tag prepend nil)))
 
