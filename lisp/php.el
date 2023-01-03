@@ -1,6 +1,6 @@
 ;;; php.el --- PHP support for friends               -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2022  Friends of Emacs-PHP development
+;; Copyright (C) 2023  Friends of Emacs-PHP development
 ;; Copyright (C) 1985, 1987, 1992-2022 Free Software Foundation, Inc.
 
 ;; Author: USAMI Kenta <tadsan@zonu.me>

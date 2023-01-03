@@ -4,7 +4,7 @@
 /**
  * Extract PHP Functions
  *
- * @copyright 2022 Friends of Emacs-PHP development
+ * @copyright 2023 Friends of Emacs-PHP development
  * @author USAMI Kenta <tadsan@zonu.me>
  * @license FSFAP https://spdx.org/licenses/FSFAP.html
  */

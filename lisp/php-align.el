@@ -1,7 +1,7 @@
 ;;; php-align.el --- Alignment configuration for PHP  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2011  tetsujin (Yusuke Segawa)
-;; Copyright (C) 2022  Friends of Emacs-PHP development
+;; Copyright (C) 2023  Friends of Emacs-PHP development
 
 ;; Author: tetsujin (Yusuke Segawa) <tetsujin85 (at) gmail.com>
 ;; Maintainer: USAMI Kenta <tadsan@zonu.me>

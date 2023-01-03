@@ -310,7 +310,7 @@ PHP Modeは[GNU General Public License Version 3][gpl-v3] (GPLv3) でライセ�
 このプロジェクトは2017年まで[Eric James Michael Ritz][@ejmr]によりメンテナンスされていました。現在は[Friends of Emacs-PHP Development][@emacs-php]コミュニティが引き継いで開発しています。
 
 > ```
-> Copyright (C) 2022  Friends of Emacs-PHP development
+> Copyright (C) 2023  Friends of Emacs-PHP development
 > Copyright (C) 1999, 2000, 2001, 2003, 2004 Turadg Aleahmad
 >               2008 Aaron S. Hawley
 >               2011, 2012, 2013, 2014, 2015, 2016, 2017 Eric James Michael Ritz

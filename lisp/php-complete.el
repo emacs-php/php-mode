@@ -1,6 +1,6 @@
 ;;; php-complete.el --- PHP auto-compiletion functions         -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2022  Friends of Emacs-PHP development
+;; Copyright (C) 2023  Friends of Emacs-PHP development
 ;; Copyright (C) 2021, 2022  Free Software Foundation, Inc.
 
 ;; Author: USAMI Kenta <tadsan@zonu.me>

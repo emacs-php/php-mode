@@ -1,6 +1,6 @@
 ;;; php-defs.el --- Provide PHP keyword definitions  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2022  Friends of Emacs-PHP development
+;; Copyright (C) 2023  Friends of Emacs-PHP development
 
 ;; Author: USAMI Kenta <tadsan@zonu.me>
 ;; Created: 5 Mar 2022

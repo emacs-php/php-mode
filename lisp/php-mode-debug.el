@@ -1,6 +1,6 @@
 ;;; php-mode-debug.el --- Debug functions for PHP Mode  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2022  Friends of Emacs-PHP development
+;; Copyright (C) 2023  Friends of Emacs-PHP development
 
 ;; Author: USAMI Kenta <tadsan@zonu.me>
 ;; URL: https://github.com/emacs-php/php-mode
