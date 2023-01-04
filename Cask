@@ -7,7 +7,6 @@
  "lisp/php.el"
  "lisp/php-complete.el"
  "lisp/php-defs.el"
- "lisp/php-eglot.el"
  "lisp/php-face.el"
  "lisp/php-format.el"
  "lisp/php-project.el"

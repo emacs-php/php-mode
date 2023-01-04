@@ -4,7 +4,6 @@ ELS  = lisp/php.el
 ELS += lisp/php-align.el
 ELS += lisp/php-complete.el
 ELS += lisp/php-defs.el
-ELS += lisp/php-eglot.el
 ELS += lisp/php-face.el
 ELS += lisp/php-flymake.el
 ELS += lisp/php-format.el
