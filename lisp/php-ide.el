@@ -84,10 +84,10 @@
 ;;
 
 ;;; Code:
+(require 'cl-lib)
 (require 'php-project)
 
 (eval-when-compile
-  (require 'cl-lib)
   (require 'php-ide-phpactor)
   (defvar eglot-server-programs)
   (declare-function lsp-bridge-mode "ext:lsp-bridge" ())
@@ -135,6 +135,31 @@
               symbol)
   :safe (lambda (v) (cl-loop for feature in (if (listp v) v (list v))
                              always (symbolp feature))))
+
+;;;###autoload
+(defcustom php-ide-eglot-executable nil
+  "Command name or path to the command of Eglot LSP executable."
+  :tag "PHP-IDE Eglot Executable"
+  :group 'php-ide
+  :type '(choice
+          (const intelephense)
+          (const phpactor)
+          string (repeat string))
+  :safe (lambda (v) (cond
+                     ((stringp v) (file-exists-p v))
+                     ((listp v) (cl-every #'stringp v))
+                     ((assq v php-ide-lsp-command-alist)))))
+
+;;;###autoload
+(defun php-ide-eglot-server-program ()
+  "Return a list of command to execute LSP Server."
+  (cond
+   ((stringp php-ide-eglot-executable) (list php-ide-eglot-executable))
+   ((listp php-ide-eglot-executable) php-ide-eglot-executable)
+   ((when-let (command (assq php-ide-eglot-executable php-ide-lsp-command-alist))
+      (cond
+       ((functionp command) (funcall command))
+       ((listp command) command))))))
 
 (defcustom php-ide-mode-lighter " PHP-IDE"
   "A symbol of PHP-IDE feature."
