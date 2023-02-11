@@ -1396,6 +1396,11 @@ for \\[find-tag] (which see)."
      ("\\_<\\(?:implements\\|extends\\)\\_>" . 'php-class-declaration-spec)
      ;; Namespace declaration
      ("\\_<namespace\\_>" . 'php-namespace-declaration)
+     ;; import constant statement
+     (,(rx symbol-start (group "use" (+ (syntax whitespace)) "const")
+           (+ (syntax whitespace)))
+      (1 'php-import-declaration)
+      (,(rx (group (+ (or (syntax word) (syntax symbol) "\\" "{" "}")))) nil nil (1 'php-constant-assign)))
      ;; import statement
      ("\\_<use\\_>" . 'php-import-declaration)
      ;; Class modifiers (abstract, final)
@@ -1478,6 +1483,11 @@ for \\[find-tag] (which see)."
    ;;   is usually overkill.
    `(
      ("\\<\\(@\\)" 1 'php-errorcontrol-op)
+     ;; import function statement
+     (,(rx symbol-start (group "use" (+ (syntax whitespace)) "function")
+           (+ (syntax whitespace)))
+      (1 'php-import-declaration)
+      (,(rx (group (+ (or (syntax word) (syntax symbol) "\\" "{" "}")))) nil nil (1 'php-function-name t)))
      ;; Highlight function calls
      ("\\(\\_<\\(?:\\sw\\|\\s_\\)+?\\_>\\)\\s-*(" 1 'php-function-call)
      ;; Highlight all upper-cased symbols as constant
