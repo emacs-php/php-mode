@@ -70,7 +70,7 @@
  ("\n    ")
  ("const" . php-keyword)
  (" ")
- ("SAMPLE" . font-lock-type-face)
+ ("SAMPLE" . php-constant-assign)
  (" ")
  ("=" . php-assignment-op)
  (" ")
