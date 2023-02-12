@@ -145,7 +145,7 @@
   :group 'php-faces
   :tag "PHP Constant")
 
-(defface php-constant-assign '((t (:inherit font-lock-type-face)))
+(defface php-constant-assign '((t (:inherit php-constant)))
   "PHP Mode face used to highlight constant assigning (\"const\" statement)."
   :group 'php-faces
   :tag "PHP Constant Assign")
