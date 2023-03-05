@@ -8,6 +8,7 @@
  "lisp/php-complete.el"
  "lisp/php-defs.el"
  "lisp/php-face.el"
+ "lisp/php-format.el"
  "lisp/php-project.el"
  "lisp/php-local-manual.el"
  "lisp/php-mode-debug.el")
