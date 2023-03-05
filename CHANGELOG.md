@@ -6,9 +6,13 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
 ### Added
 
- * **Net feature**: `php-format` ([#730])
+ * **Net feature**: `php-format` ([#731])
    * Add `php-format-project` and `php-format-this-buffer-file` commands
    * Add `php-format-auto-mode` minor mode
+
+### Fixed
+
+ * Fix array indentation broken by commenting out ([#726], [#732])
 
 ### Removed
 
@@ -16,7 +20,9 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
    * Please use `goto-address-prog-mode` minor mode
 
 [#724]: https://github.com/emacs-php/php-mode/pull/724
-[#730]: https://github.com/emacs-php/php-mode/pull/730
+[#726]: https://github.com/emacs-php/php-mode/pull/726
+[#731]: https://github.com/emacs-php/php-mode/pull/731
+[#732]: https://github.com/emacs-php/php-mode/pull/732
 
 ## [1.24.2] - 2022-11-13
 

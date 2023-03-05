@@ -663,6 +663,7 @@ but only if the setting is enabled."
          ((looking-at-p "->") '+)
          ((looking-at-p "[:?]") '+)
          ((looking-at-p "[,;]") nil)
+         ((looking-at-p "//") nil)
          ;; Is the previous line terminated with `,' ?
          ((progn
             (forward-line -1)
@@ -672,7 +673,7 @@ but only if the setting is enabled."
             (while (and (< beginning-of-langelem (point))
                         (setq start (php-in-string-or-comment-p)))
               (goto-char start)
-              (skip-chars-backward " 	")
+              (skip-chars-backward " 	\r\n")
               (backward-char 1))
             (and (not (eq (point) beginning-of-current-line))
                  (not (looking-at-p ","))

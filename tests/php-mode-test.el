@@ -652,7 +652,8 @@ Meant for `php-mode-test-issue-503'."
 
 (ert-deftest php-mode-test-issue-702 ()
   "Proper alignment arglist."
-  (with-php-mode-test ("indent/issue-702.php" :indent t :magic t)))
+  (with-php-mode-test ("indent/issue-702.php" :indent t :magic t))
+  (with-php-mode-test ("indent/issue-726.php" :indent t :magic t)))
 
 (ert-deftest php-mode-test-php74 ()
   "Test highlighting language constructs added in PHP 7.4."
