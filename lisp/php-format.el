@@ -130,6 +130,13 @@
   :group 'php-format)
 
 ;; Internal functions
+(defsubst php-format--register-timer (sec command-args)
+  "Register idle-timer with SEC and COMMAND-ARGS."
+  (unless php-format--idle-timer
+    (setq php-format--idle-timer
+          (run-with-idle-timer sec nil #'php-format--execute-delayed-format
+                               default-directory command-args))))
+
 (defun php-format--execute-format (files)
   "Execute PHP formatter with FILES."
   (let* ((default-directory (php-project-get-root-dir))
@@ -143,18 +150,11 @@
       (`(idle ,sec) (php-format--register-timer sec command-args))
       ('idle (php-format--register-timer php-format-default-idle-time command-args))
       ('async (apply #'call-process-shell-command (car command-args) nil nil nil
-                    (append (cdr command-args) (list "&"))))
+                     (append (cdr command-args) (list "&"))))
       ('compile (compile command-line))
       ('silent (shell-command-to-string command-line))
       ('nil (shell-command command-line))
       (_ (user-error "`%s' is unexpected php-format--exec-method" php-format--exec-method)))))
-
-(defsubst php-format--register-timer (sec command-args)
-  "Register idle-timer with SEC and COMMAND-ARGS."
-  (unless php-format--idle-timer
-    (setq php-format--idle-timer
-          (run-with-idle-timer sec nil #'php-format--execute-delayed-format
-                               default-directory command-args))))
 
 (defun php-format--get-command-args ()
   "Return a list of command and arguments."
