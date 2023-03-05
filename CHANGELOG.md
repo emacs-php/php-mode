@@ -4,12 +4,19 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
 ## Unreleased
 
+### Added
+
+ * **Net feature**: `php-format` ([#730])
+   * Add `php-format-project` and `php-format-this-buffer-file` commands
+   * Add `php-format-auto-mode` minor mode
+
 ### Removed
 
  * No longer highlights `'link` in PHPDoc ([#724])
    * Please use `goto-address-prog-mode` minor mode
 
 [#724]: https://github.com/emacs-php/php-mode/pull/724
+[#730]: https://github.com/emacs-php/php-mode/pull/730
 
 ## [1.24.2] - 2022-11-13
 
