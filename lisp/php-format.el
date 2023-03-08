@@ -128,6 +128,12 @@
   :type '(alist :key-type function
                 :value-type symbol)
   :group 'php-format)
+
+(defcustom php-format-disable-async-format-buffer-has-modified t
+  "When non-NIL, disable asynchronous formatting if the buffer has modified (not saved)."
+  :tag "PHP Format Disable Async Format Buffer Has Modified"
+  :type 'boolean
+  :group 'php-format)
 
 ;; Internal functions
 (defsubst php-format--register-timer (sec command-args)
@@ -182,8 +188,10 @@
   "Asynchronously execute PHP format with COMMAND-ARGS in DIR."
   (setq php-format--idle-timer nil)
   (let ((default-directory dir))
-    (apply #'call-process-shell-command (car command-args) nil nil nil
-           (append (cdr command-args) (list "&")))))
+    (when (not (and php-format-disable-async-format-buffer-has-modified
+                    (buffer-modified-p)))
+      (apply #'call-process-shell-command (car command-args) nil nil nil
+             (append (cdr command-args) (list "&"))))))
 
 ;; Public functions and minor mode
 
