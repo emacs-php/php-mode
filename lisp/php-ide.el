@@ -57,8 +57,17 @@
 ;;
 ;; Put follows code into your .emacs (~/.emacs.d/init.el) file:
 ;;
-;;     (defun my-php-mode-setup ()
+;;     (defun init-php-mode-setup ()
 ;;       (add-hook 'hack-local-variables-hook #'php-ide-mode t t))
+;;
+;;     (defun init-php-ide-mode-setup (feature activate)
+;;         (pcase feature
+;;           (`lsp-bridge
+;;            (if activate
+;;                (progn (yas-minor-mode +1)
+;;                       (corfu-mode -1))
+;;              (yas-minor-mode -1)
+;;              (corfu-mode +1)))))
 ;;
 ;;     (with-eval-after-load 'php-ide
 ;;       (custom-set-variables
@@ -67,7 +76,8 @@
 ;;        ;; If you want to hide php-ide-mode from the mode line, set an empty string
 ;;        '(php-ide-mode-lighter ""))
 ;;
-;;       (add-hook 'php-mode #'my-php-mode-setup))
+;;       (add-hook 'php-mode-hook #'init-php-mode-setup)
+;;       (add-hook 'php-ide-mode-functions #'init-php-ide-mode-setup))
 ;;
 ;; If you don't enable IDE support by default, set '(php-ide-feature 'none)
 ;;
@@ -168,7 +178,19 @@
   :type 'string
   :safe #'stringp)
 
-(defvar php-ide-mode-hooks nil)
+(defcustom php-ide-mode-functions nil
+  "Hook functions called when before activating or deactivating PHP-IDE.
+Notice that two arguments (FEATURE ACTIVATE) are given.
+
+FEATURE: A symbol, like 'lsp-mode.
+ACTIVATE: T is given when activeting, NIL when deactivating PHP-IDE."
+  :tag "PHP-IDE Mode Functions"
+  :group 'php-ide
+  :type '(repeat function)
+  :safe (lambda (functions)
+          (and (listp functions)
+               (cl-loop for function in functions
+                        always (functionp function)))))
 
 ;;;###autoload
 (define-minor-mode php-ide-mode
@@ -182,11 +204,11 @@
                   ide-features
                   (mapconcat (lambda (feature) (concat "'" (symbol-name feature)))
                              (php-ide--avilable-features) ", ")))
-    (run-hooks 'php-ide-mode-hooks)
     (cl-loop for feature in ide-features
              for ide-plist = (cdr-safe (assq feature php-ide-feature-alist))
              do (if (null ide-plist)
                     (message "Please set `php-ide-feature' variable in .dir-locals.el or custom variable")
+                  (run-hook-with-args 'php-ide-mode-functions feature php-ide-mode)
                   (if php-ide-mode
                       (php-ide--activate-buffer feature ide-plist)
                     (php-ide--deactivate-buffer ide-plist))))))
