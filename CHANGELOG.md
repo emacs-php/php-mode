@@ -2,7 +2,9 @@
 
 All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## Unreleased
+<!-- ## Unreleased -->
+
+## [1.24.3] - 2023-03-19
 
 ### Added
 

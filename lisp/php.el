@@ -5,7 +5,7 @@
 
 ;; Author: USAMI Kenta <tadsan@zonu.me>
 ;; Created: 5 Dec 2018
-;; Version: 1.24.2
+;; Version: 1.24.3
 ;; Keywords: languages, php
 ;; Homepage: https://github.com/emacs-php/php-mode
 ;; License: GPL-3.0-or-later
