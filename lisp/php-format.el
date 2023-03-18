@@ -130,7 +130,7 @@
   :group 'php-format)
 
 (defcustom php-format-disable-async-format-buffer-has-modified t
-  "When non-NIL, disable asynchronous formatting if the buffer has modified (not saved)."
+  "When set to non-NIL, disables async formatting if buffer is modified (unsaved)."
   :tag "PHP Format Disable Async Format Buffer Has Modified"
   :type 'boolean
   :group 'php-format)
