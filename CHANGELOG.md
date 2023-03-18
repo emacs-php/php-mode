@@ -9,6 +9,9 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
  * **Net feature**: `php-format` ([#731])
    * Add `php-format-project` and `php-format-this-buffer-file` commands
    * Add `php-format-auto-mode` minor mode
+ * **Experimental feature: `php-ide`** ([#709])
+   * Add `php-ide-phpactor` as simple IDE feature without LSP clients
+   * Add `php-ide-mode` minor mode for binding IDE-like features
 
 ### Fixed
 
@@ -19,6 +22,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
  * No longer highlights `'link` in PHPDoc ([#724])
    * Please use `goto-address-prog-mode` minor mode
 
+[#709]: https://github.com/emacs-php/php-mode/pull/709
 [#724]: https://github.com/emacs-php/php-mode/pull/724
 [#726]: https://github.com/emacs-php/php-mode/pull/726
 [#731]: https://github.com/emacs-php/php-mode/pull/731
