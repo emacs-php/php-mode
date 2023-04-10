@@ -660,7 +660,7 @@ but only if the setting is enabled."
           '+)
          (t nil)))))))
 
-(defun php-c-looking-at-or-maybe-in-bracelist (orig-fun &optional containing-sexp lim)
+(defun php-c-looking-at-or-maybe-in-bracelist (orig-fun &optional containing-sexp lim &rest args)
   "Replace `c-looking-at-or-maybe-in-bracelist'.
 
 CONTAINING-SEXP is the position of the brace/paren/bracket enclosing
