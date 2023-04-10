@@ -660,13 +660,14 @@ but only if the setting is enabled."
           '+)
          (t nil)))))))
 
-(defun php-c-looking-at-or-maybe-in-bracelist (&optional _containing-sexp lim)
+(defun php-c-looking-at-or-maybe-in-bracelist (orig-fun &optional containing-sexp lim)
   "Replace `c-looking-at-or-maybe-in-bracelist'.
 
 CONTAINING-SEXP is the position of the brace/paren/bracket enclosing
 POINT, or nil if there is no such position, or we do not know it.  LIM is
 a backward search limit."
   (cond
+   ((not (derived-mode-p 'php-mode)) (apply orig-fun containing-sexp lim args))
    ((looking-at-p "{")
     (save-excursion
       (c-backward-token-2 2 t lim)
@@ -1208,7 +1209,7 @@ After setting the stylevars run hook `php-mode-STYLENAME-hook'."
       (progn
         (add-hook 'hack-local-variables-hook #'php-mode-set-style-delay t t)
         (setq php-mode--delayed-set-style t)
-        (advice-add #'c-set-style :after #'php-mode--disable-delay-set-style '(local)))
+        (advice-add 'c-set-style :after #'php-mode--disable-delay-set-style))
     (let ((php-mode-enable-backup-style-variables nil))
       (php-set-style (symbol-name php-mode-coding-style))))
 
@@ -1242,15 +1243,12 @@ After setting the stylevars run hook `php-mode-STYLENAME-hook'."
              php-mode-replace-flymake-diag-function)
     (add-hook 'flymake-diagnostic-functions php-mode-replace-flymake-diag-function nil t))
 
-  (when (fboundp 'c-looking-at-or-maybe-in-bracelist)
-    (advice-add #'c-looking-at-or-maybe-in-bracelist
-                :override 'php-c-looking-at-or-maybe-in-bracelist '(local)))
-  (advice-add #'fixup-whitespace :after #'php-mode--fixup-whitespace-after '(local))
+  (advice-add 'c-looking-at-or-maybe-in-bracelist
+              :around 'php-c-looking-at-or-maybe-in-bracelist)
+  (advice-add 'fixup-whitespace :after #'php-mode--fixup-whitespace-after)
 
-  (when (fboundp #'acm-backend-tabnine-candidate-expand)
-    (advice-add #'acm-backend-tabnine-candidate-expand
-                :filter-args #'php-acm-backend-tabnine-candidate-expand-filter-args
-                '(local)))
+  (advice-add 'acm-backend-tabnine-candidate-expand
+              :filter-args #'php-acm-backend-tabnine-candidate-expand-filter-args)
 
   (when (>= emacs-major-version 25)
     (with-silent-modifications
@@ -1558,22 +1556,25 @@ The output will appear in the buffer *PHP*."
 ;;; logic of `fixup-whitespace'.
 (defun php-mode--fixup-whitespace-after ()
   "Remove whitespace before certain characters in PHP Mode."
-  (when (or (looking-at-p " \\(?:;\\|,\\|->\\|::\\)")
-            (save-excursion
-              (forward-char -2)
-              (looking-at-p "->\\|::")))
+  (when (and (derived-mode-p 'php-mode)
+             (or (looking-at-p " \\(?:;\\|,\\|->\\|::\\)")
+                 (save-excursion
+                   (forward-char -2)
+                   (looking-at-p "->\\|::"))))
     (delete-char 1)))
 
 ;; Advice for lsp-bridge' acm-backend-tabnine
 ;; see https://github.com/manateelazycat/lsp-bridge/issues/402#issuecomment-1305653058
 (defun php-acm-backend-tabnine-candidate-expand-filter-args (args)
   "Adjust to replace bound-start ARGS for Tabnine in PHP."
-  (cl-multiple-value-bind (candidate-info bound-start) args
-    (save-excursion
-      (goto-char bound-start)
-      (when (looking-at-p (eval-when-compile (regexp-quote "$")))
-        (setq bound-start (1+ bound-start))))
-    (list candidate-info bound-start)))
+  (if (not (derived-mode-p 'php-mode))
+      args
+    (cl-multiple-value-bind (candidate-info bound-start) args
+      (save-excursion
+        (goto-char bound-start)
+        (when (looking-at-p (eval-when-compile (regexp-quote "$")))
+          (setq bound-start (1+ bound-start))))
+      (list candidate-info bound-start))))
 
 ;;;###autoload
 (progn
