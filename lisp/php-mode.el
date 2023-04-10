@@ -138,7 +138,6 @@ When CALLED-INTERACTIVE then message the result." t)
 (define-obsolete-variable-alias 'php-default-face 'php-mode-default-face "1.20.0")
 (defcustom php-mode-default-face 'default
   "Default face in `php-mode' buffers."
-  :group 'php-mode
   :tag "PHP Mode Default Face"
   :type 'face)
 
@@ -146,7 +145,6 @@ When CALLED-INTERACTIVE then message the result." t)
 (defcustom php-mode-speedbar-config t
   "When set to true automatically configures Speedbar to observe PHP files.
 Ignores php-file patterns option; fixed to expression \"\\.\\(inc\\|php[s345]?\\)\""
-  :group 'php-mode
   :tag "PHP Mode Speedbar Config"
   :type 'boolean
   :set (lambda (sym val)
@@ -158,7 +156,6 @@ Ignores php-file patterns option; fixed to expression \"\\.\\(inc\\|php[s345]?\\
 (defcustom php-mode-speedbar-open nil
   "Normally `php-mode' starts with the speedbar closed.
 Turning this on will open it whenever `php-mode' is loaded."
-  :group 'php-mode
   :tag "PHP Mode Speedbar Open"
   :type 'boolean
   :set (lambda (sym val)
@@ -169,14 +166,12 @@ Turning this on will open it whenever `php-mode' is loaded."
 (define-obsolete-variable-alias 'php-template-compatibility 'php-mode-template-compatibility "1.20.0")
 (defcustom php-mode-template-compatibility t
   "Should detect presence of html tags."
-  :group 'php-mode
   :tag "PHP Mode Template Compatibility"
   :type 'boolean)
 
 (define-obsolete-variable-alias 'php-lineup-cascaded-calls 'php-mode-lineup-cascaded-calls "1.20.0")
 (defcustom php-mode-lineup-cascaded-calls nil
   "Indent chained method calls to the previous line."
-  :group 'php-mode
   :tag "PHP Mode Lineup Cascaded Calls"
   :type 'boolean)
 
@@ -186,7 +181,6 @@ Turning this on will open it whenever `php-mode' is loaded."
         (or "namespace" "function" "class" "trait" "interface")
         symbol-end))
   "Regexp describing line-beginnings that PHP declaration statements."
-  :group 'php-mode
   :tag "PHP Mode Page Delimiter"
   :type 'regexp)
 
@@ -194,7 +188,6 @@ Turning this on will open it whenever `php-mode' is loaded."
   (eval-when-compile (when (boundp 'flymake-diagnostic-functions)
                        #'php-flymake))
   "Flymake function to replace, if NIL do not replace."
-  :group 'php-mode
   :tag "PHP Mode Replace Flymake Diag Function"
   :type '(choice 'function
                  (const :tag "Disable to replace" nil)))
@@ -208,7 +201,6 @@ set to `semantic-create-imenu-index' due to `c-mode' being its
 parent.  Set this variable to t if you want to use
 `imenu-default-create-index-function' even with `semantic-mode'
 enabled."
-  :group 'php-mode
   :tag "PHP Mode Do Not Use Semantic Imenu"
   :type 'boolean)
 
@@ -219,44 +211,37 @@ enabled."
 
 (defcustom php-mode-hook nil
   "List of functions to be executed on entry to `php-mode'."
-  :group 'php-mode
   :tag "PHP Mode Hook"
   :type 'hook)
 
 (defcustom php-mode-pear-hook nil
   "Hook called when a PHP PEAR file is opened with `php-mode'."
-  :group 'php-mode
   :tag "PHP Mode Pear Hook"
   :type 'hook)
 
 (defcustom php-mode-drupal-hook nil
   "Hook called when a Drupal file is opened with `php-mode'."
-  :group 'php-mode
   :tag "PHP Mode Drupal Hook"
   :type 'hook)
 
 (defcustom php-mode-wordpress-hook nil
   "Hook called when a WordPress file is opened with `php-mode'."
-  :group 'php-mode
   :tag "PHP Mode WordPress Hook"
   :type 'hook)
 
 (defcustom php-mode-symfony2-hook nil
   "Hook called when a Symfony2 file is opened with `php-mode'."
-  :group 'php-mode
   :tag "PHP Mode Symfony2 Hook"
   :type 'hook)
 
 (defcustom php-mode-psr2-hook nil
   "Hook called when a PSR-2 file is opened with `php-mode'."
-  :group 'php-mode
   :tag "PHP Mode PSR-2 Hook"
   :type 'hook)
 
 (defcustom php-mode-force-pear nil
   "Normally PEAR coding rules are enforced only when the filename contains \"PEAR\".
 Turning this on will force PEAR rules on all PHP files."
-  :group 'php-mode
   :tag "PHP Mode Force Pear"
   :type 'boolean)
 
@@ -265,7 +250,6 @@ Turning this on will force PEAR rules on all PHP files."
 mumamo-mode turned on.  Detects if there are any HTML tags in the
 buffer before warning, but this is is not very smart; e.g. if you
 have any tags inside a PHP string, it will be fooled."
-  :group 'php-mode
   :tag "PHP Mode Warn If MuMaMo Off"
   :type '(choice (const :tag "Warn" t) (const "Don't warn" nil)))
 
@@ -279,7 +263,6 @@ This variable can take one of the following symbol values:
 `Drupal' - use coding styles preferred for working with Drupal projects.
 `WordPress' - use coding styles preferred for working with WordPress projects.
 `Symfony2' - use coding styles preferred for working with Symfony2 projects."
-  :group 'php-mode
   :tag "PHP Mode Coding Style"
   :type '(choice (const :tag "Default" php)
                  (const :tag "PEAR" pear)
@@ -296,7 +279,6 @@ This variable can take one of the following symbol values:
 
 If you want to suppress styles from being overwritten by directory / file
 local variables, set NIL."
-  :group 'php-mode
   :tag "PHP Mode Enable Project Coding Style"
   :type 'boolean)
 
@@ -305,21 +287,18 @@ local variables, set NIL."
 
 This function may interfere with other hooks and other behaviors.
 In that case set to `NIL'."
-  :group 'php-mode
   :tag "PHP Mode Enable Backup Style Variables"
   :type 'boolean)
 
 (define-obsolete-variable-alias 'php-mode-disable-parent-mode-hooks 'php-mode-disable-c-mode-hook "1.21.0")
 (defcustom php-mode-disable-c-mode-hook t
   "When set to `T', do not run hooks of parent modes (`java-mode', `c-mode')."
-  :group 'php-mode
   :tag "PHP Mode Disable C Mode Hook"
   :type 'boolean)
 (make-obsolete-variable 'php-mode-disable-c-mode-hook nil "1.24.2")
 
 (defcustom php-mode-enable-project-local-variable t
   "When set to `T', apply project local variable to buffer local variable."
-  :group 'php-mode
   :tag "PHP Mode Enable Project Local Variable"
   :type 'boolean)
 
