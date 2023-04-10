@@ -138,7 +138,6 @@ When CALLED-INTERACTIVE then message the result." t)
 (define-obsolete-variable-alias 'php-default-face 'php-mode-default-face "1.20.0")
 (defcustom php-mode-default-face 'default
   "Default face in `php-mode' buffers."
-  :group 'php-mode
   :tag "PHP Mode Default Face"
   :type 'face)
 
@@ -146,7 +145,6 @@ When CALLED-INTERACTIVE then message the result." t)
 (defcustom php-mode-speedbar-config t
   "When set to true automatically configures Speedbar to observe PHP files.
 Ignores php-file patterns option; fixed to expression \"\\.\\(inc\\|php[s345]?\\)\""
-  :group 'php-mode
   :tag "PHP Mode Speedbar Config"
   :type 'boolean
   :set (lambda (sym val)
@@ -158,7 +156,6 @@ Ignores php-file patterns option; fixed to expression \"\\.\\(inc\\|php[s345]?\\
 (defcustom php-mode-speedbar-open nil
   "Normally `php-mode' starts with the speedbar closed.
 Turning this on will open it whenever `php-mode' is loaded."
-  :group 'php-mode
   :tag "PHP Mode Speedbar Open"
   :type 'boolean
   :set (lambda (sym val)
@@ -169,14 +166,12 @@ Turning this on will open it whenever `php-mode' is loaded."
 (define-obsolete-variable-alias 'php-template-compatibility 'php-mode-template-compatibility "1.20.0")
 (defcustom php-mode-template-compatibility t
   "Should detect presence of html tags."
-  :group 'php-mode
   :tag "PHP Mode Template Compatibility"
   :type 'boolean)
 
 (define-obsolete-variable-alias 'php-lineup-cascaded-calls 'php-mode-lineup-cascaded-calls "1.20.0")
 (defcustom php-mode-lineup-cascaded-calls nil
   "Indent chained method calls to the previous line."
-  :group 'php-mode
   :tag "PHP Mode Lineup Cascaded Calls"
   :type 'boolean)
 
@@ -186,7 +181,6 @@ Turning this on will open it whenever `php-mode' is loaded."
         (or "namespace" "function" "class" "trait" "interface")
         symbol-end))
   "Regexp describing line-beginnings that PHP declaration statements."
-  :group 'php-mode
   :tag "PHP Mode Page Delimiter"
   :type 'regexp)
 
@@ -194,7 +188,6 @@ Turning this on will open it whenever `php-mode' is loaded."
   (eval-when-compile (when (boundp 'flymake-diagnostic-functions)
                        #'php-flymake))
   "Flymake function to replace, if NIL do not replace."
-  :group 'php-mode
   :tag "PHP Mode Replace Flymake Diag Function"
   :type '(choice 'function
                  (const :tag "Disable to replace" nil)))
@@ -208,7 +201,6 @@ set to `semantic-create-imenu-index' due to `c-mode' being its
 parent.  Set this variable to t if you want to use
 `imenu-default-create-index-function' even with `semantic-mode'
 enabled."
-  :group 'php-mode
   :tag "PHP Mode Do Not Use Semantic Imenu"
   :type 'boolean)
 
@@ -219,44 +211,37 @@ enabled."
 
 (defcustom php-mode-hook nil
   "List of functions to be executed on entry to `php-mode'."
-  :group 'php-mode
   :tag "PHP Mode Hook"
   :type 'hook)
 
 (defcustom php-mode-pear-hook nil
   "Hook called when a PHP PEAR file is opened with `php-mode'."
-  :group 'php-mode
   :tag "PHP Mode Pear Hook"
   :type 'hook)
 
 (defcustom php-mode-drupal-hook nil
   "Hook called when a Drupal file is opened with `php-mode'."
-  :group 'php-mode
   :tag "PHP Mode Drupal Hook"
   :type 'hook)
 
 (defcustom php-mode-wordpress-hook nil
   "Hook called when a WordPress file is opened with `php-mode'."
-  :group 'php-mode
   :tag "PHP Mode WordPress Hook"
   :type 'hook)
 
 (defcustom php-mode-symfony2-hook nil
   "Hook called when a Symfony2 file is opened with `php-mode'."
-  :group 'php-mode
   :tag "PHP Mode Symfony2 Hook"
   :type 'hook)
 
 (defcustom php-mode-psr2-hook nil
   "Hook called when a PSR-2 file is opened with `php-mode'."
-  :group 'php-mode
   :tag "PHP Mode PSR-2 Hook"
   :type 'hook)
 
 (defcustom php-mode-force-pear nil
   "Normally PEAR coding rules are enforced only when the filename contains \"PEAR\".
 Turning this on will force PEAR rules on all PHP files."
-  :group 'php-mode
   :tag "PHP Mode Force Pear"
   :type 'boolean)
 
@@ -265,7 +250,6 @@ Turning this on will force PEAR rules on all PHP files."
 mumamo-mode turned on.  Detects if there are any HTML tags in the
 buffer before warning, but this is is not very smart; e.g. if you
 have any tags inside a PHP string, it will be fooled."
-  :group 'php-mode
   :tag "PHP Mode Warn If MuMaMo Off"
   :type '(choice (const :tag "Warn" t) (const "Don't warn" nil)))
 
@@ -279,7 +263,6 @@ This variable can take one of the following symbol values:
 `Drupal' - use coding styles preferred for working with Drupal projects.
 `WordPress' - use coding styles preferred for working with WordPress projects.
 `Symfony2' - use coding styles preferred for working with Symfony2 projects."
-  :group 'php-mode
   :tag "PHP Mode Coding Style"
   :type '(choice (const :tag "Default" php)
                  (const :tag "PEAR" pear)
@@ -287,7 +270,7 @@ This variable can take one of the following symbol values:
                  (const :tag "WordPress" wordpress)
                  (const :tag "Symfony2" symfony2)
                  (const :tag "PSR-2" psr2))
-  :initialize 'custom-initialize-default)
+  :initialize #'custom-initialize-default)
 
 ;; Since this function has a bad influence on the environment of many users,
 ;; temporarily disable it
@@ -296,7 +279,6 @@ This variable can take one of the following symbol values:
 
 If you want to suppress styles from being overwritten by directory / file
 local variables, set NIL."
-  :group 'php-mode
   :tag "PHP Mode Enable Project Coding Style"
   :type 'boolean)
 
@@ -305,21 +287,18 @@ local variables, set NIL."
 
 This function may interfere with other hooks and other behaviors.
 In that case set to `NIL'."
-  :group 'php-mode
   :tag "PHP Mode Enable Backup Style Variables"
   :type 'boolean)
 
 (define-obsolete-variable-alias 'php-mode-disable-parent-mode-hooks 'php-mode-disable-c-mode-hook "1.21.0")
 (defcustom php-mode-disable-c-mode-hook t
   "When set to `T', do not run hooks of parent modes (`java-mode', `c-mode')."
-  :group 'php-mode
   :tag "PHP Mode Disable C Mode Hook"
   :type 'boolean)
 (make-obsolete-variable 'php-mode-disable-c-mode-hook nil "1.24.2")
 
 (defcustom php-mode-enable-project-local-variable t
   "When set to `T', apply project local variable to buffer local variable."
-  :group 'php-mode
   :tag "PHP Mode Enable Project Local Variable"
   :type 'boolean)
 
@@ -358,7 +337,7 @@ as a function.  Call with AS-NUMBER keyword to compare by `version<'.
     ;;
     ;; Changing the default to mark-defun provides behavior that users
     ;; are more likely to expect.
-    (define-key map (kbd "C-M-h") 'mark-defun)
+    (define-key map (kbd "C-M-h") #'mark-defun)
 
     ;; Many packages based on cc-mode provide the 'C-c C-w' binding
     ;; to toggle Subword Mode.  See the page
@@ -366,7 +345,7 @@ as a function.  Call with AS-NUMBER keyword to compare by `version<'.
     ;;     https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
     ;;
     ;; for more information about Subword mode.
-    (define-key map (kbd "C-c C-w") 'subword-mode)
+    (define-key map (kbd "C-c C-w") #'subword-mode)
 
     ;; We inherit c-beginning-of-defun and c-end-of-defun from CC Mode
     ;; but we have two replacement functions specifically for PHP.  We
@@ -374,15 +353,15 @@ as a function.  Call with AS-NUMBER keyword to compare by `version<'.
     ;; key-bindings so that our PHP-specific versions will work even
     ;; if the user has reconfigured their keys, e.g. if they rebind
     ;; c-end-of-defun to something other than C-M-e.
-    (define-key map [remap c-beginning-of-defun] 'php-beginning-of-defun)
-    (define-key map [remap c-end-of-defun] 'php-end-of-defun)
-    (define-key map [remap c-set-style] 'php-set-style)
+    (define-key map [remap c-beginning-of-defun] #'php-beginning-of-defun)
+    (define-key map [remap c-end-of-defun] #'php-end-of-defun)
+    (define-key map [remap c-set-style] #'php-set-style)
 
-    (define-key map [(control c) (control f)] 'php-search-documentation)
-    (define-key map [(meta tab)] 'php-complete-function)
-    (define-key map [(control c) (control m)] 'php-browse-manual)
-    (define-key map [(control .)] 'php-show-arglist)
-    (define-key map [(control c) (control r)] 'php-send-region)
+    (define-key map [(control c) (control f)] #'php-search-documentation)
+    (define-key map [(meta tab)] #'php-complete-function)
+    (define-key map [(control c) (control m)] #'php-browse-manual)
+    (define-key map [(control .)] #'php-show-arglist)
+    (define-key map [(control c) (control r)] #'php-send-region)
     ;; Use the Emacs standard indentation binding. This may upset c-mode
     ;; which does not follow this at the moment, but I see no better
     ;; choice.
@@ -863,12 +842,12 @@ plain `php-mode'.  To get indentation to work you must use an
 Emacs library that supports 'multiple major modes' in a buffer.
 Parts of the buffer will then be in `php-mode' and parts in for
 example `html-mode'.  Known such libraries are:\n\t"
-               (mapconcat 'identity known-names ", ")
+               (mapconcat #'identity known-names ", ")
                "\n"
                (if available-multi-libs
                    (concat
                     "You have these available in your `load-path':\n\t"
-                    (mapconcat 'identity available-names ", ")
+                    (mapconcat #'identity available-names ", ")
                     "\n\n"
                     "Do you want to turn any of those on? ")
                  "You do not have any of those in your `load-path'.")))
@@ -964,8 +943,8 @@ This is was done due to the problem reported here:
 (defun php-lineup-string-cont (langelem)
   "Line up string toward equal sign or dot.
 e.g.
-$str \= \'some\'
-     . \'string\';
+$str = \\='some'
+     . \\='string';
 this ^ lineup"
   (save-excursion
     (goto-char (cdr langelem))
@@ -1251,8 +1230,8 @@ After setting the stylevars run hooks according to STYLENAME
                  (string-match "\\.php\\'" buffer-file-name)))
       (php-set-style "pear"))
 
-  (setq indent-line-function 'php-cautious-indent-line)
-  (setq indent-region-function 'php-cautious-indent-region)
+  (setq indent-line-function #'php-cautious-indent-line)
+  (setq indent-region-function #'php-cautious-indent-region)
   (setq c-at-vsemi-p-fn #'php-c-at-vsemi-p)
   (setq c-vsemi-status-unknown-p-fn #'php-c-vsemi-status-unknown-p)
 
@@ -1262,8 +1241,8 @@ After setting the stylevars run hooks according to STYLENAME
   ;; following two local variables, but we keep them for now until we
   ;; are completely sure their removal will not break any current
   ;; behavior or backwards compatibility.
-  (setq-local beginning-of-defun-function 'php-beginning-of-defun)
-  (setq-local end-of-defun-function 'php-end-of-defun)
+  (setq-local beginning-of-defun-function #'php-beginning-of-defun)
+  (setq-local end-of-defun-function #'php-end-of-defun)
 
   (setq-local open-paren-in-column-0-is-defun-start nil)
   (setq-local defun-prompt-regexp
