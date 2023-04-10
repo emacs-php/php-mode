@@ -995,20 +995,19 @@ HEREDOC-START."
 
 (eval-and-compile
   (defconst php-syntax-propertize-rules
-    `((php-heredoc-start-re
-       (0 (ignore (php--syntax-propertize-heredoc
-                   (match-beginning 0)
-                   (or (match-string 1) (match-string 2) (match-string 3))
-                   (null (match-string 3))))))
-      (,(rx "#[")
-       (0 (ignore (php--syntax-propertize-attributes (match-beginning 0)))))
-      (,(rx (or "'" "\"" ))
-       (0 (ignore (php--syntax-propertize-quotes-in-comment (match-beginning 0)))))))
+    (syntax-propertize-precompile-rules
+     (php-heredoc-start-re
+      (0 (ignore (php--syntax-propertize-heredoc
+                  (match-beginning 0)
+                  (or (match-string 1) (match-string 2) (match-string 3))
+                  (null (match-string 3))))))
+     ((rx "#[")
+      (0 (ignore (php--syntax-propertize-attributes (match-beginning 0)))))
+     ((rx (or "'" "\""))
+      (0 (ignore (php--syntax-propertize-quotes-in-comment (match-beginning 0))))))))
 
-  (defmacro php-build-propertize-function ()
-    `(byte-compile (syntax-propertize-rules ,@php-syntax-propertize-rules)))
-
-  (defalias 'php-syntax-propertize-function (php-build-propertize-function)))
+(defalias 'php-syntax-propertize-function
+  (syntax-propertize-rules php-syntax-propertize-rules))
 
 (defun php--syntax-propertize-heredoc (start id _is-heredoc)
   "Apply propertize Heredoc and Nowdoc from START, with ID and IS-HEREDOC."
