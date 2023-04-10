@@ -365,7 +365,7 @@ as a function.  Call with AS-NUMBER keyword to compare by `version<'.
     ;; Use the Emacs standard indentation binding. This may upset c-mode
     ;; which does not follow this at the moment, but I see no better
     ;; choice.
-    (define-key map [tab] 'indent-for-tab-command)
+    (define-key map "\t" nil)          ;Hide CC-mode's `TAB' binding.
     map)
   "Keymap for `php-mode'.")
 
