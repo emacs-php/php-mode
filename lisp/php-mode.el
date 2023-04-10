@@ -365,7 +365,7 @@ as a function.  Call with AS-NUMBER keyword to compare by `version<'.
     ;; Use the Emacs standard indentation binding. This may upset c-mode
     ;; which does not follow this at the moment, but I see no better
     ;; choice.
-    (define-key map [tab] 'indent-for-tab-command)
+    (define-key map "\t" nil)          ;Hide CC-mode's `TAB' binding.
     map)
   "Keymap for `php-mode'.")
 
@@ -1080,13 +1080,7 @@ Borrow the `interactive-form' from `c-set-style' and use the original
 `c-set-style' function to set all declared stylevars.
 For compatibility with `c-set-style' pass DONT-OVERRIDE to it.
 
-After setting the stylevars run hooks according to STYLENAME
-
-  \"pear\"      `php-mode-pear-hook'
-  \"drupal\"    `php-mode-drupal-hook'
-  \"wordpress\" `php-mode-wordpress-hook'
-  \"symfony2\"  `php-mode-symfony2-hook'
-  \"psr2\"      `php-mode-psr2-hook'"
+After setting the stylevars run hook `php-mode-STYLENAME-hook'."
   (interactive
    (list (let ((completion-ignore-case t)
 	       (prompt (format "Which %s indentation style? "
@@ -1110,15 +1104,10 @@ After setting the stylevars run hooks according to STYLENAME
     ;; Restore variables
     (cl-loop for (name . value) in backup-vars
              do (set (make-local-variable name) value)))
-
-  (if (eq (symbol-value 'php-style-delete-trailing-whitespace) t)
-      (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)
-    (remove-hook 'before-save-hook 'delete-trailing-whitespace t))
-  (cond ((equal stylename "pear")      (run-hooks 'php-mode-pear-hook))
-        ((equal stylename "drupal")    (run-hooks 'php-mode-drupal-hook))
-        ((equal stylename "wordpress") (run-hooks 'php-mode-wordpress-hook))
-        ((equal stylename "symfony2")  (run-hooks 'php-mode-symfony2-hook))
-        ((equal stylename "psr2")      (run-hooks 'php-mode-psr2-hook))))
+  (if (eq php-style-delete-trailing-whitespace t)
+      (add-hook 'before-save-hook #'delete-trailing-whitespace nil t)
+    (remove-hook 'before-save-hook #'delete-trailing-whitespace t))
+  (run-hooks (intern (format "php-mode-%s-hook" stylename))))
 
 (defun php-mode--disable-delay-set-style (&rest _args)
   "Disable `php-mode-set-style-delay' on after hook.  ARGS be ignore."
@@ -1143,8 +1132,7 @@ After setting the stylevars run hooks according to STYLENAME
   "Reset PHP-irrelevant variables set by Cc Mode initialization."
   (setq-local c-mode-hook nil)
   (setq-local java-mode-hook nil)
-  (when (eval-when-compile (boundp 'flymake-diagnostic-functions))
-    (remove-hook 'flymake-diagnostic-functions 'flymake-cc t))
+  (remove-hook 'flymake-diagnostic-functions 'flymake-cc t)
   t)
 
 (defvar php-mode-syntax-table
