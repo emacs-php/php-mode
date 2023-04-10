@@ -1132,8 +1132,7 @@ After setting the stylevars run hook `php-mode-STYLENAME-hook'."
   "Reset PHP-irrelevant variables set by Cc Mode initialization."
   (setq-local c-mode-hook nil)
   (setq-local java-mode-hook nil)
-  (when (eval-when-compile (boundp 'flymake-diagnostic-functions))
-    (remove-hook 'flymake-diagnostic-functions 'flymake-cc t))
+  (remove-hook 'flymake-diagnostic-functions 'flymake-cc t)
   t)
 
 (defvar php-mode-syntax-table
