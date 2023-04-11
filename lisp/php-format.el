@@ -97,12 +97,12 @@
 (defcustom php-format-command 'auto
   "A formatter symbol, or a list of command and arguments."
   :tag "PHP Format Command"
-  :type '(choice (const nil :tag "Disabled reformat codes")
-                 (const 'auto :tag "Auto")
-                 (const 'ecs :tag "Easy Coding Standard")
-                 (const 'php-cs-fixer :tag "PHP-CS-Fixer")
-                 (const 'phpcbf :tag "PHP Code Beautifier and Fixer")
-                 (repeat string :tag "Command and arguments"))
+  :type '(choice (const :tag "Disabled reformat codes" nil)
+                 (const :tag "Auto" 'auto)
+                 (const :tag "Easy Coding Standard" 'ecs)
+                 (const :tag "PHP-CS-Fixer" 'php-cs-fixer)
+                 (const :tag "PHP Code Beautifier and Fixer" 'phpcbf)
+                 (repeat :tag "Command and arguments" string))
   :safe (lambda (v) (or (symbolp v) (listp v)))
   :group 'php-format)
 
