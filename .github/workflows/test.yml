@@ -40,4 +40,4 @@ jobs:
       run: 'make .cask test'
     - name: Run tests (allow failure)
       if: matrix.allow_failure == true
-      run: 'make test || true'
+      run: 'make .cask test || true'
