@@ -182,7 +182,7 @@
   "Hook functions called when before activating or deactivating PHP-IDE.
 Notice that two arguments (FEATURE ACTIVATE) are given.
 
-FEATURE: A symbol, like 'lsp-mode.
+FEATURE: A symbol, like \\='lsp-mode.
 ACTIVATE: T is given when activeting, NIL when deactivating PHP-IDE."
   :tag "PHP-IDE Mode Functions"
   :group 'php-ide

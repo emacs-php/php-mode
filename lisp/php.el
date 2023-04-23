@@ -261,12 +261,12 @@ an integer (the current comment nesting)."
     "Make a regular expression for methods with the given VISIBILITY.
 
 VISIBILITY must be a string that names the visibility for a PHP
-method, e.g. \'public\'.  The parameter VISIBILITY can itself also
+method, e.g. `public'.  The parameter VISIBILITY can itself also
 be a regular expression.
 
 The regular expression this function returns will check for other
-keywords that can appear in method signatures, e.g. \'final\' and
-\'static\'.  The regular expression will have one capture group
+keywords that can appear in method signatures, e.g. `final' and
+`static'.  The regular expression will have one capture group
 which will be the name of the method."
     (when (stringp visibility)
       (setq visibility (list visibility)))
@@ -293,8 +293,8 @@ which will be the name of the method."
                            '((* any) line-end))))))
 
   (defun php-create-regexp-for-classlike (type)
-    "Accepts a `TYPE' of a \'classlike\' object as a string, such as
-\'class\' or \'interface\', and returns a regexp as a string which
+    "Accepts a `TYPE' of a `classlike' object as a string, such as
+`class' or `interface', and returns a regexp as a string which
 can be used to match against definitions for that classlike."
     (concat
      ;; First see if 'abstract' or 'final' appear, although really these
