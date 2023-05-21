@@ -714,7 +714,8 @@ a backward search limit."
  '("php"
    (c-basic-offset . 4)
    (c-offsets-alist . ((case-label . 0)))
-   (tab-width . 4)))
+   (tab-width . 4)
+   (php-mode-lineup-cascaded-calls . nil)))
 
 (defun php-enable-pear-coding-style ()
   "Set up `php-mode' to use the coding styles preferred for PEAR code and modules."
