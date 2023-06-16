@@ -1157,7 +1157,7 @@ After setting the stylevars run hook `php-mode-STYLENAME-hook'."
   ;; (setq abbrev-mode t)
 
   (unless (string= php-mode-cc-version c-version)
-    (php-mode-debug-reinstall))
+    (php-mode-debug-reinstall nil))
 
   (if php-mode-disable-c-mode-hook
       (php-mode-neutralize-cc-mode-effect)
