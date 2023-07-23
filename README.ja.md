@@ -1,7 +1,7 @@
 <div align="center">
   <h1>Emacs PHP Mode</h1>
 
-[![Emacs: 28.2](https://img.shields.io/badge/Emacs-28.2-blue.svg)](https://www.gnu.org/software/emacs/)
+[![Emacs: 29.1](https://img.shields.io/badge/Emacs-29.1-blue.svg)](https://www.gnu.org/software/emacs/)
 [![lang: PHP 8.2](https://img.shields.io/badge/lang-PHP%208.2-brightgreen.svg)](https://php.net/manual/migration82.php)
 [![lang: PHP 7](https://img.shields.io/badge/lang-PHP%207-green.svg)](https://php.net/downloads.php)
 [![Build Status](https://github.com/emacs-php/php-mode/workflows/CI/badge.svg)](https://github.com/emacs-php/php-mode/actions)
