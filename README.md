@@ -11,7 +11,7 @@
 
 A powerful and flexible Emacs major mode for editing PHP scripts
 
-[English](README.md) &nbsp;&nbsp;|&nbsp;&nbsp; 日本語
+English &nbsp;&nbsp;|&nbsp;&nbsp; [日本語](README.ja.md)
 
 </div>
 
