@@ -596,7 +596,8 @@ style from Drupal."
 
 (ert-deftest php-mode-test-type-hints ()
   "Test highlighting of type hints and return types."
-  (with-php-mode-test ("type-hints.php" :faces t)))
+  (with-php-mode-test ("type-hints.php" :faces (cond ((version<= "29" emacs-version) ".29.faces")
+                                                     (t)))))
 
 (ert-deftest php-mode-test-static-method-calls ()
   "Test highlighting of static method calls which are named the same
