@@ -2,12 +2,36 @@
 
 All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## Unreleased
+<!-- ## Unreleased -->
+
+## [1.25.0] - 2023-07-24
 
 ### Added
 
- * **Support Emacs 29.1** ([#750])
+ * **Support Emacs 29.1** ([#743], [#750])
 
+### Fixed
+
+ * Fixed many byte compilation errors on Emacs 29 and 30 by multiple patches contributed by [Stefan Monnier] ([#737], [#739] and [#740], thanks Stefan!)
+ * Fixed PEAR method chaining wrong indentation ([#745] and [#746], thanks [@cweiske]!)
+ * Fixed `php-mode-debug-reinstall` command ([#747], [#748])
+
+### Removed
+
+ * Drop Emacs 25 support ([#729], [736])
+
+[Stefan Monnier]: https://www.iro.umontreal.ca/~monnier/
+[#729]: https://github.com/emacs-php/php-mode/pull/729
+[#736]: https://github.com/emacs-php/php-mode/pull/736
+[#737]: https://github.com/emacs-php/php-mode/pull/737
+[#739]: https://github.com/emacs-php/php-mode/pull/739
+[#740]: https://github.com/emacs-php/php-mode/pull/740
+[#741]: https://github.com/emacs-php/php-mode/pull/741
+[#743]: https://github.com/emacs-php/php-mode/pull/743
+[#745]: https://github.com/emacs-php/php-mode/pull/745
+[#746]: https://github.com/emacs-php/php-mode/pull/746
+[#747]: https://github.com/emacs-php/php-mode/pull/747
+[#748]: https://github.com/emacs-php/php-mode/pull/748
 [#750]: https://github.com/emacs-php/php-mode/pull/750
 
 ## [1.24.3] - 2023-03-19
