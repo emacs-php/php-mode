@@ -11,9 +11,18 @@
 
 A powerful and flexible Emacs major mode for editing PHP scripts
 
+[English](README.md) &nbsp;&nbsp;|&nbsp;&nbsp; 日本語
+
 </div>
 
 Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode][php-mode].
+
+> **Note**
+> The [latest version][releases] of PHP Mode supports Emacs 29.
+> Please feel free to [write to disucuss][disscussions-emacs29] if you have problems upgrading to Emacs 29.
+
+[releases]: https://github.com/emacs-php/php-mode/releases
+[disscussions-emacs29]: https://github.com/emacs-php/php-mode/discussions/751
 
 Installation
 ------------
