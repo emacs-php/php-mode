@@ -2,7 +2,13 @@
 
 All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-<!-- ## Unreleased -->
+## Unreleased
+
+### Removed
+
+ * Removed Phan-specific features from `php-project` ([#754])
+
+[#754]: https://github.com/emacs-php/php-mode/pull/754
 
 ## [1.25.0] - 2023-07-24
 
