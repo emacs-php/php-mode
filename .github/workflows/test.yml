@@ -26,7 +26,7 @@ jobs:
           - emacs_version: snapshot
             allow_failure: true
     steps:
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.11'
         architecture: 'x64'
@@ -36,7 +36,7 @@ jobs:
     - uses: conao3/setup-cask@master
       with:
         version: 'snapshot'
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Run tests
       if: matrix.allow_failure != true
       run: 'make .cask test'
