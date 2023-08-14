@@ -83,6 +83,7 @@ Names Sorted Alphabetically:
 - Olaf The Viking
 - Peter Oliver
 - Philippe Ivaldi
+- Piotr Kwiecinski
 - Rex McMaster
 - Roland
 - Rosenfeld

@@ -73,6 +73,7 @@
 (require 'custom)
 (require 'speedbar)
 (require 'imenu)
+(require 'consult-imenu nil t)
 (require 'package)
 (require 'nadvice)
 (require 'mode-local)
@@ -1266,6 +1267,16 @@ After setting the stylevars run hook `php-mode-STYLENAME-hook'."
     (require 'semantic/imenu)
     #'semantic-create-imenu-index)
   "Imenu index function for PHP.")
+
+(when (bound-and-true-p consult-imenu-config)
+  (add-to-list 'consult-imenu-config '(php-mode :toplevel "Namespace"
+                                                :types ((?n "Namespace" font-lock-function-name-face)
+                                                        (?p "Properties" font-lock-type-face)
+                                                        (?o "Constants" font-lock-type-face)
+                                                        (?c "Classes"    font-lock-type-face)
+                                                        (?f "Functions" font-lock-function-name-face)
+                                                        (?i "Imports" font-lock-type-face)
+                                                        (?m "Methods"  font-lock-function-name-face)))))
 
 (autoload 'php-local-manual-complete-function "php-local-manual")
 
