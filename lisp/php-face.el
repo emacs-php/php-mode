@@ -126,7 +126,8 @@
   :tag "PHP Object Op")
 
 (defface php-paamayim-nekudotayim '((t ()))
-  "PHP Mode face used to highlight \"Paamayim Nekudotayim\" scope resolution operators (::)."
+  "PHP Mode face used to highlight scope resolution operators (::).
+The operator is also knows as \"Paamayim Nekudotayim\"."
   :group 'php-faces
   :tag "PHP Paamayim Nekudotayim")
 
@@ -209,7 +210,8 @@
   :tag "PHP Class Declaration")
 
 (defface php-class-declaration-spec '((t (:inherit php-keyword)))
-  "PHP Mode Face used to highlight class declaration specification keywords (implements, extends)."
+  "PHP Mode Face used to highlight class declaration specification keywords.
+The keywords include: implements, extends."
   :group 'php-faces
   :tag "PHP Class Declaration Specification")
 
@@ -239,7 +241,8 @@
   :tag "PHP Visibility Modifier")
 
 (defface php-control-structure '((t (:inherit php-keyword)))
-  "PHP Mode Face used to highlight control structures (if, foreach, while, switch, catch...)."
+ "PHP Mode Face used to highlight control structures.
+The control structures include: if, foreach, while, switch, catch."
   :group 'php-faces
   :tag "PHP Control Structure")
 
