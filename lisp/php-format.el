@@ -98,10 +98,10 @@
   "A formatter symbol, or a list of command and arguments."
   :tag "PHP Format Command"
   :type '(choice (const :tag "Disabled reformat codes" nil)
-                 (const :tag "Auto" 'auto)
-                 (const :tag "Easy Coding Standard" 'ecs)
-                 (const :tag "PHP-CS-Fixer" 'php-cs-fixer)
-                 (const :tag "PHP Code Beautifier and Fixer" 'phpcbf)
+                 (const :tag "Auto" auto)
+                 (const :tag "Easy Coding Standard" ecs)
+                 (const :tag "PHP-CS-Fixer" php-cs-fixer)
+                 (const :tag "PHP Code Beautifier and Fixer" phpcbf)
                  (repeat :tag "Command and arguments" string))
   :safe (lambda (v) (or (symbolp v) (listp v)))
   :group 'php-format)
