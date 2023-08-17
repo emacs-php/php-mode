@@ -34,7 +34,7 @@ The current support policy can be found on the [Supported Version] page.
 
 [![NonGNU ELPA][nongnu-elpa-badge]][nongnu-elpa] [![NonGNU-devel ELPA][nongnu-devel-elpa-badge]][nongnu-devel-elpa]
 
-Emacs 28 (latest stable release) includes [NonGNU ELPA](https://elpa.nongnu.org/) as the default package repository.
+Emacs releases since version 28 have included [NonGNU ELPA](https://elpa.nongnu.org/) as the default package repository.
 
 ### Install from MELPA
 
