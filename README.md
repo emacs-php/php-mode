@@ -34,7 +34,7 @@ The current support policy can be found on the [Supported Version] page.
 
 [![NonGNU ELPA][nongnu-elpa-badge]][nongnu-elpa] [![NonGNU-devel ELPA][nongnu-devel-elpa-badge]][nongnu-devel-elpa]
 
-Emacs 28 (latest stable release) includes [NonGNU ELPA](https://elpa.nongnu.org/) as the default package repository.
+Emacs releases since version 28 have included [NonGNU ELPA](https://elpa.nongnu.org/) as the default package repository.
 
 ### Install from MELPA
 
@@ -47,8 +47,6 @@ With GNU Emacs 24 or later then you can use its [package][] feature (or [Cask][]
 PHP Mode is available from [package systems provided by several OSs][php-mode-packages].  On Debian, and operating systems derived from it, such as Ubuntu, the easiest way to add PHP support to Emacs is `sudo apt install elpa-php-mode`.  "Stable" releases of these operating systems include a well-tested frozen version of this package that is always older than the latest upstream version of PHP Mode.  Autoloads and byte-compilation are automatic.
 
 Please consider installing the package provided in `sid` (aka: "unstable", a rolling release) in order to benefit from the latest PHP Mode features and performance improvements.  The latest version can be found here: [`elpa-php-mode`][elpa-php-mode].  Investigate "apt-pinning" to make tracking this update stream automatic.
-
-Also, the `php-elisp` package provided by [Debian 9 (stretch)][php-elisp-stretch] and [Ubuntu 18.10][php-elisp-ubuntu1810] and earlier is [extremely old][issue-430], so **PLEASE DO NOT INSTALL IT**.
 
 ### Manual installation
 
@@ -332,7 +330,6 @@ This project was maintained by [Eric James Michael Ritz][@ejmr] until 2017. Curr
 [cc mode]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
 [elpa-php-mode]: https://packages.debian.org/sid/elpa-php-mode
 [gpl-v3]: https://www.gnu.org/licenses/quick-guide-gplv3.html
-[issue-430]: https://github.com/emacs-php/php-mode/issues/430
 [nongnu-devel-elpa-badge]: https://elpa.nongnu.org/nongnu-devel/php-mode.svg
 [nongnu-devel-elpa]: https://elpa.nongnu.org/nongnu-devel/php-mode.html
 [nongnu-elpa-badge]: https://elpa.nongnu.org/nongnu/php-mode.svg
@@ -342,8 +339,6 @@ This project was maintained by [Eric James Michael Ritz][@ejmr] until 2017. Curr
 [melpa-stable-badge]: http://stable.melpa.org/packages/php-mode-badge.svg
 [melpa-stable-link]: http://stable.melpa.org/#/php-mode
 [package]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html
-[php-elisp-stretch]: https://packages.debian.org/stretch/php-elisp
-[php-elisp-ubuntu1810]: https://packages.ubuntu.com/cosmic/php-elisp
 [php-mode-packages]: https://repology.org/project/emacs:php-mode/versions
 [php-mode]: https://github.com/emacs-php/php-mode
 [php-suite]: https://github.com/emacs-php/php-suite
