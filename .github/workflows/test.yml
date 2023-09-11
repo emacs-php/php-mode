@@ -28,9 +28,17 @@ jobs:
           - "28.2"
           - "29.1"
           - snapshot
+        experimental: [false]
         include:
-          - emacs_version: snapshot
-            allow_failure: true
+          - os: ubuntu-latest
+            emacs-version: snapshot
+            experimental: true
+          - os: macos-latest
+            emacs-version: snapshot
+            experimental: true
+          - os: windows-latest
+            emacs-version: snapshot
+            experimental: true
     steps:
     - uses: actions/setup-python@v4
       with:
@@ -44,8 +52,6 @@ jobs:
         version: 'snapshot'
     - uses: actions/checkout@v4
     - name: Run tests
-      if: matrix.allow_failure != true
       run: 'make .eask test'
     - name: Run tests (allow failure)
-      if: matrix.allow_failure == true
       run: 'make .eask test || true'
