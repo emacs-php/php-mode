@@ -38,7 +38,7 @@ jobs:
         architecture: 'x64'
     - uses: jcs090218/setup-emacs@master
       with:
-        version: ${{ matrix.emacs_version }}
+        version: ${{ matrix.emacs-version }}
     - uses: emacs-eask/setup-eask@master
       with:
         version: 'snapshot'
