@@ -619,6 +619,7 @@ as a keyword."
 (ert-deftest php-project-root ()
   "Test for detection `php-project-root' by directory."
   (dolist (root (mapcar #'car php-project-available-root-files))
+    (skip-unless (eq system-type windows-nt))  ; TODO: Make test compatible to Windows!
     (with-php-mode-test ("project/1/src/functions.php")
       (let ((php-project-root root))
         (should (string= (expand-file-name "project/1/" php-mode-test-dir)

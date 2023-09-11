@@ -5,14 +5,21 @@ on:
     paths-ignore:
     - '**/*.md'
     - 'etc/*'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
     timeout-minutes: 3
     strategy:
       matrix:
-        emacs_version:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        emacs-version:
           - "26.1"
           - "26.3"
           - "27.1"
@@ -20,7 +27,6 @@ jobs:
           - "28.1"
           - "28.2"
           - "29.1"
-          - release-snapshot
           - snapshot
         include:
           - emacs_version: snapshot
@@ -30,16 +36,16 @@ jobs:
       with:
         python-version: '3.11'
         architecture: 'x64'
-    - uses: purcell/setup-emacs@master
+    - uses: jcs090218/setup-emacs@master
       with:
         version: ${{ matrix.emacs_version }}
-    - uses: conao3/setup-cask@master
+    - uses: emacs-eask/setup-eask@master
       with:
         version: 'snapshot'
     - uses: actions/checkout@v4
     - name: Run tests
       if: matrix.allow_failure != true
-      run: 'make .cask test'
+      run: 'make .eask test'
     - name: Run tests (allow failure)
       if: matrix.allow_failure == true
-      run: 'make .cask test || true'
+      run: 'make .eask test || true'
