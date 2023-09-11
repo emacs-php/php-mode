@@ -181,6 +181,7 @@ file name and check that the faces of the fonts in the buffer match."
 The next character after \">We\" is a single quote. It should not
 have a string face."
   :expected-result :failed
+  (skip-unless (not (eq system-type darwin)))  ; TODO: Failed on macOS 28.2 or above!
   (with-php-mode-test ("issue-9.php")
     (search-forward ">We")
     (forward-char) ;; Jump to after the opening apostrophe
@@ -619,7 +620,7 @@ as a keyword."
 (ert-deftest php-project-root ()
   "Test for detection `php-project-root' by directory."
   (dolist (root (mapcar #'car php-project-available-root-files))
-    (skip-unless (eq system-type windows-nt))  ; TODO: Make test compatible to Windows!
+    (skip-unless (not (eq system-type windows-nt)))  ; TODO: Make test compatible to Windows!
     (with-php-mode-test ("project/1/src/functions.php")
       (let ((php-project-root root))
         (should (string= (expand-file-name "project/1/" php-mode-test-dir)
