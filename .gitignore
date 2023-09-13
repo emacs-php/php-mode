@@ -2,7 +2,9 @@
 *~
 .dir-locals-2.el
 /.cask/*
+/.eask/*
 /.keg/*
+/dist
 /.php-cs-fixer.cache
 php-mode-autoloads.el
 php_manual_en.json
