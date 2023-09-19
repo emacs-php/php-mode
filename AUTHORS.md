@@ -62,7 +62,7 @@ Names Sorted Alphabetically:
 - Jakub Jankiewicz
 - James Laver
 - Jeff Beeman
-- JenChieh
+- Jen-Chieh Shen
 - Joe Wreschnig
 - John Keller
 - Jon Dufresne
