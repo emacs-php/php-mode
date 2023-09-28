@@ -83,6 +83,7 @@
   (require 'rx)
   (require 'cl-lib)
   (require 'flymake)
+  (require 'flymake-proc)
   (require 'php-flymake)
   (require 'regexp-opt)
   (declare-function acm-backend-tabnine-candidate-expand "ext:acm-backend-tabnine"
