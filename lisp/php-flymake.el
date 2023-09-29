@@ -26,6 +26,7 @@
 
 ;;; Code:
 (require 'flymake)
+(require 'flymake-proc)
 (require 'cl-lib)
 (eval-when-compile
   (require 'pcase)
