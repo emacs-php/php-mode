@@ -665,7 +665,7 @@ Look at the `php-executable' variable instead of the constant \"php\" command."
   "Return function signature and class name string for header line in topsy.
 
 You can add the function to topsy with the code below:
-\(add-to-list 'topsy-mode-functions '(php-mode . php-topsy-beginning-of-defun-with-class))"
+    \(add-to-list 'topsy-mode-functions '\(php-mode . php-topsy-beginning-of-defun-with-class\)\)"
   (save-excursion
     (goto-char (window-start))
     (mapconcat
