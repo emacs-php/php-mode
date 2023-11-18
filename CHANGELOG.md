@@ -8,12 +8,18 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
  * Add `php-topsy-beginning-of-defun-with-class` to display classname with function signature. ([#766])
 
+### Fixed
+
+ * Fixed build failure in Emacs on master branch ([#764], [#767])
+
 ### Removed
 
  * Removed Phan-specific features from `php-project` ([#754])
 
 [#754]: https://github.com/emacs-php/php-mode/pull/754
+[#764]: https://github.com/emacs-php/php-mode/issues/764
 [#766]: https://github.com/emacs-php/php-mode/pull/766
+[#767]: https://github.com/emacs-php/php-mode/pull/767
 
 ## [1.25.0] - 2023-07-24
 
