@@ -2,15 +2,24 @@
 
 All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## Unreleased
+<!-- ## Unreleased -->
+
+## [1.25.1] - 2023-11-24
 
 ### Added
 
  * Add `php-topsy-beginning-of-defun-with-class` to display classname with function signature. ([#766])
+ * Add missing `__DIR__` to `php-magical-constants` ([#756], thanks [@piotrkwiecinski])
+
+### Changed
+
+ * Make developer build task in Makefile now depends on Eask. ([#762], thanks [@jcs090218])
+   * This change does not affect package installation users
+   * Read [CONTRIBUTING.md] if you prefer to build it yourself from zip or tar ball
 
 ### Fixed
 
- * Fixed build failure in Emacs on master branch ([#764], [#767])
+ * Fixed build failure in Emacs on master branch ([#764], [#765], [#767], thanks [@takeokunn])
 
 ### Removed
 
@@ -18,10 +27,17 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
  * Removed [Cask](https://cask.readthedocs.io/) and [Keg](https://github.com/conao3/keg.el) metadata files for building ([#770])
 
 [#754]: https://github.com/emacs-php/php-mode/pull/754
+[#756]: https://github.com/emacs-php/php-mode/pull/756
+[#762]: https://github.com/emacs-php/php-mode/pull/762
 [#764]: https://github.com/emacs-php/php-mode/issues/764
+[#765]: https://github.com/emacs-php/php-mode/pull/765
 [#766]: https://github.com/emacs-php/php-mode/pull/766
 [#767]: https://github.com/emacs-php/php-mode/pull/767
 [#770]: https://github.com/emacs-php/php-mode/pull/770
+[@jcs090218]: https://github.com/jcs090218
+[@piotrkwiecinski]: https://github.com/piotrkwiecinski
+[@takeokunn]: https://github.com/takeokunn
+[CONTRIBUTING.md]: https://github.com/emacs-php/php-mode/blob/master/CONTRIBUTING.md
 
 ## [1.25.0] - 2023-07-24
 

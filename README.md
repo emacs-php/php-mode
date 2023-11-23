@@ -5,7 +5,7 @@
 [![lang: PHP 8.2](https://img.shields.io/badge/lang-PHP%208.2-brightgreen.svg)](https://php.net/manual/migration82.php)
 [![lang: PHP 7](https://img.shields.io/badge/lang-PHP%207-green.svg)](https://php.net/downloads.php)
 [![Build Status](https://github.com/emacs-php/php-mode/workflows/CI/badge.svg)](https://github.com/emacs-php/php-mode/actions)
-[![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)](http://www.gnu.org/licenses/gpl-3.0.txt)<br>
+[![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)][gpl-v3]<br>
 [![NonGNU ELPA][nongnu-elpa-badge]][nongnu-elpa]
 [![melpa badge][melpa-badge]][melpa-link]
 
@@ -115,7 +115,7 @@ This project was maintained by [Eric James Michael Ritz][@ejmr] until 2017. Curr
 [Authors]: https://github.com/emacs-php/php-mode/wiki/Authors
 [Contributors]: https://github.com/emacs-php/php-mode/graphs/contributors
 [Supported Version]: https://github.com/emacs-php/php-mode/wiki/Supported-Version
-[gpl-v3]: https://www.gnu.org/licenses/quick-guide-gplv3.html
+[gpl-v3]: https://www.gnu.org/licenses/gpl-3.0
 [nongnu-elpa-badge]: https://elpa.nongnu.org/nongnu/php-mode.svg
 [nongnu-elpa]: https://elpa.nongnu.org/nongnu/php-mode.html
 [melpa-badge]: http://melpa.org/packages/php-mode-badge.svg
