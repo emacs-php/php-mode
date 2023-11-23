@@ -15,11 +15,13 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 ### Removed
 
  * Removed Phan-specific features from `php-project` ([#754])
+ * Removed [Cask](https://cask.readthedocs.io/) and [Keg](https://github.com/conao3/keg.el) metadata files for building ([#770])
 
 [#754]: https://github.com/emacs-php/php-mode/pull/754
 [#764]: https://github.com/emacs-php/php-mode/issues/764
 [#766]: https://github.com/emacs-php/php-mode/pull/766
 [#767]: https://github.com/emacs-php/php-mode/pull/767
+[#770]: https://github.com/emacs-php/php-mode/pull/770
 
 ## [1.25.0] - 2023-07-24
 
