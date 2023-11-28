@@ -628,6 +628,15 @@ Look at the `php-executable' variable instead of the constant \"php\" command."
     (or mode php-default-major-mode)))
 
 ;;;###autoload
+(define-derived-mode php-base-mode prog-mode "PHP"
+  "Generic major mode for editing PHP.
+
+This mode is intended to be inherited by concrete major modes.
+Currently there are `php-mode' and `php-ts-mode'."
+  :group 'php
+  nil)
+
+;;;###autoload
 (defun php-mode-maybe ()
   "Select PHP mode or other major mode."
   (interactive)
