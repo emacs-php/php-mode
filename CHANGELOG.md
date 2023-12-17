@@ -13,7 +13,13 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
  * Make `php-mode` inherit from `php-base-mode` instead of `c-mode` ([#772])
 
+### Removed
+
+ * Remove `php-mode-disable-c-mode-hook` custom variable and `php-mode-neutralize-cc-mode-effect` function ([#775])
+   * `php-mode` no longer inherits `c-mode`, so this variable won't work.
+
 [#772]: https://github.com/emacs-php/php-mode/pull/772
+[#775]: https://github.com/emacs-php/php-mode/pull/775
 
 ## [1.25.1] - 2023-11-24
 
