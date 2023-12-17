@@ -709,7 +709,7 @@ a backward search limit."
  "pear"
  '("php"
    (c-basic-offset . 4)
-   (c-offsets-alist . ((case-label . 0)))
+   (c-offsets-alist . ((case-label . 0) (statement-cont . +)))
    (tab-width . 4)
    (php-mode-lineup-cascaded-calls . nil)))
 
