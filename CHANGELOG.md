@@ -12,14 +12,23 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 ### Changed
 
  * Make `php-mode` inherit from `php-base-mode` instead of `c-mode` ([#772])
+ * Modify indentation of [PEAR Coding Standards] ([#774], [#777])
+   * No longer overindent it by default, since we don't see any mention in the coding style that it should hang `.`. (refs [#227] and [#229])
+   * **If you have any feedback on PEAR style, please let us know in [the discussion #776][#776].**
 
 ### Removed
 
  * Remove `php-mode-disable-c-mode-hook` custom variable and `php-mode-neutralize-cc-mode-effect` function ([#775])
    * `php-mode` no longer inherits `c-mode`, so this variable won't work.
 
+[#227]: https://github.com/emacs-php/php-mode/pull/227
+[#229]: https://github.com/emacs-php/php-mode/pull/229
 [#772]: https://github.com/emacs-php/php-mode/pull/772
+[#774]: https://github.com/emacs-php/php-mode/issues/774
 [#775]: https://github.com/emacs-php/php-mode/pull/775
+[#776]: https://github.com/emacs-php/php-mode/discussions/776
+[#777]: https://github.com/emacs-php/php-mode/pull/777
+[PEAR Coding Standards]: https://pear.php.net/manual/en/standards.php
 
 ## [1.25.1] - 2023-11-24
 

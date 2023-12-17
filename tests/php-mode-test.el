@@ -522,11 +522,6 @@ style from Drupal."
     (search-forward "return")
     (should (eq (current-indentation) (* 2 c-basic-offset)))))
 
-(ert-deftest php-mode-test-issue-227 ()
-  "multi-line strings indents "
-  (custom-set-variables '(php-lineup-cascaded-calls t))
-  (with-php-mode-test ("issue-227.php" :indent t :style pear :magic t)))
-
 (ert-deftest php-mode-test-issue-237 ()
   "Indent chaining method for PSR2."
   (with-php-mode-test ("issue-237.php" :indent t :style psr2 :magic t)))
@@ -695,6 +690,11 @@ Meant for `php-mode-test-issue-503'."
   (with-php-mode-test ("lang/types/keywords.php" :faces t))
   (with-php-mode-test ("lang/errorcontrol.php" :faces t))
   (with-php-mode-test ("lang/magical-constants/echo.php" :faces t)))
+
+(ert-deftest php-mode-test-pear ()
+  "Tests for PEAR style."
+  (with-php-mode-test ("indent/issue-227.php" :indent t :magic t :style pear))
+  (with-php-mode-test ("indent/issue-774.php" :indent t :magic t :style pear)))
 
 ;; For developers: How to make .faces list file.
 ;;
