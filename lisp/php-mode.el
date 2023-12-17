@@ -292,13 +292,6 @@ In that case set to `NIL'."
   :tag "PHP Mode Enable Backup Style Variables"
   :type 'boolean)
 
-(define-obsolete-variable-alias 'php-mode-disable-parent-mode-hooks 'php-mode-disable-c-mode-hook "1.21.0")
-(defcustom php-mode-disable-c-mode-hook t
-  "When set to `T', do not run hooks of parent modes (`java-mode', `c-mode')."
-  :tag "PHP Mode Disable C Mode Hook"
-  :type 'boolean)
-(make-obsolete-variable 'php-mode-disable-c-mode-hook nil "1.24.2")
-
 (defcustom php-mode-enable-project-local-variable t
   "When set to `T', apply project local variable to buffer local variable."
   :tag "PHP Mode Enable Project Local Variable"
@@ -1132,13 +1125,6 @@ After setting the stylevars run hook `php-mode-STYLENAME-hook'."
   (php-project-apply-local-variables)
   (remove-hook 'hack-local-variables-hook #'php-mode-set-local-variable-delay))
 
-(defun php-mode-neutralize-cc-mode-effect ()
-  "Reset PHP-irrelevant variables set by Cc Mode initialization."
-  (setq-local c-mode-hook nil)
-  (setq-local java-mode-hook nil)
-  (remove-hook 'flymake-diagnostic-functions 'flymake-cc t)
-  t)
-
 (defvar php-mode-syntax-table
   (let ((table (make-syntax-table)))
     (c-populate-syntax-table table)
@@ -1161,12 +1147,6 @@ After setting the stylevars run hook `php-mode-STYLENAME-hook'."
                      (c-update-modeline))
   (unless (string= php-mode-cc-version c-version)
     (php-mode-debug-reinstall nil))
-
-  (if php-mode-disable-c-mode-hook
-      (php-mode-neutralize-cc-mode-effect)
-    (display-warning 'php-mode
-                     "`php-mode-disable-c-mode-hook' will be removed.  Do not depends on this variable."
-                     :warning))
 
   (c-initialize-cc-mode t)
   (setq abbrev-mode t)
