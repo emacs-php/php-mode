@@ -1320,6 +1320,7 @@ for \\[find-tag] (which see)."
         "return" "throws" "var" "self-out" "this-out" "param-out"
         "type" "extends" "require-extends" "implemtents" "require-implements"
         "template" "template-covariant" "template-extends" "template-implements"
+        "require-extends" "require-implements"
         "assert" "assert-if-true" "assert-if-false" "if-this-is")
   "A list of tags specifying type names.")
 
