@@ -178,6 +178,7 @@
   :type 'string
   :safe #'stringp)
 
+;;;###autoload
 (defcustom php-ide-mode-functions nil
   "Hook functions called when before activating or deactivating PHP-IDE.
 Notice that two arguments (FEATURE ACTIVATE) are given.
@@ -188,9 +189,7 @@ ACTIVATE: T is given when activeting, NIL when deactivating PHP-IDE."
   :group 'php-ide
   :type '(repeat function)
   :safe (lambda (functions)
-          (and (listp functions)
-               (cl-loop for function in functions
-                        always (functionp function)))))
+          (and (listp functions) (cl-every #'functionp functions))))
 
 ;;;###autoload
 (define-minor-mode php-ide-mode
