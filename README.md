@@ -2,8 +2,8 @@
   <h1>Emacs PHP Mode</h1>
 
 [![Emacs: 29.2](https://img.shields.io/badge/Emacs-29.2-blue.svg)](https://www.gnu.org/software/emacs/)
-[![lang: PHP 8.2](https://img.shields.io/badge/lang-PHP%208.2-brightgreen.svg)](https://php.net/manual/migration82.php)
-[![lang: PHP 7](https://img.shields.io/badge/lang-PHP%207-green.svg)](https://php.net/downloads.php)
+[![lang: PHP 8.3](https://img.shields.io/badge/lang-PHP%208.3-brightgreen.svg)](https://www.php.net/manual/migration83.php)
+[![lang: PHP 7](https://img.shields.io/badge/lang-PHP%207-green.svg)](https://www.php.net/downloads.php)
 [![Build Status](https://github.com/emacs-php/php-mode/workflows/CI/badge.svg)](https://github.com/emacs-php/php-mode/actions)
 [![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)][gpl-v3]<br>
 [![NonGNU ELPA][nongnu-elpa-badge]][nongnu-elpa]
