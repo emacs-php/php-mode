@@ -156,15 +156,18 @@ The operator is also knows as \"Paamayim Nekudotayim\"."
   :group 'php-faces
   :tag "PHP Magical Constant")
 
-(defface php-$this '((t (:inherit php-constant)))
+(defface php-this '((t (:inherit php-constant)))
   "PHP Mode face used to highlight $this variables."
   :group 'php-faces
   :tag "PHP $this")
 
-(defface php-$this-sigil '((t (:inherit php-constant)))
+(defface php-this-sigil '((t (:inherit php-constant)))
   "PHP Mode face used to highlight sigils($) of $this variable."
   :group 'php-faces
   :tag "PHP $this Sigil")
+
+(define-obsolete-face-alias 'php-$this 'php-this "1.26.0")
+(define-obsolete-face-alias 'php-$this-sigil 'php-this-sigil "1.26.0")
 
 (defface php-errorcontrol-op '((t (:inherit font-lock-type-face)))
   "PHP Mode face used to highlight errorcontrol operators (@).."
