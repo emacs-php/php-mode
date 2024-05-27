@@ -15,6 +15,9 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
  * Modify indentation of [PEAR Coding Standards] ([#774], [#777])
    * No longer overindent it by default, since we don't see any mention in the coding style that it should hang `.`. (refs [#227] and [#229])
    * **If you have any feedback on PEAR style, please let us know in [the discussion #776][#776].**
+ * Remove `$` from face names for interoperability with treesit ([#780], [emacs-php/php-ts-mode#68])
+   * `php-$this` → `php-this`
+   * `php-$this-sigil` → `php-this-sigil`
 
 ### Removed
 
@@ -28,6 +31,8 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 [#775]: https://github.com/emacs-php/php-mode/pull/775
 [#776]: https://github.com/emacs-php/php-mode/discussions/776
 [#777]: https://github.com/emacs-php/php-mode/pull/777
+[#780]: https://github.com/emacs-php/php-mode/issues/780
+[emacs-php/php-ts-mode#68]: https://github.com/emacs-php/php-ts-mode/pull/68
 [PEAR Coding Standards]: https://pear.php.net/manual/en/standards.php
 
 ## [1.25.1] - 2023-11-24

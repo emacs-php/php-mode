@@ -533,8 +533,8 @@ style from Drupal."
     (should (eq 'php-variable-name (get-text-property (1- (point)) 'face)))
 
     (search-forward "$this")
-    (should (eq 'php-$this-sigil (get-text-property (match-beginning 0) 'face)))
-    (should (eq 'php-$this (get-text-property (1+ (match-beginning 0)) 'face)))
+    (should (eq 'php-this-sigil (get-text-property (match-beginning 0) 'face)))
+    (should (eq 'php-this (get-text-property (1+ (match-beginning 0)) 'face)))
 
     (search-forward "$x")
     (should (eq 'php-variable-sigil (get-text-property (match-beginning 0) 'face)))

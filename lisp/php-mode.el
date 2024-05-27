@@ -1378,7 +1378,7 @@ for \\[find-tag] (which see)."
      ("\\(!\\)[^=]" 1 'php-logical-op)
 
      ;; Highlight special variables
-     ("\\(\\$\\)\\(this\\)\\>" (1 'php-$this-sigil) (2 'php-$this))
+     ("\\(\\$\\)\\(this\\)\\>" (1 'php-this-sigil) (2 'php-this))
      ("\\(\\$+\\)\\(\\sw+\\)" (1 'php-variable-sigil) (2 'php-variable-name))
      ("\\(->\\)\\([a-zA-Z0-9_]+\\)" (1 'php-object-op) (2 'php-property-name))
 
