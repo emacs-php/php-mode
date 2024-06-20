@@ -209,6 +209,24 @@ a completion list."
   :group 'php
   :tag "PHP Topsy Separator"
   :type 'string)
+
+(defcustom php-function-call 'php-function-call-traditional
+  "Face name to use for method call."
+  :group 'php
+  :tag "PHP Function Call"
+  :type 'face)
+
+(defcustom php-method-call 'php-method-call-traditional
+  "Face name to use for method call."
+  :group 'php
+  :tag "PHP Method Call"
+  :type 'face)
+
+(defcustom php-static-method-call 'php-static-method-call-traditional
+  "Face name to use for method call."
+  :group 'php
+  :tag "PHP Static Method Call"
+  :type 'face)
 
 ;;; PHP Keywords
 (defconst php-magical-constants
