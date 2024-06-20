@@ -55,6 +55,12 @@
   :group 'php-faces
   :tag "PHP Function Name")
 
+(defface php-function-call-standard `((t ,(when (eval-when-compile (get 'font-lock-function-call-face 'face-defface-spec))
+                                            '(:inherit font-lock-function-call-face))))
+  "PHP Mode face used to highlight function names in calles."
+  :group 'php-faces
+  :tag "PHP Function Call Standard")
+
 (defface php-function-call '((t ()))
   "PHP Mode face used to highlight function names in calles."
   :group 'php-faces
