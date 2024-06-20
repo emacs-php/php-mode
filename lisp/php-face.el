@@ -55,7 +55,11 @@
   :group 'php-faces
   :tag "PHP Function Name")
 
-(defface php-function-call '((t ()))
+;; `font-lock-function-call-face' was added in Emacs 29.1
+(defface php-function-call (eval-when-compile
+                             (if (get 'font-lock-function-call-face 'face-defface-spec)
+                                 '((t (:inherit font-lock-function-call-face)))
+                               '((t ()))))
   "PHP Mode face used to highlight function names in calles."
   :group 'php-faces
   :tag "PHP Function Call")

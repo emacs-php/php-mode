@@ -653,6 +653,12 @@ Meant for `php-mode-test-issue-503'."
   (with-php-mode-test ("indent/issue-702.php" :indent t :magic t))
   (with-php-mode-test ("indent/issue-726.php" :indent t :magic t)))
 
+(ert-deftest php-mode-test-issue-782 ()
+  "Test that function calls are fontified."
+  (if (version< emacs-version "29.1")
+      (should (eq (face-attribute 'php-function-call :inherit) nil))
+    (should (eq (face-attribute 'php-function-call :inherit) 'font-lock-function-call-face))))
+
 (ert-deftest php-mode-test-php74 ()
   "Test highlighting language constructs added in PHP 7.4."
   (with-php-mode-test ("7.4/arrow-function.php" :faces t))
