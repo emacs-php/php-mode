@@ -24,10 +24,10 @@
 
     #[WithoutArgument]
     #[")
- ("SingleArgument" . php-function-call)
+ ("SingleArgument" . php-function-call-traditional)
  ("(0)]
     #[")
- ("FewArguments" . php-function-call)
+ ("FewArguments" . php-function-call-traditional)
  ("(")
  ("'Hello'" . php-string)
  (", ")
@@ -40,9 +40,9 @@
  ("() {}
 
     #[WithoutArgument] #[")
- ("SingleArgument" . php-function-call)
+ ("SingleArgument" . php-function-call-traditional)
  ("(0)] #[")
- ("FewArguments" . php-function-call)
+ ("FewArguments" . php-function-call-traditional)
  ("(")
  ("'Hello'" . php-string)
  (", ")
@@ -55,11 +55,11 @@
  ("() {}
 
     #[")
- ("Attr2" . php-function-call)
+ ("Attr2" . php-function-call-traditional)
  ("(")
  ("\"foo\"" . php-string)
  ("), ")
- ("Attr2" . php-function-call)
+ ("Attr2" . php-function-call-traditional)
  ("(")
  ("\"bar\"" . php-string)
  (")]

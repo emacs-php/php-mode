@@ -1,7 +1,7 @@
 ;; -*- mode: emacs-lisp -*-
 (("<?php" . php-php-tag)
  ("\n\n")
- ("is_object" . php-function-call)
+ ("is_object" . php-function-call-traditional)
  ("(")
  ("static" . php-keyword)
  (" ")
@@ -10,7 +10,7 @@
  ("// " . font-lock-comment-delimiter-face)
  ("###php-mode-test### ((indent 4))\n" . font-lock-comment-face)
  ("});\n\n")
- ("is_object" . php-function-call)
+ ("is_object" . php-function-call-traditional)
  ("(")
  ("static" . php-keyword)
  (" ")

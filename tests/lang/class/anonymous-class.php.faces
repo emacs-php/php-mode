@@ -17,7 +17,7 @@
  ("// " . font-lock-comment-delimiter-face)
  ("###php-mode-test### ((indent 4))\n" . font-lock-comment-face)
  ("};\n\n")
- ("is_object" . php-function-call)
+ ("is_object" . php-function-call-traditional)
  ("(1, ")
  ("new" . php-keyword)
  (" ")

@@ -56,5 +56,5 @@
  ("$" . php-variable-sigil)
  ("object" . php-variable-name)
  ("->" . php-object-op)
- ("funCall" . php-method-call)
+ ("funCall" . php-method-call-traditional)
  ("();\n"))
