@@ -24,6 +24,7 @@ Names Sorted Alphabetically:
 
 - Aaron S. Hawley
 - Alan Pearce
+- Alex Figl-Brick
 - Andreas Röhler
 - Andrei Chițu
 - Antoine Brand

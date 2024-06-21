@@ -11,10 +11,10 @@
 
 #[WithoutArgument]
 #[")
- ("SingleArgument" . php-function-call)
+ ("SingleArgument" . php-function-call-traditional)
  ("(0)]
 #[")
- ("FewArguments" . php-function-call)
+ ("FewArguments" . php-function-call-traditional)
  ("(")
  ("'Hello'" . php-string)
  (", ")
@@ -27,9 +27,9 @@
  ("() {}
 
 #[WithoutArgument]#[")
- ("SingleArgument" . php-function-call)
+ ("SingleArgument" . php-function-call-traditional)
  ("(0)]#[")
- ("FewArguments" . php-function-call)
+ ("FewArguments" . php-function-call-traditional)
  ("(")
  ("'Hello'" . php-string)
  (", ")

@@ -1371,7 +1371,7 @@ for \\[find-tag] (which see)."
 
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
-     ("\\(->\\)\\(\\sw+\\)\\s-*(" (1 'php-object-op) (2 'php-method-call))
+     ("\\(->\\)\\(\\sw+\\)\\s-*(" (1 'php-object-op) (2 php-method-call))
      ("\\<\\(const\\)\\s-+\\(\\_<.+?\\_>\\)" (1 'php-keyword) (2 'php-constant-assign))
 
      ;; Logical operator (!)
@@ -1413,7 +1413,7 @@ for \\[find-tag] (which see)."
 
      ;; Highlight static method calls as such. This is necessary for method
      ;; names which are identical to keywords to be highlighted correctly.
-     ("\\sw+::\\(\\sw+\\)(" 1 'php-static-method-call)
+     ("\\sw+::\\(\\sw+\\)(" 1 php-static-method-call)
      ;; Multiple catch (FooException | BarException $e)
      (,(rx symbol-start "catch" symbol-end
            (* (syntax whitespace)) "(" (* (syntax whitespace))
@@ -1457,7 +1457,7 @@ for \\[find-tag] (which see)."
       (1 'php-import-declaration)
       (,(rx (group (+ (or (syntax word) (syntax symbol) "\\" "{" "}")))) nil nil (1 'php-constant-assign t)))
      ;; Highlight function calls
-     ("\\(\\_<\\(?:\\sw\\|\\s_\\)+?\\_>\\)\\s-*(" 1 'php-function-call)
+     ("\\(\\_<\\(?:\\sw\\|\\s_\\)+?\\_>\\)\\s-*(" 1 php-function-call)
      ;; Highlight all upper-cased symbols as constant
      ("\\<\\([A-Z_][A-Z0-9_]+\\)\\>" 1 'php-constant)
 

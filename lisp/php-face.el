@@ -55,20 +55,42 @@
   :group 'php-faces
   :tag "PHP Function Name")
 
-(defface php-function-call '((t ()))
+(defface php-function-call-standard `((t ,(when (eval-when-compile (get 'font-lock-function-call-face 'face-defface-spec))
+                                            '(:inherit font-lock-function-call-face))))
   "PHP Mode face used to highlight function names in calles."
   :group 'php-faces
-  :tag "PHP Function Call")
+  :tag "PHP Function Call Standard")
 
-(defface php-method-call '((t (:inherit php-function-call)))
+(defface php-function-call-traditional '((t ()))
+  "PHP Mode face used to highlight function names in calles."
+  :group 'php-faces
+  :tag "PHP Function Call Traditional")
+
+(define-obsolete-face-alias 'php-function-call 'php-function-call-traditional "1.26.0")
+
+(defface php-method-call-standard '((t (:inherit php-function-call-standard)))
   "PHP Mode face used to highlight method names in calles."
   :group 'php-faces
-  :tag "PHP Method Call")
+  :tag "PHP Method Call Standard")
 
-(defface php-static-method-call '((t (:inherit php-method-call)))
+(defface php-method-call-traditional '((t (:inherit php-function-call-traditional)))
+  "PHP Mode face used to highlight method names in calles."
+  :group 'php-faces
+  :tag "PHP Method Call Traditional")
+
+(define-obsolete-face-alias 'php-method-call 'php-method-call-traditional "1.26.0")
+
+(defface php-static-method-call-standard '((t (:inherit php-method-call-standard)))
   "PHP Mode face used to highlight static method names in calles."
   :group 'php-faces
-  :tag "PHP Static Method Call")
+  :tag "PHP Static Method Call Standard")
+
+(defface php-static-method-call-traditional '((t (:inherit php-method-call-traditional)))
+  "PHP Mode face used to highlight static method names in calles."
+  :group 'php-faces
+  :tag "PHP Static Method Call Traditional")
+
+(define-obsolete-face-alias 'php-static-method-call 'php-static-method-call-traditional "1.26.0")
 
 (defface php-variable-name '((t (:inherit font-lock-variable-name-face)))
   "PHP Mode face used to highlight variable names."

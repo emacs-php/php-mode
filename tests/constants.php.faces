@@ -46,7 +46,7 @@
  (";\n")
  ("SomeClass" . php-constant)
  ("::" . php-paamayim-nekudotayim)
- ("classIdentifier" . php-static-method-call)
+ ("classIdentifier" . php-static-method-call-traditional)
  ("();\n\n")
  ("__halt_compiler" . php-keyword)
  ("();\n\n")

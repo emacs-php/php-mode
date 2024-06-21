@@ -18,6 +18,12 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
  * Remove `$` from face names for interoperability with treesit ([#780], [emacs-php/php-ts-mode#68])
    * `php-$this` → `php-this`
    * `php-$this-sigil` → `php-this-sigil`
+ * Add `php-function-call-standard` face inherit `font-lock-function-call-face` on Emacs 29.1 and above ([#782], thanks [@bricka]!)
+ * Add `-tranditional` suffix to the `php-*-call` faces.
+   * `php-function-call` → `php-function-call-traditional`
+   * `php-method-call` → `php-method-call-traditional`
+   * `php-static-method-call` → `php-static-method-call-traditional`
+ * Add variables for the `php-function-call`, `php-method-call`, and `php-static-method-call` faces, defaulting to the `-traditional` face.
 
 ### Removed
 
@@ -32,6 +38,8 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 [#776]: https://github.com/emacs-php/php-mode/discussions/776
 [#777]: https://github.com/emacs-php/php-mode/pull/777
 [#780]: https://github.com/emacs-php/php-mode/issues/780
+[#782]: https://github.com/emacs-php/php-mode/issues/782
+[@bricka]: https://github.com/bricka
 [emacs-php/php-ts-mode#68]: https://github.com/emacs-php/php-ts-mode/pull/68
 [PEAR Coding Standards]: https://pear.php.net/manual/en/standards.php
 

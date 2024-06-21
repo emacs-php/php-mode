@@ -135,7 +135,7 @@
  (" ")
  ("=" . php-assignment-op)
  (" ")
- ("hoge" . php-function-call)
+ ("hoge" . php-function-call-traditional)
  ("();\n\n        ")
  ("// " . font-lock-comment-delimiter-face)
  ("one-line comment\n" . font-lock-comment-face)
