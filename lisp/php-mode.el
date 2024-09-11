@@ -1,6 +1,6 @@
 ;;; php-mode.el --- Major mode for editing PHP code  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2023  Friends of Emacs-PHP development
+;; Copyright (C) 2024  Friends of Emacs-PHP development
 ;; Copyright (C) 1999, 2000, 2001, 2003, 2004 Turadg Aleahmad
 ;;               2008 Aaron S. Hawley
 ;;               2011, 2012, 2013, 2014, 2015, 2016, 2017 Eric James Michael Ritz
@@ -1242,12 +1242,7 @@ After setting the stylevars run hook `php-mode-STYLENAME-hook'."
               :filter-args #'php-acm-backend-tabnine-candidate-expand-filter-args)
 
   (when (eval-when-compile (>= emacs-major-version 25))
-    (with-silent-modifications
-      (save-excursion
-        (let* ((start (point-min))
-               (end (min (point-max)
-                         (+ start syntax-propertize-chunk-size))))
-          (php-syntax-propertize-function start end))))))
+    (syntax-ppss-flush-cache (point-min))))
 
 (declare-function semantic-create-imenu-index "semantic/imenu" (&optional stream))
 
