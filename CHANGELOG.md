@@ -2,12 +2,14 @@
 
 All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## Unreleased
+<!-- ## Unreleased -->
+
+## [1.26.0] - 2024-09-13
 
 ### Added
 
  * Add `php-base-mode` which is the base of php related modes ([#772])
-   * `php-base-mode` is designed as a common parent mode for `php-mode` and [`php-ts-mode`](https://github.com/emacs-php/php-ts-mode).
+   * `php-base-mode` is designed as a common parent mode for `php-mode` ~~and [`php-ts-mode`](https://github.com/emacs-php/php-ts-mode)~~.
 
 ### Changed
 
