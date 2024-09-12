@@ -1,9 +1,8 @@
 <div align="center">
   <h1>Emacs PHP Mode</h1>
 
-[![Emacs: 29.2](https://img.shields.io/badge/Emacs-29.2-blue.svg)](https://www.gnu.org/software/emacs/)
+[![Emacs: 29.4](https://img.shields.io/badge/Emacs-29.4-blue.svg)](https://www.gnu.org/software/emacs/)
 [![lang: PHP 8.3](https://img.shields.io/badge/lang-PHP%208.3-brightgreen.svg)](https://php.net/manual/migration83.php)
-[![lang: PHP 7](https://img.shields.io/badge/lang-PHP%207-green.svg)](https://php.net/downloads.php)
 [![Build Status](https://github.com/emacs-php/php-mode/workflows/CI/badge.svg)](https://github.com/emacs-php/php-mode/actions)
 [![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)][gpl-v3]<br>
 [![NonGNU ELPA][nongnu-elpa-badge]][nongnu-elpa]
@@ -25,7 +24,7 @@ A powerful and flexible Emacs major mode for editing PHP scripts
 
 ## インストール
 
-**PHP ModeはEmacs 26.1以降で動作します**。対応バージョンの詳細は[Supported Version]をお読みください。Emacs 28以降では単に以下のコマンドを実行するだけでインストールできます。
+**PHP ModeはEmacs 27.1以降で動作します**。対応バージョンの詳細は[Supported Version]をお読みください。Emacs 28以降では単に以下のコマンドを実行するだけでインストールできます。
 
 ```
 M-x package-install php-mode
