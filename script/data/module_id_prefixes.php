@@ -496,6 +496,7 @@ return [
     'curl' => [
         'curlfile.',
         'function.curl-',
+        'function.curl_upkeep',
     ],
     'dba' => [
         'function.dba-',
@@ -705,6 +706,9 @@ return [
         'function.recode',
         'function.recode-',
     ],
+    'rnp' => [
+        'function.rnp-',
+    ],
     'runkit7' => [
         'function.runkit7-',
     ],
@@ -720,6 +724,9 @@ return [
     ],
     'shmop' => [
         'function.shmop-',
+    ],
+    'simdjson' => [
+        'function.simdjson-'
     ],
     'simplexml' => [
         'function.dom-import-simplexml',
