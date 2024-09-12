@@ -4,7 +4,7 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
 <!-- ## Unreleased -->
 
-## [1.26.0] - 2024-09-13
+## [1.26.1] - 2024-09-13
 
 ### Added
 
@@ -48,6 +48,11 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 [@bricka]: https://github.com/bricka
 [emacs-php/php-ts-mode#68]: https://github.com/emacs-php/php-ts-mode/pull/68
 [PEAR Coding Standards]: https://pear.php.net/manual/en/standards.php
+
+## [1.26.0] - 2024-09-13
+
+> [!NOTE]
+> This version was cancelled due to a release error.
 
 ## [1.25.1] - 2023-11-24
 

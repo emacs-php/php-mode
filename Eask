@@ -1,5 +1,5 @@
 (package "php-mode"
-         "1.25.1"
+         "1.26.1"
          "Major mode for editing PHP code")
 
 (website-url "https://github.com/emacs-php/php-mode")
