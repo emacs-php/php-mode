@@ -1038,17 +1038,24 @@ HEREDOC-START."
       (unwind-protect
           (let (new-start new-end)
             (goto-char start)
+            ;; Consider bounding this backwards search by `beginning-of-defun'.
+            ;; (Benchmarking for a wide range of cases may be needed to decide
+            ;; whether that's an improvement, as `php-beginning-of-defun' also
+            ;; uses `re-search-backward'.)
             (when (re-search-backward php-heredoc-start-re nil t)
               (let ((maybe (point)))
                 (when (and (re-search-forward (php-heredoc-end-re (match-string 0)) nil t)
                            (> (point) start))
-                  (setq new-start maybe))))
-            (goto-char end)
-            (when (re-search-backward php-heredoc-start-re nil t)
-              (if (re-search-forward (php-heredoc-end-re (match-string 0)) nil t)
+                  (setq new-start maybe)
                   (when (> (point) end)
-                    (setq new-end (point)))
-                (setq new-end (point-max))))
+                    (setq new-end (point))))))
+            (unless new-end
+              (goto-char end)
+              (when (re-search-backward php-heredoc-start-re start t)
+                (if (re-search-forward (php-heredoc-end-re (match-string 0)) nil t)
+                    (when (> (point) end)
+                      (setq new-end (point)))
+                  (setq new-end (point-max)))))
             (when (or new-start new-end)
               (cons (or new-start start) (or new-end end))))
         ;; Cleanup
