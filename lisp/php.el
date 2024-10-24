@@ -99,8 +99,8 @@ You can replace \"en\" with your ISO language code."
   "Function to search PHP Manual at cursor position."
   :group 'php
   :tag "PHP Search Documentation Function"
-  :type '(choice (const :tag "Use online documentation" #'php-search-web-documentation)
-                 (const :tag "Use local documentation" #'php-local-manual-search)
+  :type '(choice (const :tag "Use online documentation" php-search-web-documentation)
+                 (const :tag "Use local documentation" php-local-manual-search)
                  (function :tag "Use other function")))
 
 (defcustom php-search-documentation-browser-function nil
@@ -453,7 +453,7 @@ can be used to match against definitions for that classlike."
 
 (defcustom php-imenu-generic-expression 'php-imenu-generic-expression-default
   "Default Imenu generic expression for PHP Mode.  See `imenu-generic-expression'."
-  :type '(choice (alist :key-type string :value-type list)
+  :type '(choice (alist :key-type string :value-type (list string))
                  (const php-imenu-generic-expression-legacy)
                  (const php-imenu-generic-expression-simple)
                  variable)
