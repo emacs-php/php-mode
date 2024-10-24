@@ -191,7 +191,7 @@ Turning this on will open it whenever `php-mode' is loaded."
                        #'php-flymake))
   "Flymake function to replace, if NIL do not replace."
   :tag "PHP Mode Replace Flymake Diag Function"
-  :type '(choice 'function
+  :type '(choice function
                  (const :tag "Disable to replace" nil)))
 
 (define-obsolete-variable-alias 'php-do-not-use-semantic-imenu 'php-mode-do-not-use-semantic-imenu "1.20.0")
@@ -253,7 +253,7 @@ mumamo-mode turned on.  Detects if there are any HTML tags in the
 buffer before warning, but this is is not very smart; e.g. if you
 have any tags inside a PHP string, it will be fooled."
   :tag "PHP Mode Warn If MuMaMo Off"
-  :type '(choice (const :tag "Warn" t) (const "Don't warn" nil)))
+  :type '(choice (const :tag "Warn" t) (const :tag "Don't warn" nil)))
 
 (defcustom php-mode-coding-style 'pear
   "Select default coding style to use with `php-mode'.

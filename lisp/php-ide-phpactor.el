@@ -30,8 +30,7 @@
 (require 'phpactor nil t)
 (require 'popup nil t)
 (require 'smart-jump nil t)
-(eval-when-compile
-  (require 'cl-lib))
+(require 'cl-lib)
 
 (defvar-local php-ide-phpactor-buffer nil)
 (defvar-local php-ide-phpactor-hover-last-pos nil)
@@ -55,10 +54,11 @@
 (defcustom php-ide-phpactor-activate-features '(all)
   "A set of Phpactor features you want to enable."
   :tag "PHP-IDE Phpactor Activate Features"
-  :type '(set (const all :tag "All")
+  :type '(set (const :tag "All" all)
               (const hover)
               (const navigation))
-  :safe (lambda (v) (and (listp v)))
+  :safe (lambda (xs) (and (listp xs)
+                          (cl-every (lambda (x) (memq x '(all hover navigation))) xs)))
   :group 'php-ide-phpactor)
 
 (defvar php-ide-phpactor-timer nil
