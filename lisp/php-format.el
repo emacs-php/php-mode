@@ -176,7 +176,7 @@
                                files)
                            return sym))
         (setq-local php-format-command cmd))
-      (when-let* (tup (plist-get (cdr-safe (assq cmd php-format-formatter-alist)) :command))
+      (when-let* ((tup (plist-get (cdr-safe (assq cmd php-format-formatter-alist)) :command)))
         (setq executable (car tup))
         (setq args (cdr tup))
         (setq vendor (expand-file-name executable (expand-file-name php-format-command-dir default-directory)))
