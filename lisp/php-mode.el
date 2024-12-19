@@ -1301,18 +1301,20 @@ for \\[find-tag] (which see)."
 
 ;; Font Lock
 (defconst php-phpdoc-type-names
-  (list "string" "integer" "int" "boolean" "bool" "float"
-        "double" "object" "mixed" "array" "resource"
-        "void" "null" "false" "true" "self" "static"
-        "callable" "iterable" "number"
-        ;; PHPStan and Psalm types
-        "array-key" "associative-array" "callable-array" "callable-object"
-        "callable-string" "class-string" "empty" "enum-string" "list"
-        "literal-string" "negative-int" "non-positive-int" "non-negative-int"
-        "never" "never-return" "never-returns" "no-return" "non-empty-array"
-        "non-empty-list" "non-empty-string" "non-falsy-string"
-        "numeric" "numeric-string" "positive-int" "scalar"
-        "trait-string" "truthy-string" "key-of" "value-of")
+  '(;; PHPStan and Psalm types
+    "__stringandstringable" "array" "array-key" "associative-array" "bool" "boolean"
+    "callable" "callable-array" "callable-object" "callable-string" "class-string"
+    "closed-resource" "double" "empty" "empty-scalar" "enum-string" "false" "float"
+    "int" "integer" "interface-string" "iterable" "list" "literal-string" "lowercase-string"
+    "mixed" "negative-int" "never" "never-return" "never-returns" "no-return" "non-empty-array"
+    "non-empty-list" "non-empty-literal-string" "non-empty-lowercase-string" "non-empty-mixed"
+    "non-empty-scalar" "non-empty-string" "non-empty-uppercase-string" "non-falsy-string"
+    "non-negative-int" "non-positive-int" "non-zero-int" "noreturn" "null" "number" "numeric"
+    "numeric-string" "object" "open-resource" "parent" "positive-int" "pure-callable"
+    "pure-closure" "resource" "scalar" "self" "static" "string" "trait-string" "true"
+    "truthy-string" "uppercase-string" "void"
+    ;; PHPStan Generic Types
+    "key-of" "value-of" "int-mask-of" "int-mask" "__benevolent" "template-type" "new")
   "A list of type and pseudotype names that can be used in PHPDoc.")
 
 (make-obsolete-variable 'php-phpdoc-type-keywords 'php-phpdoc-type-names "1.24.2")
