@@ -17,7 +17,7 @@ A powerful and flexible Emacs major mode for editing PHP scripts
 [GitHubプロジェクト][php-mode]にissueを作成してバグ報告や機能リクエストを送ってください。
 
 > [!NOTE]
-> [最新版][releases]のPHP ModeはEmacs 30をサポートしています。<br />アップグレードに伴うトラブルは[Discussions][disscussions-emacs30]に気軽に書き込んでください。
+> [最新版][releases]のPHP ModeはEmacs 30をサポートしています。<br />アップグレードに伴うトラブルは[Discussions][discussions-emacs30]に気軽に書き込んでください。
 
 > [!WARNING]
 > Emacsをアップグレードした直後に初めてPHPファイルを開いたときに、CC Mode関連のエラーが発生する可能性があります。これは以前のバージョンのEmacsでバイトコンパイルされたPHP Modeがディスクにキャッシュされているために起こるので、PHP Modeの再インストールによって解決します。
@@ -25,7 +25,7 @@ A powerful and flexible Emacs major mode for editing PHP scripts
 > **`M-x php-mode-debug-reinstall`** または **`M-x package-reinstall php-mode`** コマンドをお試しください。
 
 [releases]: https://github.com/emacs-php/php-mode/releases
-[disscussions-emacs30]: https://github.com/emacs-php/php-mode/discussions/798
+[discussions-emacs30]: https://github.com/emacs-php/php-mode/discussions/798
 
 ## インストール
 

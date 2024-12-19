@@ -17,7 +17,8 @@ English &nbsp;&nbsp;|&nbsp;&nbsp; [日本語](README.ja.md)
 Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode][php-mode].
 
 > [!NOTE]
-> The [latest version][releases] of PHP Mode supports Emacs 30. <br />Please feel free to [write to disucuss][disscussions-emacs30] if you have problems upgrading to Emacs 29.
+> The [latest version][releases] of PHP Mode supports Emacs 30.  
+> Please feel free to [open a discussion][discussions-emacs30] if you have any issues upgrading to Emacs 30.
 
 > [!WARNING]
 > After upgrading Emacs, when you open a PHP file for the first time, you may encounter errors related to CC Mode. These errors occur because a previously byte-compiled version of PHP Mode, cached on your disk, differs from the newly installed one. Reinstalling PHP Mode should resolve the issue.
@@ -25,25 +26,26 @@ Please submit any bug reports or feature requests by creating issues on [the Git
 > Try running **`M-x php-mode-debug-reinstall`** or **`M-x package-reinstall php-mode`**.
 
 [releases]: https://github.com/emacs-php/php-mode/releases
-[disscussions-emacs30]: https://github.com/emacs-php/php-mode/discussions/798
+[discussions-emacs30]: https://github.com/emacs-php/php-mode/discussions/798
 
 ## Installation
 
-**PHP Mode works with Emacs 27.1 or later**. For details on supported versions, see [Supported Version]. Emacs 28 or later can be installed simply by running the following command.
+**PHP Mode works with Emacs 27.1 or later.** For details on supported versions, see [Supported Version].
+On Emacs 28 or later, you can install it simply by running:
 
 ```
 M-x package-install php-mode
 ```
 
-By [adding MELPA to `package-archives`][melpa-getting-started], you can extend Emacs with many packages from the web.
+By [adding MELPA to `package-archives`][melpa-getting-started], you can extend Emacs with numerous packages from the web.
 
-If you don't want to depend on a package manager, you can install Lisp files directly in the traditional way.  See [Manual installation][wiki-manual-installation] for our recommended setup method.
+If you prefer not to rely on a package manager, you can install the Lisp files directly in the traditional manner.  See [Manual installation][wiki-manual-installation] for our recommended method.
 
 ## Configuration
 
 ### Personal Settings
 
-You can add configurations for PHP mode in the .emacs file (`~/.emacs.d/init.el`):
+You can add configurations for PHP Mode in your `.emacs` file (`~/.emacs.d/init.el`):
 
 ```lisp
 (defun my-php-mode-init ()
@@ -67,7 +69,7 @@ You can add configurations for PHP mode in the .emacs file (`~/.emacs.d/init.el`
 
 ### Project Setting
 
-You can add project-specific settings by creating a `.dir-locals.el` or `.dir-locals-2.el` file in the project's root directory.  It is recommended not to put these files under version control, as they depend on the packages installed in each user's Emacs.
+You can add project-specific settings by creating a `.dir-locals.el` or `.dir-locals-2.el` file in the project's root directory.  It is recommended not to put these files under version control, as they depend on the packages installed on each user's Emacs.
 
 ```lisp
 ((nil
@@ -77,12 +79,11 @@ You can add project-specific settings by creating a `.dir-locals.el` or `.dir-lo
 
 ## Reporting Bugs
 
-When reporting a bug please run the function `M-x php-mode-debug` and include its output in your bug report.  This helps up reproduce any problem you may have.
+When reporting a bug, please run `M-x php-mode-debug` and include its output in your bug report.  This helps us reproduce any issues you may be experiencing.
 
 ## How to Contribute
 
 Please see [CONTRIBUTING.md](CONTRIBUTING.md#english).
-
 
 ## Copyright
 
