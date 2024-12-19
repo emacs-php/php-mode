@@ -267,7 +267,7 @@ Typically it is `pear', `drupal', `wordpress', `symfony2' and `psr2'.")
 
 This function is compatible with `project-find-functions'."
   (let ((default-directory dir))
-    (when-let* (root (php-project-get-root-dir))
+    (when-let* ((root (php-project-get-root-dir)))
       (if (file-exists-p (expand-file-name ".git" root))
           (cons 'vc root)
         (cons 'transient root)))))

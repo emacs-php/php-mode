@@ -553,7 +553,7 @@ The order is reversed by calling as follows:
               (c-backward-token-2 1 nil))
          collect
          (cond
-          ((when-let* (bounds (php--thing-at-point-bounds-of-string-at-point))
+          ((when-let* ((bounds (php--thing-at-point-bounds-of-string-at-point)))
              (prog1 (buffer-substring-no-properties (car bounds) (cdr bounds))
                (goto-char (car bounds)))))
           ((looking-at php-re-token-symbols)
