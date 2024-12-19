@@ -166,7 +166,7 @@
   (cond
    ((stringp php-ide-eglot-executable) (list php-ide-eglot-executable))
    ((listp php-ide-eglot-executable) php-ide-eglot-executable)
-   ((when-let (command (assq php-ide-eglot-executable php-ide-lsp-command-alist))
+   ((when-let* (command (assq php-ide-eglot-executable php-ide-lsp-command-alist))
       (cond
        ((functionp command) (funcall command))
        ((listp command) command))))))
@@ -196,9 +196,9 @@ ACTIVATE: T is given when activeting, NIL when deactivating PHP-IDE."
   "Minor mode for integrate IDE-like tools."
   :lighter php-ide-mode-lighter
   (let ((ide-features php-ide-features))
-    (when-let (unavailable-features (cl-loop for feature in ide-features
-                                             unless (assq feature php-ide-feature-alist)
-                                             collect feature))
+    (when-let* (unavailable-features (cl-loop for feature in ide-features
+                                              unless (assq feature php-ide-feature-alist)
+                                              collect feature))
       (user-error "%s includes unavailable PHP-IDE features.  (available features are: %s)"
                   ide-features
                   (mapconcat (lambda (feature) (concat "'" (symbol-name feature)))
