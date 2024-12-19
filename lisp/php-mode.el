@@ -1519,7 +1519,9 @@ for \\[find-tag] (which see)."
      ;; Not operator (!) is defined in "before cc-mode" section above.
      ("\\(&&\\|||\\)" 1 'php-logical-op)
      ;; string interpolation ("$var, ${var}, {$var}")
-     (php-mode--string-interpolated-variable-font-lock-find 0 nil)))
+     (php-mode--string-interpolated-variable-font-lock-find 0 nil)
+     (,(rx symbol-start (group (or "get" "set")) (+ (syntax whitespace)) (or "{" "=>"))
+      1 'php-builtin)))
   "Detailed highlighting for PHP Mode.")
 
 (defvar php-font-lock-keywords php-font-lock-keywords-3
