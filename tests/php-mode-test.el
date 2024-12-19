@@ -1,6 +1,6 @@
-;;; php-mode-test.el --- Tests for php-mode
+;;; php-mode-test.el --- Tests for php-mode           -*- lexical-binding: t -*-
 
-;; Copyright (C) 2018-2019  Friends of Emacs-PHP development
+;; Copyright (C) 2018-2024  Friends of Emacs-PHP development
 ;; Copyright (C) 2013 Daniel Hackney
 ;;               2014, 2015 Eric James Michael Ritz
 
@@ -668,6 +668,10 @@ Meant for `php-mode-test-issue-503'."
   "Test highlighting language constructs added in PHP 8.1."
   (with-php-mode-test ("8.1/enum.php" :faces t))
   (with-php-mode-test ("8.1/readonly.php" :faces t)))
+
+(ert-deftest php-mode-test-php84 ()
+  "Test highlighting language constructs added in PHP 8.4."
+  (with-php-mode-test ("8.4/property-hooks.php" :faces t)))
 
 (ert-deftest php-mode-test-lang ()
   "Test highlighting for language constructs."
