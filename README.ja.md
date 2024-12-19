@@ -1,8 +1,8 @@
 <div align="center">
   <h1>Emacs PHP Mode</h1>
 
-[![Emacs: 29.4](https://img.shields.io/badge/Emacs-29.4-blue.svg)](https://www.gnu.org/software/emacs/)
-[![lang: PHP 8.3](https://img.shields.io/badge/lang-PHP%208.3-brightgreen.svg)](https://php.net/manual/migration83.php)
+[![Emacs: 30.0](https://img.shields.io/badge/Emacs-30.0-blue.svg)](https://www.gnu.org/software/emacs/)
+[![lang: PHP 8.4](https://img.shields.io/badge/lang-PHP%208.4-brightgreen.svg)](https://www.php.net/releases/8.4/)
 [![Build Status](https://github.com/emacs-php/php-mode/workflows/CI/badge.svg)](https://github.com/emacs-php/php-mode/actions)
 [![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)][gpl-v3]<br>
 [![NonGNU ELPA][nongnu-elpa-badge]][nongnu-elpa]
@@ -17,10 +17,15 @@ A powerful and flexible Emacs major mode for editing PHP scripts
 [GitHubプロジェクト][php-mode]にissueを作成してバグ報告や機能リクエストを送ってください。
 
 > [!NOTE]
-> [最新版][releases]のPHP ModeはEmacs 29をサポートしています。<br />アップグレードに伴うトラブルは[Discussions][disscussions-emacs29]に気軽に書き込んでください。
+> [最新版][releases]のPHP ModeはEmacs 30をサポートしています。<br />アップグレードに伴うトラブルは[Discussions][disscussions-emacs30]に気軽に書き込んでください。
+
+> [!WARNING]
+> Emacsをアップグレードした直後に初めてPHPファイルを開いたときに、CC Mode関連のエラーが発生する可能性があります。これは以前のバージョンのEmacsでバイトコンパイルされたPHP Modeがディスクにキャッシュされているために起こるので、PHP Modeの再インストールによって解決します。
+>
+> **`M-x php-mode-debug-reinstall`** または **`M-x package-reinstall php-mode`** コマンドをお試しください。
 
 [releases]: https://github.com/emacs-php/php-mode/releases
-[disscussions-emacs29]: https://github.com/emacs-php/php-mode/discussions/751
+[disscussions-emacs30]: https://github.com/emacs-php/php-mode/discussions/798
 
 ## インストール
 

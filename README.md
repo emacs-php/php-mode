@@ -1,8 +1,8 @@
 <div align="center">
   <h1>Emacs PHP Mode</h1>
 
-[![Emacs: 29.4](https://img.shields.io/badge/Emacs-29.4-blue.svg)](https://www.gnu.org/software/emacs/)
-[![lang: PHP 8.3](https://img.shields.io/badge/lang-PHP%208.3-brightgreen.svg)](https://www.php.net/manual/migration83.php)
+[![Emacs: 30.0](https://img.shields.io/badge/Emacs-30.0-blue.svg)](https://www.gnu.org/software/emacs/)
+[![lang: PHP 8.4](https://img.shields.io/badge/lang-PHP%208.4-brightgreen.svg)](https://www.php.net/releases/8.4/)
 [![Build Status](https://github.com/emacs-php/php-mode/workflows/CI/badge.svg)](https://github.com/emacs-php/php-mode/actions)
 [![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)][gpl-v3]<br>
 [![NonGNU ELPA][nongnu-elpa-badge]][nongnu-elpa]
@@ -17,10 +17,15 @@ English &nbsp;&nbsp;|&nbsp;&nbsp; [日本語](README.ja.md)
 Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode][php-mode].
 
 > [!NOTE]
-> The [latest version][releases] of PHP Mode supports Emacs 29. <br />Please feel free to [write to disucuss][disscussions-emacs29] if you have problems upgrading to Emacs 29.
+> The [latest version][releases] of PHP Mode supports Emacs 30. <br />Please feel free to [write to disucuss][disscussions-emacs30] if you have problems upgrading to Emacs 29.
+
+> [!WARNING]
+> After upgrading Emacs, when you open a PHP file for the first time, you may encounter errors related to CC Mode. These errors occur because a previously byte-compiled version of PHP Mode, cached on your disk, differs from the newly installed one. Reinstalling PHP Mode should resolve the issue.
+>
+> Try running **`M-x php-mode-debug-reinstall`** or **`M-x package-reinstall php-mode`**.
 
 [releases]: https://github.com/emacs-php/php-mode/releases
-[disscussions-emacs29]: https://github.com/emacs-php/php-mode/discussions/751
+[disscussions-emacs30]: https://github.com/emacs-php/php-mode/discussions/798
 
 ## Installation
 
