@@ -4,6 +4,35 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
 <!-- ## Unreleased -->
 
+## [1.27.0] - 2024-12-20
+
+### Added
+
+ * Support PHP 8.4 property-hooks ([#797])
+
+### Changed
+
+ * Improve `php-syntax-propertize-extend-region` efficiency ([#789], thanks [@phil-s]!)
+ * Update `php-phpdoc-type-names` to support [PHPStan 2.0.4] ([#795])
+
+### Fixed
+
+ * Fix Emacs 30 byte-compile errors ([#792])
+ * Use `when-let*` instead of `when-let` to enhance Emacs 30 compatibility ([#796])
+
+### Removed
+
+ * Drop support for Emacs 26 ([#788])
+
+[@phil-s]: https://github.com/phil-s
+[PHPStan 2.0.4]: https://github.com/phpstan/phpstan/releases/tag/2.0.4
+[#788]: https://github.com/emacs-php/php-mode/pull/788
+[#789]: https://github.com/emacs-php/php-mode/pull/789
+[#792]: https://github.com/emacs-php/php-mode/pull/792
+[#795]: https://github.com/emacs-php/php-mode/pull/795
+[#796]: https://github.com/emacs-php/php-mode/pull/796
+[#797]: https://github.com/emacs-php/php-mode/pull/797
+
 ## [1.26.1] - 2024-09-13
 
 ### Added
