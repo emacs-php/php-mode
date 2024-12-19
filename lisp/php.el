@@ -553,15 +553,14 @@ The order is reversed by calling as follows:
               (c-backward-token-2 1 nil))
          collect
          (cond
-          ((when-let (bounds (php--thing-at-point-bounds-of-string-at-point))
+          ((when-let* (bounds (php--thing-at-point-bounds-of-string-at-point))
              (prog1 (buffer-substring-no-properties (car bounds) (cdr bounds))
                (goto-char (car bounds)))))
           ((looking-at php-re-token-symbols)
            (prog1 (match-string-no-properties 0)
              (goto-char (match-beginning 0))))
-          (t
-             (buffer-substring-no-properties (point)
-                                             (save-excursion (php--c-end-of-token) (point))))))))))
+          ((buffer-substring-no-properties (point)
+                                           (save-excursion (php--c-end-of-token) (point))))))))))
 
 (defun php-get-pattern ()
   "Find the pattern we want to complete.
