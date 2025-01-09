@@ -627,8 +627,7 @@ but only if the setting is enabled."
    ((assq 'defun-block-intro c-syntactic-context) nil)
    ((assq 'defun-close c-syntactic-context) nil)
    ((assq 'statement-cont c-syntactic-context) nil)
-   (t
-    (save-excursion
+   ((save-excursion
       (beginning-of-line)
       (let ((beginning-of-langelem (cdr langelem))
             (beginning-of-current-line (point))
@@ -651,8 +650,10 @@ but only if the setting is enabled."
               (skip-chars-backward " 	\r\n")
               (backward-char 1))
             (and (not (eq (point) beginning-of-current-line))
+                 (not (php-in-string-or-comment-p))
                  (not (looking-at-p ","))
-                 (not (php-in-string-or-comment-p))))
+                 (save-excursion
+                   (backward-char) (not (looking-at-p ",")))))
           '+)
          (t nil)))))))
 
