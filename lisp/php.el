@@ -471,7 +471,7 @@ can be used to match against definitions for that classlike."
 
 (defconst php--re-classlike-pattern
   (eval-when-compile
-    (php-create-regexp-for-classlike (regexp-opt '("class" "interface" "trait")))))
+    (php-create-regexp-for-classlike (regexp-opt '("class" "interface" "trait" "enum")))))
 
 (defvar php--analysis-syntax-table
   (eval-when-compile
