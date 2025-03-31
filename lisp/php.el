@@ -325,12 +325,18 @@ can be used to match against definitions for that classlike."
      ;; First see if 'abstract' or 'final' appear, although really these
      ;; are not valid for all values of `type' that the function
      ;; accepts.
-     "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?"
+     (eval-when-compile
+       (rx line-start
+           (* (syntax whitespace))
+           (? (or "abstract" "final" "readonly")
+              (+ (syntax whitespace)))))
      ;; The classlike type
      type
      ;; Its name, which is the first captured group in the regexp.  We
      ;; allow backslashes in the name to handle namespaces, but again
      ;; this is not necessarily correct for all values of `type'.
+     ;; (rx (+ (syntax whitespace))
+     ;;     (group (+ (or (syntax word) "\\" (syntax symbol)))))
      "\\s-+\\(\\(?:\\sw\\|\\\\\\|\\s_\\)+\\)")))
 
 (defconst php-imenu-generic-expression-default
@@ -465,7 +471,7 @@ can be used to match against definitions for that classlike."
 
 (defconst php--re-classlike-pattern
   (eval-when-compile
-    (php-create-regexp-for-classlike (regexp-opt '("class" "interface" "trait")))))
+    (php-create-regexp-for-classlike (regexp-opt '("class" "interface" "trait" "enum")))))
 
 (defvar php--analysis-syntax-table
   (eval-when-compile

@@ -2,7 +2,15 @@
 
 All notable changes of the PHP Mode 1.19.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-<!-- ## Unreleased -->
+## Unreleased
+
+### Changed
+
+ * Add `readonly` class modifier to [Imenu] ([#802])
+ * Add `enum` support to `php-current-class` ([#802])
+
+[Imenu]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Imenu.html
+[#802]: https://github.com/emacs-php/php-mode/pull/802
 
 ## [1.27.0] - 2024-12-20
 
