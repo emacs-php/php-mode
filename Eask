@@ -1,3 +1,5 @@
+;; -*- mode: eask; lexical-binding: t -*-
+
 (package "php-mode"
          "1.26.1"
          "Major mode for editing PHP code")
