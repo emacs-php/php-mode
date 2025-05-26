@@ -8,9 +8,11 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
  * Add `readonly` class modifier to [Imenu] ([#802])
  * Add `enum` support to `php-current-class` ([#802])
+ * Remove hardcoding of implicit paths in `php` that are not guaranteed to exist ([#803])
 
 [Imenu]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Imenu.html
 [#802]: https://github.com/emacs-php/php-mode/pull/802
+[#803]: https://github.com/emacs-php/php-mode/pull/803
 
 ## [1.27.0] - 2024-12-20
 

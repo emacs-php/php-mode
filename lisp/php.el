@@ -49,7 +49,7 @@
   :link '(url-link :tag "Official Site" "https://github.com/emacs-php/php-mode")
   :link '(url-link :tag "PHP Mode Wiki" "https://github.com/emacs-php/php-mode/wiki"))
 
-(defcustom php-executable (or (executable-find "php") "/usr/bin/php")
+(defcustom php-executable (or (executable-find "php") "php")
   "The location of the PHP executable."
   :group 'php
   :tag "PHP Executable"
