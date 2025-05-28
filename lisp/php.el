@@ -55,6 +55,18 @@
   :tag "PHP Executable"
   :type 'string)
 
+(defcustom php-phpdbg-executable (list "phpdbg")
+  "The location of the PHPDBG executable."
+  :group 'php
+  :tag "PHP PHPDBG Executable"
+  :type '(repeat string))
+
+(defcustom php-php-parse-executabe nil
+  "The location of the php-parse executable."
+  :group 'php
+  :tag "PHP php-parse Executable"
+  :type '(repeat string))
+
 (defcustom php-site-url "https://www.php.net/"
   "Default PHP.net site URL.
 
@@ -803,6 +815,30 @@ When `DOCUMENT-ROOT' is NIL, the document root is obtained from `ROUTER-OR-DIR'.
                       nil nil nil
                       #'file-exists-p))))
   (find-file file))
+
+
+(defun php-phpdbg-disassemble-file (file)
+  "Read PHP FILE and print opcodes."
+  (interactive (list (if (or buffer-file-name (zerop (prefix-numeric-value current-prefix-arg)))
+                         buffer-file-name
+                       (expand-file-name
+                        (read-file-name "Select PHP file: " default-directory buffer-file-name)))))
+  (let ((args `(,@php-phpdbg-executable "-dopcache.enable_cli=1" "-p*" ,file)))
+    (compile (mapconcat #'shell-quote-argument args " "))))
+
+(defun php-parse-file (file)
+  "Parse PHP FILE and print node tree."
+  (interactive (list (if (or buffer-file-name (zerop (prefix-numeric-value current-prefix-arg)))
+                         buffer-file-name
+                       (expand-file-name
+                        (read-file-name "Select PHP file: " default-directory buffer-file-name)))))
+  (let* ((project-dir (php-project-get-root-dir))
+         (executable (or php-php-parse-executabe
+                         (file-executable-p (expand-file-name "vendor/bin/php-parse" project-dir))
+                         (executable-find "php-parse")
+                         (user-error "`php-parse' command not found")))
+         (args `(,@(if (listp executable) executable (list executable)) ,file)))
+    (compile (mapconcat #'shell-quote-argument args " "))))
 
 (provide 'php)
 ;;; php.el ends here
