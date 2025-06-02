@@ -194,6 +194,7 @@ current `tags-file-name'."
         (setq php-local-manual--completion-table php-table))))
 
 (defun php-local-manual-build-table-from-file (filename)
+  "Build a table of PHP function names from FILENAME."
   (let ((table (make-vector 1022 0))
         (buf (find-file-noselect filename)))
     (with-current-buffer buf
@@ -208,10 +209,11 @@ current `tags-file-name'."
 
 (defun php-local-manual-build-table-from-path (path)
   "Return list of PHP function name from `PATH' directory."
-  (cl-loop for file in (directory-files path nil "^function\\..+\\.html$")
-           if (string-match "\\.\\([-a-zA-Z_0-9]+\\)\\.html$" file)
-           collect (replace-regexp-in-string
-                    "-" "_" (substring file (match-beginning 1) (match-end 1)) t)))
+  (save-match-data
+    (cl-loop for file in (directory-files path nil "^function\\..+\\.html$")
+             if (string-match "\\.\\([-a-zA-Z_0-9]+\\)\\.html$" file)
+             collect (replace-regexp-in-string
+                      "-" "_" (substring file (match-beginning 1) (match-end 1)) t))))
 
 (provide 'php-local-manual)
 ;;; php-local-manual.el ends here
