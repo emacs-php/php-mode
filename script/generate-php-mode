@@ -1,0 +1,609 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * generate-php-mode
+ *
+ * @author    USAMI Kenta <tadsan@zonu.me>
+ * @copyright 2015 USAMI Kenta
+ * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
+ */
+
+const URL = 'http://doc.php.net/downloads/json/php_manual_en.json';
+const FILE = './php_manual_en.json';
+
+if (!file_exists(FILE)) {
+    file_put_contents(FILE, fopen(URL, 'r'));
+}
+
+$list_all = isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] === 'all';
+$whitelist = ['PHP 4', 'PHP 5', 'PHP 5.4', 'PHP 5.5', 'PHP 5.6', 'PHP 7', 'intl', 'mysqli', 'imagick'];
+
+$dic = explode("\n", <<<'EOT'
+$GLOBALS
+$_COOKIE
+$_ENV
+$_FILES
+$_GET
+$_POST
+$_REQUEST
+$_SERVER
+$_SESSION
+$argc
+$argv
+AppendIterator
+ArgumentCountError
+ArithmeticError
+ArrayAccess
+ArrayIterator
+ArrayObject
+AssertionError
+BadFunctionCallException
+BadMethodCallException
+CachingIterator
+CallbackFilterIterator
+Closure
+CompileError
+Countable
+DATE_ATOM
+DATE_COOKIE
+DATE_ISO8601
+DATE_RFC1036
+DATE_RFC1123
+DATE_RFC2822
+DATE_RFC3339
+DATE_RFC822
+DATE_RFC850
+DATE_RSS
+DATE_W3C
+DateInterval
+DatePeriod
+DateTime
+DateTimeImmutable
+DateTimeInterface
+DateTimeZone
+DirectoryIterator
+DivisionByZeroError
+DomainException
+E_ALL
+E_COMPILE_ERROR
+E_COMPILE_WARNING
+E_CORE_ERROR
+E_CORE_WARNING
+E_DEPRECATED
+E_ERROR
+E_NOTICE
+E_PARSE
+E_STRICT
+E_USER_DEPRECATED
+E_USER_ERROR
+E_USER_NOTICE
+E_USER_WARNING
+E_WARNING
+EmptyIterator
+Error
+ErrorException
+Exception
+FFI
+FFI::cdef
+FILE_APPEND
+FILE_BINARY
+FILE_IGNORE_NEW_LINES
+FILE_NO_DEFAULT_CONTEXT
+FILE_SKIP_EMPTY_LINES
+FILE_USE_INCLUDE_PATH
+FilesystemIterator
+FilterIterator
+GLOB_AVAILABLE_FLAGS
+GLOB_BRACE
+GLOB_MARK
+GLOB_NOCHECK
+GLOB_NOESCAPE
+GLOB_NOSORT
+GLOB_ONLYDIR
+Generator
+GlobIterator
+IDNA_ALLOW_UNASSIGNED
+IDNA_CHECK_BIDI
+IDNA_CHECK_CONTEXTJ
+IDNA_DEFAULT
+IDNA_ERROR_BIDI
+IDNA_ERROR_CONTEXTJ
+IDNA_ERROR_DISALLOWED
+IDNA_ERROR_DOMAIN_NAME_TOO_LONG
+IDNA_ERROR_EMPTY_LABEL
+IDNA_ERROR_HYPHEN_3_4
+IDNA_ERROR_INVALID_ACE_LABEL
+IDNA_ERROR_LABEL_HAS_DOT
+IDNA_ERROR_LABEL_TOO_LONG
+IDNA_ERROR_LEADING_COMBINING_MARK
+IDNA_ERROR_LEADING_HYPHEN
+IDNA_ERROR_PUNYCODE
+IDNA_ERROR_TRAILING_HYPHEN
+IDNA_NONTRANSITIONAL_TO_ASCII
+IDNA_NONTRANSITIONAL_TO_UNICODE
+IDNA_USE_STD3_RULES
+INF
+INTL_IDNA_VARIANT_2003
+INTL_IDNA_VARIANT_UTS46
+INTL_MAX_LOCALE_LEN
+InfiniteIterator
+InvalidArgumentException
+Iterator
+IteratorAggregate
+IteratorIterator
+JSON_BIGINT_AS_STRING
+JSON_ERROR_CTRL_CHAR
+JSON_ERROR_DEPTH
+JSON_ERROR_INF_OR_NAN
+JSON_ERROR_NONE
+JSON_ERROR_RECURSION
+JSON_ERROR_STATE_MISMATCH
+JSON_ERROR_SYNTAX
+JSON_ERROR_UNSUPPORTED_TYPE
+JSON_ERROR_UTF8
+JSON_FORCE_OBJECT
+JSON_HEX_AMP
+JSON_HEX_APOS
+JSON_HEX_QUOT
+JSON_HEX_TAG
+JSON_NUMERIC_CHECK
+JSON_PARTIAL_OUTPUT_ON_ERROR
+JSON_PRESERVE_ZERO_FRACTION
+JSON_PRETTY_PRINT
+JSON_UNESCAPED_SLASHES
+JSON_UNESCAPED_UNICODE
+JsonSerializable
+LOCK_EX
+LOCK_NB
+LOCK_SH
+LOCK_UN
+LengthException
+LimitIterator
+LogicException
+M_1_PI
+M_2_PI
+M_2_SQRTPI
+M_E
+M_EULER
+M_LN10
+M_LN2
+M_LNPI
+M_LOG10E
+M_LOG2E
+M_PI
+M_PI_2
+M_PI_4
+M_SQRT1_2
+M_SQRT2
+M_SQRT3
+M_SQRTPI
+MultipleIterator
+NAN
+NoRewindIterator
+OutOfBoundsException
+OutOfRangeException
+OuterIterator
+OverflowException
+PATHINFO_BASENAME
+PATHINFO_DIRNAME
+PATHINFO_EXTENSION
+PATHINFO_FILENAME
+PDO
+PDOException
+PHP_DEBUG
+PHP_EOL
+PHP_EXTRA_VERSION
+PHP_FLOAT_DIG
+PHP_FLOAT_EPSILON
+PHP_FLOAT_MAX
+PHP_FLOAT_MIN
+PHP_INT_MAX
+PHP_INT_MIN
+PHP_INT_SIZE
+PHP_MAJOR_VERSION
+PHP_MAXPATHLEN
+PHP_MINOR_VERSION
+PHP_OS
+PHP_OS_FAMILY
+PHP_RELEASE_VERSION
+PHP_ROUND_HALF_DOWN
+PHP_ROUND_HALF_EVEN
+PHP_ROUND_HALF_ODD
+PHP_ROUND_HALF_UP
+PHP_SAPI
+PHP_VERSION
+PHP_VERSION_ID
+PHP_ZTS
+ParentIterator
+ParseError
+RangeException
+RecursiveArrayIterator
+RecursiveCachingIterator
+RecursiveCallbackFilterIterator
+RecursiveDirectoryIterator
+RecursiveFilterIterator
+RecursiveIterator
+RecursiveIteratorIterator
+RecursiveRegexIterator
+RecursiveTreeIterator
+RegexIterator
+RuntimeException
+SEEK_CUR
+SEEK_END
+SEEK_SET
+SeekableIterator
+Serializable
+SplDoublyLinkedList
+SplFileInfo
+SplFileObject
+SplFixedArray
+SplHeap
+SplMaxHeap
+SplMinHeap
+SplObjectStorage
+SplObserver
+SplPriorityQueue
+SplQueue
+SplStack
+SplSubject
+SplTempFileObject
+Throwable
+Traversable
+TypeError
+UnderflowException
+UnexpectedValueException
+__CLASS__
+__COMPILER_HALT_OFFSET__
+__FILE__
+__FUNCTION__
+__LINE__
+__METHOD__
+__NAMESPACE__
+__TRAIT__
+__call($name, $arguments)
+__callStatic($name, $arguments)
+__clone()
+__construct()
+__debugInfo()
+__destruct
+__get($name)
+__halt_compiler();
+__invoke()
+__isset($name)
+__set($name)
+__set_state($properties)
+__sleep()
+__toString()
+__unset($name)
+abstract
+and
+array
+as
+bool
+break
+catch
+clone
+const
+continue
+declare
+default
+die
+echo
+elseif
+empty
+encoding
+enddeclare
+endfor
+endforeach
+endif
+endswitch
+endwhile
+eval
+exit
+extends
+final
+float
+fn
+for
+foreach
+function
+global
+goto
+if
+implements
+include
+include_once
+instanceof
+insteadof
+int
+integer
+isset
+iterable
+list
+namespace
+new
+object
+offsetExists($offset)
+offsetGet($offset)
+offsetSet($offset, $value)
+offsetUnset($offset)
+or
+parent
+print
+private
+protected
+public
+require
+require_once
+return
+self
+static
+strict_types
+string
+switch
+throw
+ticks
+try
+unset
+use
+var
+void
+while
+xor
+yield
+EOT);
+
+foreach (json_decode(file_get_contents(FILE), true) as $name => $func) {
+    $cat = category($name, $func['versions']);
+    if ($cat === null) {
+        continue;
+    }
+    unset($func['versions']);
+    if ($list_all || in_array($cat, $whitelist, true)) {
+        $dic[$name] = $func;
+    }
+}
+
+ksort($dic);
+
+$str = '(';
+foreach ($dic as $name => $func) {
+    if (is_int($name)) {
+        continue;
+    }
+    preg_match('/(?<=\().*?(?=\))/', $func['prototype'], $prototype_array);
+    $prototypes = str_replace(['[, '], ',[', $prototype_array[0]);
+    $prototypes = str_replace(['"'], '\"', $prototypes);
+    $properties = explode("," , $prototypes);
+    $property_string = '';
+    foreach ($properties as $property) {
+        $property_string .= ' "' . trim($property) . '"';
+    }
+    $str .= '("' . $name . '"' . $property_string . ')' . PHP_EOL;
+}
+$str .= ')';
+
+file_put_contents("./eldoc.el", $str);
+exit;
+
+function category ($name, $ver)
+{
+    if (strpos($name, '::') !== false) {
+        return null;
+    }
+
+    if ($name === '__halt_compiler') {
+        return null;
+    }
+
+    static $php7_removed = [
+        'mcrypt_generic_end', 'mcrypt_ecb', 'mcrypt_cbc', 'mcrypt_cfb', 'mcrypt_ofb',
+        'datefmt_set_timezone_id', 'IntlDateFormatter::setTimeZoneID',
+        'set_magic_quotes_runtime', 'magic_quotes_runtime', 'set_socket_blocking'
+    ];
+
+    if (in_array($name, $php7_removed, true)) {
+        return 'obsolete PHP 7';
+    }
+
+    if (strpos($name, 'DateTime') === 0 || strpos($name, 'Phar') === 0) {
+        return 'PHP 5';
+    }
+
+    if (stripos($name, 'KTagLib_') === 0) {
+        return 'PECL ktaglib';
+    }
+    if (strpos($name, 'QuickHash') === 0) {
+        return 'PECL quickhash';
+    }
+    if (strpos($name, 'SDO_') === 0) {
+        return 'PECL SCA_SDO';
+    }
+    if (strpos($name, 'fdf_') === 0) {
+        return 'FDF';
+    }
+    if (strpos($name, 'filepro') === 0) {
+        return 'filepro';
+    }
+    if (strpos($name, 'Imagick') === 0) {
+        return 'imagick';
+    }
+    if (strpos($name, 'imap_') === 0) {
+        return 'IMAP';
+    }
+    if (strpos($name, 'ldap_') === 0) {
+        return 'LDAP';
+    }
+    if (stripos($name, 'Intl') === 0 || strpos($name, 'UConverter') === 0) {
+        return 'intl';
+    }
+    if (stripos($name, 'soap') === 0 || $name === 'is_soap_fault' || $name === 'use_soap_error_handler') {
+        return 'SOAP';
+    }
+    if (strpos($name, 'snmp') === 0) {
+        return 'SNMP';
+    }
+
+    if (stripos($name, 'sqlite') === 0) {
+        return 'PECL sqlite';
+    }
+    if (strpos($name, 'mysqli') === 0) {
+        return 'mysqli';
+    }
+    if (strpos($name, 'ifx_') === 0 || strpos($name, 'ifxus_') === 0) {
+        return 'informix';
+    }
+    if (strpos($name, 'ibase_') === 0 || strpos($name, 'fbird_') === 0) {
+        return 'Firebird';
+    }
+    if (strpos($name, 'cubrid') === 0) {
+        return 'CUBRID';
+    }
+    if (strpos($name, 'dbase_') === 0) {
+        return 'dBase';
+    }
+    if (strpos($name, 'dbplus_') === 0) {
+        return 'DB++';
+    }
+    if (strpos($name, 'fbsql_') === 0) {
+        return 'FrontBase';
+    }
+    if (strpos($name, 'ingres_') === 0) {
+        return 'Ingres';
+    }
+    if (strpos($name, 'maxdb') === 0) {
+        return 'MaxDB';
+    }
+    if (strpos($name, 'msql_') === 0) {
+        return 'mSQL';
+    }
+    if (strpos($name, 'mssql_') === 0) {
+        return 'Mssql';
+    }
+    if (strpos($name, 'px_') === 0) {
+        return 'Paradox';
+    }
+    if (strpos($name, 'pg_') === 0) {
+        return 'PostgreSQL';
+    }
+    if (strpos($name, 'pspell_') === 0) {
+        return 'Pspell';
+    }
+    if (strpos($name, 'SQLite3') === 0) {
+        return 'SQLite3';
+    }
+    if (strpos($name, 'sqlsrv_') === 0) {
+        return 'SQLSRV';
+    }
+    if (strpos($name, 'sybase_') === 0) {
+        return 'Sybase';
+    }
+    if (strpos($name, 'TokyoTyrant') === 0) {
+        return 'TokyoTyrant';
+    }
+
+    if (strpos($name, 'wddx_') === 0) {
+        return 'WDDX';
+    }
+    if (strpos($name, 'wddx_') === 0) {
+        return 'Msession';
+    }
+
+    if (strpos($name, 'com_') === 0 || strpos($name, 'variant_') === 0) {
+        return 'COM';
+    }
+
+    if (strpos($name, 'tidy') === 0 || $name === 'ob_tidyhandler') {
+        return 'tidy';
+    }
+
+    if (strpos($name, 'yp_') === 0 || strpos($name, 'fam_') === 0) {
+        return 'obsolete PHP 5';
+    }
+
+    if (strpos($ver, 'Yaf >=') === 0) {
+        return 'PECL Yaf';
+    }
+    if (strpos($ver, 'mongodb') === 0) {
+        return 'PECL mongodb';
+    }
+    if ($ver === '' || $ver === 'Unknown' || $ver === 'None') {
+        return 'other';
+    }
+
+    if (strpos($ver, 'phar') !== false || strpos($ver, 'PECL pdo') !== false ||
+        strpos($ver, 'PECL json') !== false || strpos($ver, 'PECL zip') !== false
+    ) {
+        return 'PHP 5';
+    }
+
+    if (preg_match('/(PECL [-_a-zA-Z0-9]+)(?: >=)?/', $ver, $matches)) {
+        return $matches[1];
+    }
+
+    if ($name === 'ldap_modify_batch') {
+        return 'PHP 5.4';
+    }
+
+    if ($name === 'PDF_set_text_matrix') {
+        return 'obsolete PHP 4';
+    }
+
+    static $obsolete_5 = [
+        'session_register', 'session_unregister', 'session_is_registered', 'php_check_syntax',
+        'php_logo_guid', 'zend_logo_guid', 'define_syslog_variables'
+    ];
+    if (in_array($name, $obsolete_5, true)) {
+        return 'obsolete PHP 5';
+    }
+
+    static $obsolete_7 = [
+        '__autoload',
+    ];
+
+    if (in_array($name, $obsolete_7, true)) {
+        return 'obsolete PHP 7';
+    }
+
+    if ($ver === 'PHP 7') {
+        return 'PHP 7';
+    }
+    if ($ver === 'PHP 4, PHP 5, PHP 7' || $ver === 'PHP 4, PHP 5') {
+        return 'PHP 4';
+    }
+    if ($ver === 'PHP 5, PHP 7') {
+        return 'PHP 5';
+    }
+
+    //$is_support_7 = strpos($ver, 'PHP 7') !== false;
+
+    if (preg_match('/^PHP 4 >= 4\..+, PHP 5/', $ver)) {
+        return 'PHP 4';
+    }
+
+    if (strpos($ver, 'PHP 5 >') === 0) {
+        return 'PHP 5';
+    }
+
+    if (preg_match('/^PHP 5, PHP 7 >= (5\.[0-9])\.[0-9]/', $ver, $matches)) {
+        return (version_compare(5.3, $matches[1]) <= 0) ? "PHP {$matches[1]}" : 'PHP 5';
+    }
+
+    if (preg_match('/^PHP ?>= ?(5.[0-9])(?:\.[0-9]+)?$/', $ver, $matches)) {
+        return (version_compare(5.3, $matches[1]) <= 0) ? "PHP {$matches[1]}" : 'PHP 5';
+    }
+
+    if (preg_match('/^PHP 7 >=/', $ver)) {
+        return 'PHP 7';
+    }
+
+    if (strpos('PHP 5 <', $ver) === 0) {
+        return 'obsolete PHP 5';
+    }
+    if (strpos('PHP 4 <', $ver) === 0) {
+        return 'obsolete PHP 4';
+    }
+
+    return $ver;
+}
