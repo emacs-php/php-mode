@@ -1325,9 +1325,16 @@ for \\[find-tag] (which see)."
         "return" "throws" "var" "self-out" "this-out" "param-out"
         "type" "extends" "require-extends" "implemtents" "require-implements"
         "template" "template-covariant" "template-extends" "template-implements"
-        "require-extends" "require-implements"
-        "assert" "assert-if-true" "assert-if-false" "if-this-is")
+        "assert" "assert-if-true" "assert-if-false")
   "A list of tags specifying type names.")
+
+(defconst php-phpdoc-no-prefixed-tags
+  (list "phpstan-require-extends" "phpstan-require-implements" "phpstan-sealed"
+        "phpstan-self-out" "phpstan-this-out" "phpstan-type" "psalm-if-this-is"
+        "psalm-import-type" "psalm-inheritors" "psalm-require-extends"
+        "psalm-require-implements" "psalm-self-out" "psalm-this-out"
+        "phan-type" "psalm-type")
+  "A list of tags specifying type with no-prefixed names.")
 
 (defconst php-phpdoc-font-lock-doc-comments
   `(("{@[-[:alpha:]]+\\s-*\\([^}]*\\)}" ; "{@foo ...}" markup.
@@ -1337,7 +1344,13 @@ for \\[find-tag] (which see)."
      (1 'php-doc-variable-sigil prepend nil)
      (2 'php-variable-name prepend nil))
     ("\\(\\$\\)\\(this\\)\\>" (1 'php-doc-$this-sigil prepend nil) (2 'php-doc-$this prepend nil))
-    (,(concat "\\s-@" (rx (? (or "phan" "phpstan" "psalm") "-")) (regexp-opt php-phpdoc-type-tags) "\\s-+"
+    (,(concat "\\s-@"
+              (rx-to-string `(or (: (? (or "phan" "phpstan" "psalm") "-")
+                                    (or ,@php-phpdoc-type-tags))
+                                 ;(or ,@php-phpdoc-no-prefixed-tags)
+                                 )
+                            t)
+              "\\s-+"
               "\\(" (rx (+ (? "?") (? "\\") (+ (in "0-9A-Z_a-z")) (? "[]") (? "|"))) "\\)+")
      1 'php-string prepend nil)
     (,(concat "\\(?:|\\|\\?\\|\\s-\\)\\("
