@@ -223,7 +223,9 @@ enabled."
 ;; and `php-mode-psr2-hook' are defined in php.el (shared).
 
 (defcustom php-mode-symfony2-hook nil
-  "Hook called when a Symfony2 file is opened with `php-mode'."
+  "Hook called when a Symfony2 file is opened with `php-mode'.
+The Symfony2 style is only supported by the legacy `php-cc-mode', so
+this hook is defined here rather than in the shared php.el."
   :tag "PHP Mode Symfony2 Hook"
   :type 'hook)
 
@@ -240,7 +242,9 @@ Turning this on will force PEAR rules on all PHP files."
   :type '(choice (const :tag "Warn" t) (const :tag "Don't warn" nil)))
 (make-obsolete-variable 'php-mode-warn-if-mumamo-off 'php-mode-warn-if-html-template "2.0.0")
 
-;; `php-mode-coding-style' is defined in php.el (shared).
+;; `php-mode-coding-style' is defined in php.el (shared).  Note that its
+;; default value is `per'; the "per" cc-style is registered below so that
+;; `php-cc-mode' initializes correctly with it.
 
 ;; Since this function has a bad influence on the environment of many users,
 ;; temporarily disable it
@@ -730,6 +734,16 @@ Emacs versions unaffected by the bug."
   "Set PHP Mode to use reasonable default formatting."
   (interactive)
   (php-cc-set-style "php"))
+
+;; The shared `php-mode-coding-style' now defaults to `per'.  Register a
+;; "per" cc-style (an alias of the base "php" style) so that `php-cc-mode'
+;; keeps initializing when that default is in effect.
+(c-add-style "per" '("php"))
+
+(defun php-enable-per-coding-style ()
+  "Set PHP Mode to use the PHP-FIG PER coding style."
+  (interactive)
+  (php-cc-set-style "per"))
 
 (c-add-style
  "pear"
