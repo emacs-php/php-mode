@@ -7,16 +7,17 @@
 (website-url "https://github.com/emacs-php/php-mode")
 (keywords "languages" "php")
 
-(package-file "lisp/php-cc-mode.el")
+(package-file "lisp/php-mode.el")
 (files
  "lisp/php.el"
+ "lisp/php-mode.el"
  "lisp/php-core.el"
  "lisp/php-cc-mode.el"
- "lisp/php-complete.el"
- "lisp/php-defs.el"
  "lisp/php-indent.el"
  "lisp/php-style.el"
  "lisp/php-keywords.el"
+ "lisp/php-complete.el"
+ "lisp/php-defs.el"
  "lisp/php-face.el"
  "lisp/php-flymake.el"
  "lisp/php-format.el"
@@ -25,7 +26,6 @@
  "lisp/php-ide-phpactor.el"
  "lisp/php-ide.el"
  "lisp/php-align.el"
- "lisp/php-cc-mode.el"
  "lisp/php-mode-debug.el")
 
 (script "test" "echo \"Error: no test specified\" && exit 1")
