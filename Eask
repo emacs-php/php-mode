@@ -7,10 +7,11 @@
 (website-url "https://github.com/emacs-php/php-mode")
 (keywords "languages" "php")
 
-(package-file "lisp/php-mode.el")
+(package-file "lisp/php-cc-mode.el")
 (files
  "lisp/php.el"
  "lisp/php-core.el"
+ "lisp/php-cc-mode.el"
  "lisp/php-complete.el"
  "lisp/php-defs.el"
  "lisp/php-indent.el"
