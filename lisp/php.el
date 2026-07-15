@@ -27,16 +27,13 @@
 
 ;; This file provides common variable and functions for PHP packages.
 
-;; These functions are copied function from GNU Emacs.
-;;
-;; - c-end-of-token (cc-engine.el)
-;;
+;; This file has no dependency on CC Mode; the token scanning helpers
+;; below are self-contained reimplementations of the small pieces of
+;; cc-engine.el that PHP Mode used to rely on.
 
 ;;; Code:
 (eval-when-compile
-  (require 'cc-mode)
   (require 'cl-lib))
-(require 'cc-engine)
 (require 'flymake)
 (require 'php-core)
 (require 'php-keywords)
@@ -243,6 +240,60 @@ out and get `php-default-major-mode' instead."
   :group 'php
   :tag "PHP Static Method Call"
   :type 'face)
+
+;;; Shared coding-style customization
+;;
+;; These options are shared between the cc-mode based `php-cc-mode' and the
+;; cc-mode independent `php-mode', so they live in php.el.
+
+(define-obsolete-variable-alias 'php-template-compatibility 'php-mode-template-compatibility "1.20.0")
+(defcustom php-mode-template-compatibility t
+  "Should detect presence of html tags."
+  :group 'php
+  :tag "PHP Mode Template Compatibility"
+  :type 'boolean)
+
+(defcustom php-mode-coding-style 'per
+  "Select default coding style to use with `php-mode'.
+This variable can take one of the following symbol values:
+
+`per' - PHP-FIG PER Coding Style (the modern default).
+`psr2' - use PSR standards (PSR-2, PSR-12).
+`pear' - use coding styles preferred for PEAR code and modules.
+`drupal' - use coding styles preferred for working with Drupal projects.
+`wordpress' - use coding styles preferred for working with WordPress projects."
+  :group 'php
+  :tag "PHP Mode Coding Style"
+  :type '(choice (const :tag "PER" per)
+                 (const :tag "PEAR" pear)
+                 (const :tag "Drupal" drupal)
+                 (const :tag "WordPress" wordpress)
+                 (const :tag "PSR-2" psr2))
+  :initialize #'custom-initialize-default)
+
+(defcustom php-mode-pear-hook nil
+  "Hook called when a PHP PEAR file is opened with `php-mode'."
+  :group 'php
+  :tag "PHP Mode Pear Hook"
+  :type 'hook)
+
+(defcustom php-mode-drupal-hook nil
+  "Hook called when a Drupal file is opened with `php-mode'."
+  :group 'php
+  :tag "PHP Mode Drupal Hook"
+  :type 'hook)
+
+(defcustom php-mode-wordpress-hook nil
+  "Hook called when a WordPress file is opened with `php-mode'."
+  :group 'php
+  :tag "PHP Mode WordPress Hook"
+  :type 'hook)
+
+(defcustom php-mode-psr2-hook nil
+  "Hook called when a PSR-2 file is opened with `php-mode'."
+  :group 'php
+  :tag "PHP Mode PSR-2 Hook"
+  :type 'hook)
 
 ;;; PHP Keywords
 (defconst php-re-token-symbols
@@ -461,16 +512,46 @@ can be used to match against definitions for that classlike."
   (eval-when-compile
     (php-create-regexp-for-classlike (regexp-opt '("class" "interface" "trait" "enum")))))
 
+(defun php--make-base-syntax-table ()
+  "Return a fresh syntax table describing PHP tokens.
+
+This is a hand-written table that does not depend on CC Mode's
+`c-populate-syntax-table'.  It is shared by `php-mode' (as the buffer
+syntax table) and, with minor tweaks, by `php--analysis-syntax-table'."
+  (let ((table (make-syntax-table)))
+    ;; Identifier constituents.
+    (modify-syntax-entry ?_  "_"    table)
+    (modify-syntax-entry ?$  "_"    table)
+    ;; String / escape.
+    (modify-syntax-entry ?`  "\""   table)
+    (modify-syntax-entry ?\" "\""   table)
+    (modify-syntax-entry ?\\ "\\"   table)
+    ;; Operators.
+    (modify-syntax-entry ?+  "."    table)
+    (modify-syntax-entry ?-  "."    table)
+    (modify-syntax-entry ?%  "."    table)
+    (modify-syntax-entry ?<  "."    table)
+    (modify-syntax-entry ?>  "."    table)
+    (modify-syntax-entry ?&  "."    table)
+    (modify-syntax-entry ?|  "."    table)
+    ;; C-style comments: // and /* ... */.
+    (modify-syntax-entry ?/  ". 124" table)
+    (modify-syntax-entry ?*  ". 23b" table)
+    ;; Shell-style line comments: # ... \n (comment style b).
+    (modify-syntax-entry ?#  "< b"  table)
+    (modify-syntax-entry ?\n "> b"  table)
+    table))
+
+(defvar php--base-syntax-table (php--make-base-syntax-table)
+  "Syntax table describing PHP tokens, independent of CC Mode.")
+
 (defvar php--analysis-syntax-table
-  (eval-when-compile
-    (let ((table (make-syntax-table)))
-      (c-populate-syntax-table table)
-      (modify-syntax-entry ?_ "w" table)
-      (modify-syntax-entry ?`  "\""  table)
-      (modify-syntax-entry ?\" "\""  table)
-      (modify-syntax-entry ?#  "< b" table)
-      (modify-syntax-entry ?\n "> b" table)
-      table)))
+  (let ((table (copy-syntax-table php--base-syntax-table)))
+    ;; For token analysis treat `_' and `$' as word constituents so that
+    ;; identifiers (and variables) scan as single words.
+    (modify-syntax-entry ?_ "w" table)
+    (modify-syntax-entry ?$ "w" table)
+    table))
 
 (defun php-get-current-element (re-pattern)
   "Return backward matched element by RE-PATTERN."
@@ -501,35 +582,86 @@ Prefer the enclosing string with fallback on sexp at point.
                 (let ((bound (bounds-of-thing-at-point 'sexp)))
 	          (and bound
 	               (<= (car bound) (point)) (< (point) (cdr bound))
-	               bound))))))))
-  (if (eval-when-compile (fboundp 'c-end-of-token))
-      (defalias 'php--c-end-of-token #'c-end-of-token)
-    ;; Copyright (C) 1985, 1987, 1992-2022 Free Software Foundation, Inc.
-    ;; Follows function is copied from Emacs 27's cc-engine.el.
-    ;; https://emba.gnu.org/emacs/emacs/-/commit/95fb826dc58965eac287c0826831352edf2e56f7
-    (defun php--c-end-of-token (&optional back-limit)
-      ;; Move to the end of the token we're just before or in the middle of.
-      ;; BACK-LIMIT may be used to bound the backward search; if given it's
-      ;; assumed to be at the boundary between two tokens.  Return non-nil if the
-      ;; point is moved, nil otherwise.
-      ;;
-      ;; This function might do hidden buffer changes.
-      (let ((start (point)))
-        (cond ;; ((< (skip-syntax-backward "w_" (1- start)) 0)
-         ;;  (skip-syntax-forward "w_"))
-         ((> (skip-syntax-forward "w_") 0))
-         ((< (skip-syntax-backward ".()" back-limit) 0)
-          (while (< (point) start)
-	    (if (looking-at c-nonsymbol-token-regexp)
-	        (goto-char (match-end 0))
-	      ;; `c-nonsymbol-token-regexp' should always match since
-	      ;; we've skipped backward over punctuation or paren
-	      ;; syntax, but move forward in case it doesn't so that
-	      ;; we don't leave point earlier than we started with.
-	      (forward-char))))
-         (t (if (looking-at c-nonsymbol-token-regexp)
-	        (goto-char (match-end 0)))))
-        (> (point) start)))))
+	               bound)))))))))
+
+;; The following three functions are self-contained reimplementations of
+;; the token scanning behavior PHP Mode used to borrow from cc-engine.el
+;; (`c-end-of-token', `c-beginning-of-current-token' and
+;; `c-backward-token-2').  They operate under `php--analysis-syntax-table'
+;; and use `php-re-token-symbols' as the operator/punctuation token regexp
+;; (the analogue of cc-mode's `c-nonsymbol-token-regexp').
+
+(defun php--end-of-token (&optional back-limit)
+  "Move to the end of the token point is before or in the middle of.
+BACK-LIMIT bounds the backward search.  Return non-nil if point moved."
+  (let ((start (point)))
+    (cond
+     ((> (skip-syntax-forward "w_") 0))
+     ((< (skip-syntax-backward ".()" back-limit) 0)
+      (while (< (point) start)
+        (if (looking-at php-re-token-symbols)
+            (goto-char (match-end 0))
+          ;; `php-re-token-symbols' should always match after skipping
+          ;; backward over punctuation or paren syntax, but move forward
+          ;; a character in case it doesn't so we never regress.
+          (forward-char))))
+     (t (if (looking-at php-re-token-symbols)
+            (goto-char (match-end 0)))))
+    (> (point) start)))
+
+(defun php--beginning-of-current-token (&optional back-limit)
+  "Move to the beginning of the token point is in the middle of.
+Do not move when not in the middle of a token.  BACK-LIMIT bounds the
+backward search.  Return non-nil if point moved."
+  (let ((start (point)))
+    (if (looking-at "\\w\\|\\s_")
+        (skip-syntax-backward "w_" back-limit)
+      (when (< (skip-syntax-backward ".()" back-limit) 0)
+        (while (let ((pos (or (and (looking-at php-re-token-symbols)
+                                   (match-end 0))
+                              (1+ (point)))))
+                 (if (<= pos start)
+                     (goto-char pos))))))
+    (< (point) start)))
+
+(defconst php--jump-syntax-token "\\w\\|\\s_\\|\\s\"\\|\\s|"
+  "Syntax classes jumped over as a balanced sexp by `php--backward-token'.")
+
+(defun php--backward-token (&optional limit)
+  "Move backward over one PHP token, skipping comments and whitespace.
+LIMIT bounds the backward movement.  Return 0 on success, otherwise the
+number of tokens that could not be moved over."
+  (or limit (setq limit (point-min)))
+  (let ((last (point))
+        (count 1))
+    (condition-case nil
+        (while (and (> count 0)
+                    (progn
+                      (php--backward-syntactic-ws limit)
+                      (backward-char)
+                      (if (looking-at php--jump-syntax-token)
+                          (goto-char (scan-sexps (1+ (point)) -1))
+                        (php--beginning-of-current-token))
+                      (>= (point) limit)))
+          (setq last (point)
+                count (1- count)))
+      (error (goto-char last)))
+    (when (< (point) limit)
+      (goto-char last))
+    count))
+
+(defun php--backward-syntactic-ws (&optional limit)
+  "Move backward over comments and whitespace, not past LIMIT."
+  (let ((limit (or limit (point-min)))
+        (moved t))
+    (while (and moved (> (point) limit))
+      (setq moved nil)
+      (when (< (skip-chars-backward " \t\n\r\f\v" limit) 0)
+        (setq moved t))
+      (when (forward-comment -1)
+        (setq moved t)))
+    (when (< (point) limit)
+      (goto-char limit))))
 
 (defun php-leading-tokens (length)
   "Return a list of leading LENGTH tokens from cursor point.
@@ -544,7 +676,7 @@ The order is reversed by calling as follows:
          repeat length
          do (progn
               (forward-comment (- (point)))
-              (c-backward-token-2 1 nil))
+              (php--backward-token))
          collect
          (cond
           ((when-let* ((bounds (php--thing-at-point-bounds-of-string-at-point)))
@@ -554,7 +686,7 @@ The order is reversed by calling as follows:
            (prog1 (match-string-no-properties 0)
              (goto-char (match-beginning 0))))
           ((buffer-substring-no-properties (point)
-                                           (save-excursion (php--c-end-of-token) (point))))))))))
+                                           (save-excursion (php--end-of-token) (point))))))))))
 
 (defun php-get-pattern ()
   "Find the pattern we want to complete.
