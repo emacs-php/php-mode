@@ -29,8 +29,8 @@
 ;; `c-add-style' / `c-set-style' machinery.
 ;;
 ;; The indentation variables referenced by the styles below
-;; (`php-indent-offset' and `php-indent-switch-case-offset') are
-;; defined in php-indent.el, which is
+;; (`php-indent-offset', `php-indent-switch-case-offset' and
+;; `php-indent-chain-indent') are defined in php-indent.el, which is
 ;; implemented in a parallel task.  They are forward-declared with
 ;; `defvar' here so that this file byte-compiles cleanly whether or not
 ;; php-indent.el has been loaded yet.
@@ -44,40 +44,35 @@
 ;; compiler quiet; php-indent.el is the canonical definition site.
 (defvar php-indent-offset)
 (defvar php-indent-switch-case-offset)
-
-;; Forward declaration for the shared coding-style option.  In the target
-;; design this lives in php.el; while php-style.el is dormant scaffolding
-;; it is only referenced, never defined, here.
-(defvar php-mode-coding-style)
+(defvar php-indent-chain-indent)
 
 ;;; Style definitions
 
 (defvar php-style-alist
-  '(("php" . ((php-indent-offset . 4)
+  '(("per" . ((php-indent-offset . 4)
+              (php-indent-switch-case-offset . 4)
+              (php-indent-chain-indent . t)
               (indent-tabs-mode . nil)
               (tab-width . 4)
-              (php-indent-switch-case-offset . 4)))
-    ("per" . ((php-style-parent . "php")
               (fill-column . 120)
               (show-trailing-whitespace . t)
               (php-style-delete-trailing-whitespace . t)))
     ("psr2" . ((php-style-parent . "per")
                (fill-column . 78)))
-    ("pear" . ((php-style-parent . "php")
+    ("pear" . ((php-indent-offset . 4)
                (php-indent-switch-case-offset . 0)
-               (show-trailing-whitespace . nil)
-               (php-style-delete-trailing-whitespace . nil)))
-    ("drupal" . ((php-style-parent . "php")
-                 (php-indent-offset . 2)
+               (php-indent-chain-indent . nil)
+               (tab-width . 4)))
+    ("drupal" . ((php-indent-offset . 2)
+                 (php-indent-chain-indent . nil)
                  (tab-width . 2)
                  (fill-column . 78)
                  (show-trailing-whitespace . t)
                  (php-style-delete-trailing-whitespace . t)))
-    ("wordpress" . ((php-style-parent . "php")
+    ("wordpress" . ((php-indent-offset . 4)
                     (indent-tabs-mode . t)
-                    (fill-column . 78)
-                    (show-trailing-whitespace . nil)
-                    (php-style-delete-trailing-whitespace . nil))))
+                    (tab-width . 4)
+                    (fill-column . 78))))
   "Alist of PHP Mode coding styles.
 
 Each element is (STYLE-NAME . VARIABLE-ALIST) where STYLE-NAME is a
