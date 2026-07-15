@@ -28,7 +28,7 @@
 ;;; Code:
 (require 'cc-mode)
 (require 'cus-edit)
-(require 'php-mode)
+(require 'php-cc-mode)
 (require 'package)
 (require 'pkg-info nil t)
 (require 'el-get nil t)
@@ -96,8 +96,8 @@ When CALLED-INTERACTIVE then message the result."
 (defun php-mode-debug ()
   "Display informations useful for debugging PHP Mode."
   (interactive)
-  (unless (eq major-mode 'php-mode)
-    (user-error "Invoke this command only in php-mode buffer"))
+  (unless (eq major-mode 'php-cc-mode)
+    (user-error "Invoke this command only in php-cc-mode buffer"))
   (php-mode-debug--buffer 'init)
   (php-mode-debug--message "Feel free to report on GitHub what you noticed!")
   (php-mode-debug--message "https://github.com/emacs-php/php-mode/issues/new")
