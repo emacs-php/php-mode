@@ -533,9 +533,13 @@ syntax table) and, with minor tweaks, by `php--analysis-syntax-table'."
     (modify-syntax-entry ?>  "."    table)
     (modify-syntax-entry ?&  "."    table)
     (modify-syntax-entry ?|  "."    table)
-    ;; C-style comments: // and /* ... */.
-    (modify-syntax-entry ?/  ". 124" table)
-    (modify-syntax-entry ?*  ". 23b" table)
+    ;; C-style comments: // and /* ... */.  The `b' comment-style flag
+    ;; marks `//' (and `#') line comments so that they are distinguished
+    ;; from `/* */' block comments by `syntax-ppss' (element 7); it must
+    ;; sit on `/' and the newline, not on `*', mirroring the standard
+    ;; C/JavaScript syntax tables.
+    (modify-syntax-entry ?/  ". 124b" table)
+    (modify-syntax-entry ?*  ". 23"   table)
     ;; Shell-style line comments: # ... \n (comment style b).
     (modify-syntax-entry ?#  "< b"  table)
     (modify-syntax-entry ?\n "> b"  table)
