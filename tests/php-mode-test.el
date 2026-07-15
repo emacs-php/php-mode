@@ -405,7 +405,7 @@ DEFERRED: same chained-method-call alignment feature as
 
 (ert-deftest php-mode-test-issue-136 ()
   "Proper highlighting for variable interpolation."
-  (with-php-mode-test ("issue-136.php") :faces t))
+  (with-php-mode-test ("issue-136.php" :faces t)))
 
 (ert-deftest php-mode-test-issue-144 ()
   "Indentation test '#' comment line has single quote."
