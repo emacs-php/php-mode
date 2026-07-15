@@ -175,8 +175,8 @@ Turning this on will open it whenever `php-mode' is loaded."
 
 ;; `php-mode-template-compatibility' is defined in php.el (shared).
 
-(define-obsolete-variable-alias 'php-lineup-cascaded-calls 'php-mode-lineup-cascaded-calls "1.20.0")
-(defcustom php-mode-lineup-cascaded-calls nil
+(define-obsolete-variable-alias 'php-lineup-cascaded-calls 'php-cc-mode-lineup-cascaded-calls "1.20.0")
+(defcustom php-cc-mode-lineup-cascaded-calls nil
   "Indent chained method calls to the previous line."
   :tag "PHP Mode Lineup Cascaded Calls"
   :type 'boolean)
@@ -256,7 +256,7 @@ local variables, set NIL."
   :tag "PHP Mode Enable Project Coding Style"
   :type 'boolean)
 
-(defcustom php-mode-enable-backup-style-variables t
+(defcustom php-cc-mode-enable-backup-style-variables t
   "When set to `T', back up values set by hook and buffer local variables.
 
 This function may interfere with other hooks and other behaviors.
@@ -321,8 +321,8 @@ as a function.  Call with AS-NUMBER keyword to compare by `version<'.
     ;; key-bindings so that our PHP-specific versions will work even
     ;; if the user has reconfigured their keys, e.g. if they rebind
     ;; c-end-of-defun to something other than C-M-e.
-    (define-key map [remap c-beginning-of-defun] #'php-beginning-of-defun)
-    (define-key map [remap c-end-of-defun] #'php-end-of-defun)
+    (define-key map [remap c-beginning-of-defun] #'php-cc-beginning-of-defun)
+    (define-key map [remap c-end-of-defun] #'php-cc-end-of-defun)
     (define-key map [remap c-set-style] #'php-cc-set-style)
 
     (define-key map [(control c) (control f)] #'php-search-documentation)
@@ -421,10 +421,10 @@ as a function.  Call with AS-NUMBER keyword to compare by `version<'.
   php-cc '("=" "*=" "/=" "%=" "+=" "-=" ">>=" "<<=" "&=" "^=" "|=" ".=" "??="))
 
 (c-lang-defconst beginning-of-defun-function
-  php-cc 'php-beginning-of-defun)
+  php-cc 'php-cc-beginning-of-defun)
 
 (c-lang-defconst end-of-defun-function
-  php-cc 'php-end-of-defun)
+  php-cc 'php-cc-end-of-defun)
 
 (c-lang-defconst c-primitive-type-kwds
   php-cc '("int" "integer" "bool" "boolean" "float" "double" "real"
@@ -600,7 +600,7 @@ might be to handle switch and goto labels differently."
   "Line up chained methods using `c-lineup-cascaded-calls',
 but only if the setting is enabled."
   (cond
-   (php-mode-lineup-cascaded-calls (c-lineup-cascaded-calls langelem))
+   (php-cc-mode-lineup-cascaded-calls (c-lineup-cascaded-calls langelem))
    ((assq 'arglist-cont-nonempty c-syntactic-context) nil)
    ((assq 'defun-block-intro c-syntactic-context) nil)
    ((assq 'defun-close c-syntactic-context) nil)
@@ -727,10 +727,10 @@ Emacs versions unaffected by the bug."
    (tab-width . ,(default-value 'tab-width))
    (fill-column . ,(default-value 'fill-column))
    (show-trailing-whitespace . ,(default-value 'show-trailing-whitespace))
-   (php-mode-lineup-cascaded-calls . t)
+   (php-cc-mode-lineup-cascaded-calls . t)
    (php-style-delete-trailing-whitespace . nil)))
 
-(defun php-enable-default-coding-style ()
+(defun php-cc-enable-default-coding-style ()
   "Set PHP Mode to use reasonable default formatting."
   (interactive)
   (php-cc-set-style "php"))
@@ -740,7 +740,7 @@ Emacs versions unaffected by the bug."
 ;; keeps initializing when that default is in effect.
 (c-add-style "per" '("php"))
 
-(defun php-enable-per-coding-style ()
+(defun php-cc-enable-per-coding-style ()
   "Set PHP Mode to use the PHP-FIG PER coding style."
   (interactive)
   (php-cc-set-style "per"))
@@ -751,9 +751,9 @@ Emacs versions unaffected by the bug."
    (c-basic-offset . 4)
    (c-offsets-alist . ((case-label . 0) (statement-cont . +)))
    (tab-width . 4)
-   (php-mode-lineup-cascaded-calls . nil)))
+   (php-cc-mode-lineup-cascaded-calls . nil)))
 
-(defun php-enable-pear-coding-style ()
+(defun php-cc-enable-pear-coding-style ()
   "Set up `php-mode' to use the coding styles preferred for PEAR code and modules."
   (interactive)
   (php-cc-set-style "pear"))
@@ -765,10 +765,10 @@ Emacs versions unaffected by the bug."
    (tab-width . 2)
    (fill-column . 78)
    (show-trailing-whitespace . t)
-   (php-mode-lineup-cascaded-calls . nil)
+   (php-cc-mode-lineup-cascaded-calls . nil)
    (php-style-delete-trailing-whitespace . t)))
 
-(defun php-enable-drupal-coding-style ()
+(defun php-cc-enable-drupal-coding-style ()
   "Make `php-mode' use coding styles that are preferable for working with Drupal."
   (interactive)
   (php-cc-set-style "drupal"))
@@ -782,7 +782,7 @@ Emacs versions unaffected by the bug."
     (tab-width . 4)
     (fill-column . 78)))
 
-(defun php-enable-wordpress-coding-style ()
+(defun php-cc-enable-wordpress-coding-style ()
   "Make `php-mode' use coding styles that are preferable for working with
 Wordpress."
   (interactive)
@@ -793,10 +793,10 @@ Wordpress."
   '("php"
     (c-offsets-alist . ((statement-cont . php-lineup-hanging-semicolon)))
     (c-indent-comments-syntactically-p . t)
-    (php-mode-lineup-cascaded-calls . nil)
+    (php-cc-mode-lineup-cascaded-calls . nil)
     (fill-column . 78)))
 
-(defun php-enable-symfony2-coding-style ()
+(defun php-cc-enable-symfony2-coding-style ()
   "Make `php-mode' use coding styles that are preferable for working with Symfony2."
   (interactive)
   (php-cc-set-style "symfony2"))
@@ -808,15 +808,15 @@ Wordpress."
     (c-indent-comments-syntactically-p . t)
     (fill-column . 78)
     (show-trailing-whitespace . t)
-    (php-mode-lineup-cascaded-calls . nil)
+    (php-cc-mode-lineup-cascaded-calls . nil)
     (php-style-delete-trailing-whitespace . t)))
 
-(defun php-enable-psr2-coding-style ()
+(defun php-cc-enable-psr2-coding-style ()
   "Make `php-mode' comply to the PSR-2 coding style."
   (interactive)
   (php-cc-set-style "psr2"))
 
-(defun php-beginning-of-defun (&optional arg)
+(defun php-cc-beginning-of-defun (&optional arg)
   "Move to the beginning of the ARGth PHP function from point.
 Implements PHP version of `beginning-of-defun-function'."
   (interactive "p")
@@ -837,13 +837,13 @@ Implements PHP version of `beginning-of-defun-function'."
         (setq arg (1+ arg))))
     (not (null found-p))))
 
-(defun php-end-of-defun (&optional arg)
+(defun php-cc-end-of-defun (&optional arg)
   "Move the end of the ARGth PHP function from point.
 Implements PHP version of `end-of-defun-function'
 
-See `php-beginning-of-defun'."
+See `php-cc-beginning-of-defun'."
   (interactive "p")
-  (php-beginning-of-defun (- (or arg 1))))
+  (php-cc-beginning-of-defun (- (or arg 1))))
 
 
 (defvar-local php-warned-bad-indent nil
@@ -961,7 +961,7 @@ this ^ lineup"
     (if (looking-at-p "\\s-*;\\s-*$") 0 '+)))
 
 (eval-and-compile
-  (defconst php-heredoc-start-re
+  (defconst php-cc-heredoc-start-re
     (rx "<<<"
         (* (syntax whitespace))
         (or (group (+ (or (syntax word) (syntax symbol))))
@@ -970,7 +970,7 @@ this ^ lineup"
         line-end)
     "Regular expression for the start of a PHP heredoc."))
 
-(defun php-heredoc-end-re (heredoc-start)
+(defun php-cc-heredoc-end-re (heredoc-start)
   "Build a regular expression for the end of a heredoc started by the string
 HEREDOC-START."
   ;; Extract just the identifier without <<< and quotes.
@@ -978,22 +978,22 @@ HEREDOC-START."
   (concat "^\\s-*\\(" (match-string 0 heredoc-start) "\\)\\W"))
 
 (eval-and-compile
-  (defconst php-syntax-propertize-rules
+  (defconst php-cc-syntax-propertize-rules
     (syntax-propertize-precompile-rules
-     (php-heredoc-start-re
-      (0 (ignore (php--syntax-propertize-heredoc
+     (php-cc-heredoc-start-re
+      (0 (ignore (php-cc--syntax-propertize-heredoc
                   (match-beginning 0)
                   (or (match-string 1) (match-string 2) (match-string 3))
                   (null (match-string 3))))))
      ((rx "#[")
-      (0 (ignore (php--syntax-propertize-attributes (match-beginning 0)))))
+      (0 (ignore (php-cc--syntax-propertize-attributes (match-beginning 0)))))
      ((rx (or "'" "\""))
-      (0 (ignore (php--syntax-propertize-quotes-in-comment (match-beginning 0))))))))
+      (0 (ignore (php-cc--syntax-propertize-quotes-in-comment (match-beginning 0))))))))
 
-(defalias 'php-syntax-propertize-function
-  (syntax-propertize-rules php-syntax-propertize-rules))
+(defalias 'php-cc-syntax-propertize-function
+  (syntax-propertize-rules php-cc-syntax-propertize-rules))
 
-(defun php--syntax-propertize-heredoc (start id _is-heredoc)
+(defun php-cc--syntax-propertize-heredoc (start id _is-heredoc)
   "Apply propertize Heredoc and Nowdoc from START, with ID and IS-HEREDOC."
   (let ((terminator (rx-to-string `(: line-start (* (syntax whitespace)) ,id word-boundary))))
     (put-text-property start (1+ start) 'syntax-table (string-to-syntax "|"))
@@ -1001,53 +1001,53 @@ HEREDOC-START."
     (when (match-string 0)
       (put-text-property (1- (point)) (point) 'syntax-table (string-to-syntax "|")))))
 
-(defun php--syntax-propertize-quotes-in-comment (pos)
+(defun php-cc--syntax-propertize-quotes-in-comment (pos)
   "Apply propertize quotes (' and \") from POS."
   (when (php-in-comment-p)
     (put-text-property pos (1+ pos) 'syntax-table (string-to-syntax "_"))))
 
-(defun php--syntax-propertize-attributes (start)
+(defun php-cc--syntax-propertize-attributes (start)
   "Apply propertize PHP8 #[Attributes] (without # comment) from START."
   (unless (php-in-string-p)
     (put-text-property start (1+ start) 'syntax-table (string-to-syntax "."))))
 
-(defvar-local php-mode--propertize-extend-region-current nil
+(defvar-local php-cc-mode--propertize-extend-region-current nil
   "Prevent undesirable recursion in PHP-SYNTAX-PROPERTIZE-EXTEND-REGION.")
 
-(defun php-syntax-propertize-extend-region (start end)
+(defun php-cc-syntax-propertize-extend-region (start end)
   "Extend the propertize region if START or END falls inside a PHP heredoc."
   (let ((pair (cons start end)))
-    (when (not (member pair php-mode--propertize-extend-region-current))
+    (when (not (member pair php-cc-mode--propertize-extend-region-current))
       ;; re-search functions may trigger
       ;; syntax-propertize-extend-region-functions to be called again, which in
       ;; turn call this to be called again.
-      (push pair php-mode--propertize-extend-region-current)
+      (push pair php-cc-mode--propertize-extend-region-current)
       (unwind-protect
           (let (new-start new-end)
             (goto-char start)
             ;; Consider bounding this backwards search by `beginning-of-defun'.
             ;; (Benchmarking for a wide range of cases may be needed to decide
-            ;; whether that's an improvement, as `php-beginning-of-defun' also
+            ;; whether that's an improvement, as `php-cc-beginning-of-defun' also
             ;; uses `re-search-backward'.)
-            (when (re-search-backward php-heredoc-start-re nil t)
+            (when (re-search-backward php-cc-heredoc-start-re nil t)
               (let ((maybe (point)))
-                (when (and (re-search-forward (php-heredoc-end-re (match-string 0)) nil t)
+                (when (and (re-search-forward (php-cc-heredoc-end-re (match-string 0)) nil t)
                            (> (point) start))
                   (setq new-start maybe)
                   (when (> (point) end)
                     (setq new-end (point))))))
             (unless new-end
               (goto-char end)
-              (when (re-search-backward php-heredoc-start-re start t)
-                (if (re-search-forward (php-heredoc-end-re (match-string 0)) nil t)
+              (when (re-search-backward php-cc-heredoc-start-re start t)
+                (if (re-search-forward (php-cc-heredoc-end-re (match-string 0)) nil t)
                     (when (> (point) end)
                       (setq new-end (point)))
                   (setq new-end (point-max)))))
             (when (or new-start new-end)
               (cons (or new-start start) (or new-end end))))
         ;; Cleanup
-        (setq php-mode--propertize-extend-region-current
-              (delete pair php-mode--propertize-extend-region-current))))))
+        (setq php-cc-mode--propertize-extend-region-current
+              (delete pair php-cc-mode--propertize-extend-region-current))))))
 
 (easy-menu-define php-mode-menu php-cc-mode-map "PHP Mode Commands."
   (cons "PHP" (c-lang-const c-mode-menu php-cc)))
@@ -1086,7 +1086,7 @@ After setting the stylevars run hook `php-mode-STYLENAME-hook'."
   ;; Back up manually set variables
   (let* (value
          (backup-vars
-          (and php-mode-enable-backup-style-variables
+          (and php-cc-mode-enable-backup-style-variables
                (cl-loop for name in c-style-variables
                         do (setq value (symbol-value name))
                         if (and value (not (eq 'set-from-style value)))
@@ -1181,9 +1181,9 @@ This is the legacy implementation kept for backward compatibility.
     (setq-local font-lock-variable-name-face 'php-variable-name)
     (setq-local font-lock-constant-face 'php-constant))
 
-  (setq-local syntax-propertize-function #'php-syntax-propertize-function)
+  (setq-local syntax-propertize-function #'php-cc-syntax-propertize-function)
   (add-hook 'syntax-propertize-extend-region-functions
-            #'php-syntax-propertize-extend-region t t)
+            #'php-cc-syntax-propertize-extend-region t t)
 
   (setq imenu-generic-expression (if (symbolp php-imenu-generic-expression)
                                      (symbol-value php-imenu-generic-expression)
@@ -1203,7 +1203,7 @@ This is the legacy implementation kept for backward compatibility.
         (add-hook 'hack-local-variables-hook #'php-mode-set-style-delay t t)
         (setq php-mode--delayed-set-style t)
         (advice-add 'c-set-style :after #'php-mode--disable-delay-set-style))
-    (let ((php-mode-enable-backup-style-variables nil))
+    (let ((php-cc-mode-enable-backup-style-variables nil))
       (php-cc-set-style (symbol-name php-mode-coding-style))))
 
   (when (or php-mode-force-pear
@@ -1223,8 +1223,8 @@ This is the legacy implementation kept for backward compatibility.
   ;; following two local variables, but we keep them for now until we
   ;; are completely sure their removal will not break any current
   ;; behavior or backwards compatibility.
-  (setq-local beginning-of-defun-function #'php-beginning-of-defun)
-  (setq-local end-of-defun-function #'php-end-of-defun)
+  (setq-local beginning-of-defun-function #'php-cc-beginning-of-defun)
+  (setq-local end-of-defun-function #'php-cc-end-of-defun)
 
   (setq-local open-paren-in-column-0-is-defun-start nil)
   (setq-local defun-prompt-regexp
@@ -1303,7 +1303,7 @@ for \\[find-tag] (which see)."
       (message "Unknown function: %s" tagname))))
 
 ;; Font Lock
-(defconst php-phpdoc-type-names
+(defconst php-cc-phpdoc-type-names
   '(;; PHPStan and Psalm types
     "__stringandstringable" "array" "array-key" "associative-array" "bool" "boolean"
     "callable" "callable-array" "callable-object" "callable-string" "class-string"
@@ -1320,9 +1320,9 @@ for \\[find-tag] (which see)."
     "key-of" "value-of" "int-mask-of" "int-mask" "__benevolent" "template-type" "new")
   "A list of type and pseudotype names that can be used in PHPDoc.")
 
-(make-obsolete-variable 'php-phpdoc-type-keywords 'php-phpdoc-type-names "1.24.2")
+(make-obsolete-variable 'php-phpdoc-type-keywords 'php-cc-phpdoc-type-names "1.24.2")
 
-(defconst php-phpdoc-type-tags
+(defconst php-cc-phpdoc-type-tags
   (list "package" "param" "property" "property-read" "property-write"
         "return" "throws" "var" "self-out" "this-out" "param-out"
         "type" "extends" "require-extends" "implemtents" "require-implements"
@@ -1331,7 +1331,7 @@ for \\[find-tag] (which see)."
         "assert" "assert-if-true" "assert-if-false" "if-this-is")
   "A list of tags specifying type names.")
 
-(defconst php-phpdoc-font-lock-doc-comments
+(defconst php-cc-phpdoc-font-lock-doc-comments
   `(("{@[-[:alpha:]]+\\s-*\\([^}]*\\)}" ; "{@foo ...}" markup.
      (0 'php-doc-annotation-tag prepend nil)
      (1 'php-string prepend nil))
@@ -1339,20 +1339,20 @@ for \\[find-tag] (which see)."
      (1 'php-doc-variable-sigil prepend nil)
      (2 'php-variable-name prepend nil))
     ("\\(\\$\\)\\(this\\)\\>" (1 'php-doc-$this-sigil prepend nil) (2 'php-doc-$this prepend nil))
-    (,(concat "\\s-@" (rx (? (or "phan" "phpstan" "psalm") "-")) (regexp-opt php-phpdoc-type-tags) "\\s-+"
+    (,(concat "\\s-@" (rx (? (or "phan" "phpstan" "psalm") "-")) (regexp-opt php-cc-phpdoc-type-tags) "\\s-+"
               "\\(" (rx (+ (? "?") (? "\\") (+ (in "0-9A-Z_a-z")) (? "[]") (? "|"))) "\\)+")
      1 'php-string prepend nil)
     (,(concat "\\(?:|\\|\\?\\|\\s-\\)\\("
-              (regexp-opt php-phpdoc-type-names 'words)
+              (regexp-opt php-cc-phpdoc-type-names 'words)
               "\\)")
      1 font-lock-type-face prepend nil)
     ("^\\(?:/\\*\\)?\\(?:\\s \\|\\*\\)*\\(@[[:alpha:]][-[:alpha:]\\]*\\)" ; "@foo ..." markup.
      1 'php-doc-annotation-tag prepend nil)))
 
-(defvar php-phpdoc-font-lock-keywords
+(defvar php-cc-phpdoc-font-lock-keywords
   `((,(lambda (limit)
         (c-font-lock-doc-comments "/\\*\\*" limit
-          php-phpdoc-font-lock-doc-comments)))))
+          php-cc-phpdoc-font-lock-doc-comments)))))
 
 (defconst php-cc-font-lock-keywords-1 (c-lang-const c-matchers-1 php-cc)
   "Basic highlighting for PHP Mode.")
@@ -1362,7 +1362,7 @@ for \\[find-tag] (which see)."
 
 (defconst php-cc-font-lock-keywords-3
   (append
-   php-phpdoc-font-lock-keywords
+   php-cc-phpdoc-font-lock-keywords
    ;; php-mode patterns *before* cc-mode:
    ;;  only add patterns here if you want to prevent cc-mode from applying
    ;;  a different face.
@@ -1452,7 +1452,7 @@ for \\[find-tag] (which see)."
    ;;   already fontified by another pattern. Note that using OVERRIDE
    ;;   is usually overkill.
    `(
-     (php-mode--error-control-op-font-lock-find 0 'php-errorcontrol-op t)
+     (php-cc-mode--error-control-op-font-lock-find 0 'php-errorcontrol-op t)
      ;; import function statement
      (,(rx symbol-start (group "use" (+ (syntax whitespace)) "function")
            (+ (syntax whitespace)))
@@ -1527,7 +1527,7 @@ for \\[find-tag] (which see)."
      ;; Not operator (!) is defined in "before cc-mode" section above.
      ("\\(&&\\|||\\)" 1 'php-logical-op)
      ;; string interpolation ("$var, ${var}, {$var}")
-     (php-mode--string-interpolated-variable-font-lock-find 0 nil)
+     (php-cc-mode--string-interpolated-variable-font-lock-find 0 nil)
      (,(rx symbol-start (group (or "get" "set")) (+ (syntax whitespace)) (or "{" "=>"))
       1 'php-builtin)))
   "Detailed highlighting for PHP Mode.")
@@ -1556,10 +1556,10 @@ The output will appear in the buffer *PHP*."
       (call-process php-executable nil php-buffer nil "-r" cleaned-php-code))))
 
 
-(defconst php-string-interpolated-variable-regexp
+(defconst php-cc-string-interpolated-variable-regexp
   "{\\$[^}\n\\\\]*\\(?:\\\\.[^}\n\\\\]*\\)*}\\|\\${\\sw+}\\|\\$\\sw+")
 
-(defun php-mode--error-control-op-font-lock-find (limit)
+(defun php-cc-mode--error-control-op-font-lock-find (limit)
   "Font-lock matcher for the error-control operator `@' up to LIMIT.
 
 Match a single `@' that is used as the error-control operator, skipping
@@ -1580,10 +1580,10 @@ matcher is set to override that face."
         (setq found t)))
     found))
 
-(defun php-mode--string-interpolated-variable-font-lock-find (limit)
+(defun php-cc-mode--string-interpolated-variable-font-lock-find (limit)
   "Apply text-property to LIMIT for string interpolation by font-lock."
   (let (quoted-stuff)
-    (while (re-search-forward php-string-interpolated-variable-regexp limit t)
+    (while (re-search-forward php-cc-string-interpolated-variable-regexp limit t)
       (setq quoted-stuff (php-in-string-p))
       (when (or (eq ?\" quoted-stuff) (eq ?` quoted-stuff))
         (put-text-property (match-beginning 0) (match-end 0) 'face 'php-variable-name))))
