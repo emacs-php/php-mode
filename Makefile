@@ -52,4 +52,11 @@ test: clean all
 	$(EASK) install polymode web-mode
 	$(EASK) test ert ./tests/php-mode-test.el
 
-.PHONY: all authors autoloads clean test
+# Regression tests for the frozen CC Mode based `php-cc-mode'.  Run in a
+# separate Eask invocation (process) from the `php-mode' tests so that
+# the two major modes, which still share several public symbol names, do
+# not clobber each other in a single Emacs session.
+test-cc: clean all
+	$(EASK) test ert ./tests/php-cc-mode-test.el
+
+.PHONY: all authors autoloads clean test test-cc
