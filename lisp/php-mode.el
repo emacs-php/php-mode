@@ -281,13 +281,24 @@ of each doc comment."
   (let ((case-fold-search nil))
     (while (re-search-forward start-re limit t)
       (let ((beg (match-beginning 0))
-            (ppss (save-excursion (syntax-ppss (match-beginning 0))))
+            ;; Probe *inside* the comment (its opener has just been
+            ;; consumed); `syntax-ppss' at the opening slash would still
+            ;; report being outside the comment.
+            (ppss (save-excursion (syntax-ppss (min limit (match-end 0)))))
             end)
-        (when (nth 4 ppss)
-          (let ((cstart (or (nth 8 ppss) beg)))
+        ;; Only treat this as a doc comment when the matched `/**' is
+        ;; itself the comment opener; a `/**' appearing *inside* another
+        ;; comment (e.g. the text of a `//' line comment) must be ignored.
+        (when (and (nth 4 ppss) (eql (nth 8 ppss) beg))
+          (let ((cstart beg))
             (setq end (save-excursion
                         (goto-char cstart)
                         (if (re-search-forward "\\*/" limit t) (point) limit)))
+            ;; Give the whole doc comment the doc face (replacing the
+            ;; syntactic comment face), as CC Mode's
+            ;; `c-font-lock-doc-comments' did; the keyword highlights
+            ;; below then prepend their own faces on top.
+            (put-text-property cstart end 'face 'font-lock-doc-face)
             (save-excursion
               (save-restriction
                 (narrow-to-region cstart end)
@@ -321,6 +332,60 @@ occurrences inside strings or comments."
     (while (and (not found)
                 (re-search-forward "@" limit t))
       (unless (save-match-data (php-in-string-or-comment-p))
+        (setq found t)))
+    found))
+
+(defun php-mode--uppercase-constant-font-lock-find (limit)
+  "Font-lock matcher for ALL-UPPERCASE constants up to LIMIT.
+Because `php-mode' fontifies with `case-fold-search' enabled (PHP
+keywords are case-insensitive), a plain \"[A-Z_]\" regexp matcher would
+also match lowercase identifiers.  This matcher searches with
+case-sensitivity forced on so that only genuinely upper-cased symbols
+\(e.g. constant names) are matched into group 1."
+  (let ((case-fold-search nil))
+    (re-search-forward "\\_<\\([A-Z_][A-Z0-9_]+\\)\\_>" limit t)))
+
+(defconst php-mode--non-type-word-re
+  (regexp-opt (append php-keywords--control-structures
+                      php-keywords--declarations
+                      php-keywords--statements
+                      php-keywords--constants
+                      '("class" "self" "parent" "static"))
+              'symbols)
+  "Words that must never be fontified as a type even in type position.")
+
+(defun php-mode--type-word-p (str)
+  "Return non-nil when STR may denote a class/type name (not a keyword)."
+  (and str
+       (let ((case-fold-search t))
+         (not (string-match-p (concat "\\`\\(?:" php-mode--non-type-word-re "\\)\\'") str)))))
+
+(defun php-mode--type-before-variable-font-lock-find (limit)
+  "Font-lock matcher for a class type hint written before a `$'-variable.
+Matches an unqualified identifier immediately followed by an optional
+reference `&' and a `$'-variable (e.g. \"stdClass $obj\"), skipping
+language keywords such as `return' or `global'.  The type name is left
+in group 1.  Namespaced type hints are handled by the namespace matcher."
+  (let (found)
+    (while (and (not found)
+                (re-search-forward
+                 "\\<\\([[:alpha:]_][[:alnum:]_]*\\)[ \t]+&?\\$" limit t))
+      (when (php-mode--type-word-p (match-string 1))
+        (setq found t)))
+    found))
+
+(defun php-mode--type-after-keyword-font-lock-find (limit)
+  "Font-lock matcher for an unqualified class name in type position.
+Matches the identifier following `new', `instanceof', `extends' or
+`implements' (e.g. \"new Foo\", \"extends Bar\"), leaving the class name
+in group 1 and skipping constructs such as `new class'.  Namespaced
+names are handled by the namespace matcher."
+  (let (found)
+    (while (and (not found)
+                (re-search-forward
+                 "\\<\\(?:new\\|instanceof\\|insteadof\\|extends\\|implements\\)[ \t]+\\([[:alpha:]_][[:alnum:]_]*\\)"
+                 limit t))
+      (when (php-mode--type-word-p (match-string 1))
         (setq found t)))
     found))
 
@@ -375,6 +440,13 @@ occurrences inside strings or comments."
      ;; For 'array', there is an additional situation:
      ;; - when used as cast, so that (int) and (array) look the same
      ("(\\(array\\))" 1 font-lock-type-face)
+     ;; Type casts: (int), (binary), (unset), ... => type face.
+     (,(concat "(\\("
+               (regexp-opt '("array" "binary" "bool" "boolean" "double"
+                             "float" "int" "integer" "object" "real"
+                             "string"))
+               "\\)\\s-*)")
+      1 font-lock-type-face)
 
      (,(regexp-opt php-magical-constants 'symbols) (1 'php-magical-constant))
      ;; namespaces
@@ -422,12 +494,32 @@ occurrences inside strings or comments."
      (,php-keywords--control-structures-re 1 'php-keyword)
      (,php-keywords--declarations-re 1 'php-keyword)
      (,php-keywords--statements-re 1 'php-keyword)
+     ;; `self', `parent' and `static' are class-relative pseudo-types but
+     ;; PHP Mode fontifies them as keywords; match them before the type
+     ;; names so they do not get the type face.
+     ("\\_<\\(self\\|parent\\|static\\)\\_>" 1 'php-keyword)
      ;; Primitive / pseudo type names.
      (,php-keywords--types-re 1 font-lock-type-face))
 
    ;; Patterns applied last: only fill faces not already fontified.
    `(
      (php-mode--error-control-op-font-lock-find 0 'php-errorcontrol-op t)
+     ;; Class names in type position (type hints and new/extends/... ).
+     (php-mode--type-after-keyword-font-lock-find 1 'font-lock-type-face)
+     (php-mode--type-before-variable-font-lock-find 1 'font-lock-type-face)
+     ;; `namespace Foo;' / `namespace Foo\Bar;' declaration name.
+     ("\\_<namespace[ \t]+\\([[:alpha:]_][[:alnum:]_\\\\]*\\)" 1 'font-lock-type-face)
+     ;; Enum case name: `case Small;' or `case Small = 1;'.  A `case'
+     ;; ending in `;' or `=' is an enum case (switch cases end in `:').
+     ("\\_<case[ \t]+\\([[:alpha:]_][[:alnum:]_]*\\)[ \t]*[;=]" 1 'font-lock-type-face)
+     ;; Plain `use Foo, Bar;' import list (class-like names).  Every
+     ;; comma-separated name is fontified via the anchored sub-matcher.
+     ;; `function' and `const' after `use' are already keyword-faced, and
+     ;; the `use function'/`use const' matchers below override the name
+     ;; with the function/constant face, so this never mis-faces them.
+     ("\\_<use[ \t]+"
+      ("\\([[:alpha:]_][[:alnum:]_\\\\]*\\)[ \t]*,?[ \t]*"
+       nil nil (1 'font-lock-type-face)))
      ;; import function statement
      (,(rx symbol-start (group "use" (+ (syntax whitespace)) "function")
            (+ (syntax whitespace)))
@@ -440,8 +532,10 @@ occurrences inside strings or comments."
       (,(rx (group (+ (or (syntax word) (syntax symbol) "\\" "{" "}")))) nil nil (1 'php-constant-assign t)))
      ;; Highlight function calls
      ("\\(\\_<\\(?:\\sw\\|\\s_\\)+?\\_>\\)\\s-*(" 1 php-function-call)
-     ;; Highlight all upper-cased symbols as constant
-     ("\\<\\([A-Z_][A-Z0-9_]+\\)\\>" 1 'php-constant)
+     ;; Highlight all upper-cased symbols as constant.  Uses a matcher
+     ;; function so it stays case-sensitive even though font-lock runs
+     ;; with `case-fold-search' enabled for PHP's case-insensitive keywords.
+     (php-mode--uppercase-constant-font-lock-find 1 'php-constant)
 
      ;; Highlight all statically accessed class names as constant.
      ("\\(\\sw+\\)\\(::\\)" (1 'php-constant) (2 'php-paamayim-nekudotayim))

@@ -62,7 +62,9 @@
                (fill-column . 78)))
     ("pear" . ((php-style-parent . "php")
                (php-indent-switch-case-offset . 0)
-               (php-indent-chain-indent . nil)))
+               (php-indent-chain-indent . nil)
+               (show-trailing-whitespace . nil)
+               (php-style-delete-trailing-whitespace . nil)))
     ("drupal" . ((php-style-parent . "php")
                  (php-indent-offset . 2)
                  (php-indent-chain-indent . nil)
@@ -72,7 +74,9 @@
                  (php-style-delete-trailing-whitespace . t)))
     ("wordpress" . ((php-style-parent . "php")
                     (indent-tabs-mode . t)
-                    (fill-column . 78))))
+                    (fill-column . 78)
+                    (show-trailing-whitespace . nil)
+                    (php-style-delete-trailing-whitespace . nil))))
   "Alist of PHP Mode coding styles.
 
 Each element is (STYLE-NAME . VARIABLE-ALIST) where STYLE-NAME is a

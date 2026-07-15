@@ -522,11 +522,17 @@ syntax table) and, with minor tweaks, by `php--analysis-syntax-table'."
     ;; Identifier constituents.
     (modify-syntax-entry ?_  "_"    table)
     (modify-syntax-entry ?$  "_"    table)
-    ;; String / escape.
+    ;; String / escape.  PHP has single-quoted, double-quoted and
+    ;; backtick (shell-exec) string literals; all three are string
+    ;; delimiters.
     (modify-syntax-entry ?`  "\""   table)
     (modify-syntax-entry ?\" "\""   table)
+    (modify-syntax-entry ?'  "\""   table)
     (modify-syntax-entry ?\\ "\\"   table)
-    ;; Operators.
+    ;; Operators.  `=' defaults to symbol-constituent syntax in Emacs's
+    ;; standard table, which would make it part of `\\_<...\\_>' tokens;
+    ;; PHP uses it purely as an operator, so mark it punctuation.
+    (modify-syntax-entry ?=  "."    table)
     (modify-syntax-entry ?+  "."    table)
     (modify-syntax-entry ?-  "."    table)
     (modify-syntax-entry ?%  "."    table)
