@@ -29,8 +29,8 @@
 ;; `c-add-style' / `c-set-style' machinery.
 ;;
 ;; The indentation variables referenced by the styles below
-;; (`php-indent-offset', `php-indent-switch-case-offset' and
-;; `php-indent-chain-indent') are defined in php-indent.el, which is
+;; (`php-indent-offset' and `php-indent-switch-case-offset') are
+;; defined in php-indent.el, which is
 ;; implemented in a parallel task.  They are forward-declared with
 ;; `defvar' here so that this file byte-compiles cleanly whether or not
 ;; php-indent.el has been loaded yet.
@@ -44,7 +44,6 @@
 ;; compiler quiet; php-indent.el is the canonical definition site.
 (defvar php-indent-offset)
 (defvar php-indent-switch-case-offset)
-(defvar php-indent-chain-indent)
 
 ;;; Style definitions
 
@@ -52,8 +51,7 @@
   '(("php" . ((php-indent-offset . 4)
               (indent-tabs-mode . nil)
               (tab-width . 4)
-              (php-indent-switch-case-offset . 4)
-              (php-indent-chain-indent . t)))
+              (php-indent-switch-case-offset . 4)))
     ("per" . ((php-style-parent . "php")
               (fill-column . 120)
               (show-trailing-whitespace . t)
@@ -62,12 +60,10 @@
                (fill-column . 78)))
     ("pear" . ((php-style-parent . "php")
                (php-indent-switch-case-offset . 0)
-               (php-indent-chain-indent . nil)
                (show-trailing-whitespace . nil)
                (php-style-delete-trailing-whitespace . nil)))
     ("drupal" . ((php-style-parent . "php")
                  (php-indent-offset . 2)
-                 (php-indent-chain-indent . nil)
                  (tab-width . 2)
                  (fill-column . 78)
                  (show-trailing-whitespace . t)
