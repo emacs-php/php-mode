@@ -562,6 +562,11 @@ names are handled by the namespace matcher."
      ;; Assignment operators (=, +=, ...)
      ("\\([^=<!>]+?\\([\-+./%]?=\\)[^=<!]+?\\)" 2 'php-assignment-op)
 
+     ;; Pipe operator (|>) --- PHP 8.5.  Must precede the comparison
+     ;; operators, whose `[<>]=?' alternative would otherwise claim the
+     ;; `>' and leave the `|' unfontified.
+     ("\\(|>\\)" 1 'php-pipe-op)
+
      ;; Comparison operators (==, ===, >=, ...)
      ("\\([!=]=\\{1,2\\}[>]?\\|[<>]=?\\)" 1 'php-comparison-op)
 
