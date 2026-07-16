@@ -20,6 +20,9 @@ Please submit any bug reports or feature requests by creating issues on [the Git
 > The [latest version][releases] of PHP Mode supports Emacs 30.  
 > Please feel free to [open a discussion][discussions-emacs30] if you have any issues upgrading to Emacs 30.
 
+> [!IMPORTANT]
+> PHP Mode has been rewritten and no longer depends on CC Mode.  Indentation is now handled by an engine derived from `js.el`, which is bundled with GNU Emacs.  The previous CC Mode based implementation is still available as `php-cc-mode`; see [Legacy CC Mode implementation](#legacy-cc-mode-implementation-php-cc-mode).
+
 > [!WARNING]
 > After upgrading Emacs, when you open a PHP file for the first time, you may encounter errors related to CC Mode. These errors occur because a previously byte-compiled version of PHP Mode, cached on your disk, differs from the newly installed one. Reinstalling PHP Mode should resolve the issue.
 >
@@ -30,7 +33,7 @@ Please submit any bug reports or feature requests by creating issues on [the Git
 
 ## Installation
 
-**PHP Mode works with Emacs 27.1 or later.** For details on supported versions, see [Supported Version].
+**PHP Mode works with Emacs 28.1 or later** ([#811]). For details on supported versions, see [Supported Version].
 On Emacs 28 or later, you can install it simply by running:
 
 ```
@@ -77,6 +80,14 @@ You can add project-specific settings by creating a `.dir-locals.el` or `.dir-lo
   (php-project-coding-style . psr2)))
 ```
 
+### Coding Styles
+
+`php-mode` sets indentation and related editing variables according to `php-mode-coding-style`.  The default style is `per` ([PER Coding Style 2.0][per-cs]); previous versions defaulted to `pear`.  The available styles are `per`, `psr2`, `pear`, `drupal` and `wordpress`.
+
+The `symfony2` style has been removed, since PER supersedes the coding style used by modern Symfony.  It remains available in `php-cc-mode`.
+
+Because the indentation engine no longer uses CC Mode, `c-basic-offset` is obsolete in `php-mode`; customize `php-indent-offset` instead.  For backward compatibility, when a project sets `c-basic-offset` buffer-locally (for example via `.dir-locals.el` or file-local variables), `php-mode` copies that value into `php-indent-offset` and displays a warning.
+
 ## Editing files that mix HTML and PHP
 
 `php-mode` is designed for pure PHP scripts.  Files that embed PHP inside HTML, such as templates, are better edited in a major mode that understands both languages.  Indentation in particular is unreliable when the HTML part of a file is edited in plain `php-mode`.
@@ -109,6 +120,12 @@ Set `php-project-php-file-as-template` per project in `.dir-locals.el`:
 
 If you are already in `php-mode` and indent a file that contains HTML tags, PHP Mode warns you and offers to switch to `php-html-template-major-mode`.  Set `php-mode-warn-if-html-template` to `nil` to turn off this prompt.
 
+## Legacy CC Mode implementation (php-cc-mode)
+
+Until now, PHP Mode was implemented on top of Emacs' built-in CC Mode.  That implementation is preserved as `php-cc-mode` and is in frozen maintenance: only regression fixes are accepted, and new development happens in the CC Mode independent `php-mode`.  To open a file with the legacy implementation, run `M-x php-cc-mode` or add an entry to `auto-mode-alist` yourself.
+
+So that existing configurations keep working, `php-cc-mode` runs `php-mode-hook` in addition to its own `php-cc-mode-hook`.  Settings described in [the CC Mode manual][cc-mode-manual] apply only to `php-cc-mode`; see the commentary at the top of `lisp/php-cc-mode.el` for details.
+
 ## Reporting Bugs
 
 When reporting a bug, please run `M-x php-mode-debug` and include its output in your bug report.  This helps us reproduce any issues you may be experiencing.
@@ -121,7 +138,7 @@ Please see [CONTRIBUTING.md](CONTRIBUTING.md#english).
 
 PHP Mode is licensed under [GNU General Public License Version 3][gpl-v3] (GPLv3).
 
-This project originated in `php-mode.el` written by [Turadg Aleahmad][@turadg] in 1999.  In 2013 [Daniel Hackney][@haxney] began rewriting parts of PHP Mode in terms of Emacs' built-in CC Mode.  Other contributors are listed in [Authors] and [Contributors].
+This project originated in `php-mode.el` written by [Turadg Aleahmad][@turadg] in 1999.  In 2013 [Daniel Hackney][@haxney] began rewriting parts of PHP Mode in terms of Emacs' built-in CC Mode.  In 2026 the mode was rewritten again to remove the CC Mode dependency.  Other contributors are listed in [Authors] and [Contributors].
 
 This project was maintained by [Eric James Michael Ritz][@ejmr] until 2017. Currently, the [Friends of Emacs-PHP Development][@emacs-php] community inherits PHP Mode.
 
@@ -152,7 +169,10 @@ This project was maintained by [Eric James Michael Ritz][@ejmr] until 2017. Curr
 [Authors]: https://github.com/emacs-php/php-mode/wiki/Authors
 [Contributors]: https://github.com/emacs-php/php-mode/graphs/contributors
 [Supported Version]: https://github.com/emacs-php/php-mode/wiki/Supported-Version
+[cc-mode-manual]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
 [gpl-v3]: https://www.gnu.org/licenses/gpl-3.0
+[per-cs]: https://www.php-fig.org/per/coding-style/
+[#811]: https://github.com/emacs-php/php-mode/issues/811
 [nongnu-elpa-badge]: https://elpa.nongnu.org/nongnu/php-mode.svg
 [nongnu-elpa]: https://elpa.nongnu.org/nongnu/php-mode.html
 [melpa-badge]: http://melpa.org/packages/php-mode-badge.svg

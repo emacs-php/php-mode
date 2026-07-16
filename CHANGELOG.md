@@ -4,15 +4,44 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 
 ## Unreleased
 
+### Added
+
+ * **Rewrite `php-mode` as a CC Mode independent major mode**
+   * Indentation is handled by `php-indent.el`, a `syntax-ppss` based engine ported from `js.el` bundled with GNU Emacs
+   * Coding styles are handled by `php-style.el`, a variable-based style system that replaces CC Mode's `c-set-style`
+   * PHP language keyword tables are provided by `php-keywords.el`
+ * Preserve the legacy CC Mode based implementation as `php-cc-mode`
+   * `php-cc-mode` is in frozen maintenance: only regression fixes are accepted, and new development happens in the CC Mode independent `php-mode`
+   * For backward compatibility, `php-cc-mode` runs `php-mode-hook` in addition to its own `php-cc-mode-hook`
+   * Settings described in [the CC Mode manual] now apply only to `php-cc-mode`; see the commentary at the top of `lisp/php-cc-mode.el`
+
 ### Changed
 
+ * Change the default of `php-mode-coding-style` from `pear` to `per` ([PER Coding Style 2.0])
  * Add `readonly` class modifier to [Imenu] ([#802])
  * Add `enum` support to `php-current-class` ([#802])
  * Remove hardcoding of implicit paths in `php` that are not guaranteed to exist ([#803])
 
+### Deprecated
+
+ * `c-basic-offset` is obsolete in `php-mode`; use `php-indent-offset` instead
+   * A migration layer still honors a buffer-local `c-basic-offset` (for example set via `.dir-locals.el`) by copying its value into `php-indent-offset` with a warning
+ * `php-mode-lineup-cascaded-calls` is obsolete; use `php-indent-chain-indent` instead
+ * `php-mode-enable-backup-style-variables` is obsolete; use `php-style-delete-trailing-whitespace` instead
+
+### Removed
+
+ * **Drop support for Emacs 27; PHP Mode now requires Emacs 28.1 or later** ([#811])
+ * Remove the `symfony2` coding style from `php-mode`, which is superseded by `per`
+   * The style remains available in `php-cc-mode`
+   * `php-enable-symfony2-coding-style` is now an obsolete alias for `php-enable-per-coding-style`
+
 [Imenu]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Imenu.html
+[PER Coding Style 2.0]: https://www.php-fig.org/per/coding-style/
+[the CC Mode manual]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
 [#802]: https://github.com/emacs-php/php-mode/pull/802
 [#803]: https://github.com/emacs-php/php-mode/pull/803
+[#811]: https://github.com/emacs-php/php-mode/issues/811
 
 ## [1.27.0] - 2024-12-20
 
