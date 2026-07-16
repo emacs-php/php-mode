@@ -660,6 +660,14 @@ Meant for `php-mode-test-issue-503'."
   ;; Proper alignment arglist that contains empty lines.
   (with-php-mode-test ("indent/issue-793.php" :indent t :magic t)))
 
+(ert-deftest php-mode-test-indentation-trailing-arrow ()
+  "Indentation of a line following a `=>' left at the end of a line.
+
+`=>' is excluded from `php-indent--indent-operator-re' because it is
+PHP's array key operator, so nothing treated the next line as a
+continuation: an arrow function's body fell back to column zero."
+  (with-php-mode-test ("indent/trailing-arrow.php" :indent t :magic t)))
+
 (ert-deftest php-mode-test-indentation-object-accessor ()
   "Alignment of chained object accessors split across lines."
   (with-php-mode-test ("indent/issue-623.php" :indent t :magic t)))
