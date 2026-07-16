@@ -819,6 +819,13 @@ The fixture deliberately contains a syntactically invalid declaration
   "Test highlighting language constructs added in PHP 8.4."
   (with-php-mode-test ("8.4/property-hooks.php" :faces t)))
 
+(ert-deftest php-mode-test-php84-property-hooks-indent ()
+  "Test indentation of PHP 8.4 property hooks.
+
+A hook puts a brace block after a property declaration rather than
+after a function signature, and the short forms end in `=>'."
+  (with-php-mode-test ("8.4/property-hooks-indent.php" :indent t :magic t)))
+
 (defun php-mode-test--faces-of (code token)
   "Return the list of faces on TOKEN's characters after fontifying CODE."
   (with-temp-buffer
@@ -856,6 +863,14 @@ The pipe operator `|>' introduces a continuation line that starts with
 an operator, and \"clone with\" gives `clone' an argument list."
   (with-php-mode-test ("8.5/pipe-operator.php" :indent t :magic t))
   (with-php-mode-test ("8.5/clone-with.php" :indent t :magic t)))
+
+(ert-deftest php-mode-test-attribute-expression-indent ()
+  "Test indentation of expressions and closures in attribute arguments.
+
+PHP 8.5 allows a static closure as an attribute argument, so a `#[...]'
+now has to survive a brace block inside it; the pre-8.5 spelling wrapped
+the same logic in an object."
+  (with-php-mode-test ("8.5/attribute-expression.php" :indent t :magic t)))
 
 (ert-deftest php-mode-test-lang ()
   "Test highlighting for language constructs."
