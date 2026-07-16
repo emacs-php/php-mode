@@ -464,9 +464,10 @@ until a statement terminator (`;', `{', `}', an opening `(' or `[', a
 A continuation line is one whose previous code token leaves the
 statement unterminated: an identifier or keyword (as in stacked member
 modifiers, `extends' on its own line or a broken `return'), a closing
-parenthesis, or a return-type `):'.  Such lines are indented one
-`php-indent-offset' beyond the first line of the statement.  Return nil
-when the current line does not continue a statement this way."
+parenthesis, a return-type `):', or a trailing `=>'.  Such lines are
+indented one `php-indent-offset' beyond the first line of the
+statement.  Return nil when the current line does not continue a
+statement this way."
   (save-excursion
     (back-to-indentation)
     (unless (or (memq (char-after) '(?\{ ?\} ?\) ?\]))
@@ -480,7 +481,15 @@ when the current line does not continue a statement this way."
                        ;; A `):' return-type (or alternative-syntax `):')
                        ;; also leaves the statement open.
                        (and (eq (char-before) ?:)
-                            (eq (char-before (1- (point))) ?\)))))
+                            (eq (char-before (1- (point))) ?\)))
+                       ;; So does a `=>' left dangling at the end of a
+                       ;; line: an arrow function's body, an array value
+                       ;; or a property hook's expression follows it.
+                       ;; `=>' is excluded from
+                       ;; `php-indent--indent-operator-re', so nothing
+                       ;; else picks these up.
+                       (and (eq (char-before) ?>)
+                            (eq (char-before (1- (point))) ?=))))
           (goto-char pos)
           (php-indent--goto-statement-start)
           (unless (php-indent--same-line pos)
