@@ -852,6 +852,14 @@ half-fontified: the `|' plain and the `>' as `php-comparison-op'."
       (should (equal (cons token expected)
                      (cons token (php-mode-test--faces-of code token)))))))
 
+(ert-deftest php-mode-test-php85 ()
+  "Test indentation of language constructs added in PHP 8.5.
+
+The pipe operator `|>' introduces a continuation line that starts with
+an operator, and \"clone with\" gives `clone' an argument list."
+  (with-php-mode-test ("8.5/pipe-operator.php" :indent t :magic t))
+  (with-php-mode-test ("8.5/clone-with.php" :indent t :magic t)))
+
 (ert-deftest php-mode-test-lang ()
   "Test highlighting for language constructs."
   (with-php-mode-test ("lang/class/anonymous-class.php" :indent t :magic t :faces t))
