@@ -63,11 +63,7 @@
  ("__halt_compiler" . php-keyword)
  ("();
 
-")
- ("claas" . font-lock-type-face)
- (" ")
- ("Err" . font-lock-variable-name-face)
- ("
+claas Err
 {
     ")
  ("/** Readonly property must have type */" . font-lock-doc-face)

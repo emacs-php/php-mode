@@ -175,16 +175,7 @@ file name and check that the faces of the fonts in the buffer match."
        ,@body)))
 
 (ert-deftest php-mode-test-namespace-block ()
-  "Proper indentation for classs and functions in namespace block.
-
-DEFERRED: the fixture exercises CC Mode's alignment of stacked member
-modifiers written across several lines (e.g. `static' / `public' /
-`function' each on their own line).  The cc-mode independent engine
-treats these as ordinary continuation lines and does not add the extra
-per-token indentation CC Mode produced.  This is a multi-line
-declaration feature the new engine intentionally implements only for
-`const' (see BLUEPRINT.md section 4)."
-  :expected-result :failed
+  "Proper indentation for classs and functions in namespace block."
   (with-php-mode-test ("namespace-block.php" :indent t :magic t)))
 
 (ert-deftest php-mode-test-issue-9 ()
@@ -333,13 +324,7 @@ runs from `hack-local-variables-hook'."
   "The `delete-indentation' function should work properly for PHP.
  This means modifying the logic of `fixup-whitespace' so that it
  eliminates spaces before ',', ';', '->' amd '::' and after '->' and
- '::'.
-
-DEFERRED: this relies on the `fixup-whitespace' advice that lived in
-the CC Mode based `php-mode' (`php-mode--fixup-whitespace-after').  That
-`->'/`::' whitespace-fixup integration has not been reimplemented in the
-cc-mode independent `php-mode' yet."
-  :expected-result :failed
+ '::'."
   (with-php-mode-test ("issue-73.php")
     (when (search-forward "# Correct" nil t)
       (forward-line 1)
@@ -372,22 +357,12 @@ cc-mode independent `php-mode' yet."
   (with-php-mode-test ("issue-99.php" :indent t :magic t)))
 
 (ert-deftest php-mode-test-issue-115 ()
-  "Proper alignment for chained method calls inside arrays.
-
-DEFERRED: aligning a `->' method-call chain to the column of the first
-`->' (the `php-indent-chain-indent' t behaviour) inside array/argument
-lists is not yet implemented in the cc-mode independent engine.  See
-`php-indent--chained-expression-p'."
-  :expected-result :failed
+  "Proper alignment for chained method calls inside arrays."
   (custom-set-variables '(php-indent-chain-indent t))
   (with-php-mode-test ("issue-115.php" :indent t :magic t :custom t)))
 
 (ert-deftest php-mode-test-issue-135 ()
-  "Proper alignment multiline statements.
-
-DEFERRED: same chained-method-call alignment feature as
-`php-mode-test-issue-115'."
-  :expected-result :failed
+  "Proper alignment multiline statements."
   (custom-set-variables '(php-indent-chain-indent t))
   (with-php-mode-test ("issue-135.php" :indent t :magic t :custom t)))
 
@@ -523,14 +498,7 @@ DEFERRED: same chained-method-call alignment feature as
   (with-php-mode-test ("issue-201.php" :faces t)))
 
 (ert-deftest php-mode-test-issue-211 ()
-  "Test indentation of string concatination.
-
-DEFERRED: CC Mode aligned a leading-operator (`.') continuation line to
-the column just after the `=' of the assignment.  The cc-mode
-independent engine indents the continuation by one `php-indent-offset'
-instead of aligning to `='; matching CC Mode here requires
-operator-anchored continuation alignment that is not yet implemented."
-  :expected-result :failed
+  "Test indentation of string concatination."
   (with-php-mode-test ("issue-211.php")
     (search-forward "\$str =")
     (let ((equal-indentation (1- (current-column)))) ;; because cursor is after '='
@@ -576,11 +544,7 @@ operator-anchored continuation alignment that is not yet implemented."
     (should (eq (current-indentation) (* 2 php-indent-offset)))))
 
 (ert-deftest php-mode-test-issue-237 ()
-  "Indent chaining method for PSR2.
-
-DEFERRED: same chained-method-call alignment feature as
-`php-mode-test-issue-115'."
-  :expected-result :failed
+  "Indent chaining method for PSR2."
   (with-php-mode-test ("issue-237.php" :indent t :style psr2 :magic t)))
 
 (ert-deftest php-mode-test-issue-253 ()
@@ -643,27 +607,12 @@ DEFERRED: same chained-method-call alignment feature as
 
 (ert-deftest php-mode-test-issue-443 ()
   "This case allows you to color things that are not authentic PHP tags
-(ex.  `<?xml', `<?hh') as false positives.
-
-DEFERRED: matching CC Mode's exact fontification of these pseudo-tags
-plus the `declare(strict_types=1)' / xml-attribute keywords requires a
-dedicated open-tag/attribute matcher that has not been ported yet."
-  :expected-result :failed
-  (with-php-mode-test ("issue-443.php"
-                       :faces (if (version<= "27" emacs-version) ".27.faces" t))))
+(ex.  `<?xml', `<?hh') as false positives."
+  (with-php-mode-test ("issue-443.php" :faces t)))
 
 (ert-deftest php-mode-test-type-hints ()
-  "Test highlighting of type hints and return types.
-
-DEFERRED: the cc-mode independent font-lock actually fontifies one type
-hint that CC Mode left plain (a `stdClass' parameter of a method named
-`object'), so the new output is arguably more consistent.  The
-version-specific `.faces'/`.29.faces' fixtures encode CC Mode's
-behaviour and regenerating them across every supported Emacs version is
-out of scope for this change."
-  :expected-result :failed
-  (with-php-mode-test ("type-hints.php" :faces (cond ((version<= "29" emacs-version) ".29.faces")
-                                                     (t)))))
+  "Test highlighting of type hints and return types."
+  (with-php-mode-test ("type-hints.php" :faces t)))
 
 (ert-deftest php-mode-test-static-method-calls ()
   "Test highlighting of static method calls which are named the same
@@ -715,14 +664,7 @@ Meant for `php-mode-test-issue-503'."
   (with-php-mode-test ("indent/issue-793.php" :indent t :magic t)))
 
 (ert-deftest php-mode-test-indentation-object-accessor ()
-  "Alignment of chained object accessors split across lines.
-
-DEFERRED: the cc-mode independent indentation engine (ported from
-`js.el') does not yet reproduce CC Mode's alignment of a `->' chain
-continuation to the base statement column; it currently aligns to the
-first `->'.  See `php-indent--chained-expression-p'.  Tracked together
-with `php-mode-test-issue-115'/`-135'/`-237'."
-  :expected-result :failed
+  "Alignment of chained object accessors split across lines."
   (with-php-mode-test ("indent/issue-623.php" :indent t :magic t)))
 
 (ert-deftest php-mode-test-poly-php-html-indentation ()
@@ -872,13 +814,8 @@ path; sending those to an HTML mode would take most PHP files away from
 
 (ert-deftest php-mode-test-php81-readonly ()
   "Test highlighting of PHP 8.1 readonly properties.
-
-DEFERRED: the fixture deliberately contains a syntactically invalid
-declaration (\"claas Err\") on which CC Mode inferred a type/variable
-face by full parsing.  The cc-mode independent, regexp-based font-lock
-does not reproduce faces for malformed code.  The valid readonly cases
-in the file are highlighted correctly."
-  :expected-result :failed
+The fixture deliberately contains a syntactically invalid declaration
+\(\"claas Err\"); the regexp-based font-lock leaves it unfontified."
   (with-php-mode-test ("8.1/readonly.php" :faces t)))
 
 (ert-deftest php-mode-test-php84 ()
