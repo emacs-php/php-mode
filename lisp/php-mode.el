@@ -476,11 +476,10 @@ names are handled by the namespace matcher."
       (,(rx (* (syntax whitespace)) "|" (* (syntax whitespace))
             (group (+ (or (syntax word) (syntax symbol))) symbol-end))
        nil nil (1 font-lock-type-face)))
-     ;; PHP open/close tags.
-     (,(regexp-opt '("<?php" "<?=" "?>"
-                     "<?"      ;; obsolete short open tag
-                     "<%" "%>" ;; obsolete ASP tag
-                     ))
+     ;; PHP open/close tags.  `<\\?' followed by a word also matches
+     ;; pseudo-tags that are not authentic PHP open tags (e.g. `<?xml',
+     ;; `<?hh'); fontifying those as tags is an accepted false positive.
+     ("<\\?\\(?:=\\|\\(?:\\sw\\|\\s_\\)*\\)\\|\\?>\\|<%\\|%>"
       0 'php-php-tag))
 
    ;; Keyword matchers replacing what CC Mode used to fontify.
@@ -643,6 +642,21 @@ Set `php-mode-warn-if-html-template' variable to nil to suppress the warning.
 ")
     nil)))
 
+;;; Correct the behavior of `delete-indentation' by modifying the
+;;; logic of `fixup-whitespace'.
+;;
+;; NOTE: `php-cc-mode' installs an equivalent advice under the name
+;; `php-mode--fixup-whitespace-after' guarded on `php-cc-mode'; this one
+;; is guarded on `php-mode', so both can be loaded at the same time.
+(defun php-mode--fixup-whitespace (&rest _args)
+  "Remove whitespace before `;', `,', `->' and `::' and after `->' and `::'."
+  (when (and (derived-mode-p 'php-mode)
+             (or (looking-at-p " \\(?:;\\|,\\|->\\|::\\)")
+                 (save-excursion
+                   (forward-char -2)
+                   (looking-at-p "->\\|::"))))
+    (delete-char 1)))
+
 (defun php-mode--indent-line ()
   "Indent the current line, warning about HTML templates first."
   (when (php-mode--check-html-for-indentation)
@@ -727,6 +741,9 @@ Set `php-mode-warn-if-html-template' variable to nil to suppress the warning.
                                      (symbol-value php-imenu-generic-expression)
                                    php-imenu-generic-expression))
   (setq-local imenu-create-index-function #'imenu-default-create-index-function)
+
+  ;; `delete-indentation' whitespace fixup for `->', `::', `;' and `,'.
+  (advice-add 'fixup-whitespace :after #'php-mode--fixup-whitespace)
 
   ;; Coding style (php-style.el): applies the style variables, honors a
   ;; legacy buffer-local `c-basic-offset', and supports project styles.
