@@ -4,9 +4,38 @@ This file documents notable changes to PHP Mode according to the [Keep a Changel
 
 ## Unreleased
 
+### Added
+
+ * **Rewrite `php-mode` as a CC Mode independent major mode**
+   * Indentation is handled by `php-indent.el`, a `syntax-ppss` based engine ported from `js.el` bundled with GNU Emacs
+   * Coding styles are handled by `php-style.el`, a variable-based style system that replaces CC Mode's `c-set-style`
+   * PHP language keyword tables are provided by `php-keywords.el`
+ * Preserve the legacy CC Mode based implementation as `php-cc-mode`
+   * This replaces the forward-compatibility alias introduced in 1.28.0 ([#828]) with the real renamed implementation
+   * `php-cc-mode` is in frozen maintenance: only regression fixes are accepted, and new development happens in the CC Mode independent `php-mode`
+   * For backward compatibility, `php-cc-mode` runs `php-mode-hook` in addition to its own `php-cc-mode-hook`
+   * Settings described in [the CC Mode manual] now apply only to `php-cc-mode`; see the commentary at the top of `lisp/php-cc-mode.el`
+
+### Changed
+
+ * Change the default of `php-mode-coding-style` from `pear` to `per` ([PER Coding Style 2.0])
+
+### Deprecated
+
+ * `c-basic-offset` is obsolete in `php-mode`; use `php-indent-offset` instead
+   * A migration layer still honors a buffer-local `c-basic-offset` (for example set via `.dir-locals.el`) by copying its value into `php-indent-offset` with a warning
+ * `php-mode-lineup-cascaded-calls` is obsolete; use `php-indent-chain-indent` instead
+ * `php-mode-enable-backup-style-variables` is obsolete; use `php-style-delete-trailing-whitespace` instead
+
 ### Removed
 
- * Drop support for Emacs 27.x ([#811])
+ * **Drop support for Emacs 27; PHP Mode now requires Emacs 28.1 or later** ([#811])
+ * Remove the `symfony2` coding style from `php-mode`, which is superseded by `per`
+   * The style remains available in `php-cc-mode`
+   * `php-enable-symfony2-coding-style` is now an obsolete alias for `php-enable-per-coding-style`
+
+[PER Coding Style 2.0]: https://www.php-fig.org/per/coding-style/
+[the CC Mode manual]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
 
 ## [1.28.0] - 2026-08-25
 
