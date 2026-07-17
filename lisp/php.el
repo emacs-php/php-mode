@@ -703,6 +703,32 @@ The order is reversed by calling as follows:
 `find-tag-default' from GNU Emacs etags.el."
   (car (php-leading-tokens 1)))
 
+(defun php-dot-context ()
+  "Classify the context immediately before point for the \".\" key.
+
+Return one of the following symbols:
+
+  `string-or-comment' -- point is inside a string or comment.
+  `next-to-string'    -- the preceding token is a string literal or one of
+                         `php-magical-constants' (for example, point follows
+                         \"__DIR__\"), so a concatenation such as \". \" reads
+                         naturally.
+  `code'              -- anything else.
+
+This is a dependency-free primitive meant to drive context-sensitive
+insertion of the \".\" key with packages such as smartchr or key-combo.
+It shares its notion of \"string\" and \"magic constant\" with
+`php-complete-complete-path', so key-driven insertion and
+completion-at-point stay consistent.  See the README for a recipe."
+  (cond
+   ((php-in-string-or-comment-p) 'string-or-comment)
+   ((when-let* ((token (car (php-leading-tokens 1))))
+      (or (string-prefix-p "'" token)
+          (string-prefix-p "\"" token)
+          (member token php-magical-constants)))
+    'next-to-string)
+   (t 'code)))
+
 ;;; Provide support for Flymake so that users can see warnings and
 ;;; errors in real-time as they write code.
 (defun php-flymake-php-init ()

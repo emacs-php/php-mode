@@ -86,6 +86,51 @@ M-x package-install php-mode
 
 インデントエンジンはもはやCC Modeを使わないため、`php-mode`では`c-basic-offset`はobsoleteです。かわりに`php-indent-offset`をカスタマイズしてください。後方互換のため、プロジェクトが`c-basic-offset`をバッファローカルに設定している場合(`.dir-locals.el`やファイルローカル変数など)は、`php-mode`がその値を`php-indent-offset`に引き継ぎ、警告を表示します。
 
+## 補完
+
+`php-complete.el`は、言語サーバーなしでも使える依存の軽い小さな`completion-at-point`関数(capf)をいくつか提供します。いずれも`M-x`コマンドとしても、[`cape`][cape]の`cape-capf-super`で合成する部品としても使えます。
+
+- `php-complete-complete-function` — 組み込み関数名。
+- `php-complete-complete-path` — `__DIR__ . '/...'`イディオムの中でパスを補完します。1階層ずつ辿り、起点は現在のファイルのディレクトリ(実行時に`__DIR__`が解決する先)です。
+
+```elisp
+(add-hook 'php-mode-hook
+          (lambda ()
+            (add-hook 'completion-at-point-functions
+                      #'php-complete-complete-path nil t)))
+
+;; …または cape で複数のオフラインソースを1つの super-capf に合成する:
+(add-hook 'php-mode-hook
+          (lambda ()
+            (add-hook 'completion-at-point-functions
+                      (cape-capf-super #'php-complete-complete-function
+                                       #'php-complete-complete-path)
+                      nil t)))
+```
+
+### 文脈依存の `.` キー
+
+`__DIR__`とパス補completionを橋渡しする`. '/'`の挿入は、あえてcapfの仕事にはしていません。これは編集環境側に委ねます。そのための primitive が`php-dot-context`です。ポイントが文字列/コメント内か(`string-or-comment`)、文字列リテラルや`__DIR__`のようなマジック定数の直後か(`next-to-string`)、素のコードか(`code`)を返します。capf とこの primitive は「文字列」と「マジック定数」の定義を共有するため、キー挿入と補completionの挙動が食い違いません。
+
+たとえば[smartchr][smartchr]では、`.`キーをコード中では`->` / `.` / `. `で循環させ、文字列内ではリテラルの`.`を挿入し、`__DIR__`の直後では`. `を優先(そのまま`php-complete-complete-path`につながる)といった設定が書けます。
+
+```elisp
+(defun my-php-smartchr-dot (code within-string next-to-string)
+  "`php-dot-context' を使って `.' キーの smartchr を作る。"
+  (let ((select (lambda ()
+                  (pcase (php-dot-context)
+                    ('string-or-comment within-string)
+                    ('next-to-string    next-to-string)
+                    (_                  code)))))
+    (smartchr-make-struct
+     :cleanup-fn (lambda () (delete-char (- (length (funcall select)))))
+     :insert-fn  (lambda () (insert (funcall select))))))
+
+;; (smartchr (my-php-smartchr-dot "->" "." ". ")
+;;           (my-php-smartchr-dot ". " ".." "..")
+;;           "...")
+```
+
 ## HTMLとPHPが混在するファイルの編集
 
 `php-mode`は純粋なPHPスクリプトのためのメジャーモードです。テンプレートのようにHTMLの中にPHPを埋め込んだファイルは、両方の言語を理解するメジャーモードで編集するほうが適しています。特にインデントは、HTML部分を素の`php-mode`で編集すると正しく動作しません。
@@ -168,9 +213,11 @@ PHP Modeは[GNU General Public License Version 3][gpl-v3] (GPLv3) でライセ�
 [Authors]: https://github.com/emacs-php/php-mode/wiki/Authors
 [Contributors]: https://github.com/emacs-php/php-mode/graphs/contributors
 [Supported Version]: https://github.com/emacs-php/php-mode/wiki/Supported-Version
+[cape]: https://github.com/minad/cape
 [cc-mode-manual]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
 [gpl-v3]: https://www.gnu.org/licenses/gpl-3.0
 [per-cs]: https://www.php-fig.org/per/coding-style/
+[smartchr]: https://github.com/imakado/emacs-smartchr
 [#811]: https://github.com/emacs-php/php-mode/issues/811
 [nongnu-elpa-badge]: https://elpa.nongnu.org/nongnu/php-mode.svg
 [nongnu-elpa]: https://elpa.nongnu.org/nongnu/php-mode.html

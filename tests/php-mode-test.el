@@ -33,6 +33,7 @@
 (require 'php)
 (require 'php-mode)
 (require 'php-project)
+(require 'php-complete)
 (require 'ert)
 (require 'cl-lib)
 (require 'imenu)
@@ -906,6 +907,56 @@ the same logic in an object."
   "Tests for PEAR style."
   (with-php-mode-test ("indent/issue-227.php" :indent t :magic t :style pear))
   (with-php-mode-test ("indent/issue-774.php" :indent t :magic t :style pear)))
+
+(ert-deftest php-mode-test-dot-context ()
+  "`php-dot-context' classifies the context immediately before point."
+  (cl-flet ((ctx (code) (with-temp-buffer
+                          (php-mode)
+                          (insert "<?php\n" code)
+                          (php-dot-context))))
+    ;; Preceding a magic constant or a string literal: concatenation reads well.
+    (should (eq 'next-to-string (ctx "__DIR__")))
+    (should (eq 'next-to-string (ctx "__FILE__")))
+    (should (eq 'next-to-string (ctx "'foo'")))
+    (should (eq 'next-to-string (ctx "\"foo\"")))
+    ;; Plain code.
+    (should (eq 'code (ctx "$a")))
+    (should (eq 'code (ctx "foo()")))
+    ;; Inside a string or comment.
+    (should (eq 'string-or-comment (ctx "'foo")))
+    (should (eq 'string-or-comment (ctx "// foo")))))
+
+(ert-deftest php-mode-test-complete-path ()
+  "`php-complete-complete-path' completes the `__DIR__ . \\='/...\\='' idiom."
+  (let* ((root (make-temp-file "php-complete-path" t))
+         (file (expand-file-name "src/App.php" root)))
+    (unwind-protect
+        (progn
+          (make-directory (expand-file-name "src/Controller" root) t)
+          ;; Completes filesystem entries rooted at the file's directory,
+          ;; even when `default-directory' points elsewhere.
+          (with-temp-buffer
+            (php-mode)
+            (setq buffer-file-name file
+                  default-directory temporary-file-directory)
+            (insert "<?php\n$x = __DIR__ . '/")
+            (let ((res (php-complete-complete-path)))
+              (should res)
+              (should (member "Controller/"
+                              (all-completions "" (nth 2 res))))))
+          ;; The leading slash is fixed: BEG sits after "__DIR__ . '/".
+          (with-temp-buffer
+            (php-mode)
+            (setq buffer-file-name file)
+            (insert "<?php\n$x = __DIR__ . '/")
+            (should (eq (car (php-complete--path-string-bounds)) (point))))
+          ;; A plain string is not the idiom.
+          (with-temp-buffer
+            (php-mode)
+            (setq buffer-file-name file)
+            (insert "<?php\n$x = 'plain/")
+            (should-not (php-complete-complete-path))))
+      (delete-directory root t))))
 
 ;; For developers: How to make .faces list file.
 ;;
