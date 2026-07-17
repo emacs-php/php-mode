@@ -139,6 +139,51 @@ Conversely, to expose PHP-specific detection (the `composer.json`-first preceden
 (add-hook 'project-find-functions #'php-project-project-find-function 90)
 ```
 
+## Completion
+
+`php-complete.el` provides a few small, dependency-light `completion-at-point` functions (capfs) for use without a language server.  Each is usable both as an `M-x` command and as a building block for [`cape`][cape]'s `cape-capf-super`:
+
+- `php-complete-complete-function` — built-in function names.
+- `php-complete-complete-path` — a filesystem path inside the `__DIR__ . '/...'` idiom, completed one component at a time and rooted at the directory of the current file (what `__DIR__` resolves to at runtime).
+
+```elisp
+(add-hook 'php-mode-hook
+          (lambda ()
+            (add-hook 'completion-at-point-functions
+                      #'php-complete-complete-path nil t)))
+
+;; …or compose several offline sources into one super-capf with cape:
+(add-hook 'php-mode-hook
+          (lambda ()
+            (add-hook 'completion-at-point-functions
+                      (cape-capf-super #'php-complete-complete-function
+                                       #'php-complete-complete-path)
+                      nil t)))
+```
+
+### A context-sensitive `.` key
+
+Inserting the `. '/'` that bridges `__DIR__` into path completion is deliberately *not* the capf's job; it is left to your editing setup.  `php-dot-context` is the primitive for that: it reports whether point is inside a string or comment (`string-or-comment`), directly after a string literal or a magic constant such as `__DIR__` (`next-to-string`), or in plain code (`code`).  Because the capf and this primitive share the same notion of "string" and "magic constant", key-driven insertion and completion stay consistent.
+
+For example, with [smartchr][smartchr] the `.` key can cycle `->` / `.` / `. ` in code, insert a literal `.` inside strings, and prefer `. ` right after `__DIR__` (which then flows straight into `php-complete-complete-path`):
+
+```elisp
+(defun my-php-smartchr-dot (code within-string next-to-string)
+  "Build a smartchr for the `.' key using `php-dot-context'."
+  (let ((select (lambda ()
+                  (pcase (php-dot-context)
+                    ('string-or-comment within-string)
+                    ('next-to-string    next-to-string)
+                    (_                  code)))))
+    (smartchr-make-struct
+     :cleanup-fn (lambda () (delete-char (- (length (funcall select)))))
+     :insert-fn  (lambda () (insert (funcall select))))))
+
+;; (smartchr (my-php-smartchr-dot "->" "." ". ")
+;;           (my-php-smartchr-dot ". " ".." "..")
+;;           "...")
+```
+
 ## Editing files that mix HTML and PHP
 
 `php-mode` is designed for pure PHP scripts.  Files that embed PHP inside HTML, such as templates, are better edited in a major mode that understands both languages.  Indentation in particular is unreliable when the HTML part of a file is edited in plain `php-mode`.
@@ -220,8 +265,10 @@ This project was maintained by [Eric James Michael Ritz][@ejmr] until 2017. Curr
 [Authors]: https://github.com/emacs-php/php-mode/wiki/Authors
 [Contributors]: https://github.com/emacs-php/php-mode/graphs/contributors
 [Supported Version]: https://github.com/emacs-php/php-mode/wiki/Supported-Version
+[cape]: https://github.com/minad/cape
 [cc-mode-manual]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
 [gpl-v3]: https://www.gnu.org/licenses/gpl-3.0
+[smartchr]: https://github.com/imakado/emacs-smartchr
 [per-cs]: https://www.php-fig.org/per/coding-style/
 [#811]: https://github.com/emacs-php/php-mode/issues/811
 [nongnu-elpa-badge]: https://elpa.nongnu.org/nongnu/php-mode.svg
