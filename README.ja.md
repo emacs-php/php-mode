@@ -93,24 +93,32 @@ M-x package-install php-mode
 - `php-complete-complete-function` — 組み込み関数名。
 - `php-complete-complete-path` — `__DIR__ . '/...'`イディオムの中でパスを補完します。1階層ずつ辿り、起点は現在のファイルのディレクトリ(実行時に`__DIR__`が解決する先)です。
 
-```elisp
-(add-hook 'php-mode-hook
-          (lambda ()
-            (add-hook 'completion-at-point-functions
-                      #'php-complete-complete-path nil t)))
+名前付き関数から登録すると、あとから設定を変更しやすくなります。無名クロージャをフックに追加すると、削除や再定義が困難になります。
 
-;; …または cape で複数のオフラインソースを1つの super-capf に合成する:
-(add-hook 'php-mode-hook
-          (lambda ()
-            (add-hook 'completion-at-point-functions
-                      (cape-capf-super #'php-complete-complete-function
-                                       #'php-complete-complete-path)
-                      nil t)))
+```elisp
+(defun my-php-mode-setup-completion ()
+  "現在のバッファで `php-mode' の補完ソースを有効にする。"
+  (add-hook 'completion-at-point-functions
+            #'php-complete-complete-path nil t))
+
+(with-eval-after-load 'php-mode
+  (add-hook 'php-mode-hook #'my-php-mode-setup-completion))
+```
+
+`cape`で複数のオフラインソースを1つの super-capf に合成するには、同じ関数の中で`cape-capf-super`を登録します。
+
+```elisp
+(defun my-php-mode-setup-completion ()
+  "現在のバッファで `php-mode' の補完ソースを有効にする。"
+  (add-hook 'completion-at-point-functions
+            (cape-capf-super #'php-complete-complete-function
+                             #'php-complete-complete-path)
+            nil t))
 ```
 
 ### 文脈依存の `.` キー
 
-`__DIR__`とパス補completionを橋渡しする`. '/'`の挿入は、あえてcapfの仕事にはしていません。これは編集環境側に委ねます。そのための primitive が`php-dot-context`です。ポイントが文字列/コメント内か(`string-or-comment`)、文字列リテラルや`__DIR__`のようなマジック定数の直後か(`next-to-string`)、素のコードか(`code`)を返します。capf とこの primitive は「文字列」と「マジック定数」の定義を共有するため、キー挿入と補completionの挙動が食い違いません。
+`__DIR__`とパス補完を橋渡しする`. '/'`の挿入は、あえてcapfの仕事にはしていません。これは編集環境側に委ねます。そのための primitive が`php-dot-context`です。ポイントが文字列/コメント内か(`string-or-comment`)、文字列リテラルや`__DIR__`のようなマジック定数の直後か(`next-to-string`)、素のコードか(`code`)を返します。capf とこの primitive は「文字列」と「マジック定数」の定義を共有するため、キー挿入と補完の挙動が食い違いません。
 
 たとえば[smartchr][smartchr]では、`.`キーをコード中では`->` / `.` / `. `で循環させ、文字列内ではリテラルの`.`を挿入し、`__DIR__`の直後では`. `を優先(そのまま`php-complete-complete-path`につながる)といった設定が書けます。
 
