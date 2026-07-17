@@ -146,19 +146,27 @@ Conversely, to expose PHP-specific detection (the `composer.json`-first preceden
 - `php-complete-complete-function` — built-in function names.
 - `php-complete-complete-path` — a filesystem path inside the `__DIR__ . '/...'` idiom, completed one component at a time and rooted at the directory of the current file (what `__DIR__` resolves to at runtime).
 
-```elisp
-(add-hook 'php-mode-hook
-          (lambda ()
-            (add-hook 'completion-at-point-functions
-                      #'php-complete-complete-path nil t)))
+Register them from a named function so the setup stays easy to change later; adding an anonymous closure to the hook makes it hard to remove or redefine.
 
-;; …or compose several offline sources into one super-capf with cape:
-(add-hook 'php-mode-hook
-          (lambda ()
-            (add-hook 'completion-at-point-functions
-                      (cape-capf-super #'php-complete-complete-function
-                                       #'php-complete-complete-path)
-                      nil t)))
+```elisp
+(defun my-php-mode-setup-completion ()
+  "Enable `php-mode' completion sources for the current buffer."
+  (add-hook 'completion-at-point-functions
+            #'php-complete-complete-path nil t))
+
+(with-eval-after-load 'php-mode
+  (add-hook 'php-mode-hook #'my-php-mode-setup-completion))
+```
+
+To compose several offline sources into one super-capf with `cape`, register `cape-capf-super` inside the same function instead:
+
+```elisp
+(defun my-php-mode-setup-completion ()
+  "Enable `php-mode' completion sources for the current buffer."
+  (add-hook 'completion-at-point-functions
+            (cape-capf-super #'php-complete-complete-function
+                             #'php-complete-complete-path)
+            nil t))
 ```
 
 ### A context-sensitive `.` key
