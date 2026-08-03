@@ -112,16 +112,21 @@
           :deactivate (lambda () t))
     (phpactor :test (lambda () (and (require 'phpactor nil t) (featurep 'phpactor)))
               :activate php-ide-phpactor-activate
-              :deactivate php-ide-phpactor-activate)
+              :deactivate php-ide-phpactor-deactivate)
     (eglot :test (lambda () (and (require 'eglot nil t) (featurep 'eglot)))
-           :activate eglot-ensure
+           :activate php-ide-eglot-activate
+           ;; `eglot--managed-mode-off' is Eglot's own internal (and unexported) function,
+           ;; but it is the only operation that turns Eglot off for just the current buffer
+           ;; without shutting down a server that other buffers may still be using.  The
+           ;; public `eglot-shutdown' always kills the whole server, which would be a much
+           ;; more disruptive (and asymmetric) deactivation than `php-ide-eglot-activate'.
            :deactivate eglot--managed-mode-off)
     (lsp-bridge :test (lambda () (and (require 'lsp-bridge nil t) (featurep 'lsp-bridge)))
                 :activate (lambda () (lsp-bridge-mode +1))
                 :deactivate (lambda () (lsp-bridge-mode -1)))
     (lsp-mode :test (lambda () (and (require 'lsp nil t) (featurep 'lsp)))
               :activate lsp
-              :deactivate lsp-workspace-shutdown)))
+              :deactivate lsp-disconnect)))
 
 (defvar php-ide-lsp-command-alist
   '((intelephense "intelephense" "--stdio")
@@ -165,10 +170,36 @@
   (cond
    ((stringp php-ide-eglot-executable) (list php-ide-eglot-executable))
    ((listp php-ide-eglot-executable) php-ide-eglot-executable)
-   ((when-let* ((command (assq php-ide-eglot-executable php-ide-lsp-command-alist)))
+   ((when-let* ((command (cdr (assq php-ide-eglot-executable php-ide-lsp-command-alist))))
       (cond
        ((functionp command) (funcall command))
        ((listp command) command))))))
+
+(defvar php-ide-eglot-managed-modes '(php-mode phps-mode php-ts-mode)
+  "Major modes for which `php-ide-eglot-activate' overrides
+`eglot-server-programs'.")
+
+(defun php-ide-eglot--contact-function (&optional _interactive _project)
+  "CONTACT function registered into `eglot-server-programs' by php-ide.
+Ignores the INTERACTIVE and PROJECT arguments Eglot may pass; see
+`php-ide-eglot-server-program' for the actual command lookup."
+  (php-ide-eglot-server-program))
+
+;;;###autoload
+(defun php-ide-eglot-activate ()
+  "Activate Eglot for `php-ide-mode', honoring `php-ide-eglot-executable'.
+
+When `php-ide-eglot-executable' is set, this buffer-locally prepends
+an entry to `eglot-server-programs' so Eglot uses it instead of its
+own bundled default for PHP.  Buffers where `php-ide-eglot-executable'
+is unset are unaffected and keep using Eglot's default."
+  (when (and php-ide-eglot-executable
+             (not (eq (cdr (assoc php-ide-eglot-managed-modes eglot-server-programs))
+                      #'php-ide-eglot--contact-function)))
+    (setq-local eglot-server-programs
+                (cons (cons php-ide-eglot-managed-modes #'php-ide-eglot--contact-function)
+                      eglot-server-programs)))
+  (eglot-ensure))
 
 (defcustom php-ide-mode-lighter " PHP-IDE"
   "A symbol of PHP-IDE feature."
