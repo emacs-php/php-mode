@@ -111,7 +111,7 @@
 
 ;;;###autoload
 (defun php-ide-phpactor-deactivate ()
-  "Dectivate PHP-IDE using phpactor.el."
+  "Deactivate PHP-IDE using phpactor.el."
   (interactive)
   (local-unset-key [remap xref-find-definitions])
   (local-unset-key [remap xref-pop-marker-stack])

@@ -55,7 +55,7 @@
 ;;
 ;; ## Configuration
 ;;
-;; Put follows code into your .emacs (~/.emacs.d/init.el) file:
+;; Put the following code into your .emacs (~/.emacs.d/init.el) file:
 ;;
 ;;     (defun init-php-mode-setup ()
 ;;       (add-hook 'hack-local-variables-hook #'php-ide-mode t t))
@@ -71,7 +71,7 @@
 ;;
 ;;     (with-eval-after-load 'php-ide
 ;;       (custom-set-variables
-;;        '(php-ide-features . 'eglot) ;; and/or 'none, 'phpactor, 'lsp-mode
+;;        '(php-ide-features '(eglot)) ;; and/or '(none), '(phpactor), '(lsp-mode)
 ;;        '(php-ide-eglot-executable "psalm-language-server") ;; or "intelephense", '("php" "vendor/bin/path/to/server")
 ;;        ;; If you want to hide php-ide-mode from the mode line, set an empty string
 ;;        '(php-ide-mode-lighter ""))
@@ -79,11 +79,12 @@
 ;;       (add-hook 'php-mode-hook #'init-php-mode-setup)
 ;;       (add-hook 'php-ide-mode-functions #'init-php-ide-mode-setup))
 ;;
-;; If you don't enable IDE support by default, set '(php-ide-feature 'none)
+;; If you don't want to enable any IDE support by default, leave `php-ide-features'
+;; unset (its default, nil) or set it to '(none) explicitly.
 ;;
 ;; ### For per project configuration
 ;;
-;; Put follows code into .dir-locals.el in project directory:
+;; Put the following code into .dir-locals.el in project directory:
 ;;
 ;;     ((nil (php-project-root . git)
 ;;           (php-ide-features . (lsp-mode))))
