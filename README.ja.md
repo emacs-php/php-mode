@@ -75,6 +75,39 @@ M-x package-install php-mode
   (php-project-coding-style . psr2)))
 ```
 
+### PHP-IDE: LSPクライアントおよびPhpactorとの連携
+
+`php-ide`(`php-ide.el`)は、PHP Modeと[Eglot](https://github.com/joaotavora/eglot)・[lsp-mode](https://github.com/emacs-lsp/lsp-mode)・[lsp-bridge](https://github.com/manateelazycat/lsp-bridge)・[Phpactor](https://github.com/emacs-php/phpactor.el)のようなIDE的機能を橋渡しする**実験的**な機能です。これらの機能自体を実装するものではなく、選んだものを`php-ide-mode`という単一のマイナーモード経由で有効化・無効化するだけです。詳細な仕様は`php-ide.el`冒頭のCommentaryを参照してください。
+
+```lisp
+(defun my-php-mode-init ()
+  (add-hook 'hack-local-variables-hook 'php-ide-turn-on nil t))
+
+(with-eval-after-load 'php-ide
+  (custom-set-variables
+   '(php-ide-features '(eglot))              ;; '(phpactor)、'(lsp-mode)、'(lsp-bridge)も可
+   '(php-ide-eglot-executable 'intelephense)  ;; 'phpactor、パス文字列、文字列のリストも可
+   '(php-ide-mode-lighter "")))               ;; モードラインからPHP-IDEを隠す
+```
+
+`php-ide-turn-on`は`php-ide-features`が未設定のときは何もしないため、上記のように無条件にフックへ追加しても安全です。上記のようにグローバルに、または下記のようにプロジェクト単位で`php-ide-features`を設定するまでPHP-IDEはオフのままです。
+
+`php-ide`読み込み後に使えるコマンド:
+
+* `M-x php-ide-mode` — `php-ide-features`に基づき、現在のバッファでPHP-IDEをトグルする。
+* `M-x php-ide-turn-on` — 同様だが、`php-ide-features`が未設定でもエラーにならない。
+* `M-x php-ide-set-feature` — このシステムで実際に利用可能な(対応パッケージがインストールされている)機能から対話的に選び、現在のバッファで有効化する。
+* `M-x php-ide-status` — PHP-IDEが有効かどうか、設定内容、利用可能な機能を表示する。
+
+#### プロジェクト単位のPHP-IDE設定
+
+```lisp
+((nil (php-project-root . git)
+      (php-ide-features . (eglot))))
+```
+
+`php-ide-features`と`php-ide-eglot-executable`は、PHP-IDE組み込みの機能名やバンドル済み実行ファイルのプリセット(`intelephense`、`phpactor`など)を指す場合に限り、`.dir-locals.el`での設定が安全とみなされます。それ以外の値——生の実行ファイルパス、明示的なコマンド引数、カスタムの`php-ide-mode-functions`フックなど——は、これまで通りEmacsの「危険な変数」に対する通常の確認を経ます。そうしないと、ファイルを開くだけで任意のリポジトリが任意のコマンド(またはLisp関数)をあなたのEmacs上で実行できてしまうためです。
+
 ### `project.el`・Projectileとの連携
 
 `php-project-get-root-dir`は、まずPHP固有のマーカー（`.projectile`、`composer.json`/`composer.lock`、続いてVCSディレクトリ）を探索します。モノレポではパッケージ単位の`vendor/autoload.php`やコーディングスタイルが`php-mode`にとって重要なため、VCSルートより`composer.json`を優先します。これらのマーカーが見つからない場合は`project-current`にフォールバックするので、任意の[`project.el`](https://www.gnu.org/software/emacs/manual/html_node/emacs/Projects.html)バックエンドが検出に寄与できます。
