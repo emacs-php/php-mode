@@ -36,6 +36,7 @@
 (require 'php-mode)
 (require 'php-mode-debug)
 (require 'php-project)
+(require 'php-ide)
 (require 'ert)
 (require 'cl-lib)
 (require 'imenu)
@@ -958,6 +959,133 @@ project setting this variable gets a confirmation prompt anyway."
         ;; subprocess complained about, not just its exit status.
         (should (string-match-p "OK" (buffer-string)))
         (should (eq 0 status))))))
+
+;;; php-ide tests
+
+(ert-deftest php-ide-test-eglot-server-program ()
+  "`php-ide-eglot-server-program' should resolve every shape of
+`php-ide-eglot-executable' without touching Eglot itself."
+  (let ((php-ide-eglot-executable nil))
+    (should (null (php-ide-eglot-server-program))))
+  (let ((php-ide-eglot-executable "psalm-language-server"))
+    (should (equal '("psalm-language-server") (php-ide-eglot-server-program))))
+  (let ((php-ide-eglot-executable '("php" "vendor/bin/path/to/server")))
+    (should (equal '("php" "vendor/bin/path/to/server") (php-ide-eglot-server-program))))
+  (let ((php-ide-eglot-executable 'intelephense))
+    (should (equal '("intelephense" "--stdio") (php-ide-eglot-server-program))))
+  (let ((php-ide-eglot-executable 'phpactor))
+    (should (equal (list (if (fboundp 'phpactor--find-executable)
+                             (phpactor--find-executable)
+                           "phpactor")
+                        "language-server")
+                   (php-ide-eglot-server-program)))))
+
+(ert-deftest php-ide-test-feature-alist-arity ()
+  "Regression test: `:test' must always be a callable 0-arg predicate, and
+for every PHP-IDE feature actually available in this Emacs, `:activate'
+and `:deactivate' must be callable with zero arguments too, since
+`php-ide--activate-buffer'/`php-ide--deactivate-buffer' always `funcall'
+them without arguments.  (Features whose backing package, e.g. lsp-mode
+or Eglot, is not installed are skipped for the :activate/:deactivate
+check, since their symbols are not `fboundp' until that package loads.)"
+  (dolist (entry php-ide-feature-alist)
+    (let* ((ide-plist (cdr entry))
+           (test-fn (plist-get ide-plist :test)))
+      (should (functionp test-fn))
+      (should (eq 0 (car (func-arity test-fn))))
+      (when (funcall test-fn)
+        (dolist (key '(:activate :deactivate))
+          (let ((fn (plist-get ide-plist key)))
+            (should (functionp fn))
+            (should (eq 0 (car (func-arity fn))))))))))
+
+(ert-deftest php-ide-test-phpactor-activate-deactivate-not-swapped ()
+  "Regression test: the `phpactor' feature's `:deactivate' must be
+`php-ide-phpactor-deactivate', not (as it once was, by copy-paste)
+`php-ide-phpactor-activate'."
+  (let ((ide-plist (cdr (assq 'phpactor php-ide-feature-alist))))
+    (should (eq #'php-ide-phpactor-deactivate (plist-get ide-plist :deactivate)))))
+
+(ert-deftest php-ide-test-features-accepts-bare-symbol ()
+  "Regression test: `php-ide-features' set to a bare symbol (as shown in
+`php-ide.el's own Commentary) must not signal wrong-type-argument."
+  (with-temp-buffer
+    (php-mode)
+    (setq-local php-ide-features 'none)
+    (php-ide-mode +1)
+    (should php-ide-mode)
+    (php-ide-mode -1)
+    (should-not php-ide-mode)))
+
+(ert-deftest php-ide-test-turn-on-is-noop-when-unconfigured ()
+  "Regression test: `php-ide-turn-on' must not signal an error (and must
+not turn `php-ide-mode' on) when `php-ide-features' is unset, so it is
+safe to add unconditionally to `hack-local-variables-hook'."
+  (with-temp-buffer
+    (php-mode)
+    (should-not php-ide-features)
+    (php-ide-turn-on)
+    (should-not php-ide-mode)))
+
+(ert-deftest php-ide-test-set-feature-and-status ()
+  "`php-ide-set-feature' should set `php-ide-features' buffer-locally and
+turn `php-ide-mode' on; `php-ide-status' should not error."
+  (with-temp-buffer
+    (php-mode)
+    (php-ide-set-feature 'none)
+    (should (equal '(none) php-ide-features))
+    (should php-ide-mode)
+    ;; Re-selecting the same feature while already on must not error.
+    (php-ide-set-feature 'none)
+    (should php-ide-mode)
+    ;; `php-ide-status' just messages a summary; simply calling it must not error.
+    (php-ide-status)))
+
+(ert-deftest php-ide-test-safe-local-variables ()
+  "`.dir-locals.el' safety predicates must only accept PHP-IDE's own
+known feature symbols and bundled executable presets, never an
+arbitrary function, path, or command list."
+  (let ((features-safe (get 'php-ide-features 'safe-local-variable))
+        (eglot-exe-safe (get 'php-ide-eglot-executable 'safe-local-variable)))
+    (should (funcall features-safe '(none)))
+    (should-not (funcall features-safe '(totally-bogus-feature)))
+    (should (funcall eglot-exe-safe 'intelephense))
+    (should (funcall eglot-exe-safe 'phpactor))
+    (should-not (funcall eglot-exe-safe "/bin/ls"))
+    (should-not (funcall eglot-exe-safe '("curl" "https://example.com/x")))
+    ;; `php-ide-mode-functions' can call arbitrary code, so it must have no
+    ;; safe-local-variable predicate at all and always go through Emacs's
+    ;; normal risky-variable confirmation.
+    (should-not (get 'php-ide-mode-functions 'safe-local-variable))))
+
+(ert-deftest php-ide-test-eglot-server-programs-registration ()
+  "`php-ide-eglot-activate' should buffer-locally prepend an
+`eglot-server-programs' entry only when `php-ide-eglot-executable' is
+set, and must never mutate the global value."
+  (skip-unless (require 'eglot nil t))
+  (let ((global-before (copy-sequence eglot-server-programs)))
+    (unwind-protect
+        (progn
+          (with-temp-buffer
+            (php-mode)
+            ;; Unconfigured: must not touch `eglot-server-programs' at all.
+            (cl-letf (((symbol-function 'eglot-ensure) (lambda () nil)))
+              (php-ide-eglot-activate))
+            (should-not (local-variable-p 'eglot-server-programs)))
+          (with-temp-buffer
+            (php-mode)
+            (setq-local php-ide-eglot-executable "psalm-language-server")
+            (cl-letf (((symbol-function 'eglot-ensure) (lambda () nil)))
+              (php-ide-eglot-activate))
+            (should (equal '("psalm-language-server")
+                           (funcall (cdr (assoc php-ide-eglot-managed-modes
+                                                eglot-server-programs)))))
+            ;; Re-activating must not prepend a duplicate entry.
+            (let ((len (length eglot-server-programs)))
+              (cl-letf (((symbol-function 'eglot-ensure) (lambda () nil)))
+                (php-ide-eglot-activate))
+              (should (= len (length eglot-server-programs))))))
+      (should (equal global-before eglot-server-programs)))))
 
 ;; For developers: How to make .faces list file.
 ;;
