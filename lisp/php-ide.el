@@ -148,8 +148,11 @@
   :type `(set ,@(mapcar (lambda (feature) (list 'const (car feature)))
                        php-ide-feature-alist)
               symbol)
+  ;; Only accept feature symbols already known to `php-ide-feature-alist' as safe
+  ;; for .dir-locals.el; an arbitrary symbol here could name a feature added by
+  ;; some future or third-party extension with its own (unvetted) side effects.
   :safe (lambda (v) (cl-loop for feature in (if (listp v) v (list v))
-                             always (symbolp feature))))
+                             always (assq feature php-ide-feature-alist))))
 
 ;;;###autoload
 (defcustom php-ide-eglot-executable nil
@@ -159,10 +162,14 @@
           (const intelephense)
           (const phpactor)
           string (repeat string))
-  :safe (lambda (v) (cond
-                     ((stringp v) (file-exists-p v))
-                     ((listp v) (cl-every #'stringp v))
-                     ((assq v php-ide-lsp-command-alist)))))
+  ;; Only a symbol naming one of the bundled presets in `php-ide-lsp-command-alist'
+  ;; is safe for .dir-locals.el: the actual command is then fully determined by
+  ;; this package, not by the (untrusted) directory-local value.  A literal string
+  ;; or argument list lets the directory choose the executable/arguments outright,
+  ;; which `php-ide-eglot-server-program' would later pass straight to
+  ;; `start-process' — that must go through Emacs's normal unsafe-variable
+  ;; confirmation prompt rather than apply silently.
+  :safe (lambda (v) (assq v php-ide-lsp-command-alist)))
 
 ;;;###autoload
 (defun php-ide-eglot-server-program ()
@@ -213,28 +220,33 @@ is unset are unaffected and keep using Eglot's default."
 Notice that two arguments (FEATURE ACTIVATE) are given.
 
 FEATURE: A symbol, like \\='lsp-mode.
-ACTIVATE: T is given when activeting, NIL when deactivating PHP-IDE."
+ACTIVATE: T is given when activating, NIL when deactivating PHP-IDE."
   :tag "PHP-IDE Mode Functions"
   :type '(repeat function)
-  :safe (lambda (functions)
-          (and (listp functions) (cl-every #'functionp functions))))
+  ;; Deliberately has no :safe predicate.  This variable holds functions that
+  ;; `php-ide-mode' calls automatically, so a directory-local value naming an
+  ;; arbitrary (but already-`fboundp') function would let any repo run code in
+  ;; the visitor's Emacs just by having them open a file; that must always go
+  ;; through Emacs's normal unsafe-variable confirmation, never apply silently.
+  )
 
 ;;;###autoload
 (define-minor-mode php-ide-mode
   "Minor mode for integrate IDE-like tools."
   :lighter php-ide-mode-lighter
-  (let ((ide-features php-ide-features))
+  (let ((ide-features (if (listp php-ide-features) php-ide-features (list php-ide-features))))
     (when-let* ((unavailable-features (cl-loop for feature in ide-features
                                                unless (assq feature php-ide-feature-alist)
                                                collect feature)))
       (user-error "%s includes unavailable PHP-IDE features.  (available features are: %s)"
                   ide-features
                   (mapconcat (lambda (feature) (concat "'" (symbol-name feature)))
-                             (php-ide--avilable-features) ", ")))
+                             (php-ide--available-features) ", ")))
+    ;; Every feature in IDE-FEATURES is guaranteed to be in `php-ide-feature-alist' here,
+    ;; because the loop above already signals a `user-error' otherwise.
     (cl-loop for feature in ide-features
-             for ide-plist = (cdr-safe (assq feature php-ide-feature-alist))
-             do (if (null ide-plist)
-                    (message "Please set `php-ide-feature' variable in .dir-locals.el or custom variable")
+             for ide-plist = (cdr (assq feature php-ide-feature-alist))
+             do (progn
                   (run-hook-with-args 'php-ide-mode-functions feature php-ide-mode)
                   (if php-ide-mode
                       (php-ide--activate-buffer feature ide-plist)
@@ -242,10 +254,14 @@ ACTIVATE: T is given when activeting, NIL when deactivating PHP-IDE."
 
 ;;;###autoload
 (defun php-ide-turn-on ()
-  "Turn on PHP IDE-FEATURES and execute `php-ide-mode'."
-  (unless php-ide-features
-    (user-error "No PHP-IDE feature is installed.  Install the lsp-mode, lsp-bridge, eglot or phpactor package"))
-  (php-ide-mode +1))
+  "Turn on `php-ide-mode' if `php-ide-features' is set, otherwise do nothing.
+
+Unlike calling `php-ide-mode' directly, this never signals an error when
+`php-ide-features' is unset, so it is safe to add unconditionally to
+`php-mode-hook' or `hack-local-variables-hook'; buffers/projects that
+never configure `php-ide-features' are silently left alone."
+  (when php-ide-features
+    (php-ide-mode +1)))
 
 (defun php-ide--activate-buffer (name ide-plist)
   "Activate php-ide implementation by NAME and IDE-PLIST."
@@ -257,11 +273,44 @@ ACTIVATE: T is given when activeting, NIL when deactivating PHP-IDE."
   "Deactivate php-ide implementation by IDE-PLIST."
   (funcall (plist-get ide-plist :deactivate)))
 
-(defun php-ide--avilable-features ()
+(defun php-ide--available-features ()
   "Return list of available PHP-IDE features."
   (cl-loop for (ide . plist) in php-ide-feature-alist
            if (funcall (plist-get plist :test))
            collect ide))
+
+;;;###autoload
+(defun php-ide-set-feature (feature)
+  "Set `php-ide-features' to FEATURE for the current buffer and enable it.
+
+Interactively, prompt among the PHP-IDE features currently available on
+this system (see `php-ide--available-features'); features whose backing
+package (lsp-mode, lsp-bridge, Eglot or phpactor.el) is not installed
+are not offered.
+
+This sets `php-ide-features' buffer-locally, so the choice does not
+persist beyond the current buffer; put a matching entry in
+\".dir-locals.el\" (or your `php-mode-hook') to make it stick."
+  (interactive
+   (let ((available (php-ide--available-features)))
+     (unless available
+       (user-error "No PHP-IDE feature is available.  Install lsp-mode, lsp-bridge, eglot or phpactor"))
+     (list (intern (completing-read "PHP-IDE feature: "
+                                    (mapcar #'symbol-name available) nil t)))))
+  (when php-ide-mode
+    (php-ide-mode -1))
+  (setq-local php-ide-features (list feature))
+  (php-ide-mode +1))
+
+;;;###autoload
+(defun php-ide-status ()
+  "Show `php-ide-mode' status for the current buffer in the echo area."
+  (interactive)
+  (let ((configured (if (listp php-ide-features) php-ide-features (list php-ide-features))))
+    (message "PHP-IDE: %s (configured: %s; available on this system: %s)"
+             (if php-ide-mode "on" "off")
+             (if configured (mapconcat #'symbol-name configured ", ") "none")
+             (or (mapconcat #'symbol-name (php-ide--available-features) ", ") "none"))))
 
 (provide 'php-ide)
 ;;; php-ide.el ends here
