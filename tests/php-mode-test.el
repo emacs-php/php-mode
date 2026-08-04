@@ -887,6 +887,21 @@ vacuously and any list at all was accepted as safe."
     (should-not (funcall pred '("anything" 42)))
     (should-not (funcall pred '(core . bcmath)))))
 
+(ert-deftest php-complete-test-functions-returns-only-function-names ()
+  "`php-complete--functions' must return function names and nothing else.
+
+Regression test: it appended the whole (MODULE . FUNCTION-NAMES) entry of
+`php-defs-functions-alist', so each enabled module leaked its own name
+into the completion candidates as a symbol."
+  (let* ((php-complete-function-modules '(bcmath))
+         (php-complete--functions-cache (make-hash-table :test #'equal))
+         (functions (php-complete--functions)))
+    (should functions)
+    (should-not (seq-remove #'stringp functions))
+    (should (member "bcadd" functions))
+    (should (equal functions (sort (copy-sequence (cdr (assq 'bcmath php-defs-functions-alist)))
+                                   #'string<)))))
+
 (ert-deftest php-complete-test-functions-does-not-mutate-user-option ()
   "`php-complete--functions' must leave `php-complete-function-modules' alone.
 

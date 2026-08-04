@@ -101,8 +101,11 @@ SORT should be nil to disable sorting."
   (let* ((modules (sort (copy-sequence php-complete-function-modules) #'string<))
          (functions (gethash modules php-complete--functions-cache)))
     (unless functions
+      ;; Take the `cdr': an entry of `php-defs-functions-alist' is
+      ;; (MODULE . FUNCTION-NAMES), so appending the entry itself would
+      ;; splice MODULE in among the function names.
       (setq functions (sort (cl-loop for module in modules
-                                     append (assq module php-defs-functions-alist))
+                                     append (cdr (assq module php-defs-functions-alist)))
                             #'string<))
       (puthash modules functions php-complete--functions-cache))
     functions))

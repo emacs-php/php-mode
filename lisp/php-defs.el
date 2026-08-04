@@ -3906,7 +3906,12 @@
      "zlib_encode"
      "zlib_get_coding_type")
     (zookeeper
-     "zookeeper_dispatch")))
+     "zookeeper_dispatch"))
+  "Alist of PHP function names provided by each module.
+
+Each element is (MODULE . FUNCTION-NAMES), where MODULE is a symbol also
+listed in `php-defs-function-module-names' and FUNCTION-NAMES is a list
+of function name strings.")
 
 (provide 'php-defs)
 ;;; php-defs.el ends here
