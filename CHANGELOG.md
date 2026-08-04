@@ -45,6 +45,12 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
    * e.g. `intelephense`, `phpactor` — the `assq` result was used without `cdr`
  * Fix the `lsp-mode` PHP-IDE feature's `:deactivate` to no longer error when turning `php-ide-mode` off
    * It called `lsp-workspace-shutdown`, which requires a `WORKSPACE` argument and signalled `wrong-number-of-arguments`; switched to the buffer-scoped `lsp-disconnect`
+ * Fix the `:safe` predicates of `php-ide-features`/`php-ide-eglot-executable`, which never actually applied
+   * Emacs checks directory-local values *before* `php-ide.el` is loaded, so the predicates ran as copied into the autoloads file, where they hit `void-function cl-loop` / `void-variable php-ide-lsp-command-alist`.  `safe-local-variable-p` demotes such errors to nil, so every project setting these variables was prompted for confirmation regardless
+ * Fix Phpactor hover suppression to match its documented "any predicate matches" behavior
+   * `php-ide-phpactor-disable-hover-at-point-functions` was combined with AND, so an empty list disabled hover everywhere and multiple predicates only fired when all matched
+ * Fix `php-ide-mode` deactivation stopping Phpactor hover in unrelated buffers
+   * The hover timer is shared by all buffers but was cancelled unconditionally; it is now retired only once no live buffer uses hover
 
 ### Deprecated
 
