@@ -1121,6 +1121,44 @@ and a list of several predicates only fired when all of them matched."
     (let ((php-ide-phpactor-disable-hover-at-point-functions (list never never)))
       (should-not (php-ide-phpactor--disable-hover-at-point-p)))))
 
+(ert-deftest php-ide-test-phpactor-hover-timer-is-shared ()
+  "Regression test: the Phpactor hover timer is shared by every buffer,
+so deactivating one buffer must not stop hover in the others.
+
+It used to be cancelled unconditionally, which silently killed hover in
+every remaining PHP buffer.  A buffer killed while still active must not
+strand the timer either."
+  (let ((php-ide-phpactor-timer nil)
+        (buffers nil))
+    (unwind-protect
+        (let ((a (generate-new-buffer " *php-ide-test-a*"))
+              (b (generate-new-buffer " *php-ide-test-b*")))
+          (setq buffers (list a b))
+          (with-current-buffer a (php-ide-phpactor-activate))
+          (with-current-buffer b (php-ide-phpactor-activate))
+          (should php-ide-phpactor-timer)
+          ;; Deactivating only A must leave the timer running for B.
+          (with-current-buffer a (php-ide-phpactor-deactivate))
+          (should php-ide-phpactor-timer)
+          (should (buffer-local-value 'php-ide-phpactor-buffer b))
+          ;; Once the last buffer goes, the timer must be cancelled.
+          (with-current-buffer b (php-ide-phpactor-deactivate))
+          (should-not php-ide-phpactor-timer)
+          ;; A buffer killed while active must not strand the timer: the
+          ;; timer function itself retires it on the next tick.
+          (let ((c (generate-new-buffer " *php-ide-test-c*")))
+            (push c buffers)
+            (with-current-buffer c (php-ide-phpactor-activate))
+            (should php-ide-phpactor-timer)
+            (kill-buffer c)
+            (php-ide-phpactor--hover-timer-function)
+            (should-not php-ide-phpactor-timer)))
+      (when php-ide-phpactor-timer
+        (cancel-timer php-ide-phpactor-timer))
+      (dolist (buf buffers)
+        (when (buffer-live-p buf)
+          (kill-buffer buf))))))
+
 (ert-deftest php-ide-test-eglot-server-programs-registration ()
   "`php-ide-eglot-activate' should buffer-locally prepend an
 `eglot-server-programs' entry only when `php-ide-eglot-executable' is
