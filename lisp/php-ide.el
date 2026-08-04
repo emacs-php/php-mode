@@ -212,8 +212,10 @@ values; see `php-ide-eglot-executable'.")
        ((listp command) command))))))
 
 (defvar php-ide-eglot-managed-modes '(php-mode phps-mode php-ts-mode)
-  "Major modes for which `php-ide-eglot-activate' overrides
-`eglot-server-programs'.")
+  "Major modes keyed by the `eglot-server-programs' entry php-ide adds.
+
+`php-ide-eglot-activate' registers `php-ide-eglot-executable' for exactly
+these modes.")
 
 (defun php-ide-eglot--contact-function (&optional _interactive _project)
   "CONTACT function registered into `eglot-server-programs' by php-ide.
@@ -238,7 +240,9 @@ is unset are unaffected and keep using Eglot's default."
   (eglot-ensure))
 
 (defcustom php-ide-mode-lighter " PHP-IDE"
-  "A symbol of PHP-IDE feature."
+  "Mode line indicator for `php-ide-mode'.
+
+Set it to an empty string to hide `php-ide-mode' from the mode line."
   :tag "PHP-IDE Mode Lighter"
   :type 'string
   :safe #'stringp)

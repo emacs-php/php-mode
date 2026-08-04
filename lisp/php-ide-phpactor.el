@@ -32,9 +32,17 @@
 (require 'smart-jump nil t)
 (require 'cl-lib)
 
-(defvar-local php-ide-phpactor-buffer nil)
-(defvar-local php-ide-phpactor-hover-last-pos nil)
-(defvar-local php-ide-phpactor-hover-last-msg nil)
+(defvar-local php-ide-phpactor-buffer nil
+  "Non-nil when PHP-IDE has activated Phpactor in this buffer.")
+
+(defvar-local php-ide-phpactor-hover-last-pos nil
+  "Buffer position the last hover request was made for.")
+
+(defvar-local php-ide-phpactor-hover-last-msg nil
+  "Hover message Phpactor returned for `php-ide-phpactor-hover-last-pos'.
+
+It is consumed (and cleared) the next time point rests on that same
+position, so that the popup only appears once the user has stayed put.")
 
 (declare-function phpactor--command-argments "ext:phpactor" (&rest arg-keys))
 (declare-function phpactor--parse-json "ext:phpactor" (buffer))
