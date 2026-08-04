@@ -96,7 +96,9 @@ SORT should be nil to disable sorting."
 ;;; Data source functions:
 (defun php-complete--functions ()
   "Return PHP function names."
-  (let* ((modules (sort php-complete-function-modules #'string<))
+  ;; `sort' is destructive, so copy before sorting: `php-complete-function-modules'
+  ;; is a user option and must not be reordered under the user's feet.
+  (let* ((modules (sort (copy-sequence php-complete-function-modules) #'string<))
          (functions (gethash modules php-complete--functions-cache)))
     (unless functions
       (setq functions (sort (cl-loop for module in modules

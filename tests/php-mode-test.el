@@ -887,6 +887,17 @@ vacuously and any list at all was accepted as safe."
     (should-not (funcall pred '("anything" 42)))
     (should-not (funcall pred '(core . bcmath)))))
 
+(ert-deftest php-complete-test-functions-does-not-mutate-user-option ()
+  "`php-complete--functions' must leave `php-complete-function-modules' alone.
+
+Regression test: it sorted the user option in place, so the first
+completion silently reordered the value the user had set."
+  (let* ((modules '(pcntl bcmath core))
+         (php-complete-function-modules (copy-sequence modules))
+         (php-complete--functions-cache (make-hash-table :test #'equal)))
+    (php-complete--functions)
+    (should (equal modules php-complete-function-modules))))
+
 (ert-deftest php-complete-test-safe-local-variable-works-from-autoloads ()
   "The `:safe' predicate must work from the package autoloads file alone.
 

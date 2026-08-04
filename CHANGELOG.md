@@ -20,6 +20,8 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
  * Fix the `:safe` predicate of `php-complete-function-modules`, which accepted any list and never actually applied
    * It looped over the standard Emacs variable `values` instead of its own argument, so `cl-loop ... always` succeeded vacuously and unknown module names passed as safe
    * Emacs also checks directory-local values *before* php-complete.el is loaded, so the predicate ran as copied into the autoloads file and hit `void-function cl-loop`.  `safe-local-variable-p` demotes such errors to nil, so every project setting this variable was prompted for confirmation regardless
+ * Fix function name completion sorting the user's `php-complete-function-modules` in place
+   * The first completion reordered the value the user had set, e.g. `(pcntl bcmath core)` became `(bcmath core pcntl)`
 
 ### Deprecated
 
