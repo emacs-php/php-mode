@@ -48,10 +48,18 @@
 (defcustom php-complete-function-modules '(bcmath core gmp libxml intl mbstring pcntl posix sodium xml xmlwriter)
   "Module names for function names completion."
   :tag "PHP Complete Function Modules"
-  :type (eval-when-compile `(set ,@(mapcar (lambda (elm) (list 'const (car elm)))
-                                           php-defs-functions-alist)))
-  :safe (lambda (value) (and (listp value) (cl-loop for v in values
-                                                    always (assq v php-defs-functions-alist)))))
+  :type (eval-when-compile `(set ,@(mapcar (lambda (name) (list 'const name))
+                                           php-defs-function-module-names)))
+  ;; Only accept module names PHP Mode actually knows about.  Deliberately
+  ;; written without `cl-lib' and against the autoloaded
+  ;; `php-defs-function-module-names': this predicate is copied verbatim into
+  ;; the package autoloads file and runs there while Emacs checks
+  ;; .dir-locals.el, where neither cl-lib nor php-defs.el is loaded yet.
+  :safe (lambda (value)
+          (and (proper-list-p value)
+               (not (memq nil (mapcar (lambda (v)
+                                        (and (memq v php-defs-function-module-names) t))
+                                      value))))))
 
 ;;; Cape functions:
 
@@ -88,11 +96,16 @@ SORT should be nil to disable sorting."
 ;;; Data source functions:
 (defun php-complete--functions ()
   "Return PHP function names."
-  (let* ((modules (sort php-complete-function-modules #'string<))
+  ;; `sort' is destructive, so copy before sorting: `php-complete-function-modules'
+  ;; is a user option and must not be reordered under the user's feet.
+  (let* ((modules (sort (copy-sequence php-complete-function-modules) #'string<))
          (functions (gethash modules php-complete--functions-cache)))
     (unless functions
+      ;; Take the `cdr': an entry of `php-defs-functions-alist' is
+      ;; (MODULE . FUNCTION-NAMES), so appending the entry itself would
+      ;; splice MODULE in among the function names.
       (setq functions (sort (cl-loop for module in modules
-                                     append (assq module php-defs-functions-alist))
+                                     append (cdr (assq module php-defs-functions-alist)))
                             #'string<))
       (puthash modules functions php-complete--functions-cache))
     functions))
