@@ -64,12 +64,17 @@
   "Timer object for execute Phpactor and display hover message.")
 
 (defvar php-ide-phpactor-disable-hover-at-point-functions
-  '(php-in-string-or-comment-p))
+  '(php-in-string-or-comment-p)
+  "Predicates that suppress the hover popup at point.
+
+Each element is called with no arguments; a non-nil return from any of
+them means no hover information is requested at point.  An empty list
+therefore never suppresses hover.")
 
 (defun php-ide-phpactor--disable-hover-at-point-p ()
-  "Return non-NIL if any function return non-NIL for disable to hover at point."
+  "Return non-nil if any function returns non-nil to disable hover at point."
   (cl-loop for f in php-ide-phpactor-disable-hover-at-point-functions
-           never (not (funcall f))))
+           thereis (funcall f)))
 
 (defun php-ide-phpactor-hover ()
   "Show brief information about the symbol underneath the cursor."

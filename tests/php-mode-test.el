@@ -1099,6 +1099,28 @@ project setting these variables gets a confirmation prompt anyway."
         (should (eq 0 status))
         (should (string-match-p "OK" (buffer-string)))))))
 
+(ert-deftest php-ide-test-phpactor-disable-hover-at-point-p ()
+  "Regression test: `php-ide-phpactor--disable-hover-at-point-p' must
+suppress hover when *any* predicate matches, as its docstring says.
+
+It used to be written with `never (not ...)', i.e. logical AND, so an
+empty list disabled hover everywhere (the exact opposite of the intent)
+and a list of several predicates only fired when all of them matched."
+  (let ((always (lambda () t))
+        (never (lambda () nil)))
+    (let ((php-ide-phpactor-disable-hover-at-point-functions nil))
+      (should-not (php-ide-phpactor--disable-hover-at-point-p)))
+    (let ((php-ide-phpactor-disable-hover-at-point-functions (list always)))
+      (should (php-ide-phpactor--disable-hover-at-point-p)))
+    (let ((php-ide-phpactor-disable-hover-at-point-functions (list never)))
+      (should-not (php-ide-phpactor--disable-hover-at-point-p)))
+    (let ((php-ide-phpactor-disable-hover-at-point-functions (list always never)))
+      (should (php-ide-phpactor--disable-hover-at-point-p)))
+    (let ((php-ide-phpactor-disable-hover-at-point-functions (list never always)))
+      (should (php-ide-phpactor--disable-hover-at-point-p)))
+    (let ((php-ide-phpactor-disable-hover-at-point-functions (list never never)))
+      (should-not (php-ide-phpactor--disable-hover-at-point-p)))))
+
 (ert-deftest php-ide-test-eglot-server-programs-registration ()
   "`php-ide-eglot-activate' should buffer-locally prepend an
 `eglot-server-programs' entry only when `php-ide-eglot-executable' is
