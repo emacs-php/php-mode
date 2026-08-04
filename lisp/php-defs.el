@@ -26,6 +26,26 @@
 
 ;;; Code:
 
+;; Autoloaded because the `:safe' predicate of `php-complete-function-modules'
+;; consults this list, and that predicate is copied into the package autoloads
+;; file, where it runs while Emacs checks .dir-locals.el — long before
+;; php-defs.el itself loads.  Spelled out literally rather than derived from
+;; `php-defs-functions-alist' for the same reason; the two are kept in sync by
+;; `php-complete-test-function-module-names-match-alist'.
+;;;###autoload
+(defvar php-defs-function-module-names
+  '(apache apcu bcmath bzip2 calendar com_dotnet commonmark componere core
+    cubrid curl dba dbase dio eio enchant exif expect fann fdf fpm ftp gd
+    gearman geoip gettext gmp gnupg ibase ibm_db2 iconv igbinary imap inotify
+    intl language ldap libxml lzf mailparse mbstring memcache mongodb mqseries
+    mysql-obsolete mysqli oauth obsolete_7 obsolete_8 oci8 odbc openal openssl
+    parallel pcntl pgsql posix ps pspell radius rar readline recode rpminfo rrd
+    runkit7 scoutapm shmop simplexml smnp soap socket sodium solr sqlsrv ssdeep
+    ssh2 stats stomp svn swoole sysvshm taint tcpwrap tidy trader ui uopz
+    var_representation win32service wincache xattr xdiff xhprof xml xmlrpc
+    xmlwriter yaml yaz zlib zookeeper)
+  "List of the module names that key `php-defs-functions-alist'.")
+
 (defvar php-defs-functions-alist
   '((apache
      "apache_child_terminate"

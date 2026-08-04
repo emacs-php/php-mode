@@ -31,6 +31,8 @@
 
 ;;; Code:
 (require 'php)
+(require 'php-complete)
+(require 'php-defs)
 (require 'php-mode)
 (require 'php-mode-debug)
 (require 'php-project)
@@ -859,6 +861,69 @@ half-fontified: the `|' plain and the `>' as `php-comparison-op'."
   "Tests for PEAR style."
   (with-php-mode-test ("indent/issue-227.php" :indent t :magic t :style pear))
   (with-php-mode-test ("indent/issue-774.php" :indent t :magic t :style pear)))
+
+(ert-deftest php-complete-test-function-module-names-match-alist ()
+  "`php-defs-function-module-names' must list every module of the alist.
+
+The names are spelled out literally so that the autoloads copy of the
+`php-complete-function-modules' `:safe' predicate can consult them
+without php-defs.el being loaded; this keeps that literal honest."
+  (should (equal php-defs-function-module-names
+                 (mapcar #'car php-defs-functions-alist))))
+
+(ert-deftest php-complete-test-function-modules-safe-local-variable ()
+  "Only module names known to PHP Mode are safe for .dir-locals.el.
+
+Regression test: the predicate looped over the standard Emacs variable
+`values' instead of its own argument, so `cl-loop ... always' succeeded
+vacuously and any list at all was accepted as safe."
+  (let ((pred (get 'php-complete-function-modules 'safe-local-variable)))
+    (should pred)
+    (should (funcall pred '(core)))
+    (should (funcall pred '(bcmath core pcntl)))
+    (should (funcall pred nil))
+    (should-not (funcall pred '(bogus-module)))
+    (should-not (funcall pred '(core bogus-module)))
+    (should-not (funcall pred '("anything" 42)))
+    (should-not (funcall pred '(core . bcmath)))))
+
+(ert-deftest php-complete-test-safe-local-variable-works-from-autoloads ()
+  "The `:safe' predicate must work from the package autoloads file alone.
+
+Emacs decides whether a .dir-locals.el value is safe while hacking local
+variables, which happens before php-complete.el is loaded, so the
+predicate runs as copied into php-mode-autoloads.el.  There it must not
+depend on cl-lib nor on variables that only php-defs.el defines, or
+`safe-local-variable-p' demotes the resulting error to nil and every
+project setting this variable gets a confirmation prompt anyway."
+  (let ((autoloads (expand-file-name "../lisp/php-mode-autoloads.el" php-mode-test-dir))
+        (emacs (expand-file-name invocation-name invocation-directory)))
+    (skip-unless (file-exists-p autoloads))
+    (with-temp-buffer
+      (let ((status (call-process
+                     emacs nil t nil "-Q" "--batch"
+                     "--load" autoloads
+                     "--eval"
+                     (prin1-to-string
+                      '(progn
+                         ;; Guard against the predicate quietly working only
+                         ;; because php-complete.el got loaded after all.
+                         (when (featurep 'php-complete)
+                           (error "Feature php-complete must not be loaded in this check"))
+                         (dolist (c '(((core) t)
+                                      ((bcmath core pcntl) t)
+                                      (nil t)
+                                      ((bogus-module) nil)
+                                      (("anything" 42) nil)))
+                           (let* ((pred (get 'php-complete-function-modules
+                                             'safe-local-variable))
+                                  (got (and (funcall pred (nth 0 c)) t)))
+                             (unless (eq got (nth 1 c))
+                               (error "Value %S: got %S, want %S"
+                                      (nth 0 c) got (nth 1 c)))))
+                         (princ "OK"))))))
+        (should (eq 0 status))
+        (should (string-match-p "OK" (buffer-string)))))))
 
 ;; For developers: How to make .faces list file.
 ;;

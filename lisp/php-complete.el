@@ -48,10 +48,18 @@
 (defcustom php-complete-function-modules '(bcmath core gmp libxml intl mbstring pcntl posix sodium xml xmlwriter)
   "Module names for function names completion."
   :tag "PHP Complete Function Modules"
-  :type (eval-when-compile `(set ,@(mapcar (lambda (elm) (list 'const (car elm)))
-                                           php-defs-functions-alist)))
-  :safe (lambda (value) (and (listp value) (cl-loop for v in values
-                                                    always (assq v php-defs-functions-alist)))))
+  :type (eval-when-compile `(set ,@(mapcar (lambda (name) (list 'const name))
+                                           php-defs-function-module-names)))
+  ;; Only accept module names PHP Mode actually knows about.  Deliberately
+  ;; written without `cl-lib' and against the autoloaded
+  ;; `php-defs-function-module-names': this predicate is copied verbatim into
+  ;; the package autoloads file and runs there while Emacs checks
+  ;; .dir-locals.el, where neither cl-lib nor php-defs.el is loaded yet.
+  :safe (lambda (value)
+          (and (proper-list-p value)
+               (not (memq nil (mapcar (lambda (v)
+                                        (and (memq v php-defs-function-module-names) t))
+                                      value))))))
 
 ;;; Cape functions:
 

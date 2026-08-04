@@ -17,6 +17,9 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 ### Fixed
 
  * `php-project-project-find-function` now returns a `project.el` value valid on Emacs 28+; it previously built a `(vc . ROOT)` cons that broke the 3-element `(vc BACKEND ROOT)` representation and made `project-root` signal an error
+ * Fix the `:safe` predicate of `php-complete-function-modules`, which accepted any list and never actually applied
+   * It looped over the standard Emacs variable `values` instead of its own argument, so `cl-loop ... always` succeeded vacuously and unknown module names passed as safe
+   * Emacs also checks directory-local values *before* php-complete.el is loaded, so the predicate ran as copied into the autoloads file and hit `void-function cl-loop`.  `safe-local-variable-p` demotes such errors to nil, so every project setting this variable was prompted for confirmation regardless
 
 ### Deprecated
 
