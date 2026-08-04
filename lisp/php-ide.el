@@ -106,6 +106,10 @@
   (declare-function eglot--managed-mode-off "ext:eglot" ())
   (declare-function phpactor--find-executable "ext:phpactor" ()))
 
+;; Autoloaded because the `:safe' predicate of `php-ide-features' consults this
+;; alist, and that predicate is copied into the package autoloads file, where it
+;; runs while Emacs checks .dir-locals.el — long before php-ide.el itself loads.
+;;;###autoload
 (defvar php-ide-feature-alist
   '((none :test (lambda () t)
           :activate (lambda () t)
@@ -126,14 +130,32 @@
                 :deactivate (lambda () (lsp-bridge-mode -1)))
     (lsp-mode :test (lambda () (and (require 'lsp nil t) (featurep 'lsp)))
               :activate lsp
-              :deactivate lsp-disconnect)))
+              :deactivate lsp-disconnect))
+  "Alist of PHP-IDE features and how to probe and (de)activate each one.
 
+Each element is (FEATURE . PLIST), where PLIST holds these keywords,
+each bound to a function called with no arguments:
+
+`:test'        Return non-nil when FEATURE is usable in this Emacs,
+               loading its backing package if necessary.
+`:activate'    Turn FEATURE on in the current buffer.
+`:deactivate'  Turn FEATURE off in the current buffer.")
+
+;; Autoloaded for the same reason as `php-ide-feature-alist'; the `:safe'
+;; predicate of `php-ide-eglot-executable' consults this alist.
+;;;###autoload
 (defvar php-ide-lsp-command-alist
   '((intelephense "intelephense" "--stdio")
     (phpactor . (lambda () (list (if (fboundp 'phpactor--find-executable)
                                      (phpactor--find-executable)
                                    "phpactor")
-                                 "language-server")))))
+                                 "language-server"))))
+  "Alist of bundled LSP server presets for `php-ide-eglot-executable'.
+
+Each element is (NAME . COMMAND), where COMMAND is either a list of
+strings to execute or a function of no arguments returning such a list.
+Only the NAME symbols listed here are accepted as safe directory-local
+values; see `php-ide-eglot-executable'.")
 
 (defgroup php-ide nil
   "IDE-like support for PHP developing."
@@ -151,8 +173,15 @@
   ;; Only accept feature symbols already known to `php-ide-feature-alist' as safe
   ;; for .dir-locals.el; an arbitrary symbol here could name a feature added by
   ;; some future or third-party extension with its own (unvetted) side effects.
-  :safe (lambda (v) (cl-loop for feature in (if (listp v) v (list v))
-                             always (assq feature php-ide-feature-alist))))
+  ;;
+  ;; Deliberately written without `cl-lib': this predicate is copied verbatim
+  ;; into the package autoloads file and runs there while Emacs checks
+  ;; .dir-locals.el, where cl-lib may not be loaded yet.
+  :safe (lambda (v)
+          (let ((features (if (proper-list-p v) v (list v))))
+            (not (memq nil (mapcar (lambda (feature)
+                                     (and (assq feature php-ide-feature-alist) t))
+                                   features))))))
 
 ;;;###autoload
 (defcustom php-ide-eglot-executable nil
@@ -169,7 +198,7 @@
   ;; which `php-ide-eglot-server-program' would later pass straight to
   ;; `start-process' — that must go through Emacs's normal unsafe-variable
   ;; confirmation prompt rather than apply silently.
-  :safe (lambda (v) (assq v php-ide-lsp-command-alist)))
+  :safe (lambda (v) (and (assq v php-ide-lsp-command-alist) t)))
 
 ;;;###autoload
 (defun php-ide-eglot-server-program ()

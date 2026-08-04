@@ -1058,6 +1058,47 @@ arbitrary function, path, or command list."
     ;; normal risky-variable confirmation.
     (should-not (get 'php-ide-mode-functions 'safe-local-variable))))
 
+(ert-deftest php-ide-test-safe-local-variables-work-from-autoloads ()
+  "Regression test: the `:safe' predicates must work from the package
+autoloads file alone.
+
+Emacs decides whether a .dir-locals.el value is safe *before* php-ide.el
+is loaded (the README recipe only pulls php-ide in from
+`hack-local-variables-hook', which runs afterwards), so the predicates
+run as copied into php-mode-autoloads.el.  There they must not depend on
+cl-lib nor on variables that only php-ide.el defines, or
+`safe-local-variable-p' demotes the resulting error to nil and every
+project setting these variables gets a confirmation prompt anyway."
+  (let ((autoloads (expand-file-name "../lisp/php-mode-autoloads.el" php-mode-test-dir))
+        (emacs (expand-file-name invocation-name invocation-directory)))
+    (skip-unless (file-exists-p autoloads))
+    (with-temp-buffer
+      (let ((status (call-process
+                     emacs nil t nil "-Q" "--batch"
+                     "--load" autoloads
+                     "--eval"
+                     (prin1-to-string
+                      '(progn
+                         ;; Guard against the predicate quietly working only
+                         ;; because php-ide.el got loaded after all.
+                         (when (featurep 'php-ide)
+                           (error "php-ide must not be loaded in this check"))
+                         (dolist (c '((php-ide-features (eglot) t)
+                                      (php-ide-features eglot t)
+                                      (php-ide-features nil t)
+                                      (php-ide-features (bogus-feature) nil)
+                                      (php-ide-eglot-executable intelephense t)
+                                      (php-ide-eglot-executable phpactor t)
+                                      (php-ide-eglot-executable "/bin/ls" nil)))
+                           (let* ((pred (get (nth 0 c) 'safe-local-variable))
+                                  (got (and (funcall pred (nth 1 c)) t)))
+                             (unless (eq got (nth 2 c))
+                               (error "%s with %S: got %S, want %S"
+                                      (nth 0 c) (nth 1 c) got (nth 2 c)))))
+                         (princ "OK"))))))
+        (should (eq 0 status))
+        (should (string-match-p "OK" (buffer-string)))))))
+
 (ert-deftest php-ide-test-eglot-server-programs-registration ()
   "`php-ide-eglot-activate' should buffer-locally prepend an
 `eglot-server-programs' entry only when `php-ide-eglot-executable' is
