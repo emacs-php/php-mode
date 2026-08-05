@@ -26,8 +26,18 @@
 ;; PHP Mode integrates LSP Mode (lsp-mode), Phpactor (phpactor.el) and IDE-like tools.
 ;;
 ;; **Note**:
-;; This feature is under development and experimental.
-;; All of these functions, modes and terms are subject to change without notice.
+;; This feature is still experimental.
+;;
+;; What you configure and call is settled enough to document: the
+;; `php-ide-mode' minor mode and `php-ide-turn-on', the `php-ide-set-feature'
+;; and `php-ide-status' commands, and the `php-ide-features',
+;; `php-ide-eglot-executable', `php-ide-mode-lighter' and
+;; `php-ide-mode-functions' options.  The README describes them.
+;;
+;; What may still change without notice is how a feature is described to
+;; PHP-IDE: the keywords understood in `php-ide-feature-alist' entries, and
+;; anything named `php-ide--...'.  Code that only turns PHP-IDE on and off is
+;; unaffected; code that registers its own IDE feature may need updating.
 ;;
 ;; ## Motivations
 ;;
