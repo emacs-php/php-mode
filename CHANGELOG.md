@@ -51,6 +51,14 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
    * `php-ide-phpactor-disable-hover-at-point-functions` was combined with AND, so an empty list disabled hover everywhere and multiple predicates only fired when all matched
  * Fix `php-ide-mode` deactivation stopping Phpactor hover in unrelated buffers
    * The hover timer is shared by all buffers but was cancelled unconditionally; it is now retired only once no live buffer uses hover
+ * Fix `php-ide-mode` staying on after a feature failed to activate
+   * The mode line claimed PHP-IDE was running while nothing had started, and turning it back off then signalled `void-function`.  Activation now rolls back and leaves the mode off
+ * Fix `php-ide-mode` deactivating the wrong feature after `php-ide-features` changes
+   * Deactivation re-read the variable, so editing `.dir-locals.el` and re-applying it to a live buffer stranded the feature that was really running; it now tracks what it activated
+ * Fix `php-ide-mode` activating features twice when it is re-enabled
+   * `hack-local-variables-hook`, where the documented recipe puts `php-ide-turn-on`, runs again on `revert-buffer` and friends
+ * Fix the `phpactor` PHP-IDE feature failing to activate outside a package installation
+   * `php-ide.el` requires `php-ide-phpactor` only at compile time, so its `:activate`/`:deactivate` resolved only via the package autoloads; the feature now loads it from `:test`
 
 ### Deprecated
 
