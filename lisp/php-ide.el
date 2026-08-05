@@ -124,18 +124,16 @@
               :deactivate php-ide-phpactor-deactivate)
     (eglot :test (lambda () (and (require 'eglot nil t) (featurep 'eglot)))
            :activate php-ide-eglot-activate
-           ;; `eglot--managed-mode-off' is Eglot's own internal (and unexported) function,
-           ;; but it is the only operation that turns Eglot off for just the current buffer
-           ;; without shutting down a server that other buffers may still be using.  The
-           ;; public `eglot-shutdown' always kills the whole server, which would be a much
-           ;; more disruptive (and asymmetric) deactivation than `php-ide-eglot-activate'.
-           :deactivate eglot--managed-mode-off)
+           :deactivate php-ide-eglot-deactivate
+           :exclusive lsp-client)
     (lsp-bridge :test (lambda () (and (require 'lsp-bridge nil t) (featurep 'lsp-bridge)))
                 :activate (lambda () (lsp-bridge-mode +1))
-                :deactivate (lambda () (lsp-bridge-mode -1)))
+                :deactivate (lambda () (lsp-bridge-mode -1))
+                :exclusive lsp-client)
     (lsp-mode :test (lambda () (and (require 'lsp nil t) (featurep 'lsp)))
               :activate lsp
-              :deactivate lsp-disconnect))
+              :deactivate lsp-disconnect
+              :exclusive lsp-client))
   "Alist of PHP-IDE features and how to probe and (de)activate each one.
 
 Each element is (FEATURE . PLIST), where PLIST holds these keywords,
@@ -243,11 +241,13 @@ without being asked to confirm an executable path."
        ((functionp command) (funcall command))
        ((listp command) command))))))
 
-(defvar php-ide-eglot-managed-modes '(php-mode phps-mode php-ts-mode)
+(defcustom php-ide-eglot-managed-modes '(php-mode phps-mode php-ts-mode)
   "Major modes keyed by the `eglot-server-programs' entry php-ide adds.
 
 `php-ide-eglot-activate' registers `php-ide-eglot-executable' for exactly
-these modes.")
+these modes."
+  :tag "PHP-IDE Eglot Managed Modes"
+  :type '(repeat symbol))
 
 (defun php-ide-eglot--contact-function (&optional _interactive _project)
   "CONTACT function registered into `eglot-server-programs' by php-ide.
@@ -270,6 +270,22 @@ is unset are unaffected and keep using Eglot's default."
                 (cons (cons php-ide-eglot-managed-modes #'php-ide-eglot--contact-function)
                       eglot-server-programs)))
   (eglot-ensure))
+
+(defun php-ide-eglot-deactivate ()
+  "Turn Eglot off in this buffer, leaving other buffers connected.
+
+Eglot exposes no public way to do exactly that: `eglot-shutdown' kills
+the whole server, which other buffers may still be using, and would make
+deactivation far more destructive than `php-ide-eglot-activate' was.  So
+this uses Eglot's internal buffer-scoped switch, and says so rather than
+failing with `void-function' if a future Eglot renames it."
+  (cond
+   ((fboundp 'eglot--managed-mode-off) (eglot--managed-mode-off))
+   ((fboundp 'eglot--managed-mode) (eglot--managed-mode -1))
+   (t (lwarn 'php-ide :warning
+             "Cannot deactivate Eglot in this buffer: this Eglot provides \
+neither `eglot--managed-mode-off' nor `eglot--managed-mode'.  Use \
+\\[eglot-shutdown] to stop the server for every buffer it manages."))))
 
 (defcustom php-ide-mode-lighter " PHP-IDE"
   "Mode line indicator for `php-ide-mode'.
@@ -311,6 +327,28 @@ when .dir-locals.el is edited and re-applied to a live buffer.")
       (php-ide--activate-features)
     (php-ide--deactivate-features)))
 
+(defun php-ide--warn-about-exclusive-features (ide-features)
+  "Warn if IDE-FEATURES asks for features that cannot share a buffer.
+
+Features tagged with the same `:exclusive' value in
+`php-ide-feature-alist' -- the LSP clients, which would each try to
+manage the buffer -- are reported once, and activation continues so a
+deliberate combination is still possible."
+  (let ((groups nil))
+    (dolist (feature ide-features)
+      (when-let* ((group (plist-get (cdr (assq feature php-ide-feature-alist)) :exclusive)))
+        (if-let* ((entry (assq group groups)))
+            (setcdr entry (cons feature (cdr entry)))
+          (push (list group feature) groups))))
+    (dolist (entry groups)
+      (when (cdr (cdr entry))
+        (lwarn 'php-ide :warning
+               "`php-ide-features' enables several %s features at once (%s).  \
+They will each try to manage this buffer; enabling just one is usually what \
+you want."
+               (car entry)
+               (mapconcat #'symbol-name (reverse (cdr entry)) ", "))))))
+
 (defun php-ide--activate-features ()
   "Activate every feature named by `php-ide-features' in this buffer.
 
@@ -334,6 +372,7 @@ when it is not."
                   unavailable-features
                   (mapconcat (lambda (feature) (concat "'" (symbol-name feature)))
                              (php-ide--available-features) ", ")))
+    (php-ide--warn-about-exclusive-features ide-features)
     (condition-case err
         ;; Every feature in IDE-FEATURES is in `php-ide-feature-alist' here,
         ;; because the loop above already signalled a `user-error' otherwise.

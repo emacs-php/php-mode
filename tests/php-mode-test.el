@@ -1172,6 +1172,53 @@ arbitrary function, path, or command list."
     ;; normal risky-variable confirmation.
     (should-not (get 'php-ide-mode-functions 'safe-local-variable))))
 
+(ert-deftest php-ide-test-warns-only-on-exclusive-feature-clashes ()
+  "Enabling two LSP clients at once should warn; other combinations should not.
+
+Phpactor's bridge is not an LSP client, so pairing it with one is a
+legitimate setup and must stay quiet."
+  (let (warnings)
+    (cl-letf (((symbol-function 'lwarn)
+               (lambda (_class _level fmt &rest args)
+                 (push (apply #'format fmt args) warnings))))
+      (dolist (features '((eglot) (none) (none phpactor) (eglot phpactor)))
+        (setq warnings nil)
+        (php-ide--warn-about-exclusive-features features)
+        (should-not warnings))
+      (dolist (features '((eglot lsp-mode) (lsp-mode lsp-bridge)
+                          (eglot lsp-mode lsp-bridge)))
+        (setq warnings nil)
+        (php-ide--warn-about-exclusive-features features)
+        ;; One warning naming the clashing features, not one per feature.
+        (should (= 1 (length warnings)))
+        (dolist (feature features)
+          (should (string-match-p (regexp-quote (symbol-name feature))
+                                  (car warnings))))))))
+
+(ert-deftest php-ide-test-eglot-deactivate-degrades-gracefully ()
+  "`php-ide-eglot-deactivate' must warn, not signal, if Eglot's internal
+buffer-scoped switch ever disappears."
+  (skip-unless (require 'eglot nil t))
+  (let (called warned)
+    (cl-letf (((symbol-function 'eglot--managed-mode-off)
+               (lambda () (setq called 'managed-mode-off))))
+      (php-ide-eglot-deactivate)
+      (should (eq 'managed-mode-off called)))
+    ;; Fall back to the minor mode itself when the helper is gone.
+    (setq called nil)
+    (cl-letf (((symbol-function 'eglot--managed-mode-off) nil)
+              ((symbol-function 'eglot--managed-mode)
+               (lambda (arg) (setq called (cons 'managed-mode arg)))))
+      (php-ide-eglot-deactivate)
+      (should (equal '(managed-mode . -1) called)))
+    ;; With neither available, warn instead of signalling `void-function'.
+    (cl-letf (((symbol-function 'eglot--managed-mode-off) nil)
+              ((symbol-function 'eglot--managed-mode) nil)
+              ((symbol-function 'lwarn)
+               (lambda (&rest _) (setq warned t))))
+      (php-ide-eglot-deactivate)
+      (should warned))))
+
 (ert-deftest php-ide-test-command-holding-variables-are-risky ()
   "The alists that decide what PHP-IDE runs must be risky.
 
