@@ -114,7 +114,12 @@
   '((none :test (lambda () t)
           :activate (lambda () t)
           :deactivate (lambda () t))
-    (phpactor :test (lambda () (and (require 'phpactor nil t) (featurep 'phpactor)))
+    ;; `php-ide-phpactor' is this package's own bridge and defines the two
+    ;; entry points below; php-ide.el only pulls it in at compile time, so
+    ;; load it here rather than relying on the package autoloads being present.
+    (phpactor :test (lambda () (and (require 'phpactor nil t)
+                                    (require 'php-ide-phpactor nil t)
+                                    (featurep 'phpactor)))
               :activate php-ide-phpactor-activate
               :deactivate php-ide-phpactor-deactivate)
     (eglot :test (lambda () (and (require 'eglot nil t) (featurep 'eglot)))

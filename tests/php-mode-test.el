@@ -1081,6 +1081,19 @@ the feature that was really running."
         (should (equal '(activated-ok deactivated-ok)
                        (reverse php-mode-test--ide-log)))))))
 
+(ert-deftest php-ide-test-phpactor-feature-loads-its-own-bridge ()
+  "The `phpactor' feature must load php-ide-phpactor.el itself.
+
+php-ide.el only requires it at compile time, so without this the
+`:activate'/`:deactivate' symbols resolve only when the package autoloads
+happen to be loaded; loading php-ide.el directly gave `void-function'."
+  (skip-unless (require 'phpactor nil t))
+  (let ((plist (cdr (assq 'phpactor php-ide-feature-alist))))
+    (should (funcall (plist-get plist :test)))
+    (should (featurep 'php-ide-phpactor))
+    (should (fboundp 'php-ide-phpactor-activate))
+    (should (fboundp 'php-ide-phpactor-deactivate))))
+
 (ert-deftest php-ide-test-feature-alist-arity ()
   "Regression test: `:test' must always be a callable 0-arg predicate, and
 for every PHP-IDE feature actually available in this Emacs, `:activate'
