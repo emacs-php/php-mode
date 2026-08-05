@@ -263,27 +263,69 @@ ACTIVATE: T is given when activating, NIL when deactivating PHP-IDE."
   ;; through Emacs's normal unsafe-variable confirmation, never apply silently.
   )
 
+(defvar-local php-ide--activated-features nil
+  "PHP-IDE features currently activated in this buffer.
+
+Deactivation walks this list rather than `php-ide-features', so that a
+feature is always turned off through the same implementation that turned
+it on, even if `php-ide-features' has changed in between --- as it does
+when .dir-locals.el is edited and re-applied to a live buffer.")
+
 ;;;###autoload
 (define-minor-mode php-ide-mode
   "Minor mode for integrate IDE-like tools."
   :lighter php-ide-mode-lighter
+  (if php-ide-mode
+      (php-ide--activate-features)
+    (php-ide--deactivate-features)))
+
+(defun php-ide--activate-features ()
+  "Activate every feature named by `php-ide-features' in this buffer.
+
+Features already activated in this buffer are left alone, so re-enabling
+the mode --- as happens whenever `hack-local-variables-hook' runs again,
+for instance after `revert-buffer' --- does not activate them twice.
+Removing a feature from `php-ide-features' does not deactivate it,
+though; toggle `php-ide-mode' off and on, or use `php-ide-set-feature',
+to apply that.
+
+Signals `user-error' without leaving anything half-activated: features
+already turned on by this call are rolled back and `php-ide-mode' is
+switched off again, so the mode line never claims PHP-IDE is running
+when it is not."
   (let ((ide-features (if (listp php-ide-features) php-ide-features (list php-ide-features))))
     (when-let* ((unavailable-features (cl-loop for feature in ide-features
                                                unless (assq feature php-ide-feature-alist)
                                                collect feature)))
+      (setq php-ide-mode nil)
       (user-error "%s includes unavailable PHP-IDE features.  (available features are: %s)"
-                  ide-features
+                  unavailable-features
                   (mapconcat (lambda (feature) (concat "'" (symbol-name feature)))
                              (php-ide--available-features) ", ")))
-    ;; Every feature in IDE-FEATURES is guaranteed to be in `php-ide-feature-alist' here,
-    ;; because the loop above already signals a `user-error' otherwise.
-    (cl-loop for feature in ide-features
-             for ide-plist = (cdr (assq feature php-ide-feature-alist))
-             do (progn
-                  (run-hook-with-args 'php-ide-mode-functions feature php-ide-mode)
-                  (if php-ide-mode
-                      (php-ide--activate-buffer feature ide-plist)
-                    (php-ide--deactivate-buffer ide-plist))))))
+    (condition-case err
+        ;; Every feature in IDE-FEATURES is in `php-ide-feature-alist' here,
+        ;; because the loop above already signalled a `user-error' otherwise.
+        (dolist (feature ide-features)
+          (unless (memq feature php-ide--activated-features)
+            (let ((ide-plist (cdr (assq feature php-ide-feature-alist))))
+              (run-hook-with-args 'php-ide-mode-functions feature t)
+              (php-ide--activate-buffer feature ide-plist)
+              (push feature php-ide--activated-features))))
+      (error
+       (php-ide--deactivate-features)
+       (setq php-ide-mode nil)
+       (signal (car err) (cdr err))))))
+
+(defun php-ide--deactivate-features ()
+  "Deactivate the features this buffer actually has activated."
+  (dolist (feature php-ide--activated-features)
+    (let ((ide-plist (cdr (assq feature php-ide-feature-alist))))
+      (run-hook-with-args 'php-ide-mode-functions feature nil)
+      ;; IDE-PLIST is non-nil for anything we activated, but a feature can be
+      ;; removed from `php-ide-feature-alist' while a buffer still uses it.
+      (when ide-plist
+        (php-ide--deactivate-buffer ide-plist))))
+  (setq php-ide--activated-features nil))
 
 ;;;###autoload
 (defun php-ide-turn-on ()

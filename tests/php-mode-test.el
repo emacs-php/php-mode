@@ -980,6 +980,107 @@ project setting this variable gets a confirmation prompt anyway."
                         "language-server")
                    (php-ide-eglot-server-program)))))
 
+(defun php-mode-test--php-ide-stub-alist (log)
+  "Return a `php-ide-feature-alist' of test doubles recording into LOG.
+LOG is a symbol whose value is a list, appended to in call order."
+  (list (list 'stub-ok :test (lambda () t)
+              :activate (lambda () (push 'activated-ok (symbol-value log)))
+              :deactivate (lambda () (push 'deactivated-ok (symbol-value log))))
+        (list 'stub-boom :test (lambda () t)
+              :activate (lambda () (error "Stub feature failed to start"))
+              :deactivate (lambda () (push 'deactivated-boom (symbol-value log))))
+        (list 'stub-unavailable :test (lambda () nil)
+              :activate (lambda () (push 'activated-unavailable (symbol-value log)))
+              :deactivate (lambda () (push 'deactivated-unavailable (symbol-value log))))))
+
+(ert-deftest php-ide-test-failed-activation-leaves-mode-off ()
+  "Regression test: a feature that cannot be activated must leave
+`php-ide-mode' off.
+
+`define-minor-mode' sets the mode variable before running the body, and
+the body used to signal without undoing that, so the mode line claimed
+PHP-IDE was running while nothing had been activated -- and turning it
+back off then called `:deactivate' on an unavailable feature, which
+signalled `void-function' and left the user stuck."
+  (defvar php-mode-test--ide-log)
+  (let ((php-mode-test--ide-log nil))
+    (with-temp-buffer
+      (php-mode)
+      (let ((php-ide-feature-alist
+             (php-mode-test--php-ide-stub-alist 'php-mode-test--ide-log)))
+        (setq-local php-ide-features '(stub-unavailable))
+        (should-error (php-ide-mode +1) :type 'user-error)
+        (should-not php-ide-mode)
+        (should-not php-ide--activated-features)
+        ;; Nothing ran, and turning the mode off again must stay quiet.
+        (should-not php-mode-test--ide-log)
+        (php-ide-mode -1)
+        (should-not php-ide-mode)))))
+
+(ert-deftest php-ide-test-activation-rolls-back-on-error ()
+  "A feature failing mid-list must not leave earlier ones activated."
+  (defvar php-mode-test--ide-log)
+  (let ((php-mode-test--ide-log nil))
+    (with-temp-buffer
+      (php-mode)
+      (let ((php-ide-feature-alist
+             (php-mode-test--php-ide-stub-alist 'php-mode-test--ide-log)))
+        (setq-local php-ide-features '(stub-ok stub-boom))
+        (should-error (php-ide-mode +1))
+        (should-not php-ide-mode)
+        (should-not php-ide--activated-features)
+        ;; The one that did start must have been rolled back.
+        (should (equal '(activated-ok deactivated-ok)
+                       (reverse php-mode-test--ide-log)))))))
+
+(ert-deftest php-ide-test-deactivates-what-it-activated ()
+  "Regression test: deactivation must follow what was actually activated,
+not the current value of `php-ide-features'.
+
+Editing .dir-locals.el and re-applying it changes `php-ide-features' in a
+live buffer; deactivation used to walk that new value, so it either
+signalled on an unknown feature or turned off the wrong one, stranding
+the feature that was really running."
+  (defvar php-mode-test--ide-log)
+  (let ((php-mode-test--ide-log nil))
+    (with-temp-buffer
+      (php-mode)
+      (let ((php-ide-feature-alist
+             (php-mode-test--php-ide-stub-alist 'php-mode-test--ide-log)))
+        (setq-local php-ide-features '(stub-ok))
+        (php-ide-mode +1)
+        (should (equal '(stub-ok) php-ide--activated-features))
+        ;; The project's configuration changes underneath the live buffer.
+        (setq-local php-ide-features '(totally-unknown-feature))
+        (php-ide-mode -1)
+        (should-not php-ide-mode)
+        (should-not php-ide--activated-features)
+        (should (equal '(activated-ok deactivated-ok)
+                       (reverse php-mode-test--ide-log)))))))
+
+(ert-deftest php-ide-test-activation-is-idempotent ()
+  "Re-enabling `php-ide-mode' must not activate a feature twice.
+
+`hack-local-variables-hook' -- where the documented recipe puts
+`php-ide-turn-on' -- runs again on `revert-buffer' and friends, and
+`define-minor-mode' re-runs the body even when the mode is already on."
+  (defvar php-mode-test--ide-log)
+  (let ((php-mode-test--ide-log nil))
+    (with-temp-buffer
+      (php-mode)
+      (let ((php-ide-feature-alist
+             (php-mode-test--php-ide-stub-alist 'php-mode-test--ide-log)))
+        (setq-local php-ide-features '(stub-ok))
+        (php-ide-turn-on)
+        (php-ide-turn-on)
+        (php-ide-turn-on)
+        (should (equal '(stub-ok) php-ide--activated-features))
+        (should (equal '(activated-ok) (reverse php-mode-test--ide-log)))
+        ;; And it must still deactivate exactly once.
+        (php-ide-mode -1)
+        (should (equal '(activated-ok deactivated-ok)
+                       (reverse php-mode-test--ide-log)))))))
+
 (ert-deftest php-ide-test-feature-alist-arity ()
   "Regression test: `:test' must always be a callable 0-arg predicate, and
 for every PHP-IDE feature actually available in this Emacs, `:activate'
