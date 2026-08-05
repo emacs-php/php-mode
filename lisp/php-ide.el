@@ -144,29 +144,56 @@ each bound to a function called with no arguments:
 `:test'        Return non-nil when FEATURE is usable in this Emacs,
                loading its backing package if necessary.
 `:activate'    Turn FEATURE on in the current buffer.
-`:deactivate'  Turn FEATURE off in the current buffer.")
+`:deactivate'  Turn FEATURE off in the current buffer.
 
-;; Autoloaded for the same reason as `php-ide-feature-alist'; the `:safe'
-;; predicate of `php-ide-eglot-executable' consults this alist.
+`:exclusive'   Optional tag.  `php-ide-mode' warns when it is asked to
+               activate more than one feature sharing a tag, since they
+               would fight over the same buffer.")
+
+;; The functions in this alist run automatically, and the `:safe' predicate of
+;; `php-ide-features' trusts whatever it names, so a directory-local value here
+;; would decide both what runs and what counts as safe.  Risky variables are
+;; always confirmed and can never be remembered as safe.
 ;;;###autoload
-(defvar php-ide-lsp-command-alist
-  '((intelephense "intelephense" "--stdio")
-    (phpactor . (lambda () (list (if (fboundp 'phpactor--find-executable)
-                                     (phpactor--find-executable)
-                                   "phpactor")
-                                 "language-server"))))
-  "Alist of bundled LSP server presets for `php-ide-eglot-executable'.
-
-Each element is (NAME . COMMAND), where COMMAND is either a list of
-strings to execute or a function of no arguments returning such a list.
-Only the NAME symbols listed here are accepted as safe directory-local
-values; see `php-ide-eglot-executable'.")
+(put 'php-ide-feature-alist 'risky-local-variable t)
 
 (defgroup php-ide nil
   "IDE-like support for PHP developing."
   :tag "PHP-IDE"
   :prefix "php-ide-"
   :group 'php)
+
+;; Autoloaded for the same reason as `php-ide-feature-alist'; the `:safe'
+;; predicate of `php-ide-eglot-executable' consults this alist.  It is risky
+;; for the sharper reason that it decides which command gets executed, and
+;; adding an entry to it also makes that entry pass as a safe value of
+;; `php-ide-eglot-executable' --- so a directory-local value here would hand
+;; the directory both halves of that decision.
+;;;###autoload
+(defcustom php-ide-lsp-command-alist
+  '((intelephense "intelephense" "--stdio")
+    (phpactor . (lambda () (list (if (fboundp 'phpactor--find-executable)
+                                     (phpactor--find-executable)
+                                   "phpactor")
+                                 "language-server"))))
+  "Alist of LSP server presets available to `php-ide-eglot-executable'.
+
+Each element is (NAME . COMMAND), where COMMAND is either a list of
+strings to execute or a function of no arguments returning such a list.
+Only the NAME symbols listed here are accepted as safe directory-local
+values; see `php-ide-eglot-executable'.  Adding your own preset here is
+therefore also how you let a project select it from .dir-locals.el
+without being asked to confirm an executable path."
+  :tag "PHP-IDE LSP Command Alist"
+  :risky t
+  :type '(alist :key-type symbol
+                :value-type (choice (repeat string) function)))
+
+;; `:risky' above only takes effect once php-ide.el is loaded: unlike `:safe',
+;; the autoloads generator does not copy it.  Emacs checks .dir-locals.el
+;; before that, so state it separately where the check can see it.
+;;;###autoload
+(put 'php-ide-lsp-command-alist 'risky-local-variable t)
 
 ;;;###autoload
 (defcustom php-ide-features nil

@@ -1172,6 +1172,49 @@ arbitrary function, path, or command list."
     ;; normal risky-variable confirmation.
     (should-not (get 'php-ide-mode-functions 'safe-local-variable))))
 
+(ert-deftest php-ide-test-command-holding-variables-are-risky ()
+  "The alists that decide what PHP-IDE runs must be risky.
+
+`php-ide-lsp-command-alist' holds the command lines Eglot executes, and
+adding an entry to it also makes that entry pass the `:safe' predicate of
+`php-ide-eglot-executable' -- so a directory-local value would choose
+both the command and its own approval.  `php-ide-feature-alist' likewise
+holds the functions `php-ide-mode' calls and backs the `:safe' predicate
+of `php-ide-features'.  Risky variables are always confirmed and can
+never be remembered as safe."
+  (should (risky-local-variable-p 'php-ide-feature-alist))
+  (should (risky-local-variable-p 'php-ide-lsp-command-alist))
+  ;; And they must not also claim to be safe.
+  (should-not (get 'php-ide-feature-alist 'safe-local-variable))
+  (should-not (get 'php-ide-lsp-command-alist 'safe-local-variable)))
+
+(ert-deftest php-ide-test-risky-local-variables-work-from-autoloads ()
+  "Regression test: those variables must already be risky before
+php-ide.el is loaded.
+
+Emacs checks .dir-locals.el first, and unlike `:safe' the autoloads
+generator does not copy a defcustom's `:risky' flag, so the flag has to
+be stated where the check can see it."
+  (let ((autoloads (expand-file-name "../lisp/php-mode-autoloads.el" php-mode-test-dir))
+        (emacs (expand-file-name invocation-name invocation-directory)))
+    (skip-unless (file-exists-p autoloads))
+    (with-temp-buffer
+      (let ((status (call-process
+                     emacs nil t nil "-Q" "--batch"
+                     "--load" autoloads
+                     "--eval"
+                     (prin1-to-string
+                      '(progn
+                         (when (featurep 'php-ide)
+                           (error "php-ide must not be loaded in this check"))
+                         (dolist (v '(php-ide-feature-alist
+                                      php-ide-lsp-command-alist))
+                           (unless (risky-local-variable-p v)
+                             (error "%s is not risky without php-ide loaded" v)))
+                         (princ "OK"))))))
+        (should (string-match-p "OK" (buffer-string)))
+        (should (eq 0 status))))))
+
 (ert-deftest php-ide-test-safe-local-variables-work-from-autoloads ()
   "Regression test: the `:safe' predicates must work from the package
 autoloads file alone.
