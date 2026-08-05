@@ -26,8 +26,18 @@
 ;; PHP Mode integrates LSP Mode (lsp-mode), Phpactor (phpactor.el) and IDE-like tools.
 ;;
 ;; **Note**:
-;; This feature is under development and experimental.
-;; All of these functions, modes and terms are subject to change without notice.
+;; This feature is still experimental.
+;;
+;; What you configure and call is settled enough to document: the
+;; `php-ide-mode' minor mode and `php-ide-turn-on', the `php-ide-set-feature'
+;; and `php-ide-status' commands, and the `php-ide-features',
+;; `php-ide-eglot-executable', `php-ide-mode-lighter' and
+;; `php-ide-mode-functions' options.  The README describes them.
+;;
+;; What may still change without notice is how a feature is described to
+;; PHP-IDE: the keywords understood in `php-ide-feature-alist' entries, and
+;; anything named `php-ide--...'.  Code that only turns PHP-IDE on and off is
+;; unaffected; code that registers its own IDE feature may need updating.
 ;;
 ;; ## Motivations
 ;;
@@ -114,23 +124,26 @@
   '((none :test (lambda () t)
           :activate (lambda () t)
           :deactivate (lambda () t))
-    (phpactor :test (lambda () (and (require 'phpactor nil t) (featurep 'phpactor)))
+    ;; `php-ide-phpactor' is this package's own bridge and defines the two
+    ;; entry points below; php-ide.el only pulls it in at compile time, so
+    ;; load it here rather than relying on the package autoloads being present.
+    (phpactor :test (lambda () (and (require 'phpactor nil t)
+                                    (require 'php-ide-phpactor nil t)
+                                    (featurep 'phpactor)))
               :activate php-ide-phpactor-activate
               :deactivate php-ide-phpactor-deactivate)
     (eglot :test (lambda () (and (require 'eglot nil t) (featurep 'eglot)))
            :activate php-ide-eglot-activate
-           ;; `eglot--managed-mode-off' is Eglot's own internal (and unexported) function,
-           ;; but it is the only operation that turns Eglot off for just the current buffer
-           ;; without shutting down a server that other buffers may still be using.  The
-           ;; public `eglot-shutdown' always kills the whole server, which would be a much
-           ;; more disruptive (and asymmetric) deactivation than `php-ide-eglot-activate'.
-           :deactivate eglot--managed-mode-off)
+           :deactivate php-ide-eglot-deactivate
+           :exclusive lsp-client)
     (lsp-bridge :test (lambda () (and (require 'lsp-bridge nil t) (featurep 'lsp-bridge)))
                 :activate (lambda () (lsp-bridge-mode +1))
-                :deactivate (lambda () (lsp-bridge-mode -1)))
+                :deactivate (lambda () (lsp-bridge-mode -1))
+                :exclusive lsp-client)
     (lsp-mode :test (lambda () (and (require 'lsp nil t) (featurep 'lsp)))
               :activate lsp
-              :deactivate lsp-disconnect))
+              :deactivate lsp-disconnect
+              :exclusive lsp-client))
   "Alist of PHP-IDE features and how to probe and (de)activate each one.
 
 Each element is (FEATURE . PLIST), where PLIST holds these keywords,
@@ -139,29 +152,56 @@ each bound to a function called with no arguments:
 `:test'        Return non-nil when FEATURE is usable in this Emacs,
                loading its backing package if necessary.
 `:activate'    Turn FEATURE on in the current buffer.
-`:deactivate'  Turn FEATURE off in the current buffer.")
+`:deactivate'  Turn FEATURE off in the current buffer.
 
-;; Autoloaded for the same reason as `php-ide-feature-alist'; the `:safe'
-;; predicate of `php-ide-eglot-executable' consults this alist.
+`:exclusive'   Optional tag.  `php-ide-mode' warns when it is asked to
+               activate more than one feature sharing a tag, since they
+               would fight over the same buffer.")
+
+;; The functions in this alist run automatically, and the `:safe' predicate of
+;; `php-ide-features' trusts whatever it names, so a directory-local value here
+;; would decide both what runs and what counts as safe.  Risky variables are
+;; always confirmed and can never be remembered as safe.
 ;;;###autoload
-(defvar php-ide-lsp-command-alist
-  '((intelephense "intelephense" "--stdio")
-    (phpactor . (lambda () (list (if (fboundp 'phpactor--find-executable)
-                                     (phpactor--find-executable)
-                                   "phpactor")
-                                 "language-server"))))
-  "Alist of bundled LSP server presets for `php-ide-eglot-executable'.
-
-Each element is (NAME . COMMAND), where COMMAND is either a list of
-strings to execute or a function of no arguments returning such a list.
-Only the NAME symbols listed here are accepted as safe directory-local
-values; see `php-ide-eglot-executable'.")
+(put 'php-ide-feature-alist 'risky-local-variable t)
 
 (defgroup php-ide nil
   "IDE-like support for PHP developing."
   :tag "PHP-IDE"
   :prefix "php-ide-"
   :group 'php)
+
+;; Autoloaded for the same reason as `php-ide-feature-alist'; the `:safe'
+;; predicate of `php-ide-eglot-executable' consults this alist.  It is risky
+;; for the sharper reason that it decides which command gets executed, and
+;; adding an entry to it also makes that entry pass as a safe value of
+;; `php-ide-eglot-executable' --- so a directory-local value here would hand
+;; the directory both halves of that decision.
+;;;###autoload
+(defcustom php-ide-lsp-command-alist
+  '((intelephense "intelephense" "--stdio")
+    (phpactor . (lambda () (list (if (fboundp 'phpactor--find-executable)
+                                     (phpactor--find-executable)
+                                   "phpactor")
+                                 "language-server"))))
+  "Alist of LSP server presets available to `php-ide-eglot-executable'.
+
+Each element is (NAME . COMMAND), where COMMAND is either a list of
+strings to execute or a function of no arguments returning such a list.
+Only the NAME symbols listed here are accepted as safe directory-local
+values; see `php-ide-eglot-executable'.  Adding your own preset here is
+therefore also how you let a project select it from .dir-locals.el
+without being asked to confirm an executable path."
+  :tag "PHP-IDE LSP Command Alist"
+  :risky t
+  :type '(alist :key-type symbol
+                :value-type (choice (repeat string) function)))
+
+;; `:risky' above only takes effect once php-ide.el is loaded: unlike `:safe',
+;; the autoloads generator does not copy it.  Emacs checks .dir-locals.el
+;; before that, so state it separately where the check can see it.
+;;;###autoload
+(put 'php-ide-lsp-command-alist 'risky-local-variable t)
 
 ;;;###autoload
 (defcustom php-ide-features nil
@@ -211,11 +251,13 @@ values; see `php-ide-eglot-executable'.")
        ((functionp command) (funcall command))
        ((listp command) command))))))
 
-(defvar php-ide-eglot-managed-modes '(php-mode phps-mode php-ts-mode)
+(defcustom php-ide-eglot-managed-modes '(php-mode phps-mode php-ts-mode)
   "Major modes keyed by the `eglot-server-programs' entry php-ide adds.
 
 `php-ide-eglot-activate' registers `php-ide-eglot-executable' for exactly
-these modes.")
+these modes."
+  :tag "PHP-IDE Eglot Managed Modes"
+  :type '(repeat symbol))
 
 (defun php-ide-eglot--contact-function (&optional _interactive _project)
   "CONTACT function registered into `eglot-server-programs' by php-ide.
@@ -238,6 +280,22 @@ is unset are unaffected and keep using Eglot's default."
                 (cons (cons php-ide-eglot-managed-modes #'php-ide-eglot--contact-function)
                       eglot-server-programs)))
   (eglot-ensure))
+
+(defun php-ide-eglot-deactivate ()
+  "Turn Eglot off in this buffer, leaving other buffers connected.
+
+Eglot exposes no public way to do exactly that: `eglot-shutdown' kills
+the whole server, which other buffers may still be using, and would make
+deactivation far more destructive than `php-ide-eglot-activate' was.  So
+this uses Eglot's internal buffer-scoped switch, and says so rather than
+failing with `void-function' if a future Eglot renames it."
+  (cond
+   ((fboundp 'eglot--managed-mode-off) (eglot--managed-mode-off))
+   ((fboundp 'eglot--managed-mode) (eglot--managed-mode -1))
+   (t (lwarn 'php-ide :warning
+             "Cannot deactivate Eglot in this buffer: this Eglot provides \
+neither `eglot--managed-mode-off' nor `eglot--managed-mode'.  Use \
+\\[eglot-shutdown] to stop the server for every buffer it manages."))))
 
 (defcustom php-ide-mode-lighter " PHP-IDE"
   "Mode line indicator for `php-ide-mode'.
@@ -263,27 +321,92 @@ ACTIVATE: T is given when activating, NIL when deactivating PHP-IDE."
   ;; through Emacs's normal unsafe-variable confirmation, never apply silently.
   )
 
+(defvar-local php-ide--activated-features nil
+  "PHP-IDE features currently activated in this buffer.
+
+Deactivation walks this list rather than `php-ide-features', so that a
+feature is always turned off through the same implementation that turned
+it on, even if `php-ide-features' has changed in between --- as it does
+when .dir-locals.el is edited and re-applied to a live buffer.")
+
 ;;;###autoload
 (define-minor-mode php-ide-mode
   "Minor mode for integrate IDE-like tools."
   :lighter php-ide-mode-lighter
+  (if php-ide-mode
+      (php-ide--activate-features)
+    (php-ide--deactivate-features)))
+
+(defun php-ide--warn-about-exclusive-features (ide-features)
+  "Warn if IDE-FEATURES asks for features that cannot share a buffer.
+
+Features tagged with the same `:exclusive' value in
+`php-ide-feature-alist' -- the LSP clients, which would each try to
+manage the buffer -- are reported once, and activation continues so a
+deliberate combination is still possible."
+  (let ((groups nil))
+    (dolist (feature ide-features)
+      (when-let* ((group (plist-get (cdr (assq feature php-ide-feature-alist)) :exclusive)))
+        (if-let* ((entry (assq group groups)))
+            (setcdr entry (cons feature (cdr entry)))
+          (push (list group feature) groups))))
+    (dolist (entry groups)
+      (when (cdr (cdr entry))
+        (lwarn 'php-ide :warning
+               "`php-ide-features' enables several %s features at once (%s).  \
+They will each try to manage this buffer; enabling just one is usually what \
+you want."
+               (car entry)
+               (mapconcat #'symbol-name (reverse (cdr entry)) ", "))))))
+
+(defun php-ide--activate-features ()
+  "Activate every feature named by `php-ide-features' in this buffer.
+
+Features already activated in this buffer are left alone, so re-enabling
+the mode --- as happens whenever `hack-local-variables-hook' runs again,
+for instance after `revert-buffer' --- does not activate them twice.
+Removing a feature from `php-ide-features' does not deactivate it,
+though; toggle `php-ide-mode' off and on, or use `php-ide-set-feature',
+to apply that.
+
+Signals `user-error' without leaving anything half-activated: features
+already turned on by this call are rolled back and `php-ide-mode' is
+switched off again, so the mode line never claims PHP-IDE is running
+when it is not."
   (let ((ide-features (if (listp php-ide-features) php-ide-features (list php-ide-features))))
     (when-let* ((unavailable-features (cl-loop for feature in ide-features
                                                unless (assq feature php-ide-feature-alist)
                                                collect feature)))
+      (setq php-ide-mode nil)
       (user-error "%s includes unavailable PHP-IDE features.  (available features are: %s)"
-                  ide-features
+                  unavailable-features
                   (mapconcat (lambda (feature) (concat "'" (symbol-name feature)))
                              (php-ide--available-features) ", ")))
-    ;; Every feature in IDE-FEATURES is guaranteed to be in `php-ide-feature-alist' here,
-    ;; because the loop above already signals a `user-error' otherwise.
-    (cl-loop for feature in ide-features
-             for ide-plist = (cdr (assq feature php-ide-feature-alist))
-             do (progn
-                  (run-hook-with-args 'php-ide-mode-functions feature php-ide-mode)
-                  (if php-ide-mode
-                      (php-ide--activate-buffer feature ide-plist)
-                    (php-ide--deactivate-buffer ide-plist))))))
+    (php-ide--warn-about-exclusive-features ide-features)
+    (condition-case err
+        ;; Every feature in IDE-FEATURES is in `php-ide-feature-alist' here,
+        ;; because the loop above already signalled a `user-error' otherwise.
+        (dolist (feature ide-features)
+          (unless (memq feature php-ide--activated-features)
+            (let ((ide-plist (cdr (assq feature php-ide-feature-alist))))
+              (run-hook-with-args 'php-ide-mode-functions feature t)
+              (php-ide--activate-buffer feature ide-plist)
+              (push feature php-ide--activated-features))))
+      (error
+       (php-ide--deactivate-features)
+       (setq php-ide-mode nil)
+       (signal (car err) (cdr err))))))
+
+(defun php-ide--deactivate-features ()
+  "Deactivate the features this buffer actually has activated."
+  (dolist (feature php-ide--activated-features)
+    (let ((ide-plist (cdr (assq feature php-ide-feature-alist))))
+      (run-hook-with-args 'php-ide-mode-functions feature nil)
+      ;; IDE-PLIST is non-nil for anything we activated, but a feature can be
+      ;; removed from `php-ide-feature-alist' while a buffer still uses it.
+      (when ide-plist
+        (php-ide--deactivate-buffer ide-plist))))
+  (setq php-ide--activated-features nil))
 
 ;;;###autoload
 (defun php-ide-turn-on ()

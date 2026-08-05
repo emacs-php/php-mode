@@ -980,6 +980,120 @@ project setting this variable gets a confirmation prompt anyway."
                         "language-server")
                    (php-ide-eglot-server-program)))))
 
+(defun php-mode-test--php-ide-stub-alist (log)
+  "Return a `php-ide-feature-alist' of test doubles recording into LOG.
+LOG is a symbol whose value is a list, appended to in call order."
+  (list (list 'stub-ok :test (lambda () t)
+              :activate (lambda () (push 'activated-ok (symbol-value log)))
+              :deactivate (lambda () (push 'deactivated-ok (symbol-value log))))
+        (list 'stub-boom :test (lambda () t)
+              :activate (lambda () (error "Stub feature failed to start"))
+              :deactivate (lambda () (push 'deactivated-boom (symbol-value log))))
+        (list 'stub-unavailable :test (lambda () nil)
+              :activate (lambda () (push 'activated-unavailable (symbol-value log)))
+              :deactivate (lambda () (push 'deactivated-unavailable (symbol-value log))))))
+
+(ert-deftest php-ide-test-failed-activation-leaves-mode-off ()
+  "Regression test: a feature that cannot be activated must leave
+`php-ide-mode' off.
+
+`define-minor-mode' sets the mode variable before running the body, and
+the body used to signal without undoing that, so the mode line claimed
+PHP-IDE was running while nothing had been activated -- and turning it
+back off then called `:deactivate' on an unavailable feature, which
+signalled `void-function' and left the user stuck."
+  (defvar php-mode-test--ide-log)
+  (let ((php-mode-test--ide-log nil))
+    (with-temp-buffer
+      (php-mode)
+      (let ((php-ide-feature-alist
+             (php-mode-test--php-ide-stub-alist 'php-mode-test--ide-log)))
+        (setq-local php-ide-features '(stub-unavailable))
+        (should-error (php-ide-mode +1) :type 'user-error)
+        (should-not php-ide-mode)
+        (should-not php-ide--activated-features)
+        ;; Nothing ran, and turning the mode off again must stay quiet.
+        (should-not php-mode-test--ide-log)
+        (php-ide-mode -1)
+        (should-not php-ide-mode)))))
+
+(ert-deftest php-ide-test-activation-rolls-back-on-error ()
+  "A feature failing mid-list must not leave earlier ones activated."
+  (defvar php-mode-test--ide-log)
+  (let ((php-mode-test--ide-log nil))
+    (with-temp-buffer
+      (php-mode)
+      (let ((php-ide-feature-alist
+             (php-mode-test--php-ide-stub-alist 'php-mode-test--ide-log)))
+        (setq-local php-ide-features '(stub-ok stub-boom))
+        (should-error (php-ide-mode +1))
+        (should-not php-ide-mode)
+        (should-not php-ide--activated-features)
+        ;; The one that did start must have been rolled back.
+        (should (equal '(activated-ok deactivated-ok)
+                       (reverse php-mode-test--ide-log)))))))
+
+(ert-deftest php-ide-test-deactivates-what-it-activated ()
+  "Regression test: deactivation must follow what was actually activated,
+not the current value of `php-ide-features'.
+
+Editing .dir-locals.el and re-applying it changes `php-ide-features' in a
+live buffer; deactivation used to walk that new value, so it either
+signalled on an unknown feature or turned off the wrong one, stranding
+the feature that was really running."
+  (defvar php-mode-test--ide-log)
+  (let ((php-mode-test--ide-log nil))
+    (with-temp-buffer
+      (php-mode)
+      (let ((php-ide-feature-alist
+             (php-mode-test--php-ide-stub-alist 'php-mode-test--ide-log)))
+        (setq-local php-ide-features '(stub-ok))
+        (php-ide-mode +1)
+        (should (equal '(stub-ok) php-ide--activated-features))
+        ;; The project's configuration changes underneath the live buffer.
+        (setq-local php-ide-features '(totally-unknown-feature))
+        (php-ide-mode -1)
+        (should-not php-ide-mode)
+        (should-not php-ide--activated-features)
+        (should (equal '(activated-ok deactivated-ok)
+                       (reverse php-mode-test--ide-log)))))))
+
+(ert-deftest php-ide-test-activation-is-idempotent ()
+  "Re-enabling `php-ide-mode' must not activate a feature twice.
+
+`hack-local-variables-hook' -- where the documented recipe puts
+`php-ide-turn-on' -- runs again on `revert-buffer' and friends, and
+`define-minor-mode' re-runs the body even when the mode is already on."
+  (defvar php-mode-test--ide-log)
+  (let ((php-mode-test--ide-log nil))
+    (with-temp-buffer
+      (php-mode)
+      (let ((php-ide-feature-alist
+             (php-mode-test--php-ide-stub-alist 'php-mode-test--ide-log)))
+        (setq-local php-ide-features '(stub-ok))
+        (php-ide-turn-on)
+        (php-ide-turn-on)
+        (php-ide-turn-on)
+        (should (equal '(stub-ok) php-ide--activated-features))
+        (should (equal '(activated-ok) (reverse php-mode-test--ide-log)))
+        ;; And it must still deactivate exactly once.
+        (php-ide-mode -1)
+        (should (equal '(activated-ok deactivated-ok)
+                       (reverse php-mode-test--ide-log)))))))
+
+(ert-deftest php-ide-test-phpactor-feature-loads-its-own-bridge ()
+  "The `phpactor' feature must load php-ide-phpactor.el itself.
+
+php-ide.el only requires it at compile time, so without this the
+`:activate'/`:deactivate' symbols resolve only when the package autoloads
+happen to be loaded; loading php-ide.el directly gave `void-function'."
+  (skip-unless (require 'phpactor nil t))
+  (let ((plist (cdr (assq 'phpactor php-ide-feature-alist))))
+    (should (funcall (plist-get plist :test)))
+    (should (featurep 'php-ide-phpactor))
+    (should (fboundp 'php-ide-phpactor-activate))
+    (should (fboundp 'php-ide-phpactor-deactivate))))
+
 (ert-deftest php-ide-test-feature-alist-arity ()
   "Regression test: `:test' must always be a callable 0-arg predicate, and
 for every PHP-IDE feature actually available in this Emacs, `:activate'
@@ -1057,6 +1171,96 @@ arbitrary function, path, or command list."
     ;; safe-local-variable predicate at all and always go through Emacs's
     ;; normal risky-variable confirmation.
     (should-not (get 'php-ide-mode-functions 'safe-local-variable))))
+
+(ert-deftest php-ide-test-warns-only-on-exclusive-feature-clashes ()
+  "Enabling two LSP clients at once should warn; other combinations should not.
+
+Phpactor's bridge is not an LSP client, so pairing it with one is a
+legitimate setup and must stay quiet."
+  (let (warnings)
+    (cl-letf (((symbol-function 'lwarn)
+               (lambda (_class _level fmt &rest args)
+                 (push (apply #'format fmt args) warnings))))
+      (dolist (features '((eglot) (none) (none phpactor) (eglot phpactor)))
+        (setq warnings nil)
+        (php-ide--warn-about-exclusive-features features)
+        (should-not warnings))
+      (dolist (features '((eglot lsp-mode) (lsp-mode lsp-bridge)
+                          (eglot lsp-mode lsp-bridge)))
+        (setq warnings nil)
+        (php-ide--warn-about-exclusive-features features)
+        ;; One warning naming the clashing features, not one per feature.
+        (should (= 1 (length warnings)))
+        (dolist (feature features)
+          (should (string-match-p (regexp-quote (symbol-name feature))
+                                  (car warnings))))))))
+
+(ert-deftest php-ide-test-eglot-deactivate-degrades-gracefully ()
+  "`php-ide-eglot-deactivate' must warn, not signal, if Eglot's internal
+buffer-scoped switch ever disappears."
+  (skip-unless (require 'eglot nil t))
+  (let (called warned)
+    (cl-letf (((symbol-function 'eglot--managed-mode-off)
+               (lambda () (setq called 'managed-mode-off))))
+      (php-ide-eglot-deactivate)
+      (should (eq 'managed-mode-off called)))
+    ;; Fall back to the minor mode itself when the helper is gone.
+    (setq called nil)
+    (cl-letf (((symbol-function 'eglot--managed-mode-off) nil)
+              ((symbol-function 'eglot--managed-mode)
+               (lambda (arg) (setq called (cons 'managed-mode arg)))))
+      (php-ide-eglot-deactivate)
+      (should (equal '(managed-mode . -1) called)))
+    ;; With neither available, warn instead of signalling `void-function'.
+    (cl-letf (((symbol-function 'eglot--managed-mode-off) nil)
+              ((symbol-function 'eglot--managed-mode) nil)
+              ((symbol-function 'lwarn)
+               (lambda (&rest _) (setq warned t))))
+      (php-ide-eglot-deactivate)
+      (should warned))))
+
+(ert-deftest php-ide-test-command-holding-variables-are-risky ()
+  "The alists that decide what PHP-IDE runs must be risky.
+
+`php-ide-lsp-command-alist' holds the command lines Eglot executes, and
+adding an entry to it also makes that entry pass the `:safe' predicate of
+`php-ide-eglot-executable' -- so a directory-local value would choose
+both the command and its own approval.  `php-ide-feature-alist' likewise
+holds the functions `php-ide-mode' calls and backs the `:safe' predicate
+of `php-ide-features'.  Risky variables are always confirmed and can
+never be remembered as safe."
+  (should (risky-local-variable-p 'php-ide-feature-alist))
+  (should (risky-local-variable-p 'php-ide-lsp-command-alist))
+  ;; And they must not also claim to be safe.
+  (should-not (get 'php-ide-feature-alist 'safe-local-variable))
+  (should-not (get 'php-ide-lsp-command-alist 'safe-local-variable)))
+
+(ert-deftest php-ide-test-risky-local-variables-work-from-autoloads ()
+  "Regression test: those variables must already be risky before
+php-ide.el is loaded.
+
+Emacs checks .dir-locals.el first, and unlike `:safe' the autoloads
+generator does not copy a defcustom's `:risky' flag, so the flag has to
+be stated where the check can see it."
+  (let ((autoloads (expand-file-name "../lisp/php-mode-autoloads.el" php-mode-test-dir))
+        (emacs (expand-file-name invocation-name invocation-directory)))
+    (skip-unless (file-exists-p autoloads))
+    (with-temp-buffer
+      (let ((status (call-process
+                     emacs nil t nil "-Q" "--batch"
+                     "--load" autoloads
+                     "--eval"
+                     (prin1-to-string
+                      '(progn
+                         (when (featurep 'php-ide)
+                           (error "php-ide must not be loaded in this check"))
+                         (dolist (v '(php-ide-feature-alist
+                                      php-ide-lsp-command-alist))
+                           (unless (risky-local-variable-p v)
+                             (error "%s is not risky without php-ide loaded" v)))
+                         (princ "OK"))))))
+        (should (string-match-p "OK" (buffer-string)))
+        (should (eq 0 status))))))
 
 (ert-deftest php-ide-test-safe-local-variables-work-from-autoloads ()
   "Regression test: the `:safe' predicates must work from the package

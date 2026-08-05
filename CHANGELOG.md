@@ -27,6 +27,14 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
    * Previously these let a `.dir-locals.el` silently run an attacker-chosen command or Lisp function without Emacs's usual confirmation; now only PHP-IDE's own known feature symbols and bundled executable presets are accepted
    * **If you now get prompted** by a `.dir-locals.el` you wrote and trust yourself (e.g. `php-ide-eglot-executable` set to a raw path/command, or any use of `php-ide-mode-functions`), this is expected — PHP-IDE can no longer vouch for that value as safe.  Answer `!` at the prompt to permanently remember that exact value (all supported Emacs versions), or `+` to trust the whole directory from then on (Emacs 30.1+); see `(info "(emacs) Directory Variables")`.  You can also pre-approve values ahead of time in your own init file via `safe-local-variable-values` / `safe-local-variable-directories`, so you are never prompted even on first visit.
    * `php-ide-mode-functions` was always meant to be configured globally with `add-hook` in your init file (see the Commentary in `php-ide.el`), not set per-project via `.dir-locals.el`.  For per-project behavior, branch on the `FEATURE` argument inside your hook function instead of varying the variable's value by directory.
+ * Mark `php-ide-feature-alist` and `php-ide-lsp-command-alist` as risky local variables
+   * They decide which command PHP-IDE executes and which functions it calls, and adding an entry to `php-ide-lsp-command-alist` also makes that entry pass the `:safe` check of `php-ide-eglot-executable` — so a project could otherwise have supplied both the command and its own approval.  Risky variables are always confirmed and never remembered as safe
+ * `php-ide-mode` now warns when `php-ide-features` enables more than one LSP client at once
+   * Activation still proceeds; Phpactor's bridge is not an LSP client and pairs with one without a warning
+ * Make `php-ide-lsp-command-alist` and `php-ide-eglot-managed-modes` customizable
+   * Adding your own preset to `php-ide-lsp-command-alist` is also how you let a project select that server from `.dir-locals.el` without confirming an executable path
+ * Narrow the "experimental" note in `php-ide.el` to what it actually covers
+   * The options and commands documented in the README are settled; what may still change is how a feature is described to PHP-IDE (the `php-ide-feature-alist` entry keywords and `php-ide--...` internals)
 
 ### Fixed
 
@@ -51,6 +59,14 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
    * `php-ide-phpactor-disable-hover-at-point-functions` was combined with AND, so an empty list disabled hover everywhere and multiple predicates only fired when all matched
  * Fix `php-ide-mode` deactivation stopping Phpactor hover in unrelated buffers
    * The hover timer is shared by all buffers but was cancelled unconditionally; it is now retired only once no live buffer uses hover
+ * Fix `php-ide-mode` staying on after a feature failed to activate
+   * The mode line claimed PHP-IDE was running while nothing had started, and turning it back off then signalled `void-function`.  Activation now rolls back and leaves the mode off
+ * Fix `php-ide-mode` deactivating the wrong feature after `php-ide-features` changes
+   * Deactivation re-read the variable, so editing `.dir-locals.el` and re-applying it to a live buffer stranded the feature that was really running; it now tracks what it activated
+ * Fix `php-ide-mode` activating features twice when it is re-enabled
+   * `hack-local-variables-hook`, where the documented recipe puts `php-ide-turn-on`, runs again on `revert-buffer` and friends
+ * Fix the `phpactor` PHP-IDE feature failing to activate outside a package installation
+   * `php-ide.el` requires `php-ide-phpactor` only at compile time, so its `:activate`/`:deactivate` resolved only via the package autoloads; the feature now loads it from `:test`
 
 ### Deprecated
 
