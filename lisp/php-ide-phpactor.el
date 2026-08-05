@@ -32,9 +32,17 @@
 (require 'smart-jump nil t)
 (require 'cl-lib)
 
-(defvar-local php-ide-phpactor-buffer nil)
-(defvar-local php-ide-phpactor-hover-last-pos nil)
-(defvar-local php-ide-phpactor-hover-last-msg nil)
+(defvar-local php-ide-phpactor-buffer nil
+  "Non-nil when PHP-IDE has activated Phpactor in this buffer.")
+
+(defvar-local php-ide-phpactor-hover-last-pos nil
+  "Buffer position the last hover request was made for.")
+
+(defvar-local php-ide-phpactor-hover-last-msg nil
+  "Hover message Phpactor returned for `php-ide-phpactor-hover-last-pos'.
+
+It is consumed (and cleared) the next time point rests on that same
+position, so that the popup only appears once the user has stayed put.")
 
 (declare-function phpactor--command-argments "ext:phpactor" (&rest arg-keys))
 (declare-function phpactor--parse-json "ext:phpactor" (buffer))
@@ -61,15 +69,48 @@
                           (cl-every (lambda (x) (memq x '(all hover navigation))) xs))))
 
 (defvar php-ide-phpactor-timer nil
-  "Timer object for execute Phpactor and display hover message.")
+  "Timer object for execute Phpactor and display hover message.
+
+There is a single timer shared by every buffer using Phpactor hover; it
+dispatches to whichever buffer is current when it fires.  It therefore
+must not be cancelled until the last such buffer is deactivated, which
+`php-ide-phpactor--stop-hover-timer' takes care of.")
+
+(defun php-ide-phpactor--hover-buffer-exists-p ()
+  "Return non-nil if any live buffer still uses Phpactor hover."
+  (cl-some (lambda (buffer)
+             (buffer-local-value 'php-ide-phpactor-buffer buffer))
+           (buffer-list)))
+
+(defun php-ide-phpactor--stop-hover-timer ()
+  "Cancel the shared hover timer, but only once no buffer needs it."
+  (when (and php-ide-phpactor-timer
+             (not (php-ide-phpactor--hover-buffer-exists-p)))
+    (cancel-timer php-ide-phpactor-timer)
+    (setq php-ide-phpactor-timer nil)))
+
+(defun php-ide-phpactor--hover-timer-function ()
+  "Show hover information, or retire the timer once no buffer needs it.
+
+Buffers that are killed while active never run
+`php-ide-phpactor-deactivate', so the timer also checks here rather than
+relying on deactivation alone."
+  (if (php-ide-phpactor--hover-buffer-exists-p)
+      (php-ide-phpactor-hover)
+    (php-ide-phpactor--stop-hover-timer)))
 
 (defvar php-ide-phpactor-disable-hover-at-point-functions
-  '(php-in-string-or-comment-p))
+  '(php-in-string-or-comment-p)
+  "Predicates that suppress the hover popup at point.
+
+Each element is called with no arguments; a non-nil return from any of
+them means no hover information is requested at point.  An empty list
+therefore never suppresses hover.")
 
 (defun php-ide-phpactor--disable-hover-at-point-p ()
-  "Return non-NIL if any function return non-NIL for disable to hover at point."
+  "Return non-nil if any function returns non-nil to disable hover at point."
   (cl-loop for f in php-ide-phpactor-disable-hover-at-point-functions
-           never (not (funcall f))))
+           thereis (funcall f)))
 
 (defun php-ide-phpactor-hover ()
   "Show brief information about the symbol underneath the cursor."
@@ -104,23 +145,26 @@
       (local-set-key [remap xref-find-definitions] #'smart-jump-go)
       (local-set-key [remap xref-pop-marker-stack] #'smart-jump-back)
       (local-set-key [remap xref-find-references] #'smart-jump-references)))
+  (setq php-ide-phpactor-buffer t)
   (when (php-ide-phpactor--feature-activated-p 'hover)
     (unless php-ide-phpactor-timer
-      (setq php-ide-phpactor-timer (run-with-timer 0.8 0.8 #'php-ide-phpactor-hover))))
-  (setq php-ide-phpactor-buffer t))
+      (setq php-ide-phpactor-timer
+            (run-with-timer 0.8 0.8 #'php-ide-phpactor--hover-timer-function)))))
 
 ;;;###autoload
 (defun php-ide-phpactor-deactivate ()
-  "Dectivate PHP-IDE using phpactor.el."
+  "Deactivate PHP-IDE using phpactor.el."
   (interactive)
   (local-unset-key [remap xref-find-definitions])
   (local-unset-key [remap xref-pop-marker-stack])
   (local-unset-key [remap xref-find-references])
 
-  (when php-ide-phpactor-timer
-    (cancel-timer php-ide-phpactor-timer)
-    (setq php-ide-phpactor-timer nil))
-  (setq php-ide-phpactor-buffer nil))
+  (setq php-ide-phpactor-buffer nil
+        php-ide-phpactor-hover-last-pos nil
+        php-ide-phpactor-hover-last-msg nil)
+  ;; Must run after clearing `php-ide-phpactor-buffer' above, so that this
+  ;; buffer no longer counts as one that still needs the shared timer.
+  (php-ide-phpactor--stop-hover-timer))
 
 (provide 'php-ide-phpactor)
 ;;; php-ide-phpactor.el ends here

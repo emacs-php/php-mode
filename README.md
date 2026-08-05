@@ -77,6 +77,39 @@ You can add project-specific settings by creating a `.dir-locals.el` or `.dir-lo
   (php-project-coding-style . psr2)))
 ```
 
+### PHP-IDE: integrating LSP clients and Phpactor
+
+`php-ide` (`php-ide.el`) is an **experimental** bridge between PHP Mode and IDE-like tools: [Eglot](https://github.com/joaotavora/eglot), [lsp-mode](https://github.com/emacs-lsp/lsp-mode), [lsp-bridge](https://github.com/manateelazycat/lsp-bridge), and [Phpactor](https://github.com/emacs-php/phpactor.el).  It does not implement any of these features itself — it only activates or deactivates whichever one(s) you choose, through a single `php-ide-mode` minor mode. See the Commentary at the top of `php-ide.el` for the full reference.
+
+```lisp
+(defun my-php-mode-init ()
+  (add-hook 'hack-local-variables-hook 'php-ide-turn-on nil t))
+
+(with-eval-after-load 'php-ide
+  (custom-set-variables
+   '(php-ide-features '(eglot))              ;; and/or '(phpactor), '(lsp-mode), '(lsp-bridge)
+   '(php-ide-eglot-executable 'intelephense)  ;; or 'phpactor, a path string, or a list of strings
+   '(php-ide-mode-lighter "")))               ;; hide PHP-IDE from the mode line
+```
+
+`php-ide-turn-on` does nothing when `php-ide-features` is unset, so it is safe to add unconditionally as above — PHP-IDE stays off until a feature is configured, either globally as above or per project below.
+
+Useful commands once `php-ide` is loaded:
+
+* `M-x php-ide-mode` — toggle PHP-IDE for the current buffer, using `php-ide-features`.
+* `M-x php-ide-turn-on` — same, but never errors when `php-ide-features` is unset.
+* `M-x php-ide-set-feature` — pick, interactively, one of the features actually available on this system (i.e. whose backing package is installed) and enable it for the current buffer.
+* `M-x php-ide-status` — report whether PHP-IDE is on, what is configured, and what is available.
+
+#### Per-project PHP-IDE configuration
+
+```lisp
+((nil (php-project-root . git)
+      (php-ide-features . (eglot))))
+```
+
+`php-ide-features` and `php-ide-eglot-executable` are only treated as safe for `.dir-locals.el` when they name one of PHP-IDE's own built-in features or bundled executable presets (e.g. `intelephense`, `phpactor`).  Anything else — a raw executable path, explicit command arguments, or a custom `php-ide-mode-functions` hook — still goes through Emacs's normal confirmation for risky directory-local variables, since applying those silently would let any repository run an arbitrary command (or Lisp function) in your Emacs just by having you open a file in it.
+
 ### Integration with `project.el` and Projectile
 
 `php-project-get-root-dir` first looks for a PHP-specific marker (`.projectile`, `composer.json`/`composer.lock`, then a VCS directory).  Preferring `composer.json` over the VCS root matters in monorepos, where per-package `vendor/autoload.php` and coding styles are what `php-mode` cares about.  When none of those markers is found, it now falls back to `project-current`, so any [`project.el`](https://www.gnu.org/software/emacs/manual/html_node/emacs/Projects.html) backend can contribute detection:

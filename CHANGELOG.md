@@ -7,12 +7,26 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
 ### Added
 
  * `php-project-get-root-dir` falls back to `project-current` when no PHP-specific marker is found, so `project.el` backends (Projectile 3, `project-vc-extra-root-markers`, etc.) can contribute project detection
+ * Add `php-ide-set-feature` command to interactively enable a PHP-IDE feature for the current buffer
+   * Only offers features whose backing package is actually available
+ * Add `php-ide-status` command to report the current PHP-IDE state for the current buffer
+   * Shows whether it is on, what is configured, and what is available
+ * Add `php-ide-eglot-activate`, which registers `php-ide-eglot-executable` into `eglot-server-programs`
+   * Buffer-local, so only buffers that set the variable are affected; previously the variable had no effect on Eglot at all
 
 ### Changed
 
  * Add `readonly` class modifier to [Imenu] ([#802])
  * Add `enum` support to `php-current-class` ([#802])
  * Remove hardcoding of implicit paths in `php` that are not guaranteed to exist ([#803])
+ * `php-ide-turn-on` no longer errors when `php-ide-features` is unset
+   * It is now a silent no-op, matching the README's `hack-local-variables-hook` recipe, which previously errored on every PHP file until a feature was configured
+ * `php-ide-features` now also accepts a bare feature symbol, not just a list
+   * This was already shown (but not actually supported) in `php-ide.el`'s own Commentary
+ * Restrict `:safe` on `php-ide-features`/`php-ide-eglot-executable`, and drop `:safe` from `php-ide-mode-functions` entirely
+   * Previously these let a `.dir-locals.el` silently run an attacker-chosen command or Lisp function without Emacs's usual confirmation; now only PHP-IDE's own known feature symbols and bundled executable presets are accepted
+   * **If you now get prompted** by a `.dir-locals.el` you wrote and trust yourself (e.g. `php-ide-eglot-executable` set to a raw path/command, or any use of `php-ide-mode-functions`), this is expected — PHP-IDE can no longer vouch for that value as safe.  Answer `!` at the prompt to permanently remember that exact value (all supported Emacs versions), or `+` to trust the whole directory from then on (Emacs 30.1+); see `(info "(emacs) Directory Variables")`.  You can also pre-approve values ahead of time in your own init file via `safe-local-variable-values` / `safe-local-variable-directories`, so you are never prompted even on first visit.
+   * `php-ide-mode-functions` was always meant to be configured globally with `add-hook` in your init file (see the Commentary in `php-ide.el`), not set per-project via `.dir-locals.el`.  For per-project behavior, branch on the `FEATURE` argument inside your hook function instead of varying the variable's value by directory.
 
 ### Fixed
 
@@ -25,6 +39,18 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
    * The first completion reordered the value the user had set, e.g. `(pcntl bcmath core)` became `(bcmath core pcntl)`
  * Fix function name completion offering module names as if they were PHP functions
    * Entries of `php-defs-functions-alist` are `(MODULE . FUNCTION-NAMES)` and the whole entry was appended, so every enabled module leaked its own name into the candidates
+ * Fix the `phpactor` PHP-IDE feature's `:deactivate` to actually deactivate
+   * It pointed at `php-ide-phpactor-activate` instead of `php-ide-phpactor-deactivate`, so turning `php-ide-mode` off re-activated Phpactor instead
+ * Fix `php-ide-eglot-server-program` to return a valid command list for symbolic `php-ide-eglot-executable` values
+   * e.g. `intelephense`, `phpactor` — the `assq` result was used without `cdr`
+ * Fix the `lsp-mode` PHP-IDE feature's `:deactivate` to no longer error when turning `php-ide-mode` off
+   * It called `lsp-workspace-shutdown`, which requires a `WORKSPACE` argument and signalled `wrong-number-of-arguments`; switched to the buffer-scoped `lsp-disconnect`
+ * Fix the `:safe` predicates of `php-ide-features`/`php-ide-eglot-executable`, which never actually applied
+   * Emacs checks directory-local values *before* `php-ide.el` is loaded, so the predicates ran as copied into the autoloads file, where they hit `void-function cl-loop` / `void-variable php-ide-lsp-command-alist`.  `safe-local-variable-p` demotes such errors to nil, so every project setting these variables was prompted for confirmation regardless
+ * Fix Phpactor hover suppression to match its documented "any predicate matches" behavior
+   * `php-ide-phpactor-disable-hover-at-point-functions` was combined with AND, so an empty list disabled hover everywhere and multiple predicates only fired when all matched
+ * Fix `php-ide-mode` deactivation stopping Phpactor hover in unrelated buffers
+   * The hover timer is shared by all buffers but was cancelled unconditionally; it is now retired only once no live buffer uses hover
 
 ### Deprecated
 
