@@ -243,6 +243,64 @@ out and get `php-default-major-mode' instead."
   :group 'php
   :tag "PHP Static Method Call"
   :type 'face)
+
+;;; Shared PHP Mode coding-style options
+;;
+;; These options are consulted by more than one major mode implementation
+;; (the CC Mode based `php-mode' and, in the future, the cc-mode
+;; independent one), so they live here in the shared php.el rather than in
+;; php-mode.el.
+
+(define-obsolete-variable-alias 'php-template-compatibility 'php-mode-template-compatibility "1.20.0")
+(defcustom php-mode-template-compatibility t
+  "Should detect presence of html tags."
+  :group 'php
+  :tag "PHP Mode Template Compatibility"
+  :type 'boolean)
+
+(defcustom php-mode-coding-style 'pear
+  "Select default coding style to use with `php-mode'.
+This variable can take one of the following symbol values:
+
+`Default' - use a reasonable default style for PHP.
+`PSR-2' - use PSR standards (PSR-2, PSR-12).
+`PEAR' - use coding styles preferred for PEAR code and modules.
+`Drupal' - use coding styles preferred for working with Drupal projects.
+`WordPress' - use coding styles preferred for working with WordPress projects.
+`Symfony2' - use coding styles preferred for working with Symfony2 projects."
+  :group 'php
+  :tag "PHP Mode Coding Style"
+  :type '(choice (const :tag "Default" php)
+                 (const :tag "PEAR" pear)
+                 (const :tag "Drupal" drupal)
+                 (const :tag "WordPress" wordpress)
+                 (const :tag "Symfony2" symfony2)
+                 (const :tag "PSR-2" psr2))
+  :initialize #'custom-initialize-default)
+
+(defcustom php-mode-pear-hook nil
+  "Hook called when a PHP PEAR file is opened with `php-mode'."
+  :group 'php
+  :tag "PHP Mode Pear Hook"
+  :type 'hook)
+
+(defcustom php-mode-drupal-hook nil
+  "Hook called when a Drupal file is opened with `php-mode'."
+  :group 'php
+  :tag "PHP Mode Drupal Hook"
+  :type 'hook)
+
+(defcustom php-mode-wordpress-hook nil
+  "Hook called when a WordPress file is opened with `php-mode'."
+  :group 'php
+  :tag "PHP Mode WordPress Hook"
+  :type 'hook)
+
+(defcustom php-mode-psr2-hook nil
+  "Hook called when a PSR-2 file is opened with `php-mode'."
+  :group 'php
+  :tag "PHP Mode PSR-2 Hook"
+  :type 'hook)
 
 ;;; PHP Keywords
 (defconst php-re-token-symbols

@@ -165,11 +165,7 @@ Turning this on will open it whenever `php-mode' is loaded."
          (when val
            (speedbar 1))))
 
-(define-obsolete-variable-alias 'php-template-compatibility 'php-mode-template-compatibility "1.20.0")
-(defcustom php-mode-template-compatibility t
-  "Should detect presence of html tags."
-  :tag "PHP Mode Template Compatibility"
-  :type 'boolean)
+;; `php-mode-template-compatibility' is defined in php.el (shared).
 
 (define-obsolete-variable-alias 'php-lineup-cascaded-calls 'php-mode-lineup-cascaded-calls "1.20.0")
 (defcustom php-mode-lineup-cascaded-calls nil
@@ -216,29 +212,12 @@ enabled."
   :tag "PHP Mode Hook"
   :type 'hook)
 
-(defcustom php-mode-pear-hook nil
-  "Hook called when a PHP PEAR file is opened with `php-mode'."
-  :tag "PHP Mode Pear Hook"
-  :type 'hook)
-
-(defcustom php-mode-drupal-hook nil
-  "Hook called when a Drupal file is opened with `php-mode'."
-  :tag "PHP Mode Drupal Hook"
-  :type 'hook)
-
-(defcustom php-mode-wordpress-hook nil
-  "Hook called when a WordPress file is opened with `php-mode'."
-  :tag "PHP Mode WordPress Hook"
-  :type 'hook)
+;; `php-mode-pear-hook', `php-mode-drupal-hook', `php-mode-wordpress-hook'
+;; and `php-mode-psr2-hook' are defined in php.el (shared).
 
 (defcustom php-mode-symfony2-hook nil
   "Hook called when a Symfony2 file is opened with `php-mode'."
   :tag "PHP Mode Symfony2 Hook"
-  :type 'hook)
-
-(defcustom php-mode-psr2-hook nil
-  "Hook called when a PSR-2 file is opened with `php-mode'."
-  :tag "PHP Mode PSR-2 Hook"
   :type 'hook)
 
 (defcustom php-mode-force-pear nil
@@ -254,24 +233,7 @@ Turning this on will force PEAR rules on all PHP files."
   :type '(choice (const :tag "Warn" t) (const :tag "Don't warn" nil)))
 (make-obsolete-variable 'php-mode-warn-if-mumamo-off 'php-mode-warn-if-html-template "2.0.0")
 
-(defcustom php-mode-coding-style 'pear
-  "Select default coding style to use with `php-mode'.
-This variable can take one of the following symbol values:
-
-`Default' - use a reasonable default style for PHP.
-`PSR-2' - use PSR standards (PSR-2, PSR-12).
-`PEAR' - use coding styles preferred for PEAR code and modules.
-`Drupal' - use coding styles preferred for working with Drupal projects.
-`WordPress' - use coding styles preferred for working with WordPress projects.
-`Symfony2' - use coding styles preferred for working with Symfony2 projects."
-  :tag "PHP Mode Coding Style"
-  :type '(choice (const :tag "Default" php)
-                 (const :tag "PEAR" pear)
-                 (const :tag "Drupal" drupal)
-                 (const :tag "WordPress" wordpress)
-                 (const :tag "Symfony2" symfony2)
-                 (const :tag "PSR-2" psr2))
-  :initialize #'custom-initialize-default)
+;; `php-mode-coding-style' is defined in php.el (shared).
 
 ;; Since this function has a bad influence on the environment of many users,
 ;; temporarily disable it
