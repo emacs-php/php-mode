@@ -49,8 +49,8 @@
     (rx bol (? "PHP ")
         (group (or "Parse" "Fatal")) ;; 1: type, not used
         " error:" (+ (syntax whitespace))
-        (group (+? any)) ;; 2: msg
-        " in " (group (+? any)) ;; 3: file, not used
+        (group (+? not-newline)) ;; 2: msg
+        " in " (group (+? not-newline)) ;; 3: file, not used
         " on line " (group (+ num)) ;; 4: line
         eol)))
 
