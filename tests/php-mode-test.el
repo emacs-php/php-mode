@@ -34,6 +34,7 @@
 (require 'php-complete)
 (require 'php-defs)
 (require 'php-mode)
+(require 'php-cc-mode)
 (require 'php-mode-debug)
 (require 'php-project)
 (require 'php-ide)
@@ -862,6 +863,19 @@ half-fontified: the `|' plain and the `>' as `php-comparison-op'."
   "Tests for PEAR style."
   (with-php-mode-test ("indent/issue-227.php" :indent t :magic t :style pear))
   (with-php-mode-test ("indent/issue-774.php" :indent t :magic t :style pear)))
+
+(ert-deftest php-cc-mode-test-transition-aliases ()
+  "The transitional `php-cc-mode' names alias the current CC Mode `php-mode'."
+  (should (eq (symbol-function 'php-cc-mode) 'php-mode))
+  (let ((php-mode-hook nil))
+    (add-hook 'php-cc-mode-hook #'ignore)
+    (should (memq #'ignore php-mode-hook)))
+  (let ((php-mode-lineup-cascaded-calls nil)
+        (php-mode-enable-backup-style-variables t))
+    (setq php-cc-mode-lineup-cascaded-calls t)
+    (setq php-cc-mode-enable-backup-style-variables nil)
+    (should php-mode-lineup-cascaded-calls)
+    (should-not php-mode-enable-backup-style-variables)))
 
 (ert-deftest php-complete-test-function-module-names-match-alist ()
   "`php-defs-function-module-names' must list every module of the alist.
