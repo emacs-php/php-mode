@@ -82,7 +82,7 @@
 ;;     (with-eval-after-load 'php-ide
 ;;       (custom-set-variables
 ;;        '(php-ide-features '(eglot)) ;; and/or '(none), '(phpactor), '(lsp-mode)
-;;        '(php-ide-eglot-executable "psalm-language-server") ;; or "intelephense", '("php" "vendor/bin/path/to/server")
+;;        '(php-ide-eglot-executable 'phpantom) ;; or 'intelephense, 'php-lsp, 'phpactor, "psalm-language-server", '("php" "vendor/bin/path/to/server")
 ;;        ;; If you want to hide php-ide-mode from the mode line, set an empty string
 ;;        '(php-ide-mode-lighter ""))
 ;;
@@ -180,6 +180,8 @@ each bound to a function called with no arguments:
 ;;;###autoload
 (defcustom php-ide-lsp-command-alist
   '((intelephense "intelephense" "--stdio")
+    (phpantom "phpantom_lsp")
+    (php-lsp "php-lsp")
     (phpactor . (lambda () (list (if (fboundp 'phpactor--find-executable)
                                      (phpactor--find-executable)
                                    "phpactor")
@@ -229,6 +231,8 @@ without being asked to confirm an executable path."
   :tag "PHP-IDE Eglot Executable"
   :type '(choice
           (const intelephense)
+          (const phpantom)
+          (const php-lsp)
           (const phpactor)
           string (repeat string))
   ;; Only a symbol naming one of the bundled presets in `php-ide-lsp-command-alist'

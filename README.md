@@ -88,7 +88,7 @@ You can add project-specific settings by creating a `.dir-locals.el` or `.dir-lo
 (with-eval-after-load 'php-ide
   (custom-set-variables
    '(php-ide-features '(eglot))              ;; and/or '(phpactor), '(lsp-mode), '(lsp-bridge)
-   '(php-ide-eglot-executable 'intelephense)  ;; or 'phpactor, a path string, or a list of strings
+   '(php-ide-eglot-executable 'intelephense)  ;; or 'phpantom, 'php-lsp, 'phpactor, a path string, or a list of strings
    '(php-ide-mode-lighter "")))               ;; hide PHP-IDE from the mode line
 ```
 
@@ -108,7 +108,7 @@ Useful commands once `php-ide` is loaded:
       (php-ide-features . (eglot))))
 ```
 
-`php-ide-features` and `php-ide-eglot-executable` are only treated as safe for `.dir-locals.el` when they name one of PHP-IDE's own built-in features or bundled executable presets (e.g. `intelephense`, `phpactor`).  Anything else — a raw executable path, explicit command arguments, or a custom `php-ide-mode-functions` hook — still goes through Emacs's normal confirmation for risky directory-local variables, since applying those silently would let any repository run an arbitrary command (or Lisp function) in your Emacs just by having you open a file in it.
+`php-ide-features` and `php-ide-eglot-executable` are only treated as safe for `.dir-locals.el` when they name one of PHP-IDE's own built-in features or bundled executable presets (e.g. `intelephense`, `phpantom`, `php-lsp`, `phpactor`).  Anything else — a raw executable path, explicit command arguments, or a custom `php-ide-mode-functions` hook — still goes through Emacs's normal confirmation for risky directory-local variables, since applying those silently would let any repository run an arbitrary command (or Lisp function) in your Emacs just by having you open a file in it.
 
 ### Integration with `project.el` and Projectile
 
