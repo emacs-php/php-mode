@@ -240,11 +240,9 @@ silently."
 Intended to run from `hack-local-variables-hook' once directory/file
 local variables (including `php-project-coding-style') are known.
 Removes itself from the buffer-local hook after running."
-  (let ((style (or (and (bound-and-true-p php-project-coding-style)
-                        (symbol-name php-project-coding-style))
-                    (and php-mode-coding-style (symbol-name php-mode-coding-style)))))
-    (when style
-      (php-set-style style)))
+  (when-let* ((style (or (bound-and-true-p php-project-coding-style)
+                         php-mode-coding-style)))
+    (php-set-style (symbol-name style)))
   (remove-hook 'hack-local-variables-hook #'php-style--apply-project-or-default-style t))
 
 ;;;###autoload
