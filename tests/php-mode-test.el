@@ -1505,6 +1505,30 @@ set, and must never mutate the global value."
             (should-not (php-complete-complete-path))))
       (delete-directory root t))))
 
+(ert-deftest php-mode-test-phpdoc-refontify ()
+  "Refontifying a line inside a PHPDoc must keep `font-lock-doc-face'.
+JIT font-lock refontifies only the edited region; when that region
+starts in the middle of a doc comment, the doc face must be restored
+rather than degrading to `font-lock-comment-face'."
+  (with-temp-buffer
+    (insert "<?php\n/**\n * Summary line.\n *\n * @param int $x\n */\nfunction f(int $x) {}\n")
+    (php-mode)
+    (font-lock-ensure)
+    (goto-char (point-min))
+    (search-forward "Summary")
+    (let ((pos (match-beginning 0)))
+      (should (eq (get-text-property pos 'face) 'font-lock-doc-face))
+      ;; Simulate JIT font-lock repainting only this line after an edit.
+      (font-lock-fontify-region (line-beginning-position) (line-end-position))
+      (should (eq (get-text-property pos 'face) 'font-lock-doc-face)))
+    ;; The annotation tag must also survive a single-line repaint.
+    (goto-char (point-min))
+    (search-forward "@param")
+    (let ((pos (match-beginning 0)))
+      (font-lock-fontify-region (line-beginning-position) (line-end-position))
+      (should (memq 'php-doc-annotation-tag
+                    (ensure-list (get-text-property pos 'face)))))))
+
 ;; For developers: How to make .faces list file.
 ;;
 ;; 1. Press `M-x eval-buffer' in this file bufffer.

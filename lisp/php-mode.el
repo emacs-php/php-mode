@@ -279,6 +279,15 @@ START-RE matches the beginning of a doc comment (e.g. \"/\\*\\*\").
 KEYWORDS is a list of font-lock matcher entries applied within the body
 of each doc comment."
   (let ((case-fold-search nil))
+    ;; After an edit inside a doc comment, JIT font-lock may hand us a
+    ;; region that begins in the middle of the comment; the opener is
+    ;; then behind point and the search below would never see it.  Back
+    ;; up to the opener so the whole comment is refontified.
+    (when-let* ((ppss (syntax-ppss))
+                (cbeg (and (nth 4 ppss) (nth 8 ppss)))
+                ((save-excursion (goto-char cbeg)
+                                 (looking-at-p start-re))))
+      (goto-char cbeg))
     (while (re-search-forward start-re limit t)
       (let ((beg (match-beginning 0))
             ;; Probe *inside* the comment (its opener has just been
@@ -299,6 +308,9 @@ of each doc comment."
             ;; `c-font-lock-doc-comments' did; the keyword highlights
             ;; below then prepend their own faces on top.
             (put-text-property cstart end 'face 'font-lock-doc-face)
+            ;; Ask font-lock to widen any future refontification to the
+            ;; whole comment, so edits inside it repaint it entirely.
+            (put-text-property cstart end 'font-lock-multiline t)
             (save-excursion
               (save-restriction
                 (narrow-to-region cstart end)
