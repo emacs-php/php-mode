@@ -13,6 +13,10 @@ All notable changes of the PHP Mode 1.19.1 release series are documented in this
    * Shows whether it is on, what is configured, and what is available
  * Add `php-ide-eglot-activate`, which registers `php-ide-eglot-executable` into `eglot-server-programs`
    * Buffer-local, so only buffers that set the variable are affected; previously the variable had no effect on Eglot at all
+ * Add a `phpantom` preset to `php-ide-lsp-command-alist` for the [PHPantom](https://github.com/PHPantom-dev/phpantom_lsp) PHP language server
+   * Set `php-ide-eglot-executable` to `'phpantom` (safe for `.dir-locals.el`) to run `phpantom_lsp` under Eglot
+ * Add a `php-lsp` preset to `php-ide-lsp-command-alist` for the [php-lsp](https://github.com/jorgsowa/php-lsp) PHP language server
+   * Set `php-ide-eglot-executable` to `'php-lsp` (safe for `.dir-locals.el`) to run `php-lsp` under Eglot
  * Add `php-cc-mode` as a forward-compatible alias for the CC Mode based `php-mode`
    * Lets configuration and third-party code refer to the CC Mode implementation by the name it will keep once `php-mode` becomes cc-mode independent; loading it has no effect on `php-mode` itself
    * `php-cc-mode-hook`, `php-cc-mode-lineup-cascaded-calls` and `php-cc-mode-enable-backup-style-variables` are provided as aliases of their current `php-mode-*` counterparts

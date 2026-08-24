@@ -86,7 +86,7 @@ M-x package-install php-mode
 (with-eval-after-load 'php-ide
   (custom-set-variables
    '(php-ide-features '(eglot))              ;; '(phpactor)、'(lsp-mode)、'(lsp-bridge)も可
-   '(php-ide-eglot-executable 'intelephense)  ;; 'phpactor、パス文字列、文字列のリストも可
+   '(php-ide-eglot-executable 'intelephense)  ;; 'phpantom、'php-lsp、'phpactor、パス文字列、文字列のリストも可
    '(php-ide-mode-lighter "")))               ;; モードラインからPHP-IDEを隠す
 ```
 
@@ -106,7 +106,7 @@ M-x package-install php-mode
       (php-ide-features . (eglot))))
 ```
 
-`php-ide-features`と`php-ide-eglot-executable`は、PHP-IDE組み込みの機能名やバンドル済み実行ファイルのプリセット(`intelephense`、`phpactor`など)を指す場合に限り、`.dir-locals.el`での設定が安全とみなされます。それ以外の値——生の実行ファイルパス、明示的なコマンド引数、カスタムの`php-ide-mode-functions`フックなど——は、これまで通りEmacsの「危険な変数」に対する通常の確認を経ます。そうしないと、ファイルを開くだけで任意のリポジトリが任意のコマンド(またはLisp関数)をあなたのEmacs上で実行できてしまうためです。
+`php-ide-features`と`php-ide-eglot-executable`は、PHP-IDE組み込みの機能名やバンドル済み実行ファイルのプリセット(`intelephense`、`phpantom`、`php-lsp`、`phpactor`など)を指す場合に限り、`.dir-locals.el`での設定が安全とみなされます。それ以外の値——生の実行ファイルパス、明示的なコマンド引数、カスタムの`php-ide-mode-functions`フックなど——は、これまで通りEmacsの「危険な変数」に対する通常の確認を経ます。そうしないと、ファイルを開くだけで任意のリポジトリが任意のコマンド(またはLisp関数)をあなたのEmacs上で実行できてしまうためです。
 
 ### `project.el`・Projectileとの連携
 
