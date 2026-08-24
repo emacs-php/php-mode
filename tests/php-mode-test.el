@@ -309,16 +309,33 @@ directory/file local variables) must be reflected into
 `php-indent-offset' by `php-style--honor-legacy-c-basic-offset', which
 runs from `hack-local-variables-hook'."
   (defvar c-basic-offset)
-  (with-temp-buffer
-    (insert "<?php\n")
-    (php-mode)
-    ;; Emulate directory/file local variables applying `c-basic-offset'
-    ;; after major-mode initialization, then the local-variables hook
-    ;; firing (as it does for a real file visit).
-    (setq-local c-basic-offset 8)
-    (run-hooks 'hack-local-variables-hook)
-    (should (local-variable-p 'php-indent-offset))
-    (should (= php-indent-offset 8))))
+  (let ((php-style--warned-legacy-c-basic-offset nil)
+        (warnings 0))
+    (cl-letf (((symbol-function 'display-warning)
+               (lambda (&rest _) (cl-incf warnings))))
+      (with-temp-buffer
+        (insert "<?php\n")
+        (php-mode)
+        ;; Emulate directory/file local variables applying `c-basic-offset'
+        ;; after major-mode initialization, then the local-variables hook
+        ;; firing (as it does for a real file visit).
+        (setq-local c-basic-offset 8)
+        (run-hooks 'hack-local-variables-hook)
+        (should (local-variable-p 'php-indent-offset))
+        (should (= php-indent-offset 8))
+        (should (= warnings 1))
+        ;; The warning must fire at most once per session.
+        (run-hooks 'hack-local-variables-hook)
+        (should (= warnings 1)))
+      ;; A value that already matches `php-indent-offset' is honored
+      ;; silently, without marking the variable buffer-local.
+      (with-temp-buffer
+        (insert "<?php\n")
+        (php-mode)
+        (setq php-style--warned-legacy-c-basic-offset nil)
+        (setq-local c-basic-offset php-indent-offset)
+        (run-hooks 'hack-local-variables-hook)
+        (should (= warnings 1))))))
 
 (ert-deftest php-mode-test-issue-73 ()
   "The `delete-indentation' function should work properly for PHP.

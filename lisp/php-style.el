@@ -203,6 +203,11 @@ file local variables, set this to nil."
   :tag "PHP Mode Enable Project Coding Style"
   :type 'boolean)
 
+(defvar php-style--warned-legacy-c-basic-offset nil
+  "Non-nil once the obsolete `c-basic-offset' warning has been shown.
+The migration layer keeps honoring the variable in every buffer, but
+the warning is displayed at most once per Emacs session.")
+
 (defun php-style--honor-legacy-c-basic-offset ()
   "Honor a legacy buffer-local `c-basic-offset' by mapping it to
 `php-indent-offset'.
@@ -212,15 +217,22 @@ file-local or directory-local variables to control indentation.  The
 cc-mode independent `php-mode' does not consult `c-basic-offset' for
 indentation; this function bridges the gap for backward compatibility
 by copying a buffer-local integer value of `c-basic-offset' into
-`php-indent-offset' and warning that `c-basic-offset' is obsolete in
-this context."
-  (when (and (local-variable-p 'c-basic-offset)
-             (boundp 'c-basic-offset)
-             (integerp (symbol-value 'c-basic-offset)))
-    (set (make-local-variable 'php-indent-offset) (symbol-value 'c-basic-offset))
-    (display-warning 'php-mode
-                      "`c-basic-offset' is obsolete here; use `php-indent-offset'"
-                      :warning)))
+`php-indent-offset'.
+
+When the copy actually changes `php-indent-offset', a warning that
+`c-basic-offset' is obsolete in this context is displayed once per
+session.  A value that already matches `php-indent-offset' is ignored
+silently."
+  (when-let* (((local-variable-p 'c-basic-offset))
+              (value (bound-and-true-p c-basic-offset))
+              ((integerp value))
+              ((not (eql value php-indent-offset))))
+    (setq-local php-indent-offset value)
+    (unless php-style--warned-legacy-c-basic-offset
+      (setq php-style--warned-legacy-c-basic-offset t)
+      (display-warning 'php-mode
+                       "`c-basic-offset' is obsolete here; use `php-indent-offset'"
+                       :warning))))
 
 (defun php-style--apply-project-or-default-style ()
   "Apply the project's coding style, or fall back to `php-mode-coding-style'.
