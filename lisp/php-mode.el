@@ -173,8 +173,15 @@ HEREDOC-START."
     (put-text-property pos (1+ pos) 'syntax-table (string-to-syntax "_"))))
 
 (defun php--syntax-propertize-attributes (start)
-  "Apply propertize PHP8 #[Attributes] (without # comment) from START."
-  (unless (php-in-string-p)
+  "Apply propertize PHP8 #[Attributes] (without # comment) from START.
+The string check parses only up to START: probing at point (after the
+match) would run `syntax-ppss' across the `#' while it still has its
+comment-start syntax, caching a bogus in-comment state that breaks the
+propertize of everything after the attribute.  The `save-excursion'
+matters too: `syntax-ppss' moves point to START, and leaving point
+before the match would make `syntax-propertize-rules' rescan it
+forever."
+  (unless (save-excursion (nth 3 (syntax-ppss start)))
     (put-text-property start (1+ start) 'syntax-table (string-to-syntax "."))))
 
 (defvar-local php-mode--propertize-extend-region-current nil

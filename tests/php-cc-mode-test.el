@@ -232,4 +232,20 @@ drive the CC Mode based mode and its `php-cc-set-style'."
   (with-current-buffer (php-mode-debug--buffer 'init)
     (should (eq 0 (- (point-max) (point-min))))))
 
+(ert-deftest php-cc-mode-test-attribute-with-hash-in-string ()
+  "A `#' inside a string argument of a PHP 8 attribute is not a comment.
+Same regression as the cc-mode independent `php-mode': the attribute
+propertize poisoned the `syntax-ppss' cache with an in-comment state."
+  (with-temp-buffer
+    (insert "<?php\n#[Route('/config#mail', ['anchor' => 'mail'])]\nfunction configMail(): void {}\n")
+    (php-cc-mode)
+    (font-lock-ensure)
+    (goto-char (point-min))
+    (search-forward "'/config#mail'")
+    (goto-char (match-beginning 0))
+    (should-not (text-property-any (line-beginning-position) (line-end-position)
+                                   'face 'font-lock-comment-face))
+    (should-not (text-property-any (line-beginning-position) (line-end-position)
+                                   'face 'font-lock-comment-delimiter-face))))
+
 ;;; php-cc-mode-test.el ends here

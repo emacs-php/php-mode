@@ -1546,6 +1546,33 @@ rather than degrading to `font-lock-comment-face'."
       (should (memq 'php-doc-annotation-tag
                     (ensure-list (get-text-property pos 'face)))))))
 
+(ert-deftest php-mode-test-attribute-with-hash-in-string ()
+  "A `#' inside a string argument of a PHP 8 attribute is not a comment.
+The attribute propertize used to poison the `syntax-ppss' cache with an
+in-comment state, which stripped the string syntax from every following
+quote and fontified the rest of the line as a comment."
+  (with-temp-buffer
+    (insert "<?php\n#[Route('/config#mail', ['anchor' => 'mail'])]\nfunction configMail(): void {}\n")
+    (php-mode)
+    (font-lock-ensure)
+    (goto-char (point-min))
+    (search-forward "'/config#mail'")
+    (let ((str-beg (match-beginning 0))
+          (str-end (match-end 0)))
+      ;; The whole argument is one string...
+      (should (eq (get-text-property str-beg 'face) 'php-string))
+      (should (eq (get-text-property (1- str-end) 'face) 'php-string))
+      ;; ...and nothing on the line is fontified as a comment.
+      (goto-char str-beg)
+      (should-not (text-property-any (line-beginning-position) (line-end-position)
+                                     'face 'font-lock-comment-face))
+      (should-not (text-property-any (line-beginning-position) (line-end-position)
+                                     'face 'font-lock-comment-delimiter-face)))
+    ;; The following array's string keys are unaffected too.
+    (goto-char (point-min))
+    (search-forward "'anchor'")
+    (should (eq (get-text-property (match-beginning 0) 'face) 'php-string))))
+
 ;; For developers: How to make .faces list file.
 ;;
 ;; 1. Press `M-x eval-buffer' in this file bufffer.
