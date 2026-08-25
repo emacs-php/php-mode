@@ -26,14 +26,24 @@
 ;; Provides functions to debugging php-mode work.
 
 ;;; Code:
-(require 'cc-mode)
+(require 'cl-lib)
 (require 'cus-edit)
-(require 'php-mode)
 (require 'package)
 (require 'pkg-info nil t)
 (require 'el-get nil t)
 
+;; The CC Mode based `php-cc-mode' is intentionally NOT required here.  The
+;; CC Mode diagnostics below are the only part that depends on it, and they
+;; are guarded so that invoking `php-mode-debug' in a cc-mode independent
+;; `php-mode' session does not drag in (and thus get polluted by) the legacy
+;; implementation.  Symbols owned by CC Mode / `php-cc-mode' are only ever
+;; touched from inside a `php-cc-mode' buffer, where both are already loaded.
+(eval-when-compile
+  (require 'cc-mode))
+
 (declare-function pkg-info-version-info "ext:pkg-info" (library &optional package show))
+(declare-function php-mode-version "php-cc-mode" (&rest args))
+(defvar php-mode-cc-version)
 
 (defun php-mode-debug-reinstall (force &optional called-interactive)
   "Reinstall PHP Mode to solve Cc Mode version mismatch.
@@ -96,8 +106,8 @@ When CALLED-INTERACTIVE then message the result."
 (defun php-mode-debug ()
   "Display informations useful for debugging PHP Mode."
   (interactive)
-  (unless (eq major-mode 'php-mode)
-    (user-error "Invoke this command only in php-mode buffer"))
+  (unless (derived-mode-p 'php-base-mode)
+    (user-error "Invoke this command only in a PHP Mode buffer"))
   (php-mode-debug--buffer 'init)
   (php-mode-debug--message "Feel free to report on GitHub what you noticed!")
   (php-mode-debug--message "https://github.com/emacs-php/php-mode/issues/new")
@@ -105,12 +115,18 @@ When CALLED-INTERACTIVE then message the result."
   (php-mode-debug--message "Pasting the following information on the issue will help us to investigate the cause.")
   (php-mode-debug--message "```")
   (php-mode-debug--message "--- PHP-MODE DEBUG BEGIN ---")
-  (php-mode-debug--message "versions: %s; %s; Cc Mode %s)"
-    (emacs-version)
-    (php-mode-version)
-    (if (string= php-mode-cc-version c-version)
-        c-version
-      (format "%s (php-mode-cc-version: %s *mismatched*)" c-version php-mode-cc-version)))
+  ;; The version line reports the CC Mode based `php-cc-mode' build and
+  ;; compares its baked-in CC Mode version against the running one.  Only
+  ;; the legacy mode carries `php-mode-version' / `php-mode-cc-version', so
+  ;; skip it (rather than loading `php-cc-mode') outside a cc buffer.
+  (if (derived-mode-p 'php-cc-mode)
+      (php-mode-debug--message "versions: %s; %s; Cc Mode %s)"
+        (emacs-version)
+        (php-mode-version)
+        (if (string= php-mode-cc-version c-version)
+            c-version
+          (format "%s (php-mode-cc-version: %s *mismatched*)" c-version php-mode-cc-version)))
+    (php-mode-debug--message "versions: %s" (emacs-version)))
   (php-mode-debug--message "package-version: %s"
     (if (fboundp 'pkg-info)
         (pkg-info-version-info 'php-mode)
@@ -132,13 +148,18 @@ When CALLED-INTERACTIVE then message the result."
     (cl-loop for (v type) in (custom-group-members 'php nil)
              if (eq type 'custom-variable)
              collect (list v (symbol-value v))))
-  (php-mode-debug--message "c-indentation-style: %s" c-indentation-style)
-  (php-mode-debug--message "c-style-variables: %s"
-    (cl-loop for v in c-style-variables
-             unless (memq v '(c-doc-comment-style c-offsets-alist))
-             collect (list v (symbol-value v))))
-  (php-mode-debug--message "c-doc-comment-style: %s" c-doc-comment-style)
-  (php-mode-debug--message "c-offsets-alist: %s" c-offsets-alist)
+  ;; CC Mode specific state.  These variables only exist and are only
+  ;; meaningful in a `php-cc-mode' buffer; guarding on the buffer's mode
+  ;; keeps `php-mode-debug' usable in the cc-mode independent `php-mode'
+  ;; without touching CC Mode.
+  (when (derived-mode-p 'php-cc-mode)
+    (php-mode-debug--message "c-indentation-style: %s" c-indentation-style)
+    (php-mode-debug--message "c-style-variables: %s"
+      (cl-loop for v in c-style-variables
+               unless (memq v '(c-doc-comment-style c-offsets-alist))
+               collect (list v (symbol-value v))))
+    (php-mode-debug--message "c-doc-comment-style: %s" c-doc-comment-style)
+    (php-mode-debug--message "c-offsets-alist: %s" c-offsets-alist))
   (php-mode-debug--message "buffer: %s" (list :length (save-excursion (goto-char (point-max)) (point))))
   (php-mode-debug--message "--- PHP-MODE DEBUG END ---")
   (php-mode-debug--message "```\n")

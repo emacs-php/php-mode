@@ -49,5 +49,7 @@ jobs:
     - uses: actions/checkout@v7
     - name: Run tests
       run: 'make .eask test'
+    - name: Run php-cc-mode regression tests
+      run: 'make test-cc'
     - name: Run tests (allow failure)
       run: 'make .eask test || true'

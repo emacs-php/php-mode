@@ -19,6 +19,9 @@ A powerful and flexible Emacs major mode for editing PHP scripts
 > [!NOTE]
 > [最新版][releases]のPHP ModeはEmacs 30をサポートしています。<br />アップグレードに伴うトラブルは[Discussions][discussions-emacs30]に気軽に書き込んでください。
 
+> [!IMPORTANT]
+> PHP Modeは書き直され、CC Modeに依存しなくなりました。インデントはGNU Emacsに同梱されている`js.el`に由来するエンジンで処理されます。従来のCC Modeベースの実装は`php-cc-mode`として引き続き利用できます。詳しくは[レガシーなCC Mode実装](#レガシーなcc-mode実装-php-cc-mode)をお読みください。
+
 > [!WARNING]
 > Emacsをアップグレードした直後に初めてPHPファイルを開いたときに、CC Mode関連のエラーが発生する可能性があります。これは以前のバージョンのEmacsでバイトコンパイルされたPHP Modeがディスクにキャッシュされているために起こるので、PHP Modeの再インストールによって解決します。
 >
@@ -29,7 +32,7 @@ A powerful and flexible Emacs major mode for editing PHP scripts
 
 ## インストール
 
-**PHP ModeはEmacs 28.1以降で動作します**。対応バージョンの詳細は[Supported Version]をお読みください。Emacs 28.1以降では単に以下のコマンドを実行するだけでインストールできます。
+**PHP ModeはEmacs 28.1以降で動作します**([#811])。対応バージョンの詳細は[Supported Version]をお読みください。Emacs 28.1以降では単に以下のコマンドを実行するだけでインストールできます。
 
 ```
 M-x package-install php-mode
@@ -74,6 +77,14 @@ M-x package-install php-mode
   (php-project-root . git)
   (php-project-coding-style . psr2)))
 ```
+
+### コーディングスタイル
+
+`php-mode`は`php-mode-coding-style`に従ってインデントや編集関連の変数を設定します。既定のスタイルは`per`([PER Coding Style 2.0][per-cs])です。以前のバージョンの既定は`pear`でした。利用できるスタイルは`per`、`psr2`、`pear`、`drupal`、`wordpress`です。
+
+`symfony2`スタイルは削除されました。現代のSymfonyが採用するコーディングスタイルはPERに置き換えられているためです。`php-cc-mode`では引き続き利用できます。
+
+インデントエンジンはもはやCC Modeを使わないため、`php-mode`では`c-basic-offset`はobsoleteです。かわりに`php-indent-offset`をカスタマイズしてください。後方互換のため、プロジェクトが`c-basic-offset`をバッファローカルに設定している場合(`.dir-locals.el`やファイルローカル変数など)は、`php-mode`がその値を`php-indent-offset`に引き継ぎ、警告を表示します。
 
 ### PHP-IDE: LSPクライアントおよびPhpactorとの連携
 
@@ -126,6 +137,59 @@ M-x package-install php-mode
 (add-hook 'project-find-functions #'php-project-project-find-function 90)
 ```
 
+## 補完
+
+`php-complete.el`は、言語サーバーなしでも使える依存の軽い小さな`completion-at-point`関数(capf)をいくつか提供します。いずれも`M-x`コマンドとしても、[`cape`][cape]の`cape-capf-super`で合成する部品としても使えます。
+
+- `php-complete-complete-function` — 組み込み関数名。
+- `php-complete-complete-path` — `__DIR__ . '/...'`イディオムの中でパスを補完します。1階層ずつ辿り、起点は現在のファイルのディレクトリ(実行時に`__DIR__`が解決する先)です。
+
+名前付き関数から登録すると、あとから設定を変更しやすくなります。無名クロージャをフックに追加すると、削除や再定義が困難になります。
+
+```elisp
+(defun my-php-mode-setup-completion ()
+  "現在のバッファで `php-mode' の補完ソースを有効にする。"
+  (add-hook 'completion-at-point-functions
+            #'php-complete-complete-path nil t))
+
+(with-eval-after-load 'php-mode
+  (add-hook 'php-mode-hook #'my-php-mode-setup-completion))
+```
+
+`cape`で複数のオフラインソースを1つの super-capf に合成するには、同じ関数の中で`cape-capf-super`を登録します。
+
+```elisp
+(defun my-php-mode-setup-completion ()
+  "現在のバッファで `php-mode' の補完ソースを有効にする。"
+  (add-hook 'completion-at-point-functions
+            (cape-capf-super #'php-complete-complete-function
+                             #'php-complete-complete-path)
+            nil t))
+```
+
+### 文脈依存の `.` キー
+
+`__DIR__`とパス補完を橋渡しする`. '/'`の挿入は、あえてcapfの仕事にはしていません。これは編集環境側に委ねます。そのための primitive が`php-dot-context`です。ポイントが文字列/コメント内か(`string-or-comment`)、文字列リテラルや`__DIR__`のようなマジック定数の直後か(`next-to-string`)、素のコードか(`code`)を返します。capf とこの primitive は「文字列」と「マジック定数」の定義を共有するため、キー挿入と補完の挙動が食い違いません。
+
+たとえば[smartchr][smartchr]では、`.`キーをコード中では`->` / `.` / `. `で循環させ、文字列内ではリテラルの`.`を挿入し、`__DIR__`の直後では`. `を優先(そのまま`php-complete-complete-path`につながる)といった設定が書けます。
+
+```elisp
+(defun my-php-smartchr-dot (code within-string next-to-string)
+  "`php-dot-context' を使って `.' キーの smartchr を作る。"
+  (let ((select (lambda ()
+                  (pcase (php-dot-context)
+                    ('string-or-comment within-string)
+                    ('next-to-string    next-to-string)
+                    (_                  code)))))
+    (smartchr-make-struct
+     :cleanup-fn (lambda () (delete-char (- (length (funcall select)))))
+     :insert-fn  (lambda () (insert (funcall select))))))
+
+;; (smartchr (my-php-smartchr-dot "->" "." ". ")
+;;           (my-php-smartchr-dot ". " ".." "..")
+;;           "...")
+```
+
 ## HTMLとPHPが混在するファイルの編集
 
 `php-mode`は純粋なPHPスクリプトのためのメジャーモードです。テンプレートのようにHTMLの中にPHPを埋め込んだファイルは、両方の言語を理解するメジャーモードで編集するほうが適しています。特にインデントは、HTML部分を素の`php-mode`で編集すると正しく動作しません。
@@ -158,6 +222,12 @@ M-x package-install php-mode
 
 すでに`php-mode`でHTMLタグを含むファイルをインデントしようとすると、PHP Modeは警告し、`php-html-template-major-mode`への切り替えを尋ねます。このプロンプトを無効にするには`php-mode-warn-if-html-template`を`nil`に設定してください。
 
+## レガシーなCC Mode実装 (php-cc-mode)
+
+これまでのPHP ModeはEmacs組み込みのCC Modeの上に実装されていました。この実装は`php-cc-mode`として保存されており、凍結メンテナンス状態です。リグレッション修正のみ受け付け、新規の開発はCC Mode非依存の`php-mode`で行われます。レガシー実装でファイルを開くには`M-x php-cc-mode`を実行するか、自分で`auto-mode-alist`にエントリを追加してください。
+
+既存の設定が動き続けるように、`php-cc-mode`は自身の`php-cc-mode-hook`に加えて`php-mode-hook`も実行します。[CC Modeマニュアル][cc-mode-manual]に記載されている設定が適用されるのは`php-cc-mode`だけです。詳細は`lisp/php-cc-mode.el`冒頭のコメントをお読みください。
+
 ## 不具合を報告する
 
 バグ報告の際には `M-x php-mode-debug` の出力を含めてください。この情報は問題の再現に役立ちます。
@@ -171,7 +241,7 @@ M-x package-install php-mode
 
 PHP Modeは[GNU General Public License Version 3][gpl-v3] (GPLv3) でライセンスされています。
 
-このプロジェクトは1999年に[Turadg Aleahmad][@turadg]が書いた`php-mode.el`に起源を持ちます。2013年に[Daniel Hackney][@haxney]がEmacs組み込みのCC Modeをもとに書き直し始めました。PHPモードの改善に協力した貢献者のリストは[Authors]と[Contributors]に掲載されています。
+このプロジェクトは1999年に[Turadg Aleahmad][@turadg]が書いた`php-mode.el`に起源を持ちます。2013年に[Daniel Hackney][@haxney]がEmacs組み込みのCC Modeをもとに書き直し始めました。2026年にCC Modeへの依存を取り除くための書き直しが行われました。PHPモードの改善に協力した貢献者のリストは[Authors]と[Contributors]に掲載されています。
 
 このプロジェクトは2017年まで[Eric James Michael Ritz][@ejmr]によりメンテナンスされていました。現在は[Friends of Emacs-PHP Development][@emacs-php]コミュニティが引き継いで開発しています。
 
@@ -202,7 +272,12 @@ PHP Modeは[GNU General Public License Version 3][gpl-v3] (GPLv3) でライセ�
 [Authors]: https://github.com/emacs-php/php-mode/wiki/Authors
 [Contributors]: https://github.com/emacs-php/php-mode/graphs/contributors
 [Supported Version]: https://github.com/emacs-php/php-mode/wiki/Supported-Version
+[cape]: https://github.com/minad/cape
+[cc-mode-manual]: https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
 [gpl-v3]: https://www.gnu.org/licenses/gpl-3.0
+[per-cs]: https://www.php-fig.org/per/coding-style/
+[smartchr]: https://github.com/imakado/emacs-smartchr
+[#811]: https://github.com/emacs-php/php-mode/issues/811
 [nongnu-elpa-badge]: https://elpa.nongnu.org/nongnu/php-mode.svg
 [nongnu-elpa]: https://elpa.nongnu.org/nongnu/php-mode.html
 [melpa-badge]: http://melpa.org/packages/php-mode-badge.svg
