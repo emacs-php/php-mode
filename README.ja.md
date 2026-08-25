@@ -14,6 +14,9 @@ A powerful and flexible Emacs major mode for editing PHP scripts
 
 </div>
 
+> [!NOTE]
+> このブランチはEmacs 27.xサポート向けのメンテナンスブランチです。詳細は[Drop Emacs 27 Support](https://github.com/emacs-php/php-mode/issues/811)をお読みください。
+
 [GitHubプロジェクト][php-mode]にissueを作成してバグ報告や機能リクエストを送ってください。
 
 > [!NOTE]

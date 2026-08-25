@@ -14,6 +14,9 @@ English &nbsp;&nbsp;|&nbsp;&nbsp; [日本語](README.ja.md)
 
 </div>
 
+> [!NOTE]
+> This branch is maintained to support Emacs 27.x. For details, see [Drop Emacs 27 Support](https://github.com/emacs-php/php-mode/issues/811).
+
 Please submit any bug reports or feature requests by creating issues on [the GitHub page for PHP Mode][php-mode].
 
 > [!NOTE]
