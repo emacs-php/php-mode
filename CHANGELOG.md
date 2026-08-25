@@ -41,10 +41,7 @@ This file documents notable changes to PHP Mode according to the [Keep a Changel
 ### Deprecated
 
  * `php-project-use-projectile-to-detect-root` is obsolete; Projectile 3 registers itself on `project-find-functions`, which `php-project-get-root-dir` now consults automatically
-
-### Removed
-
- * Drop support for Emacs 27.x ([#811])
+ * Emacs 27.x support is deprecated and will be removed in a future release ([#811])
 
 [Imenu]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Imenu.html
 [#742]: https://github.com/emacs-php/php-mode/pull/742
