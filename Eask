@@ -1,7 +1,7 @@
 ;; -*- mode: eask; lexical-binding: t -*-
 
 (package "php-mode"
-         "1.26.1"
+         "1.28.0"
          "Major mode for editing PHP code")
 
 (website-url "https://github.com/emacs-php/php-mode")
@@ -32,7 +32,7 @@
 (source 'melpa)
 (source 'gnu)
 
-(depends-on "emacs" "27.1")
+(depends-on "emacs" "28.1")
 
 (development
  (depends-on "phpactor")
