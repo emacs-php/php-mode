@@ -1,8 +1,8 @@
 <div align="center">
   <h1>Emacs PHP Mode</h1>
 
-[![Emacs: 30.0](https://img.shields.io/badge/Emacs-30.0-blue.svg)](https://www.gnu.org/software/emacs/)
-[![lang: PHP 8.4](https://img.shields.io/badge/lang-PHP%208.4-brightgreen.svg)](https://www.php.net/releases/8.4/)
+[![Emacs: 31.1](https://img.shields.io/badge/Emacs-31.1-blue.svg)](https://www.gnu.org/software/emacs/)
+[![lang: PHP 8.5](https://img.shields.io/badge/lang-PHP%208.5-brightgreen.svg)](https://www.php.net/releases/8.5/)
 [![Build Status](https://github.com/emacs-php/php-mode/workflows/CI/badge.svg)](https://github.com/emacs-php/php-mode/actions)
 [![GPL v3](https://img.shields.io/badge/license-GPL_v3-green.svg)][gpl-v3]<br>
 [![NonGNU ELPA][nongnu-elpa-badge]][nongnu-elpa]
@@ -30,8 +30,8 @@ Please submit any bug reports or feature requests by creating issues on [the Git
 
 ## Installation
 
-**PHP Mode works with Emacs 27.1 or later.** For details on supported versions, see [Supported Version].
-On Emacs 28 or later, you can install it simply by running:
+**PHP Mode works with Emacs 28.1 or later.** For details on supported versions, see [Supported Version].
+On Emacs 28.1 or later, you can install it simply by running:
 
 ```
 M-x package-install php-mode

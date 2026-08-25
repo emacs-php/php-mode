@@ -6,7 +6,7 @@
 ;; Author: USAMI Kenta <tadsan@zonu.me>
 
 ;; Created: 18 Sep 2022
-;; Version: 1.26.1
+;; Version: 1.28.0
 ;; Keywords: languages, php
 
 ;; This program is free software; you can redistribute it and/or modify
