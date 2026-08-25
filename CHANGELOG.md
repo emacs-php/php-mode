@@ -2,7 +2,11 @@
 
 This file documents notable changes to PHP Mode according to the [Keep a Changelog](https://keepachangelog.com/) principles.
 
-<!-- ## Unreleased -->
+## Unreleased
+
+### Removed
+
+ * Drop support for Emacs 27.x ([#811])
 
 ## [1.28.0] - 2026-08-25
 

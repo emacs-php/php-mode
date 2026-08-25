@@ -30,8 +30,8 @@ Please submit any bug reports or feature requests by creating issues on [the Git
 
 ## Installation
 
-**PHP Mode works with Emacs 27.1 or later.** For details on supported versions, see [Supported Version].
-On Emacs 28 or later, you can install it simply by running:
+**PHP Mode works with Emacs 28.1 or later.** For details on supported versions, see [Supported Version].
+On Emacs 28.1 or later, you can install it simply by running:
 
 ```
 M-x package-install php-mode

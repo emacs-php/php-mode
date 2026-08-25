@@ -29,7 +29,7 @@ A powerful and flexible Emacs major mode for editing PHP scripts
 
 ## インストール
 
-**PHP ModeはEmacs 27.1以降で動作します**。対応バージョンの詳細は[Supported Version]をお読みください。Emacs 28以降では単に以下のコマンドを実行するだけでインストールできます。
+**PHP ModeはEmacs 28.1以降で動作します**。対応バージョンの詳細は[Supported Version]をお読みください。Emacs 28.1以降では単に以下のコマンドを実行するだけでインストールできます。
 
 ```
 M-x package-install php-mode
