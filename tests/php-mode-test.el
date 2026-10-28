@@ -545,6 +545,32 @@ runs from `hack-local-variables-hook'."
     (php-indent-line)
     (should (= (current-indentation) php-indent-offset))))
 
+(ert-deftest php-mode-test-indent-keeps-heredoc-lines ()
+  "Indenting never changes heredoc body or closing marker indentation.
+Since PHP 7.3 the closing marker's indentation is stripped from every
+body line, so moving either one changes the string value."
+  (let ((code "<?php\nfunction f() {\n    $sql = <<<SQL\n        SELECT *\n        FROM\n        SQL;\n    return $sql;\n}\n"))
+    (with-temp-buffer
+      (insert code)
+      (php-mode)
+      (indent-region (point-min) (point-max))
+      (should (equal (buffer-string) code)))))
+
+(ert-deftest php-mode-test-tab-moves-point-into-string-indentation ()
+  "TAB in the leading whitespace of a string line moves to its indentation.
+The line itself is left unchanged, as in CC Mode."
+  (with-temp-buffer
+    (insert "<?php\n$s = 'multi\n     line';\n")
+    (php-mode)
+    (goto-char (point-min))
+    (forward-line 2)
+    (forward-char 2)
+    (let ((tick (buffer-chars-modified-tick))
+          (tab-always-indent t))
+      (indent-for-tab-command)
+      (should (= (buffer-chars-modified-tick) tick))
+      (should (= (current-column) 5)))))
+
 (ert-deftest php-mode-test-switch-statements()
   "Test indentation inside switch statements"
   (with-php-mode-test ("switch-statements.php" :indent t :style pear)

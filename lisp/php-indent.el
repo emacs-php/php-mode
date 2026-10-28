@@ -668,36 +668,26 @@ PHP open/close tag precedes the line, it is treated as PHP."
     (and (re-search-backward "<\\?php\\|<\\?=\\|<\\?\\|\\?>" nil t)
          (string= (match-string 0) "?>"))))
 
-(defun php-indent--heredoc-closing-line-p ()
-  "Return non-nil if the current line is a heredoc/nowdoc closing marker.
-The closing marker is a bare identifier, optionally followed by `;', `,'
-or `)', on its own line."
-  (save-excursion
-    (beginning-of-line)
-    (looking-at "[ \t]*[A-Za-z_][A-Za-z0-9_]*[ \t]*[;,)]?[ \t]*$")))
-
 ;;; Entry points
 
 ;;;###autoload
 (defun php-indent-line ()
   "Indent the current line as PHP.
 Intended for use as `indent-line-function'.  Lines inside an HTML region
-or inside a string/heredoc body are left unchanged; heredoc closing
-markers are forced to column zero."
+or inside a string, heredoc or nowdoc (including its closing marker) keep
+their indentation; as in CC Mode, point still moves to the end of the
+indentation when it was inside it."
   (interactive)
   (let* ((parse-status
           (save-excursion (syntax-ppss (line-beginning-position))))
          (offset (- (point) (save-excursion (back-to-indentation) (point)))))
     (cond
-     ;; Do not touch lines that belong to an HTML (?> ... <?php) region.
-     ((php-indent--in-html-p) nil)
-     ;; Heredoc/nowdoc closing marker: force column zero.
-     ((and (nth 3 parse-status)
-           (php-indent--heredoc-closing-line-p))
-      (indent-line-to 0)
-      (when (> offset 0) (forward-char offset)))
-     ;; Inside a string or heredoc body: keep the current indentation.
-     ((nth 3 parse-status) nil)
+     ;; Do not touch lines that belong to an HTML (?> ... <?php) region,
+     ;; nor string or heredoc/nowdoc lines.  Since PHP 7.3 the closing
+     ;; marker's indentation is stripped from every heredoc body line, so
+     ;; moving either one would change the string value.
+     ((or (php-indent--in-html-p) (nth 3 parse-status))
+      (when (< offset 0) (back-to-indentation)))
      (t
       (indent-line-to (php-indent--proper-indentation parse-status))
       (when (> offset 0) (forward-char offset))))))
