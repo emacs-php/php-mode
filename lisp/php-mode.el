@@ -415,12 +415,21 @@ names are handled by the namespace matcher."
         (setq found t)))
     found))
 
+(defun php-mode--heredoc-interpolates-p ()
+  "Return non-nil if point is inside a heredoc rather than a nowdoc.
+Heredocs and nowdocs are both generic string fences opened at `<<<', so
+only the quote after it tells them apart."
+  (save-excursion
+    (goto-char (nth 8 (syntax-ppss)))
+    (not (looking-at-p "<<<[ \t]*'"))))
+
 (defun php-mode--string-interpolated-variable-font-lock-find (limit)
   "Apply text-property to LIMIT for string interpolation by font-lock."
   (let (quoted-stuff)
     (while (re-search-forward php-string-interpolated-variable-regexp limit t)
       (setq quoted-stuff (php-in-string-p))
-      (when (or (eq ?\" quoted-stuff) (eq ?` quoted-stuff))
+      (when (or (eq ?\" quoted-stuff) (eq ?` quoted-stuff)
+                (and (eq t quoted-stuff) (php-mode--heredoc-interpolates-p)))
         (put-text-property (match-beginning 0) (match-end 0) 'face 'php-variable-name))))
   nil)
 
