@@ -248,4 +248,27 @@ propertize poisoned the `syntax-ppss' cache with an in-comment state."
     (should-not (text-property-any (line-beginning-position) (line-end-position)
                                    'face 'font-lock-comment-delimiter-face))))
 
+(ert-deftest php-cc-mode-test-heredoc-opener-in-comment-or-string ()
+  "A heredoc opener inside a comment or string does not start a heredoc.
+Same regression as the cc-mode independent `php-mode': the opener took
+the terminator of the next real heredoc as its own.  See GitHub issue
+#833."
+  (dolist (prefix '("// $a = <<<TXT\n//     TXT;\n"
+                    "# $a = <<<TXT\n#     TXT;\n"
+                    "/*\n * $a = <<<TXT\n *     TXT;\n */\n"
+                    "$s = 'quoted <<<TXT\nnot a heredoc';\n"
+                    "$s = \"quoted <<<TXT\nnot a heredoc\";\n"))
+    (ert-info (prefix :prefix "Before the heredoc: ")
+      (with-temp-buffer
+        (insert "<?php\n" prefix "$b = <<<TXT\n    Real heredoc\n    TXT;\necho 'after';\n")
+        (php-cc-mode)
+        (font-lock-ensure)
+        (goto-char (point-min))
+        (search-forward "$b = ")
+        (let ((opener (point)))
+          (search-forward "Real heredoc")
+          (should (eql (nth 8 (syntax-ppss)) opener)))
+        (search-forward "echo")
+        (should-not (nth 8 (syntax-ppss)))))))
+
 ;;; php-cc-mode-test.el ends here

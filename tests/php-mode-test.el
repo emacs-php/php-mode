@@ -1599,6 +1599,33 @@ quote and fontified the rest of the line as a comment."
     (search-forward "'anchor'")
     (should (eq (get-text-property (match-beginning 0) 'face) 'php-string))))
 
+(ert-deftest php-mode-test-heredoc-opener-in-comment-or-string ()
+  "A heredoc opener inside a comment or string does not start a heredoc.
+It used to take the terminator of the next real heredoc as its own, so
+that heredoc lost its opening fence and the string state of the rest of
+the buffer was inverted.  See GitHub issue #833."
+  (dolist (prefix '("// $a = <<<TXT\n//     TXT;\n"
+                    "# $a = <<<TXT\n#     TXT;\n"
+                    "/*\n * $a = <<<TXT\n *     TXT;\n */\n"
+                    "$s = 'quoted <<<TXT\nnot a heredoc';\n"
+                    "$s = \"quoted <<<TXT\nnot a heredoc\";\n"))
+    (ert-info (prefix :prefix "Before the heredoc: ")
+      (with-temp-buffer
+        (insert "<?php\n" prefix "$b = <<<TXT\n    Real heredoc\n    TXT;\necho 'after';\n")
+        (php-mode)
+        (font-lock-ensure)
+        (goto-char (point-min))
+        (search-forward "$b = ")
+        (let ((opener (point)))
+          ;; The real heredoc is a string opened by its own `<<<'...
+          (search-forward "Real heredoc")
+          (should (eql (nth 8 (syntax-ppss)) opener))
+          (should (eq (get-text-property (match-beginning 0) 'face) 'php-string)))
+        ;; ...and the code after its terminator is code again.
+        (search-forward "echo")
+        (should-not (nth 8 (syntax-ppss)))
+        (should-not (eq (get-text-property (match-beginning 0) 'face) 'php-string))))))
+
 ;; For developers: How to make .faces list file.
 ;;
 ;; 1. Press `M-x eval-buffer' in this file bufffer.
