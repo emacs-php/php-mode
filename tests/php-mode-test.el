@@ -1646,6 +1646,25 @@ See GitHub issue #833."
         (search-forward "hello")
         (should (eq (get-text-property (match-beginning 0) 'face) 'php-string))))))
 
+(ert-deftest php-mode-test-escaped-interpolation ()
+  "An escaped `$' does not start an interpolated variable.
+An odd number of backslashes escapes it.  `{' cannot be escaped, so
+\"\\{$f}\" still interpolates `{$f}'."
+  (dolist (case '(("\\$a" . nil) ("\\\\$b" . t) ("\\\\\\$c" . nil)
+                  ("\\${d}" . nil) ("{\\$e}" . nil) ("\\{$f}" . t)))
+    (dolist (wrap '(("\"" . "\"") ("<<<TXT\n" . "\nTXT")))
+      (ert-info ((concat (car wrap) (car case) (cdr wrap)) :prefix "String: ")
+        (with-temp-buffer
+          (insert "<?php\n$s = " (car wrap) (car case) (cdr wrap) ";\n")
+          (php-mode)
+          (font-lock-ensure)
+          (goto-char (point-min))
+          (search-forward (car case))
+          (goto-char (match-beginning 0))
+          (re-search-forward "[a-f]")
+          (should (eq (get-text-property (match-beginning 0) 'face)
+                      (if (cdr case) 'php-variable-name 'php-string))))))))
+
 ;; For developers: How to make .faces list file.
 ;;
 ;; 1. Press `M-x eval-buffer' in this file bufffer.
