@@ -271,4 +271,21 @@ the terminator of the next real heredoc as its own.  See GitHub issue
         (search-forward "echo")
         (should-not (nth 8 (syntax-ppss)))))))
 
+(ert-deftest php-cc-mode-test-escaped-interpolation ()
+  "An escaped `$' does not start an interpolated variable.
+Same rule as the cc-mode independent `php-mode'."
+  (dolist (case '(("\\$a" . nil) ("\\\\$b" . t) ("\\\\\\$c" . nil)
+                  ("\\${d}" . nil) ("{\\$e}" . nil) ("\\{$f}" . t)))
+    (ert-info ((car case) :prefix "String: ")
+      (with-temp-buffer
+        (insert "<?php\n$s = \"" (car case) "\";\n")
+        (php-cc-mode)
+        (font-lock-ensure)
+        (goto-char (point-min))
+        (search-forward (car case))
+        (goto-char (match-beginning 0))
+        (re-search-forward "[a-f]")
+        (should (eq (get-text-property (match-beginning 0) 'face)
+                    (if (cdr case) 'php-variable-name 'php-string)))))))
+
 ;;; php-cc-mode-test.el ends here

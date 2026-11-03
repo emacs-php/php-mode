@@ -1594,12 +1594,22 @@ matcher is set to override that face."
         (setq found t)))
     found))
 
+(defun php-cc-mode--interpolation-escaped-p (pos)
+  "Return non-nil if the interpolation matched at POS is escaped.
+An odd number of backslashes before `$' escapes it.  `{' cannot be
+escaped, so a `{$' interpolation never is."
+  (and (eq (char-after pos) ?$)
+       (save-excursion
+         (goto-char pos)
+         (/= 0 (% (skip-chars-backward "\\\\") 2)))))
+
 (defun php-cc-mode--string-interpolated-variable-font-lock-find (limit)
   "Apply text-property to LIMIT for string interpolation by font-lock."
   (let (quoted-stuff)
     (while (re-search-forward php-cc-string-interpolated-variable-regexp limit t)
       (setq quoted-stuff (php-in-string-p))
-      (when (or (eq ?\" quoted-stuff) (eq ?` quoted-stuff))
+      (when (and (or (eq ?\" quoted-stuff) (eq ?` quoted-stuff))
+                 (not (php-cc-mode--interpolation-escaped-p (match-beginning 0))))
         (put-text-property (match-beginning 0) (match-end 0) 'face 'php-variable-name))))
   nil)
 

@@ -1626,6 +1626,45 @@ the buffer was inverted.  See GitHub issue #833."
         (should-not (nth 8 (syntax-ppss)))
         (should-not (eq (get-text-property (match-beginning 0) 'face) 'php-string))))))
 
+(ert-deftest php-mode-test-heredoc-interpolation ()
+  "Variables are highlighted in heredocs but not in nowdocs.
+See GitHub issue #833."
+  (dolist (case '(("<<<TXT" . php-variable-name)
+                  ("<<< TXT" . php-variable-name)
+                  ("<<<\"TXT\"" . php-variable-name)
+                  ("<<<'TXT'" . php-string)))
+    (ert-info ((car case) :prefix "Opener: ")
+      (with-temp-buffer
+        (insert "<?php\n$a = " (car case) "\n    hello $x {$y->z} ${w}\n    TXT;\n")
+        (php-mode)
+        (font-lock-ensure)
+        (dolist (var '("$x" "{$y->z}" "${w}"))
+          (goto-char (point-min))
+          (search-forward (concat " " var))
+          (should (eq (get-text-property (1+ (match-beginning 0)) 'face) (cdr case))))
+        (goto-char (point-min))
+        (search-forward "hello")
+        (should (eq (get-text-property (match-beginning 0) 'face) 'php-string))))))
+
+(ert-deftest php-mode-test-escaped-interpolation ()
+  "An escaped `$' does not start an interpolated variable.
+An odd number of backslashes escapes it.  `{' cannot be escaped, so
+\"\\{$f}\" still interpolates `{$f}'."
+  (dolist (case '(("\\$a" . nil) ("\\\\$b" . t) ("\\\\\\$c" . nil)
+                  ("\\${d}" . nil) ("{\\$e}" . nil) ("\\{$f}" . t)))
+    (dolist (wrap '(("\"" . "\"") ("<<<TXT\n" . "\nTXT")))
+      (ert-info ((concat (car wrap) (car case) (cdr wrap)) :prefix "String: ")
+        (with-temp-buffer
+          (insert "<?php\n$s = " (car wrap) (car case) (cdr wrap) ";\n")
+          (php-mode)
+          (font-lock-ensure)
+          (goto-char (point-min))
+          (search-forward (car case))
+          (goto-char (match-beginning 0))
+          (re-search-forward "[a-f]")
+          (should (eq (get-text-property (match-beginning 0) 'face)
+                      (if (cdr case) 'php-variable-name 'php-string))))))))
+
 ;; For developers: How to make .faces list file.
 ;;
 ;; 1. Press `M-x eval-buffer' in this file bufffer.
