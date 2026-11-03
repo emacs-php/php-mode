@@ -36,7 +36,7 @@ jobs:
             emacs-version: snapshot
             experimental: true
     steps:
-    - uses: actions/setup-python@v7
+    - uses: actions/setup-python@v7.1.0
       with:
         python-version: '3.11'
         architecture: 'x64'
@@ -46,7 +46,7 @@ jobs:
     - uses: emacs-eask/setup-eask@master
       with:
         version: 'snapshot'
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@v7.0.1
     - name: Run tests
       run: 'make .eask test'
     - name: Run php-cc-mode regression tests
